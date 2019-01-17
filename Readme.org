@@ -8,6 +8,10 @@
 #          https://github.com/yjwen/org-reveal/commits/master
 #          https://gitlab.com/oer/org-revealjs/commits/master
 
+# Copyright (C) 2013-2018 Yujie Wen and contributors to org-reveal, see:
+#                         https://github.com/yjwen/org-reveal/commits/master
+# Copyright (C) 2017-2019 Jens Lechtenbörger
+
 #+OPTIONS: reveal_center:t reveal_progress:t reveal_history:nil reveal_control:t
 #+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t num:nil
 #+OPTIONS: reveal_width:1200 reveal_height:800
