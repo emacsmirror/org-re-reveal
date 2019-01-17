@@ -30,7 +30,7 @@
 ;; Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
-;; Please see "Readme.org" for detail introductions.
+;; See "Readme.org" for introduction and details.
 
 ;;; Code:
 
