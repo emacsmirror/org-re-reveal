@@ -1141,7 +1141,8 @@ is assigned, else \"forwardlink\".
 Assigning the class to \"attr_html\" of parent is based on a hack in
 `org-html-link', while use of \"attr_html\" of the link itself
 requires a version of org-mode as of 2018-12-08 or newer."
-  (let ((target (ignore-errors (org-export-resolve-id-link link info))))
+  (let ((target (or (ignore-errors (org-export-resolve-id-link link info))
+		    (ignore-errors (org-export-resolve-fuzzy-link link info)))))
     (when target
       (let* ((lbegin (org-element-property :begin link))
 	     (tbegin (org-element-property :begin target))
