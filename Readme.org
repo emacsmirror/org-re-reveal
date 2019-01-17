@@ -31,9 +31,8 @@
 
 * Note
 
-*WARNING!*  This project is not yet usable.  Please wait until this
-warning is gone before trying it out.  Contrary to the statements
-below, it is not yet used in emacs-reveal.
+*WARNING!*  This project is not yet stable.  Please wait until this
+warning is gone before trying it out.
 
 This project was forked from ~org-reveal~ and is /not/ yet available on
 MELPA.  Thus, you need to clone the following repository:
