@@ -891,11 +891,12 @@ dependencies: [
                 (mapcar
                  (lambda (p)
                    (eval (plist-get builtins p)))
-                 (let ((buffer-plugins (condition-case nil
-                                           (car (read-from-string (plist-get info :reveal-plugins)))
-                                         (end-of-file nil)
-                                         (wrong-type-argument nil))))
-                   (or (and buffer-plugins (listp buffer-plugins) buffer-plugins)
+                 (let ((buffer-plugins
+			(condition-case nil
+                            (car (read-from-string (plist-get info :reveal-plugins)))
+                          (end-of-file nil)
+                          (wrong-type-argument nil))))
+                   (or (and (listp buffer-plugins) buffer-plugins)
                        org-revealjs-plugins))))
                (external-plugins
 		(org-revealjs--external-plugin-init info root-path))
