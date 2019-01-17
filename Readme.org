@@ -27,7 +27,7 @@
 #+REVEAL_PLUGINS: (markdown notes)
 #+REVEAL_EXTRA_CSS: ./local.css
 
-[[http://www.gnu.org/licenses/gpl-3.0.html][http://img.shields.io/:license-gpl3-blue.svg]]
+[[https://www.gnu.org/licenses/gpl-3.0.html][https://img.shields.io/:license-gpl3-blue.svg]]
 
 * Note
 
