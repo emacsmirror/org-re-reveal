@@ -1,5 +1,6 @@
 # Local IspellDict: en
 #+Title: Introduction to org-revealjs
+#+Author: Yujie Wen and others
 
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Authors: Yujie Wen <yjwen.ty@gmail.com> and contributors to
