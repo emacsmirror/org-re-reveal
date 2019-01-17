@@ -53,11 +53,11 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 * Reveal.js and org-revealjs
 
-  - *[[https://revealjs.com/][Reveal.js]]* is a tool for creating good-looking HTML presentations,
-    authored by [[https://hakim.se/][Hakim El Hattab]]. \\
-    For an example of a reveal.js presentation, see [[http://lab.hakim.se/reveal-js/#/][here]].
-  - *Org-revealjs* exports your [[https://orgmode.org/][Org]] documents to reveal.js
-    presentations.\\
+  - *[[https://revealjs.com/][Reveal.js]]* is a tool for creating
+    good-looking HTML presentations, authored by
+    [[https://hakim.se/][Hakim El Hattab]].
+  - *Org-revealjs* exports your [[https://orgmode.org/][Org]]
+    documents to reveal.js presentations.\\
     With org-revealjs, you can create beautiful presentations with 3D
     effects from simple but powerful Org contents.
 
@@ -126,7 +126,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    a CDN instead of downloading a local copy.
 
    #+BEGIN_SRC org
-   ,#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.0.0/
+   ,#+REVEAL_ROOT: https://cdn.jsdelivr.net/reveal.js/3.0.0/
    #+END_SRC
 
 
@@ -139,7 +139,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
     in Windows this file would be
     "file:///c:/Users/username/org-revealjs/Readme.org".  For more
     detail on this standard please refer to
-    [[http://en.wikipedia.org/wiki/File_URI_scheme]]
+    [[https://en.wikipedia.org/wiki/File_URI_scheme]]
 
 ** First Try
 
@@ -228,7 +228,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 ** Set The Title Slide
    By default, org-revealjs generates a title slide displaying the
    title, the author, the Email, the date and the time-stamp of the
-   Org document, controlled by Org's [[http://orgmode.org/org.html#Export-settings][export settings]].
+   Org document, controlled by Org's [[https://orgmode.org/org.html#Export-settings][export settings]].
 
    To avoid a title slide, please set variable
    ~org-revealjs-title-slide~ to ~nil~, or add ~reveal_title_slide:nil~ to
@@ -575,7 +575,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    To Use your Emacs theme, please make sure ~htmlize.el~ is
    installed. Then no more setup is necessary.
 
-   Below is an example. Codes are copied from [[http://www.haskell.org/haskellwiki/The_Fibonacci_sequence][Haskell Wiki]].
+   Below is an example. Codes are copied from [[https://wiki.haskell.org/The_Fibonacci_sequence][Haskell Wiki]].
    #+BEGIN_SRC haskell
    fibs = 0 : 1 : next fibs
        where next (a : t@(b:_)) = (a+b) : next t
@@ -622,7 +622,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    LaTeX equations are rendered in native HTML5 contents.
 
    *IMPORTANT*: Displaying equations requires internet connection to
-   [[http://mathjax.org/][mathjax.org]] or local MathJax installation.
+   [[https://www.mathjax.org/][mathjax.org]] or local MathJax installation.
    For local MathJax installation, set option =REVEAL_MATHJAX_URL= to
    the URL pointing to the local MathJax location.
 
@@ -659,8 +659,8 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    Besides the Org contents, you can embed raw HTML contents
    into slides by placing a =#+REVEAL_HTML= keyword.
 
-   The famous cat jump fail:
-#+REVEAL_HTML: <iframe width="420" height="315" src="https://www.youtube.com/embed/Awf45u6zrP0" frameborder="0" allowfullscreen></iframe>
+   A talk by Linus Torvalds on Git:
+#+REVEAL_HTML: <iframe width="400" height="300" src="https://archive.org/download/LinusTorvaldsOnGittechTalk/LinusTorvaldsOnGittechTalk.ogv" frameborder="0" allowfullscreen></iframe>
 ** Speaker Notes
    Reveal.js supports speaker notes, which are displayed in a separate
    browser window. Pressing 's' on slide's windows will pop up a window
@@ -704,8 +704,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    Reveal.js supports multiplexing, which allows allows your audience to view
    the slides of the presentation you are controlling on their own phone, tablet
    or laptop. As the master presentation navigates the slides, all client
-   presentations will update in real time. See a demo at
-   http://revealjs.jit.su/.
+   presentations will update in real time.
 
    You can enable multiplexing for your slide generation by including the
    following options:
