@@ -284,29 +284,26 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    :END:
 #+END_SRC
 
-*** Single Image Background
-    :PROPERTIES:
-    :reveal_background: ./images/adult-education-3258944_640.jpg
-    :reveal_background_trans: slide
-    :END:
+*** Single Image Background - Instructions
 
     Set property =reveal_background= to an URL of background image.
     Set property =reveal_background_trans= to =slide= to make background image
     sliding rather than fading.
 #+BEGIN_SRC org
-,*** Single Image Background
+,*** Single Image Background - Result
     :PROPERTIES:
     :reveal_background: ./images/adult-education-3258944_640.jpg
     :reveal_background_trans: slide
     :END:
 #+END_SRC
 
-*** Repeating Image Background
+*** Single Image Background - Result
     :PROPERTIES:
     :reveal_background: ./images/adult-education-3258944_640.jpg
-    :reveal_background_size: 200px
-    :reveal_background_repeat: repeat
+    :reveal_background_trans: slide
     :END:
+
+*** Repeating Image Background - Instructions
 
     Resize background image by setting property
     =reveal_background_size= to a number.
@@ -314,13 +311,20 @@ I use emacs-reveal to generate Open Educational Resources (OER):
     Set property =reveal_background_repeat= to =repeat= to repeat
     image on the background.
 #+BEGIN_SRC org
-,*** Repeating Image Background
+,*** Repeating Image Background - Result
     :PROPERTIES:
     :reveal_background: ./images/adult-education-3258944_640.jpg
     :reveal_background_size: 200px
     :reveal_background_repeat: repeat
     :END:
 #+END_SRC
+
+*** Repeating Image Background - Result
+    :PROPERTIES:
+    :reveal_background: ./images/adult-education-3258944_640.jpg
+    :reveal_background_size: 200px
+    :reveal_background_repeat: repeat
+    :END:
 
 *** Title Slide Background Image
 
