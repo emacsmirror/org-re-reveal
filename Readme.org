@@ -286,7 +286,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 *** Single Image Background
     :PROPERTIES:
-    :reveal_background: ./images/whale.jpg
+    :reveal_background: ./images/adult-education-3258944_640.jpg
     :reveal_background_trans: slide
     :END:
 
@@ -296,14 +296,14 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 #+BEGIN_SRC org
 ,*** Single Image Background
     :PROPERTIES:
-    :reveal_background: ./images/whale.jpg
+    :reveal_background: ./images/adult-education-3258944_640.jpg
     :reveal_background_trans: slide
     :END:
 #+END_SRC
 
 *** Repeating Image Background
     :PROPERTIES:
-    :reveal_background: ./images/whale.jpg
+    :reveal_background: ./images/adult-education-3258944_640.jpg
     :reveal_background_size: 200px
     :reveal_background_repeat: repeat
     :END:
@@ -316,7 +316,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 #+BEGIN_SRC org
 ,*** Repeating Image Background
     :PROPERTIES:
-    :reveal_background: ./images/whale.jpg
+    :reveal_background: ./images/adult-education-3258944_640.jpg
     :reveal_background_size: 200px
     :reveal_background_repeat: repeat
     :END:
