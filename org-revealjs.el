@@ -35,9 +35,8 @@
 ;;; Code:
 
 (require 'ox-html)
-(require 'cl-extra) ; cl-every
 (require 'cl-lib)   ; cl-mapcar and autoloads for:
-		    ; cl-loop, cl-letf, cl-assert, cl-case
+		    ; cl-loop, cl-letf, cl-assert, cl-case, cl-every
 (require 'subr-x)   ; string-trim
 (require 'url-parse)
 
