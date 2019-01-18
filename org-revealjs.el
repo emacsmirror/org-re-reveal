@@ -6,7 +6,7 @@
 ;; Copyright (C) 2017-2019 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-revealjs
-;; Version: 0.9.0
+;; Version: 0.9.1
 ;; Package-Requires: ((emacs "24.4") (org "8.3"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 

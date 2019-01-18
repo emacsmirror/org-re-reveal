@@ -31,18 +31,12 @@
 
 * Note
 
-*WARNING!*  This project is not yet stable.  Please wait until this
-warning is gone before trying it out.
+The project org-revealjs started as fork of
+[[https://github.com/lechten/org-reveal][org-reveal]].
 
-This project was forked from ~org-reveal~ and is /not/ yet available on
-MELPA.  Thus, you need to clone the following repository:
-#+BEGIN_SRC sh
-git clone https://gitlab.com/oer/org-revealjs.git
-#+END_SRC
-
-Actually, if you are interested in ~org-revealjs~, I suggest that you take
+If you are interested in org-revealjs, I suggest that you take
 a look at [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]], which
-embeds this repository, reveal.js, and useful plugins as submodules,
+embeds org-revealjs, reveal.js, and useful plugins as submodules,
 combined with suitable Emacs configuration.
 A [[https://gitlab.com/oer/emacs-reveal-howto][Howto for the generation of reveal.js presentations (slides with audio) with emacs-reveal]]
 exists as well.
@@ -66,7 +60,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
   - Org mode.
   - org-revealjs.el.
   - htmlize.el (optional, for syntax highlighting).
-  - And, of course, GNU Emacs.
+  - And, of course, GNU Emacs, version 24.4 or later.
 
 ** Install reveal.js
 
@@ -77,11 +71,21 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    If you do not wish to download reveal.js yourself and would rather get a copy from a CDN,
    see the section [[https://gitlab.com/oer/org-revealjs#set-the-location-of-revealjs][Set the location of reveal.js]]
 
+** Install org-revealjs from MELPA
+
+   Org-revealjs is provided as MELPA package.  Use of MELPA requires
+   some setup code in your ~.emacs~ file.
+   See [[https://melpa.org/#/getting-started][here to get started with MELPA]].
+
 ** Install org-revealjs from GitLab
 
-   You can install the latest version of [[https://gitlab.com/oer/org-revealjs][org-revealjs from GitLab]].
+   You can download org-revealjs as archive from GitLab
+   ([[https://gitlab.com/oer/org-revealjs/-/archive/master/org-revealjs-master.zip][zip archive]]
+   and several ~tar~ variants; note the download icon on the
+   [[https://gitlab.com/oer/org-revealjs][project page]]).
 
-   Alternatively, you may clone the repository:
+   Alternatively, you can clone the
+   [[https://gitlab.com/oer/org-revealjs][repository of org-revealjs]]:
    #+BEGIN_SRC sh
    git clone https://gitlab.com/oer/org-revealjs.git
    #+END_SRC
