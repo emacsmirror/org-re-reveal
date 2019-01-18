@@ -492,6 +492,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    called “Slide State” by reveal.js; this might also be useful with
    reveal.js plugins.
 
+#+REVEAL: split
    To add a ~data-state~ attribute to a generated title slide or
    table of contents slide, you can use the following options:
 
@@ -527,6 +528,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
       =reveal_mousewheel=, =reveal_defaulttiming=, =reveal_overview=,
       =reveal_fragmentinurl=, =reveal_pdfseparatefragments=,
       =reveal_inter_presentation_links=
+#+REVEAL: split
     - Custom variables:\\
       =org-revealjs-control=, =org-revealjs-progress=,
       =org-revealjs-history=, =org-revealjs-center=,
@@ -715,6 +717,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 #+REVEAL_PLUGINS: ([any other plugins you are using] multiplex)
 #+END_SRC
 
+#+REVEAL: split
    You must generate unique values for the =REVEAL_MULTIPLEX_ID= and
    =REVEAL_MULTIPLEX_SECRET= options, obtaining these from the socket.io server
    you are using.
@@ -830,6 +833,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    * [[Tips]].
    * [[#my-heading][Heading]] with a =CUSTOM_ID= property.
 
+#+REVEAL: split
    If you add =reveal_inter_presentation_links:t= to =#+OPTIONS=, such
    links also work between presentations on the same server, e.g.,
    =[[file:somefile.org::#anchor][link text]]=.
