@@ -707,6 +707,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    or laptop. As the master presentation navigates the slides, all client
    presentations will update in real time.
 
+   *Warning!* The following is untested with ~org-revealjs~!
    You can enable multiplexing for your slide generation by including the
    following options:
 #+BEGIN_SRC org
