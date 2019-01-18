@@ -661,7 +661,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    into slides by placing a =#+REVEAL_HTML= keyword.
 
    A talk by Linus Torvalds on Git:
-#+REVEAL_HTML: <iframe width="400" height="300" src="https://archive.org/download/LinusTorvaldsOnGittechTalk/LinusTorvaldsOnGittechTalk.ogv" frameborder="0" allowfullscreen></iframe>
+#+REVEAL_HTML: <video controls width="400" height="300" src="https://archive.org/download/LinusTorvaldsOnGittechTalk/LinusTorvaldsOnGittechTalk.ogv"></video>
 ** Speaker Notes
    Reveal.js supports speaker notes, which are displayed in a separate
    browser window. Pressing 's' on slide's windows will pop up a window
