@@ -111,22 +111,25 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    The default location is =./reveal.js=, relative to the Org file.
 
    Changing =org-revealjs-root= 's value will change the location
-   globally. For example, add the following statement to your .emacs
-   file:
+   globally.  By setting option =REVEAL_ROOT=, the location is only
+   affected within the Org file.  For example, add the following
+   statement to your .emacs file:
 #+BEGIN_SRC lisp
 (setq org-revealjs-root "file:///d:/reveal.js")
 #+END_SRC
-   *IMPORTANT*: the absolute path to reveal.js should be in URL form,
-   "file:///path_to_reveal.js", as illustrated above.  By setting
-   option =REVEAL_ROOT=, the location is only affected within the Org
-   file.
+
+#+REVEAL: split
+   *IMPORTANT*: If you use absolute paths to reveal.js as illustrated
+   above, they should be in URL form,
+   "file:///path_to_reveal.js".
 
    #+BEGIN_SRC org
    ,#+REVEAL_ROOT: file:///d:/reveal.js
    #+END_SRC
 
-   Set your =REVEAL_ROOT= to the following URL to download reveal.js from
-   a CDN instead of downloading a local copy.
+   You can also set =REVEAL_ROOT= to a URL to use reveal.js from
+   a CDN instead of downloading a local copy.  The following URL
+   refers to an old version of reveal.js, though.
 
    #+BEGIN_SRC org
    ,#+REVEAL_ROOT: https://cdn.jsdelivr.net/reveal.js/3.0.0/
