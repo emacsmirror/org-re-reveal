@@ -1,12 +1,12 @@
 # Local IspellDict: en
-#+Title: Introduction to org-revealjs
+#+Title: Introduction to org-re-reveal
 #+Author: Yujie Wen and others
 
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Authors: Yujie Wen <yjwen.ty@gmail.com> and contributors to
-#          org-reveal and org-revealjs, see there:
+#          org-reveal and org-re-reveal, see there:
 #          https://github.com/yjwen/org-reveal/commits/master
-#          https://gitlab.com/oer/org-revealjs/commits/master
+#          https://gitlab.com/oer/org-re-reveal/commits/master
 
 # Copyright (C) 2013-2018 Yujie Wen and contributors to org-reveal, see:
 #                         https://github.com/yjwen/org-reveal/commits/master
@@ -22,7 +22,7 @@
 #+REVEAL_TRANS: cube
 #+REVEAL_THEME: moon
 #+REVEAL_HLEVEL: 2
-#+REVEAL_HEAD_PREAMBLE: <meta name="description" content="Org-revealjs Introduction.">
+#+REVEAL_HEAD_PREAMBLE: <meta name="description" content="org-re-reveal Introduction.">
 #+REVEAL_POSTAMBLE: <p> Based upon work by yjwen. </p>
 #+REVEAL_PLUGINS: (markdown notes)
 #+REVEAL_EXTRA_CSS: ./local.css
@@ -31,12 +31,12 @@
 
 * Note
 
-The project org-revealjs started as fork of
+The project org-re-reveal started as fork of
 [[https://github.com/lechten/org-reveal][org-reveal]].
 
-If you are interested in org-revealjs, I suggest that you take
+If you are interested in org-re-reveal, I suggest that you take
 a look at [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]], which
-embeds org-revealjs, reveal.js, and useful plugins as submodules,
+embeds org-re-reveal, reveal.js, and useful plugins as submodules,
 combined with suitable Emacs configuration.
 A [[https://gitlab.com/oer/emacs-reveal-howto][Howto for the generation of reveal.js presentations (slides with audio) with emacs-reveal]]
 exists as well.
@@ -44,21 +44,21 @@ exists as well.
 I use emacs-reveal to generate Open Educational Resources (OER):
 [[https://oer.gitlab.io/OS/][OER presentations for a course on operating systems]]
 
-* Reveal.js and org-revealjs
+* Reveal.js and org-re-reveal
 
   - *[[https://revealjs.com/][Reveal.js]]* is a tool for creating
     good-looking HTML presentations, authored by
     [[https://hakim.se/][Hakim El Hattab]].
-  - *Org-revealjs* exports your [[https://orgmode.org/][Org]]
+  - *org-re-reveal* exports your [[https://orgmode.org/][Org]]
     documents to reveal.js presentations.\\
-    With org-revealjs, you can create beautiful presentations with 3D
+    With org-re-reveal, you can create beautiful presentations with 3D
     effects from simple but powerful Org contents.
 
 * Requirements and Installation
 
   - Reveal.js.
   - Org mode.
-  - org-revealjs.el.
+  - org-re-reveal.el.
   - htmlize.el (optional, for syntax highlighting).
   - And, of course, GNU Emacs, version 24.4 or later.
 
@@ -69,53 +69,53 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    Extract reveal.js folders from the downloaded zip file.
 
    If you do not wish to download reveal.js yourself and would rather get a copy from a CDN,
-   see the section [[https://gitlab.com/oer/org-revealjs#set-the-location-of-revealjs][Set the location of reveal.js]]
+   see the section [[https://gitlab.com/oer/org-re-reveal#set-the-location-of-revealjs][Set the location of reveal.js]]
 
-** Install org-revealjs from MELPA
+** Install org-re-reveal from MELPA
 
-   Org-revealjs is provided as MELPA package.  Use of MELPA requires
+   org-re-reveal is provided as MELPA package.  Use of MELPA requires
    some setup code in your ~.emacs~ file.
    See [[https://melpa.org/#/getting-started][here to get started with MELPA]].
 
-** Install org-revealjs from GitLab
+** Install org-re-reveal from GitLab
 
-   You can download org-revealjs as archive from GitLab
-   ([[https://gitlab.com/oer/org-revealjs/-/archive/master/org-revealjs-master.zip][zip archive]]
+   You can download org-re-reveal as archive from GitLab
+   ([[https://gitlab.com/oer/org-re-reveal/-/archive/master/org-re-reveal-master.zip][zip archive]]
    and several ~tar~ variants; note the download icon on the
-   [[https://gitlab.com/oer/org-revealjs][project page]]).
+   [[https://gitlab.com/oer/org-re-reveal][project page]]).
 
    Alternatively, you can clone the
-   [[https://gitlab.com/oer/org-revealjs][repository of org-revealjs]]:
+   [[https://gitlab.com/oer/org-re-reveal][repository of org-re-reveal]]:
    #+BEGIN_SRC sh
-   git clone https://gitlab.com/oer/org-revealjs.git
+   git clone https://gitlab.com/oer/org-re-reveal.git
    #+END_SRC
 
-   Add the directory of =org-revealjs.el= to your Emacs's ~load-path~, and add the
+   Add the directory of =org-re-reveal.el= to your Emacs's ~load-path~, and add the
    following statement to your =.emacs= file.
    #+BEGIN_SRC lisp
-   (require 'org-revealjs)
+   (require 'org-re-reveal)
    #+END_SRC
 
    *Note*: It is suggested to use a recent version of Org mode with
-   org-revealjs.  [[https://orgmode.org/][Installation of Org mode.]]
+   org-re-reveal.  [[https://orgmode.org/][Installation of Org mode.]]
 
 * Configuration
 
 ** Set the location of reveal.js
 
-   Org-revealjs must know where reveal.js is on your computer before
+   org-re-reveal must know where reveal.js is on your computer before
    exporting Org contents. The location of reveal.js is the path to
    the top directory of the reveal.js packages, the directory which contains
    file *README.md*, but *not* the one that contains the file reveal.js.
 
    The default location is =./reveal.js=, relative to the Org file.
 
-   Changing =org-revealjs-root= 's value will change the location
+   Changing =org-re-reveal-root= 's value will change the location
    globally.  By setting option =REVEAL_ROOT=, the location is only
    affected within the Org file.  For example, add the following
    statement to your .emacs file:
 #+BEGIN_SRC lisp
-(setq org-revealjs-root "file:///d:/reveal.js")
+(setq org-re-reveal-root "file:///d:/reveal.js")
 #+END_SRC
 
 #+REVEAL: split
@@ -140,18 +140,18 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
     For example if you cloned this repository to your home directory,
     this file in Mac OS X would be referred to as
-    "file:///Users/username/org-revealjs/Readme.org".  This file in
-    Ubuntu would be "file:///home/username/org-revealjs/Readme.org" and
+    "file:///Users/username/org-re-reveal/Readme.org".  This file in
+    Ubuntu would be "file:///home/username/org-re-reveal/Readme.org" and
     in Windows this file would be
-    "file:///c:/Users/username/org-revealjs/Readme.org".  For more
+    "file:///c:/Users/username/org-re-reveal/Readme.org".  For more
     detail on this standard please refer to
     [[https://en.wikipedia.org/wiki/File_URI_scheme]]
 
 ** First Try
 
-   The library org-revealjs needs to be loaded first.  That can happen
-   either by adding ~(require 'org-revealjs)~ to your ~.emacs~ file or
-   manually: Type "M-x load-library", then "org-revealjs".
+   The library org-re-reveal needs to be loaded first.  That can happen
+   either by adding ~(require 'org-re-reveal)~ to your ~.emacs~ file or
+   manually: Type "M-x load-library", then "org-re-reveal".
 
    Now you can export this manual, ~Readme.org~, into a reveal.js
    presentation by typing "C-c C-e R R".
@@ -162,9 +162,9 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 ** The HLevel
 
-   Org-revealjs maps each heading and its contents to one reveal.js
+   org-re-reveal maps each heading and its contents to one reveal.js
    slide. Since reveal.js arranges slides into a 2-dimensional matrix,
-   org-revealjs use a *HLevel* value to decide whether to map headings to horizontal
+   org-re-reveal use a *HLevel* value to decide whether to map headings to horizontal
    or vertical slides.
 
    * Headings of level less than or equal to *HLevel* are mapped to horizontal
@@ -199,10 +199,10 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 *** Configure HLevel's Value
 
-    * Change variable =org-revealjs-hlevel='s value to set HLevel globally.\\
+    * Change variable =org-re-reveal-hlevel='s value to set HLevel globally.\\
       For example, add the following statement to your =.emacs= file.
 #+BEGIN_SRC lisp
-(setq org-revealjs-hlevel 2)
+(setq org-re-reveal-hlevel 2)
 #+END_SRC
 
     * Setting Org files local HLevel to option =REVEAL_HLEVEL=.
@@ -234,20 +234,20 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
     Available transitions are: default|cube|page|concave|zoom|linear|fade|none.
 ** Set The Title Slide
-   By default, org-revealjs generates a title slide displaying the
+   By default, org-re-reveal generates a title slide displaying the
    title, the author, the Email, the date and the time-stamp of the
    Org document, controlled by Org's [[https://orgmode.org/org.html#Export-settings][export settings]].
 
    To avoid a title slide, please set variable
-   ~org-revealjs-title-slide~ to ~nil~, or add ~reveal_title_slide:nil~ to
+   ~org-re-reveal-title-slide~ to ~nil~, or add ~reveal_title_slide:nil~ to
    ~#+OPTIONS:~ line.
 
    To restore the default title slide, please set variable
-   ~org-revealjs-title-slide~ to ~'auto~.
+   ~org-re-reveal-title-slide~ to ~'auto~.
 
 *** Customize the Title Slide
 
-    To customize the title slide, please set ~org-revealjs-title-slide~
+    To customize the title slide, please set ~org-re-reveal-title-slide~
     to a string of HTML markups. The following escape sequences can
     be used to retrieve document information:
     | ~%t~ | Title            |
@@ -262,7 +262,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 #+REVEAL: split
     Alternatively, you can also write the title slide's HTML code
     (containing the above escape sequences) into a separate file and
-    set ~org-revealjs-title-slide~ to the name of that file.
+    set ~org-re-reveal-title-slide~ to the name of that file.
 
 ** Set Slide Background
 
@@ -404,7 +404,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
     Setting ~:frag t~ will use reveal.js default fragment style, which
     can be overridden by local option ~#+REVEAL_DEFAULT_FRAG_STYLE~ or
-    global variable ~org-revealjs-default-frag-style~.
+    global variable ~org-re-reveal-default-frag-style~.
 
 *** Fragment Index
     Fragment sequence can be changed by assigning adding ~:frag_idx~
@@ -471,7 +471,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 *** List Fragments with Audio
 
-    You can also use org-revealjs in combination with the
+    You can also use org-re-reveal in combination with the
     audio-slideshow plugin of
     [[https://github.com/rajgoel/reveal.js-plugins][reveal.js-plugins]].
     For example, when the audio-slideshow plugin is configured
@@ -543,20 +543,20 @@ I use emacs-reveal to generate Open Educational Resources (OER):
       =reveal_inter_presentation_links=
 #+REVEAL: split
     - Custom variables:\\
-      =org-revealjs-control=, =org-revealjs-progress=,
-      =org-revealjs-history=, =org-revealjs-center=,
-      =org-revealjs-rolling-links=, =org-revealjs-keyboard=,
-      =org-revealjs-mousewheel=, =org-revealjs-defaulttiming=,
-      =org-revealjs-fragmentinurl=, =org-revealjs-pdfseparatefragments=,
-      =org-revealjs-overview=, =reveal_inter_presentation_links=
+      =org-re-reveal-control=, =org-re-reveal-progress=,
+      =org-re-reveal-history=, =org-re-reveal-center=,
+      =org-re-reveal-rolling-links=, =org-re-reveal-keyboard=,
+      =org-re-reveal-mousewheel=, =org-re-reveal-defaulttiming=,
+      =org-re-reveal-fragmentinurl=, =org-re-reveal-pdfseparatefragments=,
+      =org-re-reveal-overview=, =reveal_inter_presentation_links=
 
     For an example, please refer to the heading part of this document.
 
 ** Third-Party Plugins
    Reveal.js is also extensible through third-party plugins, which can
-   be loaded with org-revealjs. The paths to javascript loading code
+   be loaded with org-re-reveal. The paths to javascript loading code
    need to be customized in the variable
-   ~org-revealjs-external-plugins~. This variable can be an
+   ~org-re-reveal-external-plugins~. This variable can be an
    associative list or a file. If it is an associative list the first
    element of each Assoc cell is a symbol -- the name of the plugin --
    and the second is a string that will be expanded by the ~format~
@@ -567,7 +567,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 #+REVEAL: split
 
-   If ~org-revealjs-external-plugins~ is a filename, that file must
+   If ~org-re-reveal-external-plugins~ is a filename, that file must
    contain strings of the above format, one per line (without names of
    plugins, just the ~src~ information embedded in braces); this can
    also be configured within your Org presentation with a line like
@@ -575,7 +575,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 =#+REVEAL_EXTERNAL_PLUGINS: external_plugins.js=
 
-   In any case, org-revealjs will add the plugins to the dependencies
+   In any case, org-re-reveal will add the plugins to the dependencies
    parameter when Reveal is initialized.
 
 
@@ -608,7 +608,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
     The default highlighting theme is ~zenburn.css~ brought with
     reveal.js. To use other themes, please specify the CSS file name by
-    ~#+REVEAL_HIGHLIGHT_CSS~ or the variable ~org-revealjs-highlight-css~.
+    ~#+REVEAL_HIGHLIGHT_CSS~ or the variable ~org-re-reveal-highlight-css~.
 
     The "%r" in the given CSS file name will be replaced by reveal.js'
     URL.
@@ -617,11 +617,11 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    It is now possible to embed code blocks in a codemirror instance in
    order to edit code during a presentation.  At present, this
    capacity is turned on or off at time export using these defcustoms:
-   - ~org-revealjs-klipsify-src~
-   - ~org-revealjs-klipse-css~
-   - ~org-revealjs-klipse-js~
+   - ~org-re-reveal-klipsify-src~
+   - ~org-re-reveal-klipse-css~
+   - ~org-re-reveal-klipse-js~
    This feature is turned off by default and needs to be switched on
-   with ~org-revealjs-klipsify-src~.  At present code editing is
+   with ~org-re-reveal-klipsify-src~.  At present code editing is
    supported in javacript, clojure, php, ruby, scheme, and python
    only.
 
@@ -648,14 +648,14 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    generated HTML file, at just before and after the slide contents.
 
    Change preamble and postamble contents globally by setting variable
-   =org-revealjs-preamble= and =org-revealjs-postamble=.
+   =org-re-reveal-preamble= and =org-re-reveal-postamble=.
 
    Change preamble and postamble contents locally by setting options
    =REVEAL_PREAMBLE= and =REVEAL_POSTAMBLE=, as illustrated at the
    heading part of this document.
 
    To add custom contents into HTML =<head>= parts, set contents to
-   variable =org-revealjs-head-preamble= or option
+   variable =org-re-reveal-head-preamble= or option
    =REVEAL_HEAD_PREAMBLE=.
 
 *** Generating Pre/Postamble by Emacs-Lisp Functions
@@ -681,7 +681,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    displaying the current slide, the next slide and the speaker notes on the current
    slide.
 
-   Org-revealjs recognize texts between =#+BEGIN_NOTES= and =#+END_NOTES=
+   org-re-reveal recognize texts between =#+BEGIN_NOTES= and =#+END_NOTES=
    as speaker notes. See the example below.
 
 #+BEGIN_SRC org
@@ -695,7 +695,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 #+REVEAL: split
    Speaker notes requires the ~notes~ plug-in. If you changed default
    plug-in setting by specifying =#+REVEAL_PLUGINS= or by setting
-   variable =org-revealjs-plugins=, please make sure ~notes~ is in the
+   variable =org-re-reveal-plugins=, please make sure ~notes~ is in the
    plug-in list to enable speaker notes.
 
 #+REVEAL: split
@@ -707,11 +707,11 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 *** Easy-Template for Speaker Notes
 
-    Org-revealjs registers 'n' as the key for speaker notes easy-template.
+    org-re-reveal registers 'n' as the key for speaker notes easy-template.
     So you can press '<' followed by 'n' and then press TAB, the ~#+BEGIN_NOTES~
     and ~#+END_NOTES~ pair is inserted automatically.
 
-    Customize ~org-revealjs-note-key-char~ to change the default key
+    Customize ~org-re-reveal-note-key-char~ to change the default key
     'n'. set it to nil will forbid the auto-completion for speaker notes.
 
 ** Multiplexing
@@ -720,7 +720,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    or laptop. As the master presentation navigates the slides, all client
    presentations will update in real time.
 
-   *Warning!* The following is untested with ~org-revealjs~!
+   *Warning!* The following is untested with ~org-re-reveal~!
    You can enable multiplexing for your slide generation by including the
    following options:
 #+BEGIN_SRC org
@@ -753,7 +753,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 ** Select Built-In Scripts
 
-   Set option =REVEAL_PLUGINS= or variable =org-revealjs-plugins= to a
+   Set option =REVEAL_PLUGINS= or variable =org-re-reveal-plugins= to a
    lisp list to select built-in scripts.
 
    Available built-in scripts are:
@@ -805,7 +805,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    * CSS needs to be *self-contained*.  Neither ~@import~ rules nor
      other forms of URLs work (images need to be embedded as
      data URIs).
-   * If you use ~org-revealjs-title-slide~ with custom HTML code and
+   * If you use ~org-re-reveal-title-slide~ with custom HTML code and
      images, you need to embed images in the form of data URIs
      yourself.
 
@@ -853,13 +853,13 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    =[[file:somefile.org::#anchor][link text]]=.
 
    Reveal.js [[https://github.com/hakimel/reveal.js#internal-links][advertises]]
-   to use broken internal links, which are used in org-revealjs by
+   to use broken internal links, which are used in org-re-reveal by
    default.  (Those links work with reveal.js, but are not understood
-   by search engines.)  If you change ~org-revealjs--href-fragment-prefix~
-   from its default to the value of ~org-revealjs--slide-id-prefix~,
+   by search engines.)  If you change ~org-re-reveal--href-fragment-prefix~
+   from its default to the value of ~org-re-reveal--slide-id-prefix~,
    valid links are generated:
    #+BEGIN_SRC lisp
-   (setq org-revealjs--href-fragment-prefix org-revealjs--slide-id-prefix)
+   (setq org-re-reveal--href-fragment-prefix org-re-reveal--slide-id-prefix)
    #+END_SRC
    Whether this change is a good idea might be discussed under this
    [[https://github.com/hakimel/reveal.js/issues/2276][reveal.js issue]].
@@ -868,15 +868,15 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
    To pass custom JS code to ~Reveal.initialize~, state the code by
    ~#+REVEAL_INIT_SCRIPT~ (multiple statements are concatenated) or by
-   custom variable ~org-revealjs-init-script~.
+   custom variable ~org-re-reveal-init-script~.
 
 ** Executable Source Blocks
    To allow live execution of code in some languages, enable the
-   klipse plugin by setting ~org-revealjs-klipsify-src~ to non-nil.
+   klipse plugin by setting ~org-re-reveal-klipsify-src~ to non-nil.
    Src blocks with the languages contained in
-   ~org-revealjs-klipse-languages~ will be executed with output shown
+   ~org-re-reveal-klipse-languages~ will be executed with output shown
    in a console-like environment.  See the source code of
-   ~org-revealjs-src-block~ for more details.
+   ~org-re-reveal-src-block~ for more details.
 
 *** HTML Src Block
 #+BEGIN_SRC html
