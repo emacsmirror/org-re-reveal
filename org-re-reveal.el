@@ -7,7 +7,7 @@
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
 ;; Version: 0.9.3
-;; Package-Requires: ((emacs "24.4") (org "8.3"))
+;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
 ;; This file is not part of GNU Emacs.
