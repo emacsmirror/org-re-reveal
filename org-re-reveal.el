@@ -6,7 +6,7 @@
 ;; Copyright (C) 2017-2019 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 0.9.2
+;; Version: 0.9.3
 ;; Package-Requires: ((emacs "24.4") (org "8.3"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -51,13 +51,13 @@
 (require 'subr-x)   ; string-trim
 (require 'url-parse)
 
-(org-export-define-derived-backend 'reveal 'html
+(org-export-define-derived-backend 're-reveal 'html
 
   :menu-entry
-  '(?R "Export to reveal.js HTML Presentation"
-       ((?R "To file" org-re-reveal-export-to-html)
-        (?B "To file and browse" org-re-reveal-export-to-html-and-browse)
-        (?S "Current subtree to file" org-re-reveal-export-current-subtree)))
+  '(?r "Export to reveal.js HTML Presentation"
+       ((?r "To file" org-re-reveal-export-to-html)
+        (?b "To file and browse" org-re-reveal-export-to-html-and-browse)
+        (?s "Current subtree to file" org-re-reveal-export-current-subtree)))
 
   :options-alist
   '((:reveal-control nil "reveal_control" org-re-reveal-control t)
@@ -144,14 +144,14 @@
   :filters-alist '((:filter-parse-tree . org-re-reveal-filter-parse-tree))
   )
 
-(defgroup org-export-revealjs nil
+(defgroup org-export-re-reveal nil
   "Options for exporting Org files to reveal.js HTML pressentations."
   :tag "Org Export Reveal"
   :group 'org-export)
 
 (defcustom org-re-reveal-root "./reveal.js"
   "Specify root directory of reveal.js containing js/reveal.js."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-script-files '("lib/js/head.min.js" "js/reveal.js")
@@ -159,12 +159,12 @@
 On 2018-10-04, head.min.js was removed on the dev branch of reveal.js.
 If you are using a version including that removal, customize this variable
 to remove the first file name."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type '(repeat string))
 
 (defcustom org-re-reveal-hlevel 1
   "Specify minimum level of headings for grouping into vertical slides."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'integer)
 
 (defun org-re-reveal--get-hlevel (info)
@@ -193,215 +193,215 @@ slide, where the following escaping elements are allowed:
 
 Alternatively, the string can also be the name of a file with the title
 slide's HTML code (containing the above escape sequences)."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type '(choice (const :tag "No title slide" nil)
                  (const :tag "Auto title slide" 'auto)
                  (string :tag "Custom title slide")))
 
 (defcustom org-re-reveal-transition "default"
   "Reveal transistion style."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-transition-speed "default"
   "Reveal transistion speed."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-theme "moon"
   "Reveal theme."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-extra-js ""
   "URL to extra JS file."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-extra-css ""
   "URL to extra css file."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 
 (defcustom org-re-reveal-multiplex-id ""
   "The ID to use for multiplexing."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-multiplex-secret ""
   "The secret to use for master slide."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-multiplex-url ""
   "The url of the socketio server."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-multiplex-socketio-url ""
   "The url of the socketio.js library."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-control t
   "Reveal control applet."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-progress t
   "Reveal progress applet."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-history nil
   "Reveal history applet."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-center t
   "Reveal center applet."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-rolling-links nil
   "Reveal use rolling links."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-slide-number "c"
   "Reveal showing slide numbers."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-keyboard t
   "Reveal use keyboard navigation."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-mousewheel nil
   "Reveal use mousewheel navigation."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-fragmentinurl nil
   "Reveal use fragmentInURL setting."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-pdfseparatefragments t
   "Reveal disable pdfSeparateFragments setting."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-defaulttiming nil
   "Reveal use defaultTiming for speaker notes view."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type '(choice integer (const nil)))
 
 (defcustom org-re-reveal-overview t
   "Reveal show overview."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-width -1
   "Slide width."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'integer)
 
 (defcustom org-re-reveal-height -1
   "Slide height."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'integer)
 
 (defcustom org-re-reveal-margin "-1"
   "Slide margin."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-min-scale "-1"
   "Minimum bound for scaling slide."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-max-scale "-1"
   "Maximum bound for scaling slide."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-mathjax-url
   "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
   "Default MathJax URL."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-preamble nil
   "Preamble contents."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-head-preamble nil
   "Preamble contents for head part."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-postamble nil
   "Postamble contents."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-slide-header nil
   "HTML content used as Reveal.js slide header."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-slide-header-html "<div class=\"slide-header\">%s</div>\n"
   "HTML format string to construct slide footer."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-global-header nil
   "If non nil, display slide header also on title and toc slide.
 Header is defined by `org-re-reveal-slide-header'."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-global-footer nil
   "If non nil, display slide footer also on title and toc slide.
 Footer is defined by `org-re-reveal-slide-footer'."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-toc-footer nil
   "If non nil, display slide footer also on toc slide.
 Footer is defined by `org-re-reveal-slide-footer'."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-slide-footer nil
   "Specify HTML content used as Reveal.js slide footer."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-slide-footer-html "<div class=\"slide-footer\">%s</div>\n"
   "HTML format string to construct slide footer."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-toc-slide-title "Table of Contents"
   "String to display as title of toc slide."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-default-frag-style nil
   "Default fragment style."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-plugins
   '(classList markdown zoom notes)
   "Default builtin plugins."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type '(set
           (const classList)
           (const markdown)
@@ -422,28 +422,28 @@ of the following form:
 In case of a file, its lines must be expressions of the above form.
 Note that some plugins have dependencies such as jquery; these must be
 included here as well, BEFORE the plugins that depend on them."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type '(choice alist file))
 
 (defcustom org-re-reveal-single-file nil
   "Export presentation into one single HTML file.
 That file embeds JS scripts and pictures."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-inter-presentation-links nil
   "If non nil, try to convert links between presentations."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-init-script nil
   "Custom script to be passed to Reveal.initialize."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-highlight-css "%r/lib/css/zenburn.css"
   "Hightlight.js CSS file."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-note-key-char "n"
@@ -454,22 +454,22 @@ typed and then the completion key is pressed, which is usually
 
 The default value is \"n\".  Set the variable to nil to disable
 registering the completion."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-klipsify-src nil
   "Set to non-nil to make source code blocks editable in exported presentation."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-klipse-css "https://storage.googleapis.com/app.klipse.tech/css/codemirror.css"
   "Location of the codemirror css file for use with klipse."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-klipse-js "https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"
   "Location of the klipse js source code."
-  :group 'org-export-revealjs
+  :group 'org-export-re-reveal
   :type 'string)
 
 (defconst org-re-reveal-klipse-languages
@@ -1482,7 +1482,7 @@ back-end used.  INFO  is a plist-used as a communication channel.
 Assuming BACKEND is `reveal'.
 Each `attr_reveal' attribute is mapped to corresponding
 `attr_html' attributes."
-  (cl-assert (eq backend 'reveal) nil
+  (cl-assert (eq backend 're-reveal) nil
 	     (format "Function org-re-reveal-filter-parse-tree called on unexpected backend: %s" backend))
   (let ((default-frag-style (plist-get info :reveal-default-frag-style)))
     (org-element-map tree (remq 'item org-element-all-elements)
@@ -1585,13 +1585,13 @@ to `org-export-to-file'."
          (clientfile (org-export-output-file-name (concat "_client" extension) subtreep)))
 
     (setq org-re-reveal-client-multiplex nil)
-    (org-export-to-file 'reveal file
+    (org-export-to-file 're-reveal file
       async subtreep visible-only body-only ext-plist)
 
     ;; Export the client HTML file if org-re-reveal-client-multiplex is set true
     ;; by previous call to org-export-to-file
     (if org-re-reveal-client-multiplex
-        (org-export-to-file 'reveal clientfile
+        (org-export-to-file 're-reveal clientfile
           async subtreep visible-only body-only ext-plist))
     file))
 
@@ -1622,7 +1622,7 @@ FILENAME is the filename of the Org file to be published.  PLIST
 is the property list for the given project.  PUB-DIR is the
 publishing directory.
 Return output file name."
-  (org-publish-org-to 'reveal filename ".html" plist pub-dir))
+  (org-publish-org-to 're-reveal filename ".html" plist pub-dir))
 
 ;; Register auto-completion for speaker notes.
 (when org-re-reveal-note-key-char
