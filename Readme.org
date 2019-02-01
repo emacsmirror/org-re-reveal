@@ -621,7 +621,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
     The "%r" in the given CSS file name will be replaced by reveal.js'
     URL.
 
-#+MACRO: klipse-languages (eval (message "%s" org-re-reveal-klipse-languages))
+#+MACRO: klipse-languages (eval (message "%s" (mapconcat #'identity org-re-reveal-klipse-languages ", ")))
 ** Editable and Executable Source Code
    It is now possible to embed code blocks in a codemirror instance in
    order to edit and execute code during a presentation.  At present, this
@@ -633,7 +633,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    with ~org-re-reveal-klipsify-src~.  At present code editing is
    supported in: {{{klipse-languages}}}
 
-   Some example follow in the Tips section under [[Executable Source Blocks]].
+   Some examples follow in the Tips section under [[Executable Source Blocks]].
 
 
 ** MathJax
