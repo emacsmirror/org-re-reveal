@@ -2,8 +2,12 @@
 <!-- Copyright (C) 2019 Jens Lechtenbörger -->
 <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
 
-Your contributions in the form of patches or merge/pull requests are
-very welcome!
+Your contributions in the form of issues, patches, or merge/pull
+requests are very welcome!
+
+If you open an issue, please include version information for Emacs
+(`M-x emacs-version`), Org mode (`M-x org-version`), and org-re-reveal
+(`M-x org-re-reveal-version`).
 
 Note that this project with all its contents is published under the
 GNU General Public License, version 3 or later.  Thus, when submitting
