@@ -49,18 +49,24 @@ I use emacs-reveal to generate Open Educational Resources (OER):
   - *[[https://revealjs.com/][Reveal.js]]* is a tool for creating
     good-looking HTML presentations, authored by
     [[https://hakim.se/][Hakim El Hattab]].
-  - *org-re-reveal* exports your [[https://orgmode.org/][Org]]
-    documents to reveal.js presentations.\\
+  - *Org-re-reveal* exports your [[https://orgmode.org/][Org]]
+    documents to reveal.js presentations.
+
     With org-re-reveal, you can create beautiful presentations with 3D
     effects from simple but powerful Org contents.
 
 * Requirements and Installation
 
-  - Reveal.js.
-  - Org mode.
-  - org-re-reveal.el.
-  - htmlize.el (optional, for syntax highlighting).
-  - And, of course, GNU Emacs, version 24.4 or later.
+  - Reveal.js
+  - GNU Emacs, version 24.4 or later
+  - Org mode
+  - Org-re-reveal
+  - Htmlize or highlight.js
+    - For source code highlighting, which is explained below
+      - Depending on your version of Org mode, htmlize.el may be
+        necessary even if you want to use highlight.js
+      - (Code for highlight.js is taken over from org-reveal but was
+        never tested with org-re-reveal)
 
 ** Install reveal.js
 
@@ -75,7 +81,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
    org-re-reveal is provided as MELPA package.  Use of MELPA requires
    some setup code in your ~.emacs~ file.
-   See [[https://melpa.org/#/getting-started][here to get started with MELPA]].
+   See [[https://melpa.org/#/getting-started][here how to get started with MELPA]].
 
 ** Install org-re-reveal from GitLab
 
@@ -136,12 +142,12 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    #+END_SRC
 
 
-*** Url form for file location
+*** URL form for file location
 
     For example if you cloned this repository to your home directory,
     this file in Mac OS X would be referred to as
     "file:///Users/username/org-re-reveal/Readme.org".  This file in
-    Ubuntu would be "file:///home/username/org-re-reveal/Readme.org" and
+    GNU/Linux would be "file:///home/username/org-re-reveal/Readme.org" and
     in Windows this file would be
     "file:///c:/Users/username/org-re-reveal/Readme.org".  For more
     detail on this standard please refer to
@@ -561,7 +567,9 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    element of each Assoc cell is a symbol -- the name of the plugin --
    and the second is a string that will be expanded by the ~format~
    function when the plugin is loaded. So, this second element should
-   have the form: ~" {src: \"%srelative/path/toplugin/from/reveal/root.js\"}"~
+   have the form:
+
+   ~" {src: \"%srelative/path/toplugin/from/reveal/root.js\"}"~
 
    If you need the async or callback parameters, include those too.
 
@@ -586,7 +594,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    2. Use highlight.js
 
 
-   To Use your Emacs theme, please make sure ~htmlize.el~ is
+   To use your Emacs theme, please make sure ~htmlize.el~ is
    installed. Then no more setup is necessary.
 
    Below is an example. Codes are copied from [[https://wiki.haskell.org/The_Fibonacci_sequence][Haskell Wiki]].
@@ -720,7 +728,9 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    or laptop. As the master presentation navigates the slides, all client
    presentations will update in real time.
 
-   *Warning!* The following is untested with ~org-re-reveal~!
+   *Warning!* The following is copied from ~org-reveal~ but untested
+   with ~org-re-reveal~!
+
    You can enable multiplexing for your slide generation by including the
    following options:
 #+BEGIN_SRC org
