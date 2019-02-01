@@ -1266,8 +1266,7 @@ holding contextual information."
 
 (defun org-re-reveal-src-block (src-block contents info)
   "Transcode a SRC-BLOCK element from Org to Reveal.
-CONTENTS holds the contents of the item.  INFO is a plist holding
-contextual information."
+INFO is a plist holding contextual information.  CONTENTS is unused."
   (ignore contents) ; Silence byte compiler
   (if (org-export-read-attribute :attr_html src-block :textarea)
       (org-html--textarea-block src-block)
