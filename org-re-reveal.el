@@ -1632,6 +1632,18 @@ Return output file name."
 		   (list org-re-reveal-note-key-char "#+BEGIN_NOTES\n\?\n#+END_NOTES")
 		 (cons org-re-reveal-note-key-char "notes"))))
 
-(provide 'org-re-reveal)
+;;; Extract version string.
+(defun org-re-reveal-version ()
+  "Display version string for org-re-reveal from Lisp file."
+  (interactive)
+  (let ((lisp-file
+	 (concat (file-name-sans-extension (locate-library "org-re-reveal"))
+		 ".el")))
+    (with-temp-buffer
+      (insert-file-contents lisp-file)
+      (goto-char (point-min))
+      (re-search-forward "^;; Version: \\([0-9.]+\\)$")
+      (message "org-re-reveal version %s" (match-string 1)))))
 
+(provide 'org-re-reveal)
 ;;; org-re-reveal.el ends here
