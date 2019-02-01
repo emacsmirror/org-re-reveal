@@ -154,7 +154,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    manually: Type "M-x load-library", then "org-re-reveal".
 
    Now you can export this manual, ~Readme.org~, into a reveal.js
-   presentation by typing "C-c C-e R R".
+   presentation by typing "C-c C-e r r".
 
    Open the generated "Readme.html" in your browser and enjoy the
    cool slides.  (Of course, the location of reveal.js must be
@@ -812,7 +812,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 ** Export Current Subtree
 
-  Use menu entry " C-c C-e R S" to export only current subtree,
+  Use menu entry " C-c C-e r s" to export only current subtree,
   without the title slide and the table of content, for a quick preview
   of your current edition.
 
