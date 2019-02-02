@@ -36,7 +36,7 @@ The project org-re-reveal started as fork of
 
 If you are interested in org-re-reveal, I suggest that you take
 a look at [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]], which
-embeds (or should do so shortly) org-re-reveal, reveal.js, and useful
+embeds org-re-reveal, reveal.js, and useful
 plugins as submodules, combined with suitable Emacs configuration.
 A [[https://gitlab.com/oer/emacs-reveal-howto][Howto for the generation of reveal.js presentations (slides with audio) with emacs-reveal]]
 exists as well.
