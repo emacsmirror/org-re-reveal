@@ -47,7 +47,8 @@
 ;;    (b) Load "Readme.org" (coming with org-re-reveal).
 ;;    (c) Export to HTML: Press "C-c C-e r r" (write HTML file) or
 ;;        "C-c C-e r b" (write HTML file and open in browser)
-;; See "Readme.org" for introduction and details.
+;; See "Readme.org" for introduction, details, and features added to
+;; org-reveal.
 ;;
 ;; Note that emacs-reveal offers a project that embeds org-re-reveal,
 ;; reveal.js, and various reveal.js plugins:
