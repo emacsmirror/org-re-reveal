@@ -31,8 +31,8 @@
 
 * Note
 
-The project org-re-reveal started as fork of
-[[https://github.com/lechten/org-reveal][org-reveal]].
+The project org-re-reveal started as
+[[https://github.com/lechten/org-reveal][fork of org-reveal]].
 
 If you are interested in org-re-reveal, I suggest that you take
 a look at [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]], which
