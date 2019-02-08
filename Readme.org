@@ -33,6 +33,9 @@
 
 The project org-re-reveal started as
 [[https://github.com/lechten/org-reveal][fork of org-reveal]].
+It provides an export back-end for HTML presentations with
+[[https://revealjs.com/][reveal.js]] from
+[[https://orgmode.org/][Org mode]] source files.
 
 If you are interested in org-re-reveal, I suggest that you take
 a look at [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]], which
