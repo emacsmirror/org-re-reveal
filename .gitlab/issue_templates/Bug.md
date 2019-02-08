@@ -1,5 +1,3 @@
-<!--- Local IspellDict: en -->
-
 # What is wrong?
 [Please provide a recipe to reproduce the bug, ideally from `emacs -Q`]
 
