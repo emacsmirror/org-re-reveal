@@ -115,9 +115,17 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 ** Install org-re-reveal from MELPA
 
-   org-re-reveal is provided as MELPA package.  Use of MELPA requires
+   Package org-re-reveal is available on MELPA.  Use of MELPA requires
    some setup code in your ~.emacs~ file.
    See [[https://melpa.org/#/getting-started][here how to get started with MELPA]].
+
+   This package defines the Org export back-end ~re-reveal~.  As usual
+   for export back-ends, you can either customize
+   ~org-export-backends~ to include ~re-reveal~ or add the following
+   to your ~.emacs~ file.
+   #+BEGIN_SRC lisp
+   (require 'org-re-reveal)
+   #+END_SRC
 
 ** Install org-re-reveal from GitLab
 
