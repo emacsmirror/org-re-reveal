@@ -40,7 +40,8 @@
 ;;        (https://melpa.org/#/getting-started).
 ;;    (b) Load package manually ("M-x load-library" followed by
 ;;        "org-re-reveal") or place "(require 'org-re-reveal)" into your
-;;        ~/.emacs and restart.
+;;        ~/.emacs and restart or customize org-export-backends by adding
+;;        the symbol re-reveal.
 ;; 2. Load an Org file and export it to HTML.
 ;;    (a) Make sure that reveal.js is available in your current directory
 ;;        (e.g., as sub-directory or symbolic link).
