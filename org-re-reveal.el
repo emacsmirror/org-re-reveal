@@ -6,7 +6,7 @@
 ;; Copyright (C) 2017-2019 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 0.9.4
+;; Version: 1.0.0
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -46,8 +46,8 @@
 ;;    (a) Make sure that reveal.js is available in your current directory
 ;;        (e.g., as sub-directory or symbolic link).
 ;;    (b) Load "Readme.org" (coming with org-re-reveal).
-;;    (c) Export to HTML: Press "C-c C-e r r" (write HTML file) or
-;;        "C-c C-e r b" (write HTML file and open in browser)
+;;    (c) Export to HTML: Press "C-c C-e v v" (write HTML file) or
+;;        "C-c C-e v b" (write HTML file and open in browser)
 ;; See "Readme.org" for introduction, details, and features added to
 ;; org-reveal.
 ;;
@@ -58,7 +58,8 @@
 ;; https://oer.gitlab.io/emacs-reveal-howto/howto.html
 ;;
 ;; The package org-re-reveal grew out of a forked version of org-reveal
-;; whose development seems to have stalled:
+;; when upstream development stopped:
+;; https://github.com/yjwen/org-reveal/issues/349
 ;; https://github.com/yjwen/org-reveal/issues/342
 
 ;;; Code:
@@ -69,13 +70,18 @@
 (require 'subr-x)   ; string-trim
 (require 'url-parse)
 
-(org-export-define-derived-backend 're-reveal 'html
+(defun org-re-reveal-define-backend ()
+  "Define the back-end for export as reveal.js presentation."
+  (org-export-define-derived-backend 're-reveal 'html
 
   :menu-entry
-  '(?r "Export to reveal.js HTML Presentation"
-       ((?r "To file" org-re-reveal-export-to-html)
-        (?b "To file and browse" org-re-reveal-export-to-html-and-browse)
-        (?s "Current subtree to file" org-re-reveal-export-current-subtree)))
+  `(,(nth 0 org-re-reveal-keys) "Export to reveal.js HTML Presentation"
+    ((,(nth 1 org-re-reveal-keys)
+      "To file" org-re-reveal-export-to-html)
+     (,(nth 2 org-re-reveal-keys)
+      "To file and browse" org-re-reveal-export-to-html-and-browse)
+     (,(nth 3 org-re-reveal-keys)
+      "Current subtree to file" org-re-reveal-export-current-subtree)))
 
   :options-alist
   '((:reveal-control nil "reveal_control" org-re-reveal-control t)
@@ -160,12 +166,41 @@
     (template . org-re-reveal-template))
 
   :filters-alist '((:filter-parse-tree . org-re-reveal-filter-parse-tree))
-  )
+  ))
+
+(defun org-re-reveal-define-menu (symbol value)
+  "Define back-end with (new) key bindings.
+SYMBOL must be `org-re-reveal-keys' and VALUE its new value."
+  (let ((standard (eval (car (get symbol 'standard-value)))))
+    (cl-assert
+     (eq symbol 'org-re-reveal-keys) nil
+     (format "Symbol in org-re-reveal-define-menu unexpected: %s" symbol))
+    (cl-assert
+     (= (length standard) (length value))
+     (format "Value for org-re-reveal-keys must have length %s (same as standard), not %s"
+	     (length standard) (length value)))
+    (set-default symbol value)
+    (org-re-reveal-define-backend)))
 
 (defgroup org-export-re-reveal nil
   "Options for exporting Org files to reveal.js HTML pressentations."
   :tag "Org Export Reveal"
   :group 'org-export)
+
+(defcustom org-re-reveal-keys '(?v ?v ?b ?s)
+  "Define keys for export with org-re-reveal.
+This list must contain four characters: The first one triggers export
+with org-re-reveal (after \\<org-mode-map> \\[org-export-dispatch]).
+The remaining three charaters each invoke a different export variant.
+One of those characters must be typed after the first one; the
+variants are, in sequence: Export to file, export to file followed by
+browsing that file, subtree export to file."
+  :group 'org-export-re-reveal
+  :type '(list (character :tag "Key to trigger export with org-re-reveal")
+	       (character :tag "Key for export to file")
+	       (character :tag "Key to browse file after export")
+	       (character :tag "Key for subtree export to file"))
+  :set #'org-re-reveal-define-menu)
 
 (defcustom org-re-reveal-root "./reveal.js"
   "Specify root directory of reveal.js containing js/reveal.js."

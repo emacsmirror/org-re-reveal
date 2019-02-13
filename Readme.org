@@ -80,6 +80,13 @@ I use emacs-reveal to generate Open Educational Resources (OER):
      - Improve klipse support (add variable org-re-reveal-klipse-languages,
        fix PHP support)
 
+
+** Additional user-facing changes by org-re-reveal
+   - Version 1.0.0
+     - Improved documentation
+     - New export key binding (~C-c C-e v v~), customizable via
+       ~org-re-reveal-keys~
+
 * Reveal.js and org-re-reveal
 
   - *[[https://revealjs.com/][Reveal.js]]* is a tool for creating
@@ -204,7 +211,8 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    manually: Type "M-x load-library", then "org-re-reveal".
 
    Now you can export this manual, ~Readme.org~, into a reveal.js
-   presentation by typing "C-c C-e r r".
+   presentation by typing "C-c C-e v v".  That key binding can be
+   changed by customizing ~org-re-reveal-keys~.
 
    Open the generated "Readme.html" in your browser and enjoy the
    cool slides.  (Of course, the location of reveal.js must be
@@ -868,7 +876,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 ** Export Current Subtree
 
-  Use menu entry " C-c C-e r s" to export only current subtree,
+  Use menu entry " C-c C-e v s" to export only current subtree,
   without the title slide and the table of content, for a quick preview
   of your current edition.
 
