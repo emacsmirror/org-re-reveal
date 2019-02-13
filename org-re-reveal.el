@@ -1496,7 +1496,7 @@ INFO is a plist holding export options."
   "Do filtering before parsing TREE.
 Tree is the parse tree being exported.  BACKEND is the export
 back-end used.  INFO  is a plist-used as a communication channel.
-Assuming BACKEND is `reveal'.
+Assuming BACKEND is `re-reveal'.
 Each `attr_reveal' attribute is mapped to corresponding
 `attr_html' attributes."
   (cl-assert (eq backend 're-reveal) nil
