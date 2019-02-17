@@ -1685,6 +1685,7 @@ Return output file name."
 		 (cons org-re-reveal-note-key-char "notes"))))
 
 ;;; Extract version string.
+;;;###autoload
 (defun org-re-reveal-version ()
   "Display version string for org-re-reveal from Lisp file."
   (interactive)
