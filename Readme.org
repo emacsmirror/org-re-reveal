@@ -26,8 +26,6 @@
 #+REVEAL_POSTAMBLE: <p> Based upon work by yjwen. </p>
 #+REVEAL_EXTRA_CSS: ./local.css
 
-[[https://www.gnu.org/licenses/gpl-3.0.html][https://img.shields.io/:license-gpl3-blue.svg]]
-
 * Note
 
 The project org-re-reveal started as
