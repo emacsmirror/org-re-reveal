@@ -22,9 +22,8 @@
 #+REVEAL_TRANS: cube
 #+REVEAL_THEME: moon
 #+REVEAL_HLEVEL: 2
-#+REVEAL_HEAD_PREAMBLE: <meta name="description" content="org-re-reveal Introduction.">
+#+REVEAL_HEAD_PREAMBLE: <meta name="description" content="Org-re-reveal Introduction.">
 #+REVEAL_POSTAMBLE: <p> Based upon work by yjwen. </p>
-#+REVEAL_PLUGINS: (markdown notes)
 #+REVEAL_EXTRA_CSS: ./local.css
 
 [[https://www.gnu.org/licenses/gpl-3.0.html][https://img.shields.io/:license-gpl3-blue.svg]]
