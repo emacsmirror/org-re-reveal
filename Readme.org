@@ -766,12 +766,16 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 *** Easy-Template for Speaker Notes
 
-    org-re-reveal registers 'n' as the key for speaker notes easy-template.
-    So you can press '<' followed by 'n' and then press TAB, the ~#+BEGIN_NOTES~
-    and ~#+END_NOTES~ pair is inserted automatically.
+    Org-re-reveal registers 'n' as key for the speaker notes template:
+    You can press '<' followed by 'n' and then press TAB, which
+    inserts ~#+begin_notes~ and ~#+end_notes~.  For this to work with
+    Org version 9.2 or newer, you need to place ~(require 'org-tempo)~
+    into your ~.emacs~ or add ~org-tempo~ to ~org-modules~.  (Besides,
+    function ~org-insert-structure-template~ allows to insert different
+    kinds of block structures.)
 
     Customize ~org-re-reveal-note-key-char~ to change the default key
-    'n'. set it to nil will forbid the auto-completion for speaker notes.
+    'n'.  Set to nil to avoid auto-completion for speaker notes.
 
 ** Multiplexing
    Reveal.js supports multiplexing, which allows allows your audience to view
