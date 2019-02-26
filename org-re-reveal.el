@@ -6,7 +6,7 @@
 ;; Copyright (C) 2017-2019 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 1.0.0
+;; Version: 1.0.1
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -503,12 +503,14 @@ That file embeds JS scripts and pictures."
   "If not nil, register key for Org structure completion for speaker notes.
 When `<' followed by the key character are
 typed and then the completion key is pressed, which is usually
-`TAB', \"#+BEGIN_NOTES\" and \"#+END_NOTES\" is inserted.
+`TAB', \"#+BEGIN_NOTES\" and \"#+END_NOTES\" is inserted (maybe in
+lower-case).  See \"Readme.org\" how to make this work with Org version
+9.2 or later.
 
 The default value is \"n\".  Set the variable to nil to disable
 registering the completion."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-klipsify-src nil
   "Set to non-nil to make source code blocks editable in exported presentation."
@@ -575,11 +577,11 @@ holding contextual information."
 CONTENTS holds the contents of the block.  INFO is a plist
 holding contextual information.
 
-If the block type is 'NOTES', transcode the block into a
-Reveal.js slide note.  Otherwise, export the block as by the HTML
+If the block type is 'NOTES' (case-insensitive), transcode the block
+into a Reveal.js slide note.  Otherwise, export the block as by the HTML
 exporter."
   (let ((block-type (org-element-property :type special-block)))
-    (if (string= block-type "NOTES")
+    (if (string= (downcase block-type) "notes")
         (format "<aside class=\"notes\">\n%s\n</aside>\n" contents)
       (org-html-special-block special-block contents info))))
 
