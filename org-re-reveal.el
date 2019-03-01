@@ -6,7 +6,7 @@
 ;; Copyright (C) 2017-2019 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 1.0.1
+;; Version: 1.0.2
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -530,6 +530,16 @@ registering the completion."
 (defconst org-re-reveal-klipse-languages
   '("clojure" "html" "javascript" "js" "php" "python" "ruby" "scheme")
   "List of languages supported by org-re-reveal.")
+
+(defcustom org-re-reveal-klipse-height "500px"
+  "Height of iframe for klipse."
+  :group 'org-export-re-reveal
+  :type 'string)
+
+(defcustom org-re-reveal-klipse-width "100%"
+  "Width of iframe for klipse."
+  :group 'org-export-re-reveal
+  :type 'string)
 
 (defvar org-re-reveal--last-slide-section-tag ""
   "Variable to cache the section tag from the last slide.")
@@ -1341,8 +1351,16 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
            (label (let ((lbl (org-element-property :name src-block)))
                     (if (not lbl) ""
                       (format " id=\"%s\"" lbl))))
-           (klipsify (and org-re-reveal-klipsify-src
+           (klipsify (and (or org-re-reveal-klipsify-src
+			      (org-export-read-attribute
+			       :attr_reveal src-block :klipsify))
                           (member lang org-re-reveal-klipse-languages)))
+	   (klipse-height (or (org-export-read-attribute
+			       :attr_reveal src-block :klipse-height)
+			      org-re-reveal-klipse-height))
+	   (klipse-width (or (org-export-read-attribute
+			      :attr_reveal src-block :klipse-width)
+			     org-re-reveal-klipse-width))
            (langselector
 	    (cond ((or (string= lang "js") (string= lang "javascript"))
 		   "selector_eval_js")
@@ -1360,7 +1378,9 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
                   code)
         (if klipsify
             (concat
-             "<iframe style=\"background-color:white;\" height=\"500px\" width= \"100%\" srcdoc='<html><body><pre><code "
+             "<iframe style=\"background-color:white;\" height=\""
+	     klipse-height "\" width=\"" klipse-width
+	     "\" srcdoc='<html><body><pre><code "
              (if (string= lang "html")
 		 "data-editor-type=\"html\" "
 	       "")
