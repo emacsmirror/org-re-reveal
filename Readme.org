@@ -88,6 +88,9 @@ I use emacs-reveal to generate Open Educational Resources (OER):
      - Fix and document changes for speaker notes template with
        Org version 9.2 and later
        - That version needs ~org-tempo~, templates are lower-case
+   - Version 1.0.2
+     - Allow to enable Klipse per source code block with configurable
+       width and height
 
 * Reveal.js and org-re-reveal
 
