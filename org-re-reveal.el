@@ -70,6 +70,26 @@
 (require 'subr-x)   ; string-trim
 (require 'url-parse)
 
+(defgroup org-export-re-reveal nil
+  "Options for exporting Org files to reveal.js HTML pressentations."
+  :tag "Org Export Reveal"
+  :group 'org-export)
+
+(defcustom org-re-reveal-keys '(?v ?v ?b ?s)
+  "Define keys for export with org-re-reveal.
+This list must contain four characters: The first one triggers export
+with org-re-reveal (after \\<org-mode-map> \\[org-export-dispatch]).
+The remaining three charaters each invoke a different export variant.
+One of those characters must be typed after the first one; the
+variants are, in sequence: Export to file, export to file followed by
+browsing that file, subtree export to file."
+  :group 'org-export-re-reveal
+  :type '(list (character :tag "Key to trigger export with org-re-reveal")
+	       (character :tag "Key for export to file")
+	       (character :tag "Key to browse file after export")
+	       (character :tag "Key for subtree export to file"))
+  :set #'org-re-reveal-define-menu)
+
 (defun org-re-reveal-define-backend ()
   "Define the back-end for export as reveal.js presentation."
   (org-export-define-derived-backend 're-reveal 'html
@@ -181,26 +201,6 @@ SYMBOL must be `org-re-reveal-keys' and VALUE its new value."
 	     (length standard) (length value)))
     (set-default symbol value)
     (org-re-reveal-define-backend)))
-
-(defgroup org-export-re-reveal nil
-  "Options for exporting Org files to reveal.js HTML pressentations."
-  :tag "Org Export Reveal"
-  :group 'org-export)
-
-(defcustom org-re-reveal-keys '(?v ?v ?b ?s)
-  "Define keys for export with org-re-reveal.
-This list must contain four characters: The first one triggers export
-with org-re-reveal (after \\<org-mode-map> \\[org-export-dispatch]).
-The remaining three charaters each invoke a different export variant.
-One of those characters must be typed after the first one; the
-variants are, in sequence: Export to file, export to file followed by
-browsing that file, subtree export to file."
-  :group 'org-export-re-reveal
-  :type '(list (character :tag "Key to trigger export with org-re-reveal")
-	       (character :tag "Key for export to file")
-	       (character :tag "Key to browse file after export")
-	       (character :tag "Key for subtree export to file"))
-  :set #'org-re-reveal-define-menu)
 
 (defcustom org-re-reveal-root "./reveal.js"
   "Specify root directory of reveal.js containing js/reveal.js."
