@@ -300,7 +300,7 @@ slide's HTML code (containing the above escape sequences)."
 (defcustom org-re-reveal-control t
   "Reveal control applet."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type 'boolean)
 
 (defcustom org-re-reveal-progress t
   "Reveal progress applet."
@@ -391,22 +391,22 @@ slide's HTML code (containing the above escape sequences)."
 (defcustom org-re-reveal-preamble nil
   "Preamble contents."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-head-preamble nil
   "Preamble contents for head part."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-postamble nil
   "Postamble contents."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-slide-header nil
   "HTML content used as Reveal.js slide header."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-slide-header-html "<div class=\"slide-header\">%s</div>\n"
   "HTML format string to construct slide footer."
@@ -434,10 +434,11 @@ Footer is defined by `org-re-reveal-slide-footer'."
 (defcustom org-re-reveal-slide-footer nil
   "Specify HTML content used as Reveal.js slide footer."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-slide-footer-html "<div class=\"slide-footer\">%s</div>\n"
-  "HTML format string to construct slide footer."
+  "HTML format string to construct slide footer.
+Must constain exactly one %-sequence \"%s\"."
   :group 'org-export-re-reveal
   :type 'string)
 
@@ -449,7 +450,7 @@ Footer is defined by `org-re-reveal-slide-footer'."
 (defcustom org-re-reveal-default-frag-style nil
   "Default fragment style."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-plugins
   '(classList markdown zoom notes)
@@ -492,7 +493,7 @@ That file embeds JS scripts and pictures."
 (defcustom org-re-reveal-init-script nil
   "Custom script to be passed to Reveal.initialize."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-highlight-css "%r/lib/css/zenburn.css"
   "Hightlight.js CSS file."
