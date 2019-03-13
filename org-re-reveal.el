@@ -6,7 +6,7 @@
 ;; Copyright (C) 2017-2019 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 1.0.2
+;; Version: 1.0.3
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -400,6 +400,12 @@ slide's HTML code (containing the above escape sequences)."
 
 (defcustom org-re-reveal-postamble nil
   "Postamble contents."
+  :group 'org-export-re-reveal
+  :type '(choice (const nil) string))
+
+(defcustom org-re-reveal-body-attrs nil
+  "Attribute string to assign to body element.
+By default, no attributes are assigned."
   :group 'org-export-re-reveal
   :type '(choice (const nil) string))
 
@@ -1494,8 +1500,9 @@ INFO is a plist holding export options."
    (org-re-reveal--build-pre-postamble 'head-preamble info)
    (org-element-normalize-string (plist-get info :html-head))
    (org-element-normalize-string (plist-get info :html-head-extra))
-   "</head>
-<body>\n"
+   "</head>\n<body"
+   (org-re-reveal--if-format " %s" org-re-reveal-body-attrs)
+   ">\n"
    (org-re-reveal--build-pre-postamble 'preamble info)
    "<div class=\"reveal\">
 <div class=\"slides\">\n"

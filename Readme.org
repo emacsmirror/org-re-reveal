@@ -91,6 +91,8 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    - Version 1.0.2
      - Allow to enable Klipse per source code block with configurable
        width and height
+   - Version 1.0.3
+     - New customizable variable ~org-re-reveal-body-attrs~
 
 * Reveal.js and org-re-reveal
 
