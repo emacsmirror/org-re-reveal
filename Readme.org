@@ -192,11 +192,11 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    #+END_SRC
 
    You can also set =REVEAL_ROOT= to a URL to use reveal.js from
-   a CDN instead of downloading a local copy.  The following URL
-   refers to an old version of reveal.js, though.
+   the web instead of downloading a local copy.  The reveal.js
+   documentation does not recommend this, though.
 
    #+BEGIN_SRC org
-   ,#+REVEAL_ROOT: https://cdn.jsdelivr.net/reveal.js/3.0.0/
+   ,#+REVEAL_ROOT: https://revealjs.com/
    #+END_SRC
 
 
