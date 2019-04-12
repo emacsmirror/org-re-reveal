@@ -298,6 +298,8 @@ I use emacs-reveal to generate Open Educational Resources (OER):
     file by setting options =REVEAL_THEME=, =REVEAL_TRANS=, and =REVEAL_SPEED=.
 
     For an example, please check the heading part of this document.
+    Note that some themes access remote servers to download fonts.
+    Your privacy policy should explain this.
 
     Available themes can be found in "css/theme/" in the reveal.js directory.
 
@@ -710,11 +712,13 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
    LaTeX equations are rendered in native HTML5 contents.
 
-   *IMPORTANT*: Displaying equations requires internet connection to
-   [[https://www.mathjax.org/][mathjax.org]] or local MathJax installation.
-   For local MathJax installation, set option =REVEAL_MATHJAX_URL= to
+   *IMPORTANT*: Displaying equations requires an internet connection
+   to load JavaScript or a local MathJax installation.
+   For the latter, set option =REVEAL_MATHJAX_URL= to
    the URL pointing to the local MathJax location.
 
+   If you use MathJax from a remote location, your privacy policy
+   should explain this.
 
 ** Preamble and Postamble
 
@@ -748,8 +752,11 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    Besides the Org contents, you can embed raw HTML contents
    into slides by placing a =#+REVEAL_HTML= keyword.
 
-   A talk by Linus Torvalds on Git:
-#+REVEAL_HTML: <video controls width="400" height="300" src="https://archive.org/download/LinusTorvaldsOnGittechTalk/LinusTorvaldsOnGittechTalk.ogv"></video>
+   A talk by Linus Torvalds on Git (the source code to embed that
+   video makes use of attribute ~data-src~ for lazy loading of the
+   video):
+   #+REVEAL_HTML: <video controls width="400" height="300" data-src="https://archive.org/download/LinusTorvaldsOnGittechTalk/LinusTorvaldsOnGittechTalk.ogv"></video>
+
 ** Speaker Notes
    Reveal.js supports speaker notes, which are displayed in a separate
    browser window. Pressing 's' on slide's windows will pop up a window
