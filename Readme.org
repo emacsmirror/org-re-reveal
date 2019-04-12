@@ -60,7 +60,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
      - Enable links to slides of other presentations (with new option
        reveal-inter-presentation-links)
 
-#+REVEAL: split
+   #+REVEAL: split
 
    - Features (continued)
      - More reveal.js options: mouseWheel, defaultTiming, fragmentInURL,
@@ -287,6 +287,10 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 #+REVEAL: split
 
    Now a new slide begins after =#+REVEAL= keyword.
+
+   *Warning!* Newer versions of Org mode may require the line containing
+   ~#+REVEAL: split~ to be properly indented (depending on preceding
+   contents).
 
 ** Select Theme and Transition
 
