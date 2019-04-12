@@ -93,6 +93,8 @@ I use emacs-reveal to generate Open Educational Resources (OER):
        width and height
    - Version 1.0.3
      - New customizable variable ~org-re-reveal-body-attrs~
+   - Version 1.0.4
+     - Update of MathJax URL
 
 * Reveal.js and org-re-reveal
 
