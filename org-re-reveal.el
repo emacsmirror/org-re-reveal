@@ -6,7 +6,7 @@
 ;; Copyright (C) 2017-2019 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 1.0.3
+;; Version: 1.0.4
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -383,7 +383,7 @@ slide's HTML code (containing the above escape sequences)."
   :type 'string)
 
 (defcustom org-re-reveal-mathjax-url
-  "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+  "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
   "Default MathJax URL."
   :group 'org-export-re-reveal
   :type 'string)
