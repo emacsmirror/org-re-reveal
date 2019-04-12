@@ -72,7 +72,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
      - New options reveal-toc-footer, reveal-title-slide-state
      - New customizable variable org-re-reveal-slide-footer-html
      - Add customizable variable org-re-reveal-script-files (avoid loading
-       of head.min.js in versions of reveal.js where it does not exit)
+       of head.min.js in versions of reveal.js where it does not exist)
      - Allow to add class attribute to headline
      - Add class attributes (backwardlink, forwardlink) to internal links
      - Improve klipse support (add variable org-re-reveal-klipse-languages,
