@@ -25,3 +25,12 @@ non-trivial contributions you include a line as follows:
 ```
 ;; Copyright (C) <year> <your name> <your e-mail address if you like>
 ```
+
+Please discuss larger changes first to avoid work that might not be
+integrated later on.
+
+[This document](https://github.com/NARKOZ/gitlab/blob/master/CONTRIBUTING.md#pull-requests)
+explains how create merge/pull requests based on topic branches, which
+is also recommended for larger contributions here.  Smaller changes
+might also be performed using the `edit` button when viewing a file of your
+fork in GitLab’s Web interface.
