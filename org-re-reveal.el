@@ -990,7 +990,7 @@ dependencies: [
                                                ;; following ensures that either client.js or master.js is included depending on defvar org-re-reveal-client-multiplex value state
                                                (if (not org-re-reveal-client-multiplex)
                                                    (progn
-                                                     (if (plist-get info :reveal-multiplex-secret)
+                                                     (if (not (string= "" (plist-get info :reveal-multiplex-secret)))
                                                          (setq org-re-reveal-client-multiplex t))
                                                      (format " { src: '%splugin/multiplex/master.js', async: true }" root-path))
                                                  (format " { src: '%splugin/multiplex/client.js', async: true }" root-path)))))
