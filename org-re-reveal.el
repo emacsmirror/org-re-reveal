@@ -251,7 +251,7 @@ slide's HTML code (containing the above escape sequences)."
                  (const :tag "Auto title slide" 'auto)
                  (string :tag "Custom title slide")))
 
-(defcustom org-re-reveal-transition "default"
+(defcustom org-re-reveal-transition "convex"
   "Reveal transistion style."
   :group 'org-export-re-reveal
   :type 'string)
