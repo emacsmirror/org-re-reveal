@@ -70,6 +70,8 @@
 (require 'subr-x)   ; string-trim
 (require 'url-parse)
 
+(defvar org-re-reveal-keys) ; Silence byte compiler
+
 (defun org-re-reveal-define-backend ()
   "Define the back-end for export as reveal.js presentation."
   (org-export-define-derived-backend 're-reveal 'html
