@@ -254,17 +254,38 @@ slide's HTML code (containing the above escape sequences)."
 (defcustom org-re-reveal-transition "convex"
   "Reveal transistion style."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(radio (const "default")
+                (const "none")
+                (const "fade")
+                (const "slide")
+                (const "convex")
+                (const "concave")
+                (const "zoom")
+                (string :tag "Other transition")))
 
 (defcustom org-re-reveal-transition-speed "default"
   "Reveal transistion speed."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(radio (const "default")
+                (const "fast")
+                (const "slow")
+                (string :tag "Other transition speed")))
 
 (defcustom org-re-reveal-theme "moon"
   "Reveal theme."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(radio (const "beige")
+                (const "black")
+                (const "blood")
+                (const "league")
+                (const "moon")
+                (const "night")
+                (const "serif")
+                (const "simple")
+                (const "sky")
+                (const "solarized")
+                (const "white")
+                (string :tag "Other theme")))
 
 (defcustom org-re-reveal-extra-js ""
   "URL to extra JS file."
@@ -325,7 +346,11 @@ slide's HTML code (containing the above escape sequences)."
 (defcustom org-re-reveal-slide-number "c"
   "Reveal showing slide numbers."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(radio (const :tag "horizontal . vertical slide number" "h.v")
+                (const :tag "horizontal / vertical slide number" "h/v")
+                (const :tag "flattened slide number" "c")
+                (const :tag "flattened slide number / total slides" "c/t")
+                (string :tag "Other slide number format")))
 
 (defcustom org-re-reveal-keyboard t
   "Reveal use keyboard navigation."
@@ -368,17 +393,17 @@ slide's HTML code (containing the above escape sequences)."
   :type 'integer)
 
 (defcustom org-re-reveal-margin "-1"
-  "Slide margin."
+  "Slide margin (in a string)."
   :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-min-scale "-1"
-  "Minimum bound for scaling slide."
+  "Minimum bound for scaling slide (in a string)."
   :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-max-scale "-1"
-  "Maximum bound for scaling slide."
+  "Maximum bound for scaling slide (in a string)."
   :group 'org-export-re-reveal
   :type 'string)
 
