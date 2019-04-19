@@ -1448,7 +1448,7 @@ window.klipse_settings = { " langselector ": \".klipse\" };
              (format "<label class=\"org-src-name\">%s</label>"
                      (org-export-data caption info)))
            (if use-highlight
-               (format "\n<pre%s%s><code class=\"%s\" %s %s>%s</code></pre>"
+               (format "\n<pre%s%s><code class=\"%s %s\" %s>%s</code></pre>"
                        (or (org-re-reveal--frag-class frag info) "")
                        (or (org-re-reveal--frag-index findex) "")
                        label lang code-attribs code)
