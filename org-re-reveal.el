@@ -300,22 +300,26 @@ slide's HTML code (containing the above escape sequences)."
 
 
 (defcustom org-re-reveal-multiplex-id ""
-  "The ID to use for multiplexing."
+  "The ID to use for multiplexing.
+To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-multiplex-secret ""
-  "The secret to use for master slide."
+  "The secret to use for master slide.
+To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-multiplex-url ""
-  "The url of the socketio server."
+  "The url of the socketio server.
+To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-multiplex-socketio-url ""
-  "The url of the socketio.js library."
+  "The url of the socketio.js library.
+To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string)
 
@@ -486,7 +490,14 @@ Must constain exactly one %-sequence \"%s\"."
 
 (defcustom org-re-reveal-plugins
   '(classList markdown zoom notes)
-  "Default builtin plugins."
+  "Default builtin plugins.
+
+By default,　variables related to multiplex are hidden.
+Include 'multiplex in this variable to enable it.
+
+This variable, like any other variable, can be overridden
+in the org buffer comments as follows:
+  #+REVEAL_PLUGINS: (classList markdown zoom notes multiplex)"
   :group 'org-export-re-reveal
   :type '(set
           (const classList)
