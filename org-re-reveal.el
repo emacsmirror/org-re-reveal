@@ -926,7 +926,7 @@ overview: %s,
      ;; thems and transitions
      (format "
 theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-transition: Reveal.getQueryHash().transition || '%s', // default/cube/page/concave/zoom/linear/fade/none
+transition: Reveal.getQueryHash().transition || '%s', // see README of reveal.js for options
 transitionSpeed: '%s',\n"
              (plist-get info :reveal-trans)
              (plist-get info :reveal-speed))
