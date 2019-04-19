@@ -147,8 +147,7 @@
       (:reveal-single-file nil "reveal_single_file" org-re-reveal-single-file t)
       (:reveal-inter-presentation-links nil "reveal_inter_presentation_links" org-re-reveal-inter-presentation-links t)
       (:reveal-init-script "REVEAL_INIT_SCRIPT" nil org-re-reveal-init-script space)
-      (:reveal-highlight-css "REVEAL_HIGHLIGHT_CSS" nil org-re-reveal-highlight-css nil)
-      )
+      (:reveal-highlight-css "REVEAL_HIGHLIGHT_CSS" nil org-re-reveal-highlight-css nil))
 
     :translate-alist
     '((headline . org-re-reveal-headline)
@@ -167,8 +166,7 @@
       (special-block . org-re-reveal-special-block)
       (template . org-re-reveal-template))
 
-    :filters-alist '((:filter-parse-tree . org-re-reveal-filter-parse-tree))
-    ))
+    :filters-alist '((:filter-parse-tree . org-re-reveal-filter-parse-tree))))
 
 (defun org-re-reveal-define-menu (symbol value)
   "Define back-end with (new) key bindings.
@@ -1151,8 +1149,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
                             (format org-re-reveal-slide-footer-html ".*"))
                     ""
                     (org-re-reveal-toc-1
-                     (org-html-keyword keyword contents info) info))))
-      )))
+                     (org-html-keyword keyword contents info) info)))))))
 
 (defun org-re-reveal-embedded-svg (path)
   "Embed the SVG content at PATH into Reveal HTML."
@@ -1243,8 +1240,7 @@ requires a version of org-mode as of 2018-12-08 or newer."
                                   (plist-put attrs :class newclass)
                                   " ")))
         (org-element-put-property parent :attr_html (list newattrs))
-        (org-element-put-property link :attr_html (list newattrs))
-        ))))
+        (org-element-put-property link :attr_html (list newattrs))))))
 
 (defun org-re-reveal-link (link desc info)
   "Transcode a LINK object with DESC and INFO from Org to Reveal.
@@ -1435,9 +1431,7 @@ window.klipse_settings = { " langselector ": \".klipse\" };
                      (or (org-re-reveal--frag-class frag info)
                          (format " class=\"src src-%s\"" lang))
                      (or (org-re-reveal--frag-index findex) "")
-                     label code)
-             )
-           ))))))
+                     label code))))))))
 
 (defun org-re-reveal-quote-block (quote-block contents info)
   "Transcode a QUOTE-BLOCK element from Org to Reveal.
