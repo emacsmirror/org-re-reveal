@@ -254,8 +254,7 @@ slide's HTML code (containing the above escape sequences)."
 (defcustom org-re-reveal-transition "convex"
   "Reveal transistion style."
   :group 'org-export-re-reveal
-  :type '(radio (const "default")
-                (const "none")
+  :type '(radio (const "none")
                 (const "fade")
                 (const "slide")
                 (const "convex")
