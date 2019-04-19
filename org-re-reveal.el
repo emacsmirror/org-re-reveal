@@ -205,7 +205,8 @@ browsing that file, subtree export to file."
 (defcustom org-re-reveal-root "./reveal.js"
   "Specify root directory of reveal.js containing js/reveal.js."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(radio (const :tag "Online at https://revealjs.com" "https://revealjs.com")
+                (string :tag "Other directory path")))
 
 (defcustom org-re-reveal-script-files '("lib/js/head.min.js" "js/reveal.js")
   "Specify files to initialize reveal.js.
