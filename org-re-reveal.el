@@ -977,27 +977,27 @@ dependencies: [
 "
         ;; JS libraries
         (let* ((builtins
-                `(classList (format " { src: '%slib/js/classList.js', condition: function() { return !document.body.classList; } }" ,root-path)
-                            markdown (format " { src: '%splugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
- { src: '%splugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }" ,root-path ,root-path)
-                            highlight (format " { src: '%splugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }" ,root-path)
-                            zoom (format " { src: '%splugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }" ,root-path)
-                            notes (format " { src: '%splugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }" ,root-path)
-                            search (format " { src: '%splugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }" ,root-path)
-                            remotes (format " { src: '%splugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }" ,root-path)
-                            multiplex (format " { src: '%s', async: true },\n%s"
-                                              (plist-get info :reveal-multiplex-socketio-url)
-                                              ;; following ensures that either client.js or master.js is included depending on defvar org-re-reveal-client-multiplex value state
-                                              (if (not org-re-reveal-client-multiplex)
-                                                  (progn
-                                                    (if (plist-get info :reveal-multiplex-secret)
-                                                        (setq org-re-reveal-client-multiplex t))
-                                                    (format " { src: '%splugin/multiplex/master.js', async: true }" ,root-path))
-                                                (format " { src: '%splugin/multiplex/client.js', async: true }" ,root-path)))))
+                `(classList ,(format " { src: '%slib/js/classList.js', condition: function() { return !document.body.classList; } }" root-path)
+                            markdown ,(format " { src: '%splugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: '%splugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }" root-path root-path)
+                            highlight ,(format " { src: '%splugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }" root-path)
+                            zoom ,(format " { src: '%splugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
+                            notes ,(format " { src: '%splugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
+                            search ,(format " { src: '%splugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
+                            remotes ,(format " { src: '%splugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
+                            multiplex ,(format " { src: '%s', async: true },\n%s"
+                                               (plist-get info :reveal-multiplex-socketio-url)
+                                               ;; following ensures that either client.js or master.js is included depending on defvar org-re-reveal-client-multiplex value state
+                                               (if (not org-re-reveal-client-multiplex)
+                                                   (progn
+                                                     (if (plist-get info :reveal-multiplex-secret)
+                                                         (setq org-re-reveal-client-multiplex t))
+                                                     (format " { src: '%splugin/multiplex/master.js', async: true }" root-path))
+                                                 (format " { src: '%splugin/multiplex/client.js', async: true }" root-path)))))
                (builtin-codes
                 (mapcar
                  (lambda (p)
-                   (eval (plist-get builtins p)))
+                   (plist-get builtins p))
                  (let ((buffer-plugins
                         (condition-case nil
                             (car (read-from-string (plist-get info :reveal-plugins)))
