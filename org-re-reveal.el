@@ -142,7 +142,7 @@
       (:reveal-multiplex-socketio-url "REVEAL_MULTIPLEX_SOCKETIO_URL" nil org-re-reveal-multiplex-socketio-url nil)
       (:reveal-slide-header "REVEAL_SLIDE_HEADER" nil org-re-reveal-slide-header t)
       (:reveal-slide-footer "REVEAL_SLIDE_FOOTER" nil org-re-reveal-slide-footer t)
-      (:reveal-plugins "REVEAL_PLUGINS" nil nil t)
+      (:reveal-plugins "REVEAL_PLUGINS" nil org-re-reveal-plugins t)
       (:reveal-external-plugins "REVEAL_EXTERNAL_PLUGINS" nil org-re-reveal-external-plugins t)
       (:reveal-default-frag-style "REVEAL_DEFAULT_FRAG_STYLE" nil org-re-reveal-default-frag-style t)
       (:reveal-single-file nil "reveal_single_file" org-re-reveal-single-file t)
@@ -300,22 +300,26 @@ slide's HTML code (containing the above escape sequences)."
 
 
 (defcustom org-re-reveal-multiplex-id ""
-  "The ID to use for multiplexing."
+  "The ID to use for multiplexing.
+To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-multiplex-secret ""
-  "The secret to use for master slide."
+  "The secret to use for master slide.
+To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-multiplex-url ""
-  "The url of the socketio server."
+  "The url of the socketio server.
+To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-multiplex-socketio-url ""
-  "The url of the socketio.js library."
+  "The url of the socketio.js library.
+To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string)
 
@@ -486,7 +490,14 @@ Must constain exactly one %-sequence \"%s\"."
 
 (defcustom org-re-reveal-plugins
   '(classList markdown zoom notes)
-  "Default builtin plugins."
+  "Default builtin plugins.
+
+By default,　variables related to multiplex are hidden.
+Include 'multiplex in this variable to enable it.
+
+This variable, like any other variable, can be overridden
+in the org buffer comments as follows:
+  #+REVEAL_PLUGINS: (classList markdown zoom notes multiplex)"
   :group 'org-export-re-reveal
   :type '(set
           (const classList)
@@ -868,7 +879,19 @@ Use INFO and custom variable `org-re-reveal-root'."
          (local-libs (mapcar (lambda (file) (concat local-root-path file))
                              org-re-reveal-script-files))
          (local-libs-exist-p (cl-every #'file-readable-p local-libs))
-         (in-single-file (plist-get info :reveal-single-file)))
+         (in-single-file (plist-get info :reveal-single-file))
+
+         ;; (plist-get info :reveal-plugins) maybe list or string representing list
+         (raw-enabled-builtin-plugins (plist-get info :reveal-plugins))
+         (enabled-builtin-plugins
+          (condition-case err
+              (if (listp raw-enabled-builtin-plugins)
+                  raw-enabled-builtin-plugins
+                (if (listp (read raw-enabled-builtin-plugins))
+                    (read raw-enabled-builtin-plugins)
+                  (error "#+REVEAL_PLUGINS expect symbol list, like \"#+REVEAL_PLUGINS: (classList markdown zoom notes)\"")))
+            (error (signal (car err) (cdr err))))))
+
     (concat
      ;; reveal.js/lib/js/head.min.js
      ;; reveal.js/js/reveal.js
@@ -956,7 +979,7 @@ transitionSpeed: '%s',\n"
              (plist-get info :reveal-speed))
 
      ;; multiplexing - depends on defvar 'org-re-reveal-client-multiplex'
-     (when (plist-get info :reveal-multiplex-id)
+     (when (memq 'multiplex enabled-builtin-plugins)
        (format
         "multiplex: {
     secret: %s, // null if client
@@ -996,16 +1019,7 @@ dependencies: [
                                                      (format " { src: '%splugin/multiplex/master.js', async: true }" root-path))
                                                  (format " { src: '%splugin/multiplex/client.js', async: true }" root-path)))))
                (builtin-codes
-                (mapcar
-                 (lambda (p)
-                   (plist-get builtins p))
-                 (let ((buffer-plugins
-                        (condition-case nil
-                            (car (read-from-string (plist-get info :reveal-plugins)))
-                          (end-of-file nil)
-                          (wrong-type-argument nil))))
-                   (or (and (listp buffer-plugins) buffer-plugins)
-                       org-re-reveal-plugins))))
+                (mapcar (lambda (p) (plist-get builtins p)) enabled-builtin-plugins))
                (external-plugins
                 (org-re-reveal--external-plugin-init info root-path))
                (all-plugins (if external-plugins (append external-plugins builtin-codes) builtin-codes))
