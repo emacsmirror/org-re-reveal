@@ -286,13 +286,15 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 ,#+REVEAL: split
 #+END_SRC
 
-#+REVEAL: split
+#+REVEAL: split data-background="#555555"
 
-   Now a new slide begins after =#+REVEAL= keyword.
+   Now a new slide begins after the ~#+REVEAL~ keyword.
 
-   *Warning!* Newer versions of Org mode may require the line containing
-   ~#+REVEAL: split~ to be properly indented (depending on preceding
-   contents).
+   *Warning!* The logic to re-use the same attributes (e.g., background
+   information) on the new slide is broken.  As a workaround, you can
+   add HTML attributes after ~#+REVEAL: split~, e.g., this slide
+   uses ~#+REVEAL: split data-background="#555555"~ to set a
+   background color.
 
 ** Select Theme and Transition
 

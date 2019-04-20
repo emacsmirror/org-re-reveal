@@ -585,9 +585,6 @@ registering the completion."
   :group 'org-export-re-reveal
   :type 'string)
 
-(defvar org-re-reveal--last-slide-section-tag ""
-  "Variable to cache the section tag from the last slide.")
-
 (defvar org-re-reveal--slide-id-prefix "slide-"
   "Prefix to use in ID attributes of slide elements.")
 
@@ -743,12 +740,7 @@ holding contextual information."
                              "<section>\n"
                            (format "<section %s>\n" attrs))))
                    ;; Start a new slide.
-                   (prog1
-                       slide-section-tag
-                     ;; Cache the current slide's section tag, except the id attr
-                     (setq org-re-reveal--last-slide-section-tag
-                           (replace-regexp-in-string "id\\s-*=\\s-*[\][\"].*?[\][\"]"
-                                                     "" slide-section-tag)))
+                   slide-section-tag
                    ;; Slide header if any.
                    header-div
                    ;; The HTML content of the headline
@@ -1085,25 +1077,18 @@ holding export options."
    ;; Document contents.
    contents))
 
-(defun org-re-reveal-parse-token (footer key)
-  "Return HTML tags or perform SIDE EFFECT according to KEY.
-Currently, only splitting of slides/sections is implemented.
-The current section is closed by FOOTER, which may be nil.
-use the previous section tag as the tag of the split section."
-  (cl-case (intern key)
-    (split (format "%s</section>\n%s"
-                   footer org-re-reveal--last-slide-section-tag))))
-
 (defun org-re-reveal-parse-keyword-value (value footer)
   "According to the VALUE content, return HTML tags to split slides.
+Currently, only the keyword \"split\" is implemented, and VALUE must
+start with \"split\".  Any following text is inserted literally into
+the section tag.
 The possibly empty FOOTER is inserted at the end of the slide."
-  (let ((tokens (mapcar
-                 (lambda (x) (split-string x ":"))
-                 (split-string value))))
-    (mapconcat
-     (lambda (x) (apply 'org-re-reveal-parse-token footer x))
-     tokens
-     "")))
+  (cl-assert (string-prefix-p "split" value) nil
+             (format "Unknown REVEAL keyword.  Expected \"split\", got: %s"
+                     value))
+  (let ((attrs (substring value 5))) ; Everything after "split"
+    (format "%s</section>\n<section%s>"
+            footer attrs)))
 
 ;; Copied from org-html-format-list-item. Overwrite HTML class
 ;; attribute when there is attr_html attributes.
