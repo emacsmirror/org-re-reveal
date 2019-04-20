@@ -96,6 +96,14 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    - Version 1.0.4
      - Update of MathJax URL
 
+   #+REVEAL: split
+
+   - Version 1.1.0
+     - Improved customization interfaces for slide transitions, CSS
+       themes, and reveal.js URL
+     - Bugs related to multiplexing, highlight.js, and slide splitting
+       fixed
+
 * Reveal.js and org-re-reveal
 
   - *[[https://revealjs.com/][Reveal.js]]* is a tool for creating
