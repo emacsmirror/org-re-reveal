@@ -305,10 +305,12 @@ I use emacs-reveal to generate Open Educational Resources (OER):
     Note that some themes access remote servers to download fonts.
     Your privacy policy should explain this.
 
-    Available themes can be found in "css/theme/" in the reveal.js directory.
+    Available themes can be found in "css/theme/" in the reveal.js
+    directory and customized via ~org-re-reveal-theme~.
 
     Available transitions can be found in the
-    [[https://github.com/hakimel/reveal.js/blob/master/README.md][README of reveal.js]].
+    [[https://github.com/hakimel/reveal.js/blob/master/README.md][README of reveal.js]]
+    and customized via ~org-re-reveal-transition~.
 
 ** Set The Title Slide
    By default, org-re-reveal generates a title slide displaying the
