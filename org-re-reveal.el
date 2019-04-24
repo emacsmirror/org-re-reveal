@@ -1359,6 +1359,12 @@ holding contextual information."
     (memq 'highlight (or (and reveal-plugins (listp reveal-plugins) reveal-plugins)
                          org-re-reveal-plugins))))
 
+(defun org-re-reveal--buffer-substring-html-escape (start end)
+  "Convert buffer substring characters from plain text to HTML equivalent.
+START and END are character positions as used by `buffer-substring'.
+Conversion is done by escaping special HTML chars."
+  (org-html-encode-plain-text (buffer-substring start end)))
+
 (defun org-re-reveal-src-block (src-block contents info)
   "Transcode a SRC-BLOCK element from Org to Reveal.
 INFO is a plist holding contextual information.  CONTENTS is unused."
@@ -1372,7 +1378,7 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
                      (org-html-format-code src-block info)
                    (cl-letf (((symbol-function
                                'org-html-htmlize-region-for-paste)
-                              #'buffer-substring))
+                              #'org-re-reveal--buffer-substring-html-escape))
                      (org-html-format-code src-block info))))
            (frag (org-export-read-attribute :attr_reveal src-block :frag))
            (findex (org-export-read-attribute :attr_reveal src-block :frag_idx))
