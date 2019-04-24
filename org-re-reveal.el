@@ -1007,17 +1007,7 @@ transitionSpeed: '%s',\n"
 
 (defun org-re-reveal-scripts--multiplex (info)
   "Internal funciton for `org-re-reveal-scripts' with INFO."
-  (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
-         (root-libs (mapcar (lambda (file) (concat root-path file))
-                            org-re-reveal-script-files))
-         ;; Local files
-         (local-root-path (org-re-reveal--file-url-to-path root-path))
-         (local-libs (mapcar (lambda (file) (concat local-root-path file))
-                             org-re-reveal-script-files))
-         (local-libs-exist-p (cl-every #'file-readable-p local-libs))
-         (in-single-file (plist-get info :reveal-single-file))
-
-         ;; (plist-get info :reveal-plugins) maybe list or string representing list
+  (let* (;; (plist-get info :reveal-plugins) maybe list or string representing list
          (raw-enabled-builtin-plugins (plist-get info :reveal-plugins))
          (enabled-builtin-plugins
           (condition-case err
