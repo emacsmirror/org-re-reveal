@@ -1071,53 +1071,32 @@ transitionSpeed: '%s',\n"
 (defun org-re-reveal-scripts (info)
   "Return necessary scripts to initialize reveal.js.
 Use INFO and custom variable `org-re-reveal-root'."
-  (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
-         (root-libs (mapcar (lambda (file) (concat root-path file))
-                            org-re-reveal-script-files))
-         ;; Local files
-         (local-root-path (org-re-reveal--file-url-to-path root-path))
-         (local-libs (mapcar (lambda (file) (concat local-root-path file))
-                             org-re-reveal-script-files))
-         (local-libs-exist-p (cl-every #'file-readable-p local-libs))
-         (in-single-file (plist-get info :reveal-single-file))
+  (concat
+   ;; reveal.js/lib/js/head.min.js
+   ;; reveal.js/js/reveal.js
+   (org-re-reveal-scripts--external-js info)
 
-         ;; (plist-get info :reveal-plugins) maybe list or string representing list
-         (raw-enabled-builtin-plugins (plist-get info :reveal-plugins))
-         (enabled-builtin-plugins
-          (condition-case err
-              (if (listp raw-enabled-builtin-plugins)
-                  raw-enabled-builtin-plugins
-                (if (listp (read raw-enabled-builtin-plugins))
-                    (read raw-enabled-builtin-plugins)
-                  (error "#+REVEAL_PLUGINS expect symbol list, like \"#+REVEAL_PLUGINS: (classList markdown zoom notes)\"")))
-            (error (signal (car err) (cdr err))))))
-
-    (concat
-     ;; reveal.js/lib/js/head.min.js
-     ;; reveal.js/js/reveal.js
-     (org-re-reveal-scripts--external-js info)
-
-     ;; start of <script> tag
-     "
+   ;; start of <script> tag
+   "
 <script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
 Reveal.initialize({
 "
-     ;; plugin configures
-     (org-re-reveal-scripts--dependencies info)
+   ;; plugin configures
+   (org-re-reveal-scripts--dependencies info)
 
-     ;; reveal.js main configures
-     (org-re-reveal-scripts--main-configures info)
+   ;; reveal.js main configures
+   (org-re-reveal-scripts--main-configures info)
 
-     ;; multiplexing - depends on defvar 'org-re-reveal-client-multiplex'
-     (org-re-reveal-scripts--multiplex info)
+   ;; multiplexing - depends on defvar 'org-re-reveal-client-multiplex'
+   (org-re-reveal-scripts--multiplex info)
 
-     ;; init-script
-     (org-re-reveal-scripts--init-script info)
+   ;; init-script
+   (org-re-reveal-scripts--init-script info)
 
-     ;; end of <script> tag
-     "});\n</script>\n")))
+   ;; end of <script> tag
+   "});\n</script>\n"))
 
 (defun org-re-reveal-toc (depth info)
   "Build a slide of table of contents with DEPTH and INFO."
