@@ -1097,7 +1097,7 @@ Use INFO and custom variable `org-re-reveal-root'."
      ;; reveal.js/js/reveal.js
      (org-re-reveal-scripts--external-js info)
 
-     ;; plugin headings
+     ;; start of <script> tag
      "
 <script>
 // Full list of configuration options available here:
@@ -1115,6 +1115,8 @@ Reveal.initialize({
 
      ;; init-script
      (org-re-reveal-scripts--init-script info)
+
+     ;; end of <script> tag
      "});\n</script>\n")))
 
 (defun org-re-reveal-toc (depth info)
