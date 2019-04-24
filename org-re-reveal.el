@@ -7,7 +7,7 @@
 ;; Copyright (C) 2019      Naoya Yamashita <coano3@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 1.1.0
+;; Version: 1.1.1
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -585,6 +585,21 @@ registering the completion."
   :group 'org-export-re-reveal
   :type 'string)
 
+(defcustom org-re-reveal-number-sections t
+  "If t, prefer section numbers as section IDs over content hashes.
+Set to nil to revert to old behavior, where section elements have content
+hashes as IDs, which change when slide contents change.
+By default (when t), generate more stable URLs when working on presentations
+and reloading slides.  You probably need  \"#+OPTIONS: reveal_history:t\" and
+should not disable section numbering.
+This works by assigning a value derived from a headline's section number to
+the CUSTOM_ID property of the headline if no such property exists.
+See there for CSS code to hide section numbers if necessary:
+https://github.com/yjwen/org-reveal/pull/284"
+  :group 'org-export-re-reveal
+  :type 'boolean
+  :package-version '(org-re-reveal . "1.1.1"))
+
 (defvar org-re-reveal--slide-id-prefix "slide-"
   "Prefix to use in ID attributes of slide elements.")
 
@@ -687,72 +702,82 @@ holding contextual information."
         (org-html-headline headline contents info)
       ;; Standard headline.  Export it as a slide
       (let* ((level (org-export-get-relative-level headline info))
-             (preferred-id (or (org-element-property :CUSTOM_ID headline)
-                               (org-export-get-reference headline info)
-                               (org-element-property :ID headline)))
-             (hlevel (org-re-reveal--get-hlevel info))
-             (header (plist-get info :reveal-slide-header))
-             (header-div (when header (format org-re-reveal-slide-header-html header)))
-             (footer (plist-get info :reveal-slide-footer))
-             (footer-div (when footer (format org-re-reveal-slide-footer-html footer)))
-             (first-sibling (org-export-first-sibling-p headline info))
-             (default-slide-background (plist-get info :reveal-default-slide-background))
-             (default-slide-background-size (plist-get info :reveal-default-slide-background-size))
-             (default-slide-background-position (plist-get info :reveal-default-slide-background-position))
-             (default-slide-background-repeat (plist-get info :reveal-default-slide-background-repeat))
-             (default-slide-background-transition (plist-get info :reveal-default-slide-background-transition))
-             (slide-section-tag (format "<section %s%s>\n"
-                                        (org-html--make-attribute-string
-                                         `(:id ,(format "%s%s" org-re-reveal--slide-id-prefix preferred-id)
-                                               :data-transition ,(org-element-property :REVEAL_DATA_TRANSITION headline)
-                                               :data-state ,(org-element-property :REVEAL_DATA_STATE headline)
-                                               :data-background ,(or (org-element-property :REVEAL_BACKGROUND headline)
-                                                                     default-slide-background)
-                                               :data-background-size ,(or (org-element-property :REVEAL_BACKGROUND_SIZE headline)
-                                                                          default-slide-background-size)
-                                               :data-background-position ,(or (org-element-property :REVEAL_BACKGROUND_POSITION headline)
-                                                                              default-slide-background-position)
-                                               :data-background-repeat ,(or (org-element-property :REVEAL_BACKGROUND_REPEAT headline)
-                                                                            default-slide-background-repeat)
-                                               :data-background-transition ,(or (org-element-property :REVEAL_BACKGROUND_TRANS headline)
-                                                                                default-slide-background-transition)))
-                                        (let ((extra-attrs (org-element-property :REVEAL_EXTRA_ATTR headline)))
-                                          (if extra-attrs (format " %s" extra-attrs) ""))))
-             (ret (concat
-                   (if (or (/= level 1) (not first-sibling))
-                       ;; Not the first heading. Close previou slide.
-                       (concat
-                        ;; Slide footer if any
-                        footer-div
-                        ;; Close previous slide
-                        "</section>\n"
-                        (if (<= level hlevel)
-                            ;; Close previous vertical slide group.
-                            "</section>\n")))
-                   (if (<= level hlevel)
-                       ;; Add an extra "<section>" to group following slides
-                       ;; into vertical slide group. Transition override
-                       ;; attributes are attached at this level, too.
-                       (let ((attrs
-                              (org-html--make-attribute-string
-                               `(:data-transition ,(org-element-property :REVEAL_DATA_TRANSITION headline)))))
-                         (if (string= attrs "")
-                             "<section>\n"
-                           (format "<section %s>\n" attrs))))
-                   ;; Start a new slide.
-                   slide-section-tag
-                   ;; Slide header if any.
-                   header-div
-                   ;; The HTML content of the headline
-                   (org-re-reveal--fix-html-headline headline contents info)
-                   (if (and (= level 1)
-                            (org-export-last-sibling-p headline info))
-                       ;; Last head 1. Close all slides.
-                       (concat
-                        ;; Slide footer if any
-                        footer-div
-                        "</section>\n</section>\n")))))
-        ret))))
+	     (section-number (mapconcat #'number-to-string
+					(org-export-get-headline-number headline info)
+					"-"))
+             (custom-id (org-element-property :CUSTOM_ID headline)))
+        ;; Respect org-re-reveal-number-sections and create
+        ;; CUSTOM_ID if not present already.
+        (when (and org-re-reveal-number-sections
+                   (> (length section-number) 0))
+          (unless custom-id
+            (org-element-put-property headline :CUSTOM_ID section-number)))
+        (let* ((preferred-id (or (org-element-property :CUSTOM_ID headline)
+                                 (org-export-get-reference headline info)
+                                 (org-element-property :ID headline)))
+               (hlevel (org-re-reveal--get-hlevel info))
+               (header (plist-get info :reveal-slide-header))
+               (header-div (when header (format org-re-reveal-slide-header-html header)))
+               (footer (plist-get info :reveal-slide-footer))
+               (footer-div (when footer (format org-re-reveal-slide-footer-html footer)))
+               (first-sibling (org-export-first-sibling-p headline info))
+               (default-slide-background (plist-get info :reveal-default-slide-background))
+               (default-slide-background-size (plist-get info :reveal-default-slide-background-size))
+               (default-slide-background-position (plist-get info :reveal-default-slide-background-position))
+               (default-slide-background-repeat (plist-get info :reveal-default-slide-background-repeat))
+               (default-slide-background-transition (plist-get info :reveal-default-slide-background-transition))
+               (slide-section-tag (format "<section %s%s>\n"
+                                          (org-html--make-attribute-string
+                                           `(:id ,(format "%s%s" org-re-reveal--slide-id-prefix preferred-id)
+                                                 :data-transition ,(org-element-property :REVEAL_DATA_TRANSITION headline)
+                                                 :data-state ,(org-element-property :REVEAL_DATA_STATE headline)
+                                                 :data-background ,(or (org-element-property :REVEAL_BACKGROUND headline)
+                                                                       default-slide-background)
+                                                 :data-background-size ,(or (org-element-property :REVEAL_BACKGROUND_SIZE headline)
+                                                                            default-slide-background-size)
+                                                 :data-background-position ,(or (org-element-property :REVEAL_BACKGROUND_POSITION headline)
+                                                                                default-slide-background-position)
+                                                 :data-background-repeat ,(or (org-element-property :REVEAL_BACKGROUND_REPEAT headline)
+                                                                              default-slide-background-repeat)
+                                                 :data-background-transition ,(or (org-element-property :REVEAL_BACKGROUND_TRANS headline)
+                                                                                  default-slide-background-transition)))
+                                          (let ((extra-attrs (org-element-property :REVEAL_EXTRA_ATTR headline)))
+                                            (if extra-attrs (format " %s" extra-attrs) ""))))
+               (ret (concat
+                     (if (or (/= level 1) (not first-sibling))
+                         ;; Not the first heading. Close previou slide.
+                         (concat
+                          ;; Slide footer if any
+                          footer-div
+                          ;; Close previous slide
+                          "</section>\n"
+                          (if (<= level hlevel)
+                              ;; Close previous vertical slide group.
+                              "</section>\n")))
+                     (if (<= level hlevel)
+                         ;; Add an extra "<section>" to group following slides
+                         ;; into vertical slide group. Transition override
+                         ;; attributes are attached at this level, too.
+                         (let ((attrs
+                                (org-html--make-attribute-string
+                                 `(:data-transition ,(org-element-property :REVEAL_DATA_TRANSITION headline)))))
+                           (if (string= attrs "")
+                               "<section>\n"
+                             (format "<section %s>\n" attrs))))
+                     ;; Start a new slide.
+                     slide-section-tag
+                     ;; Slide header if any.
+                     header-div
+                     ;; The HTML content of the headline
+                     (org-re-reveal--fix-html-headline headline contents info)
+                     (if (and (= level 1)
+                              (org-export-last-sibling-p headline info))
+                         ;; Last head 1. Close all slides.
+                         (concat
+                          ;; Slide footer if any
+                          footer-div
+                          "</section>\n</section>\n")))))
+          ret)))))
 
 (defun org-re-reveal--read-file (file)
   "Return the content of FILE."
