@@ -889,6 +889,96 @@ based on `org-re-reveal-external-plugins'."
                     (concat "<script src=\"" file "\"></script>"))
                   root-libs "\n"))))
 
+(defun org-re-reveal-scripts--dependencies (info)
+  "Internal funciton for `org-re-reveal-scripts' with INFO."
+  (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
+         (root-libs (mapcar (lambda (file) (concat root-path file))
+                            org-re-reveal-script-files))
+         ;; Local files
+         (local-root-path (org-re-reveal--file-url-to-path root-path))
+         (local-libs (mapcar (lambda (file) (concat local-root-path file))
+                             org-re-reveal-script-files))
+         (local-libs-exist-p (cl-every #'file-readable-p local-libs))
+         (in-single-file (plist-get info :reveal-single-file))
+
+         ;; (plist-get info :reveal-plugins) maybe list or string representing list
+         (raw-enabled-builtin-plugins (plist-get info :reveal-plugins))
+         (enabled-builtin-plugins
+          (condition-case err
+              (if (listp raw-enabled-builtin-plugins)
+                  raw-enabled-builtin-plugins
+                (if (listp (read raw-enabled-builtin-plugins))
+                    (read raw-enabled-builtin-plugins)
+                  (error "#+REVEAL_PLUGINS expect symbol list, like \"#+REVEAL_PLUGINS: (classList markdown zoom notes)\"")))
+            (error (signal (car err) (cdr err))))))
+    (concat
+     (format "
+controls: %s,
+progress: %s,
+history: %s,
+center: %s,
+slideNumber: %s,
+rollingLinks: %s,
+keyboard: %s,
+mouseWheel: %s,
+fragmentInURL: %s,
+pdfSeparateFragments: %s,
+%s
+overview: %s,
+"
+             (if (plist-get info :reveal-control) "true" "false")
+             (if (plist-get info :reveal-progress) "true" "false")
+             (if (plist-get info :reveal-history) "true" "false")
+             (if (plist-get info :reveal-center) "true" "false")
+             (let ((slide-number (plist-get info :reveal-slide-number)))
+               (if slide-number (format "'%s'" slide-number)
+                 "false"))
+             (if (plist-get info :reveal-rolling-links) "true" "false")
+             (if (plist-get info :reveal-keyboard) "true" "false")
+             (if (plist-get info :reveal-mousewheel) "true" "false")
+             (if (plist-get info :reveal-fragmentinurl) "true" "false")
+             (if (plist-get info :reveal-pdfseparatefragments) "true" "false")
+             (let ((timing (plist-get info :reveal-defaulttiming)))
+               (if timing (format "defaultTiming: %s," timing)
+                 ""))
+             (if (plist-get info :reveal-overview) "true" "false"))
+     ;; optional JS library heading
+     (if in-single-file ""
+       (concat
+        "
+// Optional libraries used to extend on reveal.js
+dependencies: [
+"
+        ;; JS libraries
+        (let* ((builtins
+                `(classList ,(format " { src: '%slib/js/classList.js', condition: function() { return !document.body.classList; } }" root-path)
+                            markdown ,(format " { src: '%splugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: '%splugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }" root-path root-path)
+                            highlight ,(format " { src: '%splugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }" root-path)
+                            zoom ,(format " { src: '%splugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
+                            notes ,(format " { src: '%splugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
+                            search ,(format " { src: '%splugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
+                            remotes ,(format " { src: '%splugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
+                            multiplex ,(format " { src: '%s', async: true },\n%s"
+                                               (plist-get info :reveal-multiplex-socketio-url)
+                                               ;; following ensures that either client.js or master.js is included depending on defvar org-re-reveal-client-multiplex value state
+                                               (if (not org-re-reveal-client-multiplex)
+                                                   (progn
+                                                     (if (not (string= "" (plist-get info :reveal-multiplex-secret)))
+                                                         (setq org-re-reveal-client-multiplex t))
+                                                     (format " { src: '%splugin/multiplex/master.js', async: true }" root-path))
+                                                 (format " { src: '%splugin/multiplex/client.js', async: true }" root-path)))))
+               (builtin-codes
+                (mapcar (lambda (p) (plist-get builtins p)) enabled-builtin-plugins))
+               (external-plugins
+                (org-re-reveal--external-plugin-init info root-path))
+               (all-plugins (if external-plugins (append external-plugins builtin-codes) builtin-codes))
+               (extra-codes (plist-get info :reveal-extra-js))
+               (total-codes
+                (if (string= "" extra-codes) all-plugins (append (list extra-codes) all-plugins))                ))
+          (mapconcat 'identity total-codes ",\n"))
+        "]\n")))))
+
 (defun org-re-reveal-scripts (info)
   "Return necessary scripts to initialize reveal.js.
 Use INFO and custom variable `org-re-reveal-root'."
@@ -925,36 +1015,8 @@ Use INFO and custom variable `org-re-reveal-root'."
 // https://github.com/hakimel/reveal.js#configuration
 Reveal.initialize({
 "
-     (format "
-controls: %s,
-progress: %s,
-history: %s,
-center: %s,
-slideNumber: %s,
-rollingLinks: %s,
-keyboard: %s,
-mouseWheel: %s,
-fragmentInURL: %s,
-pdfSeparateFragments: %s,
-%s
-overview: %s,
-"
-             (if (plist-get info :reveal-control) "true" "false")
-             (if (plist-get info :reveal-progress) "true" "false")
-             (if (plist-get info :reveal-history) "true" "false")
-             (if (plist-get info :reveal-center) "true" "false")
-             (let ((slide-number (plist-get info :reveal-slide-number)))
-               (if slide-number (format "'%s'" slide-number)
-                 "false"))
-             (if (plist-get info :reveal-rolling-links) "true" "false")
-             (if (plist-get info :reveal-keyboard) "true" "false")
-             (if (plist-get info :reveal-mousewheel) "true" "false")
-             (if (plist-get info :reveal-fragmentinurl) "true" "false")
-             (if (plist-get info :reveal-pdfseparatefragments) "true" "false")
-             (let ((timing (plist-get info :reveal-defaulttiming)))
-               (if timing (format "defaultTiming: %s," timing)
-                 ""))
-             (if (plist-get info :reveal-overview) "true" "false"))
+     ;; plugin configures
+     (org-re-reveal-scripts--dependencies info)
 
      ;; slide width
      (let ((width (plist-get info :reveal-width)))
@@ -998,43 +1060,6 @@ transitionSpeed: '%s',\n"
         (plist-get info :reveal-multiplex-id)
         (plist-get info :reveal-multiplex-url)))
 
-     ;; optional JS library heading
-     (if in-single-file ""
-       (concat
-        "
-// Optional libraries used to extend on reveal.js
-dependencies: [
-"
-        ;; JS libraries
-        (let* ((builtins
-                `(classList ,(format " { src: '%slib/js/classList.js', condition: function() { return !document.body.classList; } }" root-path)
-                            markdown ,(format " { src: '%splugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
- { src: '%splugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }" root-path root-path)
-                            highlight ,(format " { src: '%splugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }" root-path)
-                            zoom ,(format " { src: '%splugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
-                            notes ,(format " { src: '%splugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
-                            search ,(format " { src: '%splugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
-                            remotes ,(format " { src: '%splugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
-                            multiplex ,(format " { src: '%s', async: true },\n%s"
-                                               (plist-get info :reveal-multiplex-socketio-url)
-                                               ;; following ensures that either client.js or master.js is included depending on defvar org-re-reveal-client-multiplex value state
-                                               (if (not org-re-reveal-client-multiplex)
-                                                   (progn
-                                                     (if (not (string= "" (plist-get info :reveal-multiplex-secret)))
-                                                         (setq org-re-reveal-client-multiplex t))
-                                                     (format " { src: '%splugin/multiplex/master.js', async: true }" root-path))
-                                                 (format " { src: '%splugin/multiplex/client.js', async: true }" root-path)))))
-               (builtin-codes
-                (mapcar (lambda (p) (plist-get builtins p)) enabled-builtin-plugins))
-               (external-plugins
-                (org-re-reveal--external-plugin-init info root-path))
-               (all-plugins (if external-plugins (append external-plugins builtin-codes) builtin-codes))
-               (extra-codes (plist-get info :reveal-extra-js))
-               (total-codes
-                (if (string= "" extra-codes) all-plugins (append (list extra-codes) all-plugins))                ))
-          (mapconcat 'identity total-codes ",\n"))
-        "]\n"
-        ))
      (let ((init-script (plist-get info :reveal-init-script)))
        (if init-script (concat (if in-single-file "" ",") init-script)))
      "});\n</script>\n")))
