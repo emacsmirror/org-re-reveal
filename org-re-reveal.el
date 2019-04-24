@@ -1019,6 +1019,41 @@ transitionSpeed: '%s',\n"
              (plist-get info :reveal-trans)
              (plist-get info :reveal-speed)))))
 
+(defun org-re-reveal-scripts--multiplex (info)
+  "Internal funciton for `org-re-reveal-scripts' with INFO."
+  (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
+         (root-libs (mapcar (lambda (file) (concat root-path file))
+                            org-re-reveal-script-files))
+         ;; Local files
+         (local-root-path (org-re-reveal--file-url-to-path root-path))
+         (local-libs (mapcar (lambda (file) (concat local-root-path file))
+                             org-re-reveal-script-files))
+         (local-libs-exist-p (cl-every #'file-readable-p local-libs))
+         (in-single-file (plist-get info :reveal-single-file))
+
+         ;; (plist-get info :reveal-plugins) maybe list or string representing list
+         (raw-enabled-builtin-plugins (plist-get info :reveal-plugins))
+         (enabled-builtin-plugins
+          (condition-case err
+              (if (listp raw-enabled-builtin-plugins)
+                  raw-enabled-builtin-plugins
+                (if (listp (read raw-enabled-builtin-plugins))
+                    (read raw-enabled-builtin-plugins)
+                  (error "#+REVEAL_PLUGINS expect symbol list, like \"#+REVEAL_PLUGINS: (classList markdown zoom notes)\"")))
+            (error (signal (car err) (cdr err))))))
+    (when (memq 'multiplex enabled-builtin-plugins)
+      (format
+       "multiplex: {
+    secret: %s, // null if client
+    id: '%s', // id, obtained from socket.io server
+    url: '%s' // Location of socket.io server
+},\n"
+       (if (eq org-re-reveal-client-multiplex nil)
+           (format "'%s'" (plist-get info :reveal-multiplex-secret))
+         (format "null"))
+       (plist-get info :reveal-multiplex-id)
+       (plist-get info :reveal-multiplex-url)))))
+
 (defun org-re-reveal-scripts (info)
   "Return necessary scripts to initialize reveal.js.
 Use INFO and custom variable `org-re-reveal-root'."
@@ -1062,18 +1097,7 @@ Reveal.initialize({
      (org-re-reveal-scripts--main-configures info)
 
      ;; multiplexing - depends on defvar 'org-re-reveal-client-multiplex'
-     (when (memq 'multiplex enabled-builtin-plugins)
-       (format
-        "multiplex: {
-    secret: %s, // null if client
-    id: '%s', // id, obtained from socket.io server
-    url: '%s' // Location of socket.io server
-},\n"
-        (if (eq org-re-reveal-client-multiplex nil)
-            (format "'%s'" (plist-get info :reveal-multiplex-secret))
-          (format "null"))
-        (plist-get info :reveal-multiplex-id)
-        (plist-get info :reveal-multiplex-url)))
+     (org-re-reveal-scripts--multiplex info)
 
      (let ((init-script (plist-get info :reveal-init-script)))
        (if init-script (concat (if in-single-file "" ",") init-script)))
