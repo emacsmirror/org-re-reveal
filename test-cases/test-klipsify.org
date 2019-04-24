@@ -1,0 +1,42 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2019 Jens Lechtenbörger
+
+#+OPTIONS: reveal_width:1400 reveal_height:1000
+
+# The following needs to be set to make klipse work properly.
+# (setq org-re-reveal-klipse-js "https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js")
+
+#+Title: Test klipsify
+#+Author: Jens Lechtenbörger
+
+
+* Tests for different languages, with klipsify
+** HTML
+# Code copied from Readme.org
+#+ATTR_REVEAL: :klipsify t :klipse-height 500px
+#+BEGIN_SRC html
+<h1 class="whatever">hello, what's your name</h1>
+#+END_SRC
+
+** JavaScript
+# Code copied from Readme.org
+#+ATTR_REVEAL: :klipsify t :klipse-height 500px
+#+BEGIN_SRC js
+console.log("success");
+var x='string using single quote';
+x
+#+END_SRC
+
+** Python
+# Code copied from howto.org of emacs-reveal-howto
+#+ATTR_REVEAL: :klipsify t :klipse-height 500px
+#+BEGIN_SRC python
+def factorial(n):
+    if n < 2:
+        return 1
+    else:
+        return n * factorial(n - 1)
+
+print(factorial(10))
+#+END_SRC
