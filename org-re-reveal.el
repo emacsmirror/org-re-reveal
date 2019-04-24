@@ -976,43 +976,34 @@ dependencies: [
 
 (defun org-re-reveal-scripts--main-configures (info)
   "Internal funciton for `org-re-reveal-scripts' with INFO."
-  (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
-         (root-libs (mapcar (lambda (file) (concat root-path file))
-                            org-re-reveal-script-files))
-         ;; Local files
-         (local-root-path (org-re-reveal--file-url-to-path root-path))
-         (local-libs (mapcar (lambda (file) (concat local-root-path file))
-                             org-re-reveal-script-files))
-         (local-libs-exist-p (cl-every #'file-readable-p local-libs))
-         (in-single-file (plist-get info :reveal-single-file)))
-    (concat
-     ;; slide width
-     (let ((width (plist-get info :reveal-width)))
-       (if (> width 0) (format "width: %d,\n" width) ""))
+  (concat
+   ;; slide width
+   (let ((width (plist-get info :reveal-width)))
+     (if (> width 0) (format "width: %d,\n" width) ""))
 
-     ;; slide height
-     (let ((height (plist-get info :reveal-height)))
-       (if (> height 0) (format "height: %d,\n" height) ""))
+   ;; slide height
+   (let ((height (plist-get info :reveal-height)))
+     (if (> height 0) (format "height: %d,\n" height) ""))
 
-     ;; slide margin
-     (let ((margin (string-to-number (plist-get info :reveal-margin))))
-       (if (>= margin 0) (format "margin: %.2f,\n" margin) ""))
+   ;; slide margin
+   (let ((margin (string-to-number (plist-get info :reveal-margin))))
+     (if (>= margin 0) (format "margin: %.2f,\n" margin) ""))
 
-     ;; slide minimum scaling factor
-     (let ((min-scale (string-to-number (plist-get info :reveal-min-scale))))
-       (if (> min-scale 0) (format "minScale: %.2f,\n" min-scale) ""))
+   ;; slide minimum scaling factor
+   (let ((min-scale (string-to-number (plist-get info :reveal-min-scale))))
+     (if (> min-scale 0) (format "minScale: %.2f,\n" min-scale) ""))
 
-     ;; slide maximux scaling factor
-     (let ((max-scale (string-to-number (plist-get info :reveal-max-scale))))
-       (if (> max-scale 0) (format "maxScale: %.2f,\n" max-scale) ""))
+   ;; slide maximux scaling factor
+   (let ((max-scale (string-to-number (plist-get info :reveal-max-scale))))
+     (if (> max-scale 0) (format "maxScale: %.2f,\n" max-scale) ""))
 
-     ;; thems and transitions
-     (format "
+   ;; thems and transitions
+   (format "
 theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
 transition: Reveal.getQueryHash().transition || '%s', // see README of reveal.js for options
 transitionSpeed: '%s',\n"
-             (plist-get info :reveal-trans)
-             (plist-get info :reveal-speed)))))
+           (plist-get info :reveal-trans)
+           (plist-get info :reveal-speed))))
 
 (defun org-re-reveal-scripts--multiplex (info)
   "Internal funciton for `org-re-reveal-scripts' with INFO."
