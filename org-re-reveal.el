@@ -1032,17 +1032,9 @@ transitionSpeed: '%s',\n"
 
 (defun org-re-reveal-scripts--init-script (info)
   "Internal funciton for `org-re-reveal-scripts' with INFO."
-  (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
-         (root-libs (mapcar (lambda (file) (concat root-path file))
-                            org-re-reveal-script-files))
-         ;; Local files
-         (local-root-path (org-re-reveal--file-url-to-path root-path))
-         (local-libs (mapcar (lambda (file) (concat local-root-path file))
-                             org-re-reveal-script-files))
-         (local-libs-exist-p (cl-every #'file-readable-p local-libs))
-         (in-single-file (plist-get info :reveal-single-file)))
-    (let ((init-script (plist-get info :reveal-init-script)))
-      (if init-script (concat (if in-single-file "" ",") init-script)))))
+  (let ((init-script (plist-get info :reveal-init-script))
+        (in-single-file (plist-get info :reveal-single-file)))
+    (if init-script (concat (if in-single-file "" ",") init-script))))
 
 (defun org-re-reveal-scripts (info)
   "Return necessary scripts to initialize reveal.js.
