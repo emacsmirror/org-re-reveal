@@ -972,7 +972,7 @@ dependencies: [
                (total-codes
                 (if (string= "" extra-codes) all-plugins (append (list extra-codes) all-plugins))                ))
           (mapconcat 'identity total-codes ",\n"))
-        "]\n")))))
+        "]\n\n")))))
 
 (defun org-re-reveal-scripts--main-configures (info)
   "Internal funciton for `org-re-reveal-scripts' with INFO."
