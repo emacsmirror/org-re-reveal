@@ -103,6 +103,8 @@ I use emacs-reveal to generate Open Educational Resources (OER):
        themes, and reveal.js URL
      - Bugs related to multiplexing, highlight.js, and slide splitting
        fixed
+   - Version 1.1.1
+     - New customizable option ~org-re-reveal-generate-custom-ids~
 
 * Reveal.js and org-re-reveal
 
@@ -916,18 +918,25 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
 ** Export Current Subtree
 
-  Use menu entry " C-c C-e v s" to export only current subtree,
+  Use menu entry "C-c C-e v s" to export only current subtree,
   without the title slide and the table of content, for a quick preview
   of your current edition.
 
 * Tips
 
-** Disable Heading Numbers
+** En-/Disable Heading Numbers
 
-   Add =num:nil= to =#+OPTIONS=
+   Use Org export option =num=, e.g., =num:t= or =num:nil=:
 #+BEGIN_SRC org
 ,#+OPTIONS: num:nil
 #+END_SRC
+
+   With heading numbers, depending on
+   ~org-re-reveal-generate-custom-ids~, (more) stable slide IDs can be
+   generated (instead of hash values that change with content
+   changes).  See doc string (~C-h v~) of variable
+   ~org-re-reveal-generate-custom-ids~ for more details.
+
 
 ** Disable Table of Contents
 
