@@ -104,7 +104,8 @@ I use emacs-reveal to generate Open Educational Resources (OER):
      - Bugs related to multiplexing, highlight.js, and slide splitting
        fixed
    - Version 1.1.1
-     - New customizable option ~org-re-reveal-generate-custom-ids~
+     - New customizable option ~org-re-reveal-generate-custom-ids~ for
+       (more) stable slide URLs
 
 * Reveal.js and org-re-reveal
 
