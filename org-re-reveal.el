@@ -872,22 +872,22 @@ based on `org-re-reveal-external-plugins'."
          (local-libs-exist-p (cl-every #'file-readable-p local-libs))
          (in-single-file (plist-get info :reveal-single-file)))
     (if (and in-single-file
-              local-libs-exist-p)
-         ;; Embed scripts into HTML
-         (concat "<script>\n"
-                 (mapconcat #'org-re-reveal--read-file local-libs "\n")
-                 "\n</script>")
-       ;; Fall-back to extern script links
-       (if in-single-file
-           ;; Tried to embed scripts but failed. Print a message about possible errors.
-           (error (concat "Cannot read "
-                          (mapconcat 'identity
-                                     (delq nil (mapcar (lambda (file) (if (not (file-readable-p file)) file))
-                                                       local-libs))
-                                     ", "))))
-       (mapconcat (lambda (file)
-                    (concat "<script src=\"" file "\"></script>"))
-                  root-libs "\n"))))
+             local-libs-exist-p)
+        ;; Embed scripts into HTML
+        (concat "<script>\n"
+                (mapconcat #'org-re-reveal--read-file local-libs "\n")
+                "\n</script>")
+      ;; Fall-back to extern script links
+      (if in-single-file
+          ;; Tried to embed scripts but failed. Print a message about possible errors.
+          (error (concat "Cannot read "
+                         (mapconcat 'identity
+                                    (delq nil (mapcar (lambda (file) (if (not (file-readable-p file)) file))
+                                                      local-libs))
+                                    ", "))))
+      (mapconcat (lambda (file)
+                   (concat "<script src=\"" file "\"></script>"))
+                 root-libs "\n"))))
 
 (defun org-re-reveal-scripts--plugin-frag (info)
   "Internal function for `org-re-reveal-scripts' with INFO."
