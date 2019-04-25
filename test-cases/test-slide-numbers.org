@@ -1,0 +1,68 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2019 Jens Lechtenbörger
+
+#+STARTUP: showeverything
+#+OPTIONS: reveal_width:1400 reveal_height:1000
+
+# The following option is not strictly necessary, but shows the changing
+# fragment URLs in the address bar.
+#+OPTIONS: reveal_history:t
+
+# Uncomment any of the following to see effects of missing headline numbers.
+# #+OPTIONS: num:nil
+# #+OPTIONS: num:1
+# #+OPTIONS: num:2
+
+#+Title: Test slide numbers: Hover over links in TOC
+#+Author: Jens Lechtenbörger
+
+* Heading 1
+** Heading 2
+text
+
+#+REVEAL: split
+text after split
+
+*** Heading 3
+more text
+
+#+REVEAL: split
+and another split
+
+** Another heading 2, unnumbered t
+   :PROPERTIES:
+   :UNNUMBERED: t
+   :END:
+Hello world!
+
+Has hash id as no number assigned.  Shown in TOC.
+
+** Another heading 2, unnumbered notoc
+   :PROPERTIES:
+   :UNNUMBERED: notoc
+   :END:
+Moin moin!
+
+Has hash id as no number assigned.  Not shown in LaTeX TOC.
+
+* Heading 1 again, with custom ID
+  :PROPERTIES:
+  :CUSTOM_ID: section-2
+  :END:
+
+** Heading 2, with custom ID
+   :PROPERTIES:
+   :CUSTOM_ID: section-2.1
+   :END:
+text
+
+#+REVEAL: split
+text after split
+
+** Another heading 2, custom id and unnumbered
+   :PROPERTIES:
+   :CUSTOM_ID: section-2.2
+   :UNNUMBERED: t
+   :END:
+Hello world!

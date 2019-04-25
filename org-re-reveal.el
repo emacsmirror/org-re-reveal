@@ -585,17 +585,19 @@ registering the completion."
   :group 'org-export-re-reveal
   :type 'string)
 
-(defcustom org-re-reveal-number-sections t
-  "If t, prefer section numbers as section IDs over content hashes.
-Set to nil to revert to old behavior, where section elements have content
-hashes as IDs, which change when slide contents change.
-By default (when t), generate more stable URLs when working on presentations
-and reloading slides.  You probably need  \"#+OPTIONS: reveal_history:t\" and
-should not disable section numbering.
-This works by assigning a value derived from a headline's section number to
-the CUSTOM_ID property of the headline if no such property exists.
-See there for CSS code to hide section numbers if necessary:
-https://github.com/yjwen/org-reveal/pull/284"
+(defcustom org-re-reveal-generate-custom-ids t
+  "If t, generate CUSTOM_IDs for headings that don't have one.
+Set to nil to revert to old behavior, where HTML section elements have
+content hashes as \"id\" attributes, which change when slide contents
+change.  With the default of t, generate CUSTOM_ID for headlines
+missing such a property, by using the value of the headline's number.
+This results in more stable URLs when working on presentations and
+reloading slides.  You may want to set \"#+OPTIONS: reveal_history:t\"
+to see the section identifiers as URL fragments in the address bar,
+and you should not disable section numbering (for unnumbered
+headlines, hash ids are used unless a CUSTOM_ID is present).
+For CSS code to hide section numbers if necessary, see
+URL `https://github.com/yjwen/org-reveal/pull/284'."
   :group 'org-export-re-reveal
   :type 'boolean
   :package-version '(org-re-reveal . "1.1.1"))
@@ -706,9 +708,9 @@ holding contextual information."
 					(org-export-get-headline-number headline info)
 					"-"))
              (custom-id (org-element-property :CUSTOM_ID headline)))
-        ;; Respect org-re-reveal-number-sections and create
+        ;; Respect org-re-reveal-generate-custom-ids and create
         ;; CUSTOM_ID if not present already.
-        (when (and org-re-reveal-number-sections
+        (when (and org-re-reveal-generate-custom-ids
                    (> (length section-number) 0))
           (unless custom-id
             (org-element-put-property headline :CUSTOM_ID section-number)))
