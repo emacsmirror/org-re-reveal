@@ -861,7 +861,7 @@ based on `org-re-reveal-external-plugins'."
   "Used to cause generation of client html file for multiplex.")
 
 (defun org-re-reveal-scripts--external-js (info)
-  "Internal funciton for `org-re-reveal-scripts' with INFO."
+  "Internal function for `org-re-reveal-scripts' with INFO."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
          (root-libs (mapcar (lambda (file) (concat root-path file))
                             org-re-reveal-script-files))
@@ -890,7 +890,7 @@ based on `org-re-reveal-external-plugins'."
                   root-libs "\n"))))
 
 (defun org-re-reveal-scripts--dependencies (info)
-  "Internal funciton for `org-re-reveal-scripts' with INFO."
+  "Internal function for `org-re-reveal-scripts' with INFO."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
 
          ;; Local files
@@ -975,7 +975,7 @@ dependencies: [
         "]\n\n")))))
 
 (defun org-re-reveal-scripts--main-configures (info)
-  "Internal funciton for `org-re-reveal-scripts' with INFO."
+  "Internal function for `org-re-reveal-scripts' with INFO."
   (concat
    ;; slide width
    (let ((width (plist-get info :reveal-width)))
@@ -1006,7 +1006,7 @@ transitionSpeed: '%s',\n"
            (plist-get info :reveal-speed))))
 
 (defun org-re-reveal-scripts--multiplex (info)
-  "Internal funciton for `org-re-reveal-scripts' with INFO."
+  "Internal function for `org-re-reveal-scripts' with INFO."
   (let* (;; (plist-get info :reveal-plugins) maybe list or string representing list
          (raw-enabled-builtin-plugins (plist-get info :reveal-plugins))
          (enabled-builtin-plugins
@@ -1031,7 +1031,7 @@ transitionSpeed: '%s',\n"
        (plist-get info :reveal-multiplex-url)))))
 
 (defun org-re-reveal-scripts--init-script (info)
-  "Internal funciton for `org-re-reveal-scripts' with INFO."
+  "Internal function for `org-re-reveal-scripts' with INFO."
   (let ((init-script (plist-get info :reveal-init-script))
         (in-single-file (plist-get info :reveal-single-file)))
     (if init-script (concat (if in-single-file "" ",") init-script))))
