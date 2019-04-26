@@ -889,7 +889,7 @@ based on `org-re-reveal-external-plugins'."
                    (concat "<script src=\"" file "\"></script>"))
                  root-libs "\n"))))
 
-(defun org-re-reveal-scripts--plugin-frag (info)
+(defun org-re-reveal-scripts--reveal-options (info)
   "Internal function for `org-re-reveal-scripts' with INFO."
   (format "
 controls: %s,
@@ -1054,7 +1054,7 @@ Use INFO and custom variable `org-re-reveal-root'."
 Reveal.initialize({
 "
    ;; plugin configures/frags
-   (org-re-reveal-scripts--plugin-frag info)
+   (org-re-reveal-scripts--reveal-options info)
 
    ;; reveal.js main configures
    (org-re-reveal-scripts--main-configures info)
