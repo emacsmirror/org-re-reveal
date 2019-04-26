@@ -1,0 +1,22 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2019 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+
+#+Title: Splitting with attributes
+#+Author: Jens Lechtenbörger
+
+* A slide with split
+- The start of some
+- list
+- to be continued after split
+- with sliding background image
+
+#+REVEAL: split data-background="../images/adult-education-3258944_640.jpg" data-background-transition="slide"
+
+- Continued list
+- with more items
+
+* Next slide
+Nothing special here
