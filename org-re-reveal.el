@@ -1062,11 +1062,11 @@ Reveal.initialize({
    ;; multiplexing - depends on defvar 'org-re-reveal-client-multiplex'
    (org-re-reveal-scripts--multiplex info)
 
-   ;; init-script
-   (org-re-reveal-scripts--init-script info)
-
    ;; load dependency js
    (org-re-reveal-scripts--dependencies info)
+
+   ;; init-script
+   (org-re-reveal-scripts--init-script info)
 
    ;; end of <script> tag
    "});\n</script>\n"))
