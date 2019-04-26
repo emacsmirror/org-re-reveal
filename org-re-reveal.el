@@ -978,12 +978,6 @@ transitionSpeed: '%s',\n"
        (plist-get info :reveal-multiplex-id)
        (plist-get info :reveal-multiplex-url)))))
 
-(defun org-re-reveal-scripts--init-script (info)
-  "Internal function for `org-re-reveal-scripts' with INFO."
-  (let ((init-script (plist-get info :reveal-init-script))
-        (in-single-file (plist-get info :reveal-single-file)))
-    (if init-script (concat (if in-single-file "" ",") init-script))))
-
 (defun org-re-reveal-scripts--dependencies (info)
   "Internal function for `org-re-reveal-scripts' with INFO."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
@@ -1037,6 +1031,12 @@ dependencies: [
                (if (string= "" extra-codes) all-plugins (append (list extra-codes) all-plugins))                ))
          (mapconcat 'identity total-codes ",\n"))
        "]\n\n"))))
+
+(defun org-re-reveal-scripts--init-script (info)
+  "Internal function for `org-re-reveal-scripts' with INFO."
+  (let ((init-script (plist-get info :reveal-init-script))
+        (in-single-file (plist-get info :reveal-single-file)))
+    (if init-script (concat (if in-single-file "" ",") init-script))))
 
 (defun org-re-reveal-scripts (info)
   "Return necessary scripts to initialize reveal.js.
