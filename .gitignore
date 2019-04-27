@@ -1,3 +1,7 @@
 *~
 *.html
 *.elc
+
+# dependency files
+/org-mode
+/htmlize
