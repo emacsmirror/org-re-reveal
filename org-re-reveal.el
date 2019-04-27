@@ -7,7 +7,7 @@
 ;; Copyright (C) 2019      Naoya Yamashita <coano3@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 1.1.1
+;; Version: 1.1.2
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -98,6 +98,7 @@
       (:reveal-fragmentinurl nil "reveal_fragmentinurl" org-re-reveal-fragmentinurl t)
       (:reveal-pdfseparatefragments nil "reveal_pdfseparatefragments" org-re-reveal-pdfseparatefragments t)
       (:reveal-defaulttiming nil "reveal_defaulttiming" org-re-reveal-defaulttiming t)
+      (:reveal-generate-ids nil "reveal_generate_ids" org-re-reveal-generate-custom-ids t)
       (:reveal-overview nil "reveal_overview" org-re-reveal-overview t)
       (:reveal-width nil "reveal_width" org-re-reveal-width t)
       (:reveal-height nil "reveal_height" org-re-reveal-height t)
@@ -587,6 +588,7 @@ registering the completion."
 
 (defcustom org-re-reveal-generate-custom-ids t
   "If t, generate CUSTOM_IDs for headings that don't have one.
+Set to t, nil, or `draft'.
 Set to nil to revert to old behavior, where HTML section elements have
 content hashes as \"id\" attributes, which change when slide contents
 change.  With the default of t, generate CUSTOM_ID for headlines
@@ -595,12 +597,26 @@ This results in more stable URLs when working on presentations and
 reloading slides.  You may want to set \"#+OPTIONS: reveal_history:t\"
 to see the section identifiers as URL fragments in the address bar,
 and you should not disable section numbering (for unnumbered
-headlines, hash ids are used unless a CUSTOM_ID is present).
+headlines, hash IDs are used unless a CUSTOM_ID is present).
 For CSS code to hide section numbers if necessary, see
-URL `https://github.com/yjwen/org-reveal/pull/284'."
+URL `https://github.com/yjwen/org-reveal/pull/284'.
+
+When \"#+TOC: ...\" is used to insert the table of contents at a
+chosen position, custom IDs are only generated up to that position when
+the table of contents is generated.  Hence, subsequent sections and
+links to them use hash IDs.  With `draft', generate custom IDs anyways,
+leading to broken links in the table of contents (enabling stable slide
+links during ongoing work on the presentation)."
   :group 'org-export-re-reveal
-  :type 'boolean
+  :type '(choice (const :tag "Use (changing) hash IDs" nil)
+                 (const :tag "Generate (stable) custom IDs" t)
+                 (const :tag "Also generate custom IDs with broken TOC links" 'draft))
   :package-version '(org-re-reveal . "1.1.1"))
+
+(defvar org-re-reveal--avoid-custom-ids nil
+  "May be set to t in `org-re-reveal-keyword'.
+Used to ignore a value of t for `org-re-reveal-generate-custom-ids' when
+\"#+TOC:\" fixes a TOC position.")
 
 (defvar org-re-reveal--slide-id-prefix "slide-"
   "Prefix to use in ID attributes of slide elements.")
@@ -707,10 +723,13 @@ holding contextual information."
 	     (section-number (mapconcat #'number-to-string
 					(org-export-get-headline-number headline info)
 					"-"))
-             (custom-id (org-element-property :CUSTOM_ID headline)))
-        ;; Respect org-re-reveal-generate-custom-ids and create
+             (custom-id (org-element-property :CUSTOM_ID headline))
+             (generate-ids (plist-get info :reveal-generate-ids)))
+        ;; Respect reveal-generate-ids and
+        ;; org-re-reveal--avoid-custom-ids, and create
         ;; CUSTOM_ID if not present already.
-        (when (and org-re-reveal-generate-custom-ids
+        (when (and generate-ids
+                   (not org-re-reveal--avoid-custom-ids)
                    (> (length section-number) 0))
           (unless custom-id
             (org-element-put-property headline :CUSTOM_ID section-number)))
@@ -1229,7 +1248,8 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
          (value (org-element-property :value keyword))
          (footer (plist-get info :reveal-slide-footer))
          (footer-div (if footer
-                         (format org-re-reveal-slide-footer-html footer) "")))
+                         (format org-re-reveal-slide-footer-html footer) ""))
+         (generate-ids (plist-get info :reveal-generate-ids)))
     (cl-case (intern key)
       (REVEAL (org-re-reveal-parse-keyword-value value footer-div))
       (REVEAL_HTML value)
@@ -1240,7 +1260,10 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
       ;; If slide footers are used, insert it before closing the section.
       ;; In any case, if footers are used, the one of the closed section
       ;; is sufficient, and the one contained in the TOC needs to be removed.
-      (TOC (concat footer-div
+      (TOC (when (and generate-ids
+                      (not (eq 'draft generate-ids)))
+             (setq org-re-reveal--avoid-custom-ids t))
+           (concat footer-div
                    "</section>\n"
                    (replace-regexp-in-string
                     (format "</section>\\|%s"
@@ -1767,7 +1790,8 @@ to `org-export-to-file'."
          (file (org-export-output-file-name extension subtreep))
          (clientfile (org-export-output-file-name (concat "_client" extension) subtreep)))
 
-    (setq org-re-reveal-client-multiplex nil)
+    (setq org-re-reveal-client-multiplex nil
+          org-re-reveal--avoid-custom-ids nil)
     (org-export-to-file 're-reveal file
       async subtreep visible-only body-only ext-plist)
 

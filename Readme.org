@@ -106,6 +106,9 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    - Version 1.1.1
      - New customizable option ~org-re-reveal-generate-custom-ids~ for
        (more) stable slide URLs
+   - Version 1.1.2
+     - New choice ~draft~ for ~org-re-reveal-generate-custom-ids~,
+       which can now also be set as option ~reveal_generate_ids~
 
 * Reveal.js and org-re-reveal
 
@@ -620,7 +623,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    - reveal-center : Enable/disable slide centering.
    - multiplex : Enable audience to view presentation on secondary devices.
 
-*** Configure Plug-ins
+*** Configure Plug-ins and Options
 
     Each plugin can be toggled on/off by adding =#+OPTIONS= tags or
     by setting custom variables.
@@ -630,7 +633,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
       =reveal_center=, =reveal_rolling_links=, =reveal_keyboard=,
       =reveal_mousewheel=, =reveal_defaulttiming=, =reveal_overview=,
       =reveal_fragmentinurl=, =reveal_pdfseparatefragments=,
-      =reveal_inter_presentation_links=
+      =reveal_inter_presentation_links=, =reveal_generate_ids=
 #+REVEAL: split
     - Custom variables:\\
       =org-re-reveal-control=, =org-re-reveal-progress=,
@@ -638,9 +641,10 @@ I use emacs-reveal to generate Open Educational Resources (OER):
       =org-re-reveal-rolling-links=, =org-re-reveal-keyboard=,
       =org-re-reveal-mousewheel=, =org-re-reveal-defaulttiming=,
       =org-re-reveal-fragmentinurl=, =org-re-reveal-pdfseparatefragments=,
-      =org-re-reveal-overview=, =reveal_inter_presentation_links=
+      =org-re-reveal-overview=, =org-re-reveal-inter-presentation-links=,
+      =org-re-reveal-generate-custom-ids=
 
-    For an example, please refer to the heading part of this document.
+    For examples, please refer to the heading part of this document.
 
 ** Third-Party Plugins
    Reveal.js is also extensible through third-party plugins, which can
@@ -676,7 +680,6 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    There are two ways to highlight source code.
    1. Use your Emacs theme
    2. Use highlight.js
-
 
    To use your Emacs theme, please make sure ~htmlize.el~ is
    installed. Then no more setup is necessary.
@@ -932,31 +935,43 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 ,#+OPTIONS: num:nil
 #+END_SRC
 
-   With heading numbers, depending on
+   With heading numbers (i.e., without ~num:nil~), depending on
    ~org-re-reveal-generate-custom-ids~, (more) stable slide IDs can be
    generated (instead of hash values that change with content
    changes).  See doc string (~C-h v~) of variable
-   ~org-re-reveal-generate-custom-ids~ for more details.
-
+   ~org-re-reveal-generate-custom-ids~ for more details.  In
+   particular, the doc string explains the value ~draft~, which may be
+   relevant when inserting a table of contents at a specific position
+   as explained on the subsequent slide.
 
 ** Disable Table of Contents
 
-   Add =toc:nil= to =#+OPTIONS=
+   Add =toc:nil= to =#+OPTIONS= to disable the table of contents:
 #+BEGIN_SRC org
 ,#+OPTIONS: toc:nil
 #+END_SRC
 
-   This is actually an option recognized by =org-export=. It is only mentioned
-   here because slide decks often do not need a TOC.
+   This is actually an option recognized by =org-export=.
+
+   When using that option, you can also insert a slide with the table
+   of contents at a position of your choice with a command like the
+   following (where the number after =headlines= defines the depth of
+   headlines to include):
+
+   =#+TOC: headlines 1=
+
+   When using the previous command and working on a document, value
+   =draft= for variable =org-re-reveal-generate-custom-ids= may be of
+   interest.
 
 ** Internal Links
 
-   Reveal.js supports only jump between slides, but not between
+   Reveal.js only supports jumps to entire slides, but not to specific
    elements on slides. Thus, we can only link to headlines in an Org
    document.
 
    You can create links pointing to a headline's text, or its
-   custom-id, as the examples below:
+   custom-id, as in the examples below:
 
    * [[Tips]].
    * [[#my-heading][Heading]] with a =CUSTOM_ID= property.
