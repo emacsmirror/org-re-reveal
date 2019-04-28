@@ -28,16 +28,16 @@ all: build
 
 build: $(ELS:%.el=%.elc)
 
-##############################
-
-%.elc: %.el $(PACKAGES)
-	$(BATCH) $(DEPENDS:%=-L %/) -f batch-byte-compile $<
-
 test: build
 	$(BATCH) $(DEPENDS:%=-L %/) -l $(TESTFILE) -f cort-run-tests
 
 diff:
 	echo $(REVEALTEST) | xargs -n1 -t -I% bash -c "cd test-cases; diff -u expect-%.html test-%.html"
+
+##############################
+
+%.elc: %.el $(PACKAGES)
+	$(BATCH) $(DEPENDS:%=-L %/) -f batch-byte-compile $<
 
 org-plus-contrib:
 	curl -L https://orgmode.org/elpa/org-plus-contrib-$(ORG_VER).tar > $@.tar
