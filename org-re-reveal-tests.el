@@ -59,12 +59,14 @@
   (org-re-reveal-tests-f-parent
    (org-re-reveal-tests-f-this-file-path)))
 
+(defvar org-re-reveal-tests-top-dir (org-re-reveal-tests-f-this-file-dir))
+
 (defun org-re-reveal-tests-get-file-contents (name &optional folder)
   "Get file named NAME contents in FOLDER."
   (with-temp-buffer
     (insert-file-contents
      (expand-file-name (format "%s/%s" (or folder "test-cases") name)
-                       (org-re-reveal-tests-f-this-file-dir)))
+                       org-re-reveal-tests-top-dir))
     (buffer-substring-no-properties (point-min) (point-max))))
 
 (defvar org-re-reveal-output-path)
@@ -83,9 +85,9 @@
   `((:string=
      ,(org-re-reveal-tests-get-file-contents "expect-highlightjs.html")
      ,(let* ((orgpath (expand-file-name "test-cases/test-highlightjs.org"
-                                        (org-re-reveal-tests-f-this-file-dir)))
+                                        org-re-reveal-tests-top-dir))
              (htmlpath (expand-file-name "test-cases/exported-highlightjs.html"
-                                         (org-re-reveal-tests-f-this-file-dir)))
+                                         org-re-reveal-tests-top-dir))
              (orgcontents (with-temp-buffer
                             (insert-file-contents orgpath)
                             (buffer-substring-no-properties (point-min) (point-max))))
