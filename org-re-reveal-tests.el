@@ -76,9 +76,9 @@
       `((:string=
          ,(org-re-reveal-tests-get-file-contents (format "expect-%s.html" ,name))
          ,(let ((sourcepath (expand-file-name (format "test-cases/test-%s.org" ,name)
-                                        org-re-reveal-tests-top-dir))
+                                              org-re-reveal-tests-top-dir))
                 (exportpath (expand-file-name (format "test-cases/test-%s.html" ,name)
-                                        org-re-reveal-tests-top-dir)))
+                                              org-re-reveal-tests-top-dir)))
             (save-window-excursion
               (if (not (file-readable-p sourcepath))
                   (error (format "Unable to read file: %s" path))
