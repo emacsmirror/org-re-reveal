@@ -40,9 +40,9 @@ diff:
 	echo $(REVEALTEST) | xargs -n1 -t -I% bash -c "cd test-cases; diff -u expect-%.html test-%.html"
 
 org-plus-contrib:
-	curl -O https://orgmode.org/elpa/org-plus-contrib-$(ORG_VER).tar > $@.tar
+	curl -L https://orgmode.org/elpa/org-plus-contrib-$(ORG_VER).tar > $@.tar
 	mkdir $@ && tar xf $@.tar -C $@ --strip-components 1
 
 htmlize:
-	curl -O https://github.com/hniksic/emacs-htmlize/archive/master.tar.gz > $@.tar.gz
+	curl -L https://github.com/hniksic/emacs-htmlize/archive/master.tar.gz > $@.tar.gz
 	mkdir $@ && tar xf $@.tar.gz -C $@ --strip-components 1
