@@ -72,7 +72,7 @@
 (defun org-re-reveal-tests-create-normal-test (name)
   "Create normal test for org-re-reveal with NAME."
   (eval
-   `(cort-deftest org-re-reveal/highlightjs
+   `(cort-deftest ,(make-symbol (format "org-re-reveal/export-%s" name))
       `((:string=
          ,(org-re-reveal-tests-get-file-contents (format "expect-%s.html" ,name))
          ,(let ((path (expand-file-name (format "test-cases/test-%s.org" ,name)
@@ -92,7 +92,11 @@
   '((:string= "https://gitlab.com/oer/org-re-reveal"
               "https://gitlab.com/oer/org-re-reveal")))
 
-(org-re-reveal-tests-create-normal-test "highlightjs")
+(mapc #'org-re-reveal-tests-create-normal-test
+      '("highlightjs"
+        "klipsify"
+        "slide-numbers"
+        "split"))
 
 (provide 'org-re-reveal-tests)
 ;;; org-re-reveal-tests.el ends here
