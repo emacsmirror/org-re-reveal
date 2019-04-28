@@ -69,23 +69,24 @@
                        org-re-reveal-tests-top-dir))
     (buffer-substring-no-properties (point-min) (point-max))))
 
-(defmacro org-re-reveal-tests-create-normal-test (name)
+(defun org-re-reveal-tests-create-normal-test (name)
   "Create normal test for org-re-reveal with NAME."
-  `(cort-deftest org-re-reveal/highlightjs
-     `((:string=
-        ,(org-re-reveal-tests-get-file-contents (format "expect-%s.html" ,name))
-        ,(let ((path (expand-file-name (format "test-cases/test-%s.org" ,name)
-                                       org-re-reveal-tests-top-dir)))
-           (save-window-excursion
-             (if (not (file-readable-p path))
-                 (error (format "Unable to read file: %s" path))
-               (let ((buf (find-file path)))
-                 (with-current-buffer buf
-                   (unwind-protect
-                       (org-re-reveal-export-to-html)
-                     (when (buffer-name buf)
-                       (kill-buffer buf)))))))
-           (org-re-reveal-tests-get-file-contents (format "expect-%s.html" ,name)))))))
+  (eval
+   `(cort-deftest org-re-reveal/highlightjs
+      `((:string=
+         ,(org-re-reveal-tests-get-file-contents (format "expect-%s.html" ,name))
+         ,(let ((path (expand-file-name (format "test-cases/test-%s.org" ,name)
+                                        org-re-reveal-tests-top-dir)))
+            (save-window-excursion
+              (if (not (file-readable-p path))
+                  (error (format "Unable to read file: %s" path))
+                (let ((buf (find-file path)))
+                  (with-current-buffer buf
+                    (unwind-protect
+                        (org-re-reveal-export-to-html)
+                      (when (buffer-name buf)
+                        (kill-buffer buf)))))))
+            (org-re-reveal-tests-get-file-contents (format "expect-%s.html" ,name))))))))
 
 (cort-deftest org-re-reveal/cort-test
   '((:string= "https://gitlab.com/oer/org-re-reveal"
