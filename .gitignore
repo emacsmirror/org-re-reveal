@@ -1,4 +1,7 @@
+# temporary files
 *~
+
+# Emacs Lisp compiled files 
 *.elc
 
 # dependency files
