@@ -94,10 +94,11 @@
                         (kill-buffer buf)))))))
             (with-temp-buffer
               (insert-file-contents exportpath)
-              (funcall replace-all-fn (rx "id=\"org" (= 7 not-newline)) "id=\"org*******")
-              (funcall replace-all-fn (rx "id=\"slide-org" (= 7 not-newline)) "id=\"slide-org*******")
-              (funcall replace-all-fn (rx "#/slide-org" (= 7 not-newline)) "#/slide-org*******")
-              (funcall replace-all-fn "<p class=\"date\">Created:.*</p>" "<p class=\"date\">Created:{{date}}</p>")
+              (mapc (lambda (x) (funcall replace-all-fn (car x) (cdr x)))
+                    `((,(rx "id=\"org"       (= 7 not-newline)) . "id=\"org*******")
+                      (,(rx "id=\"slide-org" (= 7 not-newline)) . "id=\"slide-org*******")
+                      (,(rx "#/slide-org"    (= 7 not-newline)) . "#/slide-org*******")
+                      ("<p class=\"date\">Created:.*</p>"       . "<p class=\"date\">Created:{{date}}</p>")))
               (write-region nil nil exportpath nil 0))
             (org-re-reveal-tests-get-file-contents (format "expect-%s.html" ,name))))))))
 
