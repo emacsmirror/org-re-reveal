@@ -93,6 +93,9 @@
               (goto-char (point-min))
               (while (re-search-forward (rx "id=\"org" (= 7 not-newline)) nil t)
                 (replace-match "id=\"org*******" nil nil))
+              (goto-char (point-min))
+              (while (re-search-forward "<p class=\"date\">Created:.*</p>" nil t)
+                (replace-match "<p class=\"date\">Created:{{date}}</p>" nil nil))
               (write-region nil nil exportpath nil 0))
             (org-re-reveal-tests-get-file-contents (format "expect-%s.html" ,name))))))))
 
