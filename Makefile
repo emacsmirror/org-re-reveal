@@ -32,6 +32,9 @@ ox-re-reveal.elc: ox-re-reveal.el
 %.elc: %.el $(PACKAGES)
 	$(BATCH) $(DEPENDS:%=-L %/) -f batch-byte-compile $<
 
+test: build
+	$(BATCH) $(DEPENDS:%=-L %/) -l $(TESTFILE) -f cort-run-tests
+
 org-mode:
 	git clone --depth=1 https://code.orgmode.org/bzg/org-mode.git $@
 	$(MAKE) EMACS=$(EMACS) compile -C $@
