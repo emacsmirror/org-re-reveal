@@ -69,14 +69,6 @@
                        org-re-reveal-tests-top-dir))
     (buffer-substring-no-properties (point-min) (point-max))))
 
-(defvar org-re-reveal-output-path)
-(defun org-re-reveal-tests-advice-org-export-output-file-name (&rest _rest)
-  "Override function for `org-export-output-file-name' with argument REST."
-  org-re-reveal-output-path)
-
-(advice-add 'org-export-output-file-name :override
-            #'org-re-reveal-tests-advice-org-export-output-file-name)
-
 (cort-deftest org-re-reveal/cort-test
   '((:string= "https://gitlab.com/oer/org-re-reveal"
               "https://gitlab.com/oer/org-re-reveal")))
@@ -84,17 +76,17 @@
 (cort-deftest org-re-reveal/highlightjs
   `((:string=
      ,(org-re-reveal-tests-get-file-contents "expect-highlightjs.html")
-     ,(let* ((orgpath (expand-file-name "test-cases/test-highlightjs.org"
-                                        org-re-reveal-tests-top-dir))
-             (htmlpath (expand-file-name "test-cases/exported-highlightjs.html"
-                                         org-re-reveal-tests-top-dir))
-             (orgcontents (with-temp-buffer
-                            (insert-file-contents orgpath)
-                            (buffer-substring-no-properties (point-min) (point-max))))
-             (org-re-reveal-output-path htmlpath))
-        (with-temp-buffer
-          (insert orgcontents)
-          (org-re-reveal-export-to-html))
+     ,(let ((path (expand-file-name "test-cases/test-highlightjs.org"
+                                    org-re-reveal-tests-top-dir)))
+        (save-window-excursion
+          (if (not (file-readable-p path))
+              (warn (format "Unable to read file: %s" path))
+            (let ((buf (find-file path)))
+              (with-current-buffer buf
+                (unwind-protect
+                    (org-re-reveal-export-to-html)
+                  (when (buffer-name buf)
+                    (kill-buffer buf)))))))
         (org-re-reveal-tests-get-file-contents "expect-highlightjs.html")))))
 
 (provide 'org-re-reveal-tests)
