@@ -9,7 +9,7 @@
 !expect*.html
 
 # dependency files
-/org-mode*
+/org-plus-contrib
 /htmlize
 
 # archive files
