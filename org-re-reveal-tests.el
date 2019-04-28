@@ -100,7 +100,7 @@
                       (,(rx "#/slide-org"    (= 7 not-newline)) . "#/slide-org*******")
                       ("<p class=\"date\">Created:.*</p>"       . "<p class=\"date\">Created:{{date}}</p>")))
               (write-region nil nil exportpath nil 0))
-            (org-re-reveal-tests-get-file-contents (format "expect-%s.html" ,name))))))))
+            (org-re-reveal-tests-get-file-contents (format "test-%s.html" ,name))))))))
 
 (cort-deftest org-re-reveal/cort-test
   '((:string= "https://gitlab.com/oer/org-re-reveal"
