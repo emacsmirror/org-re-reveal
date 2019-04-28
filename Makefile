@@ -18,6 +18,8 @@ ORG_VER     := 20190422
 TESTFILE    := org-re-reveal-tests.el
 ELS         := org-re-reveal.el ox-re-reveal.el
 
+REVEALTEST  := highlightjs klipsify slide-numbers split
+
 ##################################################
 
 all: build
@@ -33,6 +35,9 @@ build: $(ELS:%.el=%.elc)
 
 test: build
 	$(BATCH) $(DEPENDS:%=-L %/) -l $(TESTFILE) -f cort-run-tests
+
+diff:
+	echo $(REVEALTEST) | xargs -n1 -t -I% bash -c "cd test-cases; diff -u expect-%.html test-%.html"
 
 org-plus-contrib:
 	curl -O https://orgmode.org/elpa/org-plus-contrib-$(ORG_VER).tar > $@.tar
