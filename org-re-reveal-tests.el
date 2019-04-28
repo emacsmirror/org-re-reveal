@@ -75,17 +75,25 @@
    `(cort-deftest ,(make-symbol (format "org-re-reveal/export-%s" name))
       `((:string=
          ,(org-re-reveal-tests-get-file-contents (format "expect-%s.html" ,name))
-         ,(let ((path (expand-file-name (format "test-cases/test-%s.org" ,name)
+         ,(let ((sourcepath (expand-file-name (format "test-cases/test-%s.org" ,name)
+                                        org-re-reveal-tests-top-dir))
+                (exportpath (expand-file-name (format "test-cases/test-%s.html" ,name)
                                         org-re-reveal-tests-top-dir)))
             (save-window-excursion
-              (if (not (file-readable-p path))
+              (if (not (file-readable-p sourcepath))
                   (error (format "Unable to read file: %s" path))
-                (let ((buf (find-file path)))
+                (let ((buf (find-file sourcepath)))
                   (with-current-buffer buf
                     (unwind-protect
                         (org-re-reveal-export-to-html)
                       (when (buffer-name buf)
                         (kill-buffer buf)))))))
+            (with-temp-buffer
+              (insert-file-contents exportpath)
+              (goto-char (point-min))
+              (while (re-search-forward (rx "id=\"org" (= 7 not-newline)) nil t)
+                (replace-match "id=\"org*******" nil nil))
+              (write-region nil nil exportpath nil 0))
             (org-re-reveal-tests-get-file-contents (format "expect-%s.html" ,name))))))))
 
 (cort-deftest org-re-reveal/cort-test
