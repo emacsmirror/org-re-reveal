@@ -5,3 +5,7 @@
 # dependency files
 /org-mode*
 /htmlize
+
+# archive files
+*.tar
+*.tar.gz

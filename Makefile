@@ -35,9 +35,9 @@ test: build
 	$(BATCH) $(DEPENDS:%=-L %/) -l $(TESTFILE) -f cort-run-tests
 
 org-plus-contrib:
-        curl -O https://orgmode.org/elpa/org-plus-contrib-$(ORG_VER).tar
-	tar xf org-plus-contrib-$(ORG_VER).tar
-	mv org-plus-contrib-$(ORG_VER) org-plus-contrib
+	curl -O https://orgmode.org/elpa/org-plus-contrib-$(ORG_VER).tar > $@.tar
+	mkdir $@ && tar xf $@.tar -C $@ --strip-components 1
 
 htmlize:
-	git clone --depth=1 https://github.com/hniksic/emacs-htmlize.git $@
+	curl -O https://github.com/hniksic/emacs-htmlize/archive/master.tar.gz > $@.tar.gz
+	mkdir $@ && tar xf $@.tar.gz -C $@ --strip-components 1
