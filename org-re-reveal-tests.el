@@ -39,6 +39,26 @@
 (require 'cort-test)
 (require 'org-re-reveal)
 
+(defun org-re-reveal-f-parent (path)
+  "Get parent dir.  Similar to `f-parent'."
+  (file-name-directory
+   (directory-file-name path)))
+
+(defun org-re-reveal-f-this-file-path ()
+  "Get this file path.  Similar to `f-this-file'"
+  (cond
+   (load-in-progress
+    load-file-name)
+   ((and (boundp 'byte-compile-current-file) byte-compile-current-file)
+    byte-compile-current-file)
+   (t
+    (buffer-file-name))))
+
+(defun org-re-reveal-f-this-file-dir ()
+  "Get this file contains dir."
+  (org-re-reveal-f-parent
+   (org-re-reveal-get-this-file-path)))
+
 (defun org-re-reveal-tests-get-file-contents (name &optional folder)
   "Get file named NAME contents in FOLDER."
   (with-temp-buffer
