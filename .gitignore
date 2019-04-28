@@ -4,6 +4,10 @@
 # Emacs Lisp compiled files 
 *.elc
 
+# exported files except those required for testing
+*.html
+!expect*.html
+
 # dependency files
 /org-mode*
 /htmlize
