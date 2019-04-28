@@ -39,13 +39,13 @@
 (require 'cort-test)
 (require 'org-re-reveal)
 
-(defun org-re-reveal-f-parent (path)
-  "Get parent dir.  Similar to `f-parent'."
+(defun org-re-reveal-tests-f-parent (path)
+  "Get PATH's parent dir.  Similar to `f-parent'."
   (file-name-directory
    (directory-file-name path)))
 
-(defun org-re-reveal-f-this-file-path ()
-  "Get this file path.  Similar to `f-this-file'"
+(defun org-re-reveal-tests-f-this-file-path ()
+  "Get this file path.  Similar to `f-this-file'."
   (cond
    (load-in-progress
     load-file-name)
@@ -54,21 +54,21 @@
    (t
     (buffer-file-name))))
 
-(defun org-re-reveal-f-this-file-dir ()
-  "Get this file contains dir."
-  (org-re-reveal-f-parent
-   (org-re-reveal-f-this-file-path)))
+(defun org-re-reveal-tests-f-this-file-dir ()
+  "Get this file contain dir."
+  (org-re-reveal-tests-f-parent
+   (org-re-reveal-tests-f-this-file-path)))
 
 (defun org-re-reveal-tests-get-file-contents (name &optional folder)
   "Get file named NAME contents in FOLDER."
   (with-temp-buffer
     (insert-file-contents
      (expand-file-name (format "%s/%s" (or folder "test-cases") name)
-                       (org-re-reveal-f-this-file-dir)))
-    (buffer-substring (point-min) (point-max))))
+                       (org-re-reveal-tests-f-this-file-dir)))
+    (buffer-substring-no-properties (point-min) (point-max))))
 
 (defvar org-re-reveal-output-path)
-(defun org-re-reveal-tests-advice-org-export-output-file-name (&rest rest)
+(defun org-re-reveal-tests-advice-org-export-output-file-name (&rest _rest)
   "Override function for `org-export-output-file-name' with argument REST."
   org-re-reveal-output-path)
 
@@ -83,9 +83,9 @@
   `((:string=
      ,(org-re-reveal-tests-get-file-contents "expect-highlightjs.html")
      ,(let* ((orgpath (expand-file-name "test-cases/test-highlightjs.org"
-                                        (org-re-reveal-f-this-file-dir)))
+                                        (org-re-reveal-tests-f-this-file-dir)))
              (htmlpath (expand-file-name "test-cases/exported-highlightjs.html"
-                                         (org-re-reveal-f-this-file-dir)))
+                                         (org-re-reveal-tests-f-this-file-dir)))
              (orgcontents (with-temp-buffer
                             (insert-file-contents orgpath)
                             (buffer-substring-no-properties (point-min) (point-max))))
