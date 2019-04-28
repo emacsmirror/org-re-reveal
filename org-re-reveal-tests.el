@@ -80,7 +80,7 @@
                                     org-re-reveal-tests-top-dir)))
         (save-window-excursion
           (if (not (file-readable-p path))
-              (warn (format "Unable to read file: %s" path))
+              (error (format "Unable to read file: %s" path))
             (let ((buf (find-file path)))
               (with-current-buffer buf
                 (unwind-protect
