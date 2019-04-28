@@ -3,5 +3,5 @@
 *.elc
 
 # dependency files
-/org-mode
+/org-mode*
 /htmlize

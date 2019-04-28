@@ -7,11 +7,13 @@ TOP         := $(dir $(lastword $(MAKEFILE_LIST)))
 EMACS       ?= emacs
 BATCH       := $(EMACS) -Q --batch -L $(TOP)
 
-PACKAGES    := org-mode htmlize
+PACKAGES    := org-plus-contrib htmlize
 
-ORG         := org-mode/lisp org-mode/contrib/lisp
+ORG         := org-plus-contrib
 HTMLIZE     := htmlize
 DEPENDS     := $(ORG) $(HTMLIZE)
+
+ORG_VER     := 20190422
 
 TESTFILE    := org-re-reveal-tests.el
 ELS         := org-re-reveal.el ox-re-reveal.el
@@ -26,18 +28,16 @@ build: $(ELS:%.el=%.elc)
 
 ##############################
 
-ox-re-reveal.elc: ox-re-reveal.el
-	$(BATCH) -f batch-byte-compile $<
-
 %.elc: %.el $(PACKAGES)
 	$(BATCH) $(DEPENDS:%=-L %/) -f batch-byte-compile $<
 
 test: build
 	$(BATCH) $(DEPENDS:%=-L %/) -l $(TESTFILE) -f cort-run-tests
 
-org-mode:
-	git clone --depth=1 https://code.orgmode.org/bzg/org-mode.git $@
-	$(MAKE) EMACS=$(EMACS) compile -C $@
+org-plus-contrib:
+        curl -O https://orgmode.org/elpa/org-plus-contrib-$(ORG_VER).tar
+	tar xf org-plus-contrib-$(ORG_VER).tar
+	mv org-plus-contrib-$(ORG_VER) org-plus-contrib
 
 htmlize:
 	git clone --depth=1 https://github.com/hniksic/emacs-htmlize.git $@
