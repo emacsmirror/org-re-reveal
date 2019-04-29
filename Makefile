@@ -29,7 +29,7 @@ all: build
 build: $(ELS:%.el=%.elc)
 
 test: build
-	$(BATCH) $(DEPENDS:%=-L %/) -l $(TESTFILE) -f cort-run-tests
+	$(BATCH) $(DEPENDS:%=-L %/) -l $(TESTFILE) -f cort-test-run
 
 diff:
 	echo $(REVEALTEST) | xargs -n1 -t -I% bash -c "cd test-cases; diff -u expect-%.html test-%.html"
