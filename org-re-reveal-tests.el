@@ -4,7 +4,7 @@
 ;; Copyright (C) 2013-2018 Yujie Wen and contributors to org-reveal, see:
 ;;                         https://github.com/yjwen/org-reveal/commits/master
 ;; Copyright (C) 2017-2019 Jens Lechtenbörger
-;; Copyright (C) 2019      Naoya Yamashita <coano3@gmail.com>
+;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
 ;; Version: 1.1.1
