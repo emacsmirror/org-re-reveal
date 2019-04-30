@@ -63,9 +63,13 @@
 
 (defun org-re-reveal-tests-export-and-get-file-contents (name &optional folder)
   "Export file named NAME and get exported file contents."
-  (let ((sourcepath (expand-file-name (format "test-cases/test-%s.org" name)
+  (let ((sourcepath (expand-file-name (format "%s/test-%s.org"
+                                              (or folder "test-cases")
+                                              name)
                                       org-re-reveal-tests-top-dir))
-        (exportpath (expand-file-name (format "test-cases/test-%s.html" name)
+        (exportpath (expand-file-name (format "%s/test-%s.html"
+                                              (or folder "test-cases")
+                                              name)
                                       org-re-reveal-tests-top-dir))
         (replace-all-fn (lambda (before after)
                           (goto-char (point-min))
@@ -88,7 +92,8 @@
               (,(rx "#/slide-org"    (= 7 not-newline)) . "#/slide-org*******")
               ("<p class=\"date\">Created:.*</p>"       . "<p class=\"date\">Created:{{date}}</p>")))
       (write-region nil nil exportpath nil 0))
-    (org-re-reveal-tests-get-file-contents (format "test-%s.html" name))))
+    (org-re-reveal-tests-get-file-contents
+     (format "test-%s.html" name) folder)))
 
 (defun org-re-reveal-tests-create-normal-test (name)
   "Create normal test for org-re-reveal with NAME."
