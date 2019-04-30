@@ -101,8 +101,8 @@
   (eval
    `(cort-deftest ,(make-symbol (format "org-re-reveal/export-%s" name))
       `((:string=
-         ,(org-re-reveal-tests-get-file-contents (format "expect-%s.html" ,name))
-         ,(org-re-reveal-tests-export-and-get-file-contents ,name))))))
+         (org-re-reveal-tests-get-file-contents ,,(format "expect-%s.html" name))
+         (org-re-reveal-tests-export-and-get-file-contents ,,name))))))
 
 (cort-deftest org-re-reveal/cort-test
   '((:string= "https://gitlab.com/oer/org-re-reveal"
