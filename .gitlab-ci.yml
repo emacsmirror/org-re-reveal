@@ -1,0 +1,10 @@
+# Copyright (C) 2017-2019 Jens Lechtenbörger
+# SPDX-License-Identifier: CC0-1.0
+
+image: registry.gitlab.com/oer/docker/debian-emacs-tex
+
+test:
+  script:
+  - make test
+  only:
+  - master
