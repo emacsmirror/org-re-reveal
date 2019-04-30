@@ -1,15 +1,7 @@
 ;;; org-re-reveal-tests.el --- org-re-reveal test  -*- lexical-binding: t; -*-
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
-;; Copyright (C) 2013-2018 Yujie Wen and contributors to org-reveal, see:
-;;                         https://github.com/yjwen/org-reveal/commits/master
-;; Copyright (C) 2017-2019 Jens Lechtenbörger
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
-
-;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 1.1.1
-;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
-;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
 ;; This file is not part of GNU Emacs.
 
