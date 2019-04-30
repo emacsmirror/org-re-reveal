@@ -61,38 +61,42 @@
                        org-re-reveal-tests-top-dir))
     (buffer-substring-no-properties (point-min) (point-max))))
 
+(defun org-re-reveal-tests-export-and-get-file-contents (name &optional folder)
+  "Export file named NAME and get exported file contents."
+  (let ((sourcepath (expand-file-name (format "test-cases/test-%s.org" name)
+                                      org-re-reveal-tests-top-dir))
+        (exportpath (expand-file-name (format "test-cases/test-%s.html" name)
+                                      org-re-reveal-tests-top-dir))
+        (replace-all-fn (lambda (before after)
+                          (goto-char (point-min))
+                          (while (re-search-forward before nil t)
+                            (replace-match after nil nil)))))
+    (save-window-excursion
+      (if (not (file-readable-p sourcepath))
+          (error (format "Unable to read file: %s" sourcepath))
+        (let ((buf (find-file sourcepath)))
+          (with-current-buffer buf
+            (unwind-protect
+                (org-re-reveal-export-to-html)
+              (when (buffer-name buf)
+                (kill-buffer buf)))))))
+    (with-temp-buffer
+      (insert-file-contents exportpath)
+      (mapc (lambda (x) (funcall replace-all-fn (car x) (cdr x)))
+            `((,(rx "id=\"org"       (= 7 not-newline)) . "id=\"org*******")
+              (,(rx "id=\"slide-org" (= 7 not-newline)) . "id=\"slide-org*******")
+              (,(rx "#/slide-org"    (= 7 not-newline)) . "#/slide-org*******")
+              ("<p class=\"date\">Created:.*</p>"       . "<p class=\"date\">Created:{{date}}</p>")))
+      (write-region nil nil exportpath nil 0))
+    (org-re-reveal-tests-get-file-contents (format "test-%s.html" name))))
+
 (defun org-re-reveal-tests-create-normal-test (name)
   "Create normal test for org-re-reveal with NAME."
   (eval
    `(cort-deftest ,(make-symbol (format "org-re-reveal/export-%s" name))
       `((:string=
          ,(org-re-reveal-tests-get-file-contents (format "expect-%s.html" ,name))
-         ,(let ((sourcepath (expand-file-name (format "test-cases/test-%s.org" ,name)
-                                              org-re-reveal-tests-top-dir))
-                (exportpath (expand-file-name (format "test-cases/test-%s.html" ,name)
-                                              org-re-reveal-tests-top-dir))
-                (replace-all-fn (lambda (before after)
-                                  (goto-char (point-min))
-                                  (while (re-search-forward before nil t)
-                                    (replace-match after nil nil)))))
-            (save-window-excursion
-              (if (not (file-readable-p sourcepath))
-                  (error (format "Unable to read file: %s" path))
-                (let ((buf (find-file sourcepath)))
-                  (with-current-buffer buf
-                    (unwind-protect
-                        (org-re-reveal-export-to-html)
-                      (when (buffer-name buf)
-                        (kill-buffer buf)))))))
-            (with-temp-buffer
-              (insert-file-contents exportpath)
-              (mapc (lambda (x) (funcall replace-all-fn (car x) (cdr x)))
-                    `((,(rx "id=\"org"       (= 7 not-newline)) . "id=\"org*******")
-                      (,(rx "id=\"slide-org" (= 7 not-newline)) . "id=\"slide-org*******")
-                      (,(rx "#/slide-org"    (= 7 not-newline)) . "#/slide-org*******")
-                      ("<p class=\"date\">Created:.*</p>"       . "<p class=\"date\">Created:{{date}}</p>")))
-              (write-region nil nil exportpath nil 0))
-            (org-re-reveal-tests-get-file-contents (format "test-%s.html" ,name))))))))
+         ,(org-re-reveal-tests-export-and-get-file-contents ,name))))))
 
 (cort-deftest org-re-reveal/cort-test
   '((:string= "https://gitlab.com/oer/org-re-reveal"
