@@ -72,9 +72,10 @@
                                               name)
                                       org-re-reveal-tests-top-dir))
         (replace-all-fn (lambda (before after)
-                          (goto-char (point-min))
-                          (while (re-search-forward before nil t)
-                            (replace-match after nil nil)))))
+                          (save-excursion
+                            (goto-char (point-min))
+                            (while (re-search-forward before nil t)
+                              (replace-match after nil nil))))))
     (save-window-excursion
       (if (not (file-readable-p sourcepath))
           (error (format "Unable to read file: %s" sourcepath))
