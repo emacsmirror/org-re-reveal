@@ -1,3 +1,17 @@
+# temporary files
 *~
-*.html
+
+# Emacs Lisp compiled files 
 *.elc
+
+# exported files except those required for testing
+*.html
+!expect*.html
+
+# dependency files
+/org-plus-contrib
+/htmlize
+
+# archive files
+*.tar
+*.tar.gz
