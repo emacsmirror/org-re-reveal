@@ -7,7 +7,17 @@
 #+Title: Splitting with attributes
 #+Author: Jens Lechtenbörger
 
-* A slide with split
+* Slide with normal split
+- The start of some
+- list
+- to be continued after split
+
+#+REVEAL: split
+
+- Continued list
+- with more items
+
+* Slide with split with background attribute
 - The start of some
 - list
 - to be continued after split
@@ -18,5 +28,15 @@
 - Continued list
 - with more items
 
-* Next slide
-Nothing special here
+* Slide with background properties
+  :PROPERTIES:
+  :reveal_background: #543210
+  :END:
+Note that the background color of this slide does not change after the split.
+
+#+REVEAL: split
+
+Same background as previous slide.
+
+* Nothing special
+Default background again.

@@ -12,9 +12,6 @@
 # Disable automatic TOC, insert one explicitly with #+TOC below.
 #+OPTIONS: toc:nil
 
-# Export once as is and once with the following option.
-# #+OPTIONS: reveal_generate_ids:draft
-
 #+Title: Test slide numbers with TOC
 #+Author: Jens Lechtenbörger
 

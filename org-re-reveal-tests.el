@@ -112,6 +112,7 @@
       '("highlightjs"
         "klipsify"
         "slide-numbers"
+        "slide-numbers-toc"
         "split"))
 
 (provide 'org-re-reveal-tests)

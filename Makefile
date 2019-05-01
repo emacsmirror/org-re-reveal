@@ -42,7 +42,7 @@ ORG_VER     := 20190422
 TESTFILE    := org-re-reveal-tests.el
 ELS         := org-re-reveal.el ox-re-reveal.el
 
-REVEALTEST  := highlightjs klipsify slide-numbers split
+REVEALTEST  := highlightjs klipsify slide-numbers slide-numbers-toc split
 
 ##################################################
 

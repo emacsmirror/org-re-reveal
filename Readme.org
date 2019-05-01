@@ -109,6 +109,11 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    - Version 1.1.2
      - New choice ~draft~ for ~org-re-reveal-generate-custom-ids~,
        which can now also be set as option ~reveal_generate_ids~
+   - Version 1.1.3
+     - ~org-re-reveal-generate-custom-ids~ reverted to Boolean;
+       option ~draft~ not necessary any longer
+     - Slide splitting fixed; background options remain in
+       effect for parts
 
 * Reveal.js and org-re-reveal
 
@@ -304,8 +309,8 @@ I use emacs-reveal to generate Open Educational Resources (OER):
 
    Now a new slide begins after the ~#+REVEAL~ keyword.
 
-   *Warning!* The logic to re-use the same attributes (e.g., background
-   information) on the new slide is broken.  As a workaround, you can
+   By default, any background attributes of a slide should remain in
+   effect for the split parts.  In addition, you can
    add HTML attributes after ~#+REVEAL: split~, e.g., this slide
    uses ~#+REVEAL: split data-background="#555555"~ to set a
    background color.
@@ -939,10 +944,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    ~org-re-reveal-generate-custom-ids~, (more) stable slide IDs can be
    generated (instead of hash values that change with content
    changes).  See doc string (~C-h v~) of variable
-   ~org-re-reveal-generate-custom-ids~ for more details.  In
-   particular, the doc string explains the value ~draft~, which may be
-   relevant when inserting a table of contents at a specific position
-   as explained on the subsequent slide.
+   ~org-re-reveal-generate-custom-ids~ for more details.
 
 ** Disable Table of Contents
 
@@ -959,10 +961,6 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    headlines to include):
 
    =#+TOC: headlines 1=
-
-   When using the previous command and working on a document, value
-   =draft= for variable =org-re-reveal-generate-custom-ids= may be of
-   interest.
 
 ** Internal Links
 

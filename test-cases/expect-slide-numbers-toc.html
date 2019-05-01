@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<title>Splitting with attributes</title>
+<title>Test slide numbers with TOC</title>
 <meta name="author" content="Jens Lechtenbörger"/>
 <style type="text/css">
 .underline { text-decoration: underline; }
@@ -27,73 +27,113 @@
 <div class="reveal">
 <div class="slides">
 <section id="sec-title-slide">
-<h1 class="title">Splitting with attributes</h1><h2 class="author">Jens Lechtenbörger</h2><p class="date">Created:{{date}}</p>
+<h1 class="title">Test slide numbers with TOC</h1><h2 class="author">Jens Lechtenbörger</h2><p class="date">Created:{{date}}</p>
 </section>
 
 <section>
 <section id="slide-1">
-<h2 id="1"><span class="section-number-2">1</span> Slide with normal split</h2>
-<ul>
-<li>The start of some</li>
-<li>list</li>
-<li>to be continued after split</li>
-
-</ul>
+<h2 id="1"><span class="section-number-2">1</span> Heading 1</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+</section>
+<section id="slide-1-1">
+<h3 id="1-1"><span class="section-number-3">1.1</span> Heading 2</h3>
+<p>
+text
+</p>
 
 </section>
 <section>
+<p>
+text after split
+</p>
 
+</section>
+<section id="slide-1-1-1">
+<h4 id="1-1-1"><span class="section-number-4">1.1.1</span> Heading 3</h4>
+<p>
+more text
+</p>
+
+</section>
+<section>
+<p>
+and another split
+</p>
+
+</section>
+<section id="slide-org*******">
+<h3 id="org*******">Another heading 2, unnumbered t</h3>
+<p>
+Hello world!
+</p>
+
+<p>
+Has hash id, as no number assigned.  Shown in TOC.
+</p>
+
+</section>
+<section id="slide-org*******">
+<h3 id="org*******">Another heading 2, unnumbered notoc</h3>
+<p>
+Moin moin!
+</p>
+
+<p>
+Has hash id, as no number assigned.  Not shown in LaTeX TOC.
+</p>
+
+</section>
+<section id="table-of-contents-section">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
 <ul>
-<li>Continued list</li>
-<li>with more items</li>
-
+<li><a href="#/slide-1">1. Heading 1</a>
+<ul>
+<li><a href="#/slide-1-1">1.1. Heading 2</a>
+<ul>
+<li><a href="#/slide-1-1-1">1.1.1. Heading 3</a></li>
 </ul>
+</li>
+<li><a href="#/slide-org*******">Another heading 2, unnumbered t</a></li>
+</ul>
+</li>
+<li><a href="#/slide-2">2. Heading 1 again, no custom ID</a>
+<ul>
+<li><a href="#/slide-2-1">2.1. Heading 2, no custom ID</a></li>
+<li><a href="#/slide-section-2.2">Another heading 2, custom id and unnumbered</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 
 </section>
 </section>
 <section>
 <section id="slide-2">
-<h2 id="2"><span class="section-number-2">2</span> Slide with split with background attribute</h2>
-<ul>
-<li>The start of some</li>
-<li>list</li>
-<li>to be continued after split</li>
-<li>with sliding background image</li>
-
-</ul>
-
+<h2 id="2"><span class="section-number-2">2</span> Heading 1 again, no custom ID</h2>
+<div class="outline-text-2" id="text-2">
+</div>
 </section>
-<section data-background="../images/adult-education-3258944_640.jpg" data-background-transition="slide">
-
-<ul>
-<li>Continued list</li>
-<li>with more items</li>
-
-</ul>
-
-</section>
-</section>
-<section>
-<section id="slide-3" data-background="#543210">
-<h2 id="3"><span class="section-number-2">3</span> Slide with background properties</h2>
+<section id="slide-2-1">
+<h3 id="2-1"><span class="section-number-3">2.1</span> Heading 2, no custom ID</h3>
 <p>
-Note that the background color of this slide does not change after the split.
+text
 </p>
 
 </section>
-<section data-background="#543210">
-
+<section>
 <p>
-Same background as previous slide.
+text after split
 </p>
 
 </section>
-</section>
-<section>
-<section id="slide-4">
-<h2 id="4"><span class="section-number-2">4</span> Nothing special</h2>
+<section id="slide-section-2.2">
+<h3 id="section-2.2">Another heading 2, custom id and unnumbered</h3>
 <p>
-Default background again.
+Hello world!
 </p>
 </section>
 </section>
@@ -108,7 +148,7 @@ Reveal.initialize({
 
 controls: true,
 progress: true,
-history: false,
+history: true,
 center: true,
 slideNumber: 'c',
 rollingLinks: false,
