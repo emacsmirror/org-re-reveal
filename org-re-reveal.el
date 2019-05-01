@@ -708,6 +708,27 @@ have been appropriate..."
         (org-re-reveal--add-class nodiv class)
       nodiv)))
 
+(defun org-re-reveal--section-attrs (headline info)
+  "Compute attributes for section element of HEADLINE with INFO."
+  (let* ((default-slide-background (plist-get info :reveal-default-slide-background))
+         (default-slide-background-size (plist-get info :reveal-default-slide-background-size))
+         (default-slide-background-position (plist-get info :reveal-default-slide-background-position))
+         (default-slide-background-repeat (plist-get info :reveal-default-slide-background-repeat))
+         (default-slide-background-transition (plist-get info :reveal-default-slide-background-transition)))
+    (org-html--make-attribute-string
+     `(:data-transition ,(org-element-property :REVEAL_DATA_TRANSITION headline)
+                        :data-state ,(org-element-property :REVEAL_DATA_STATE headline)
+                        :data-background ,(or (org-element-property :REVEAL_BACKGROUND headline)
+                                              default-slide-background)
+                        :data-background-size ,(or (org-element-property :REVEAL_BACKGROUND_SIZE headline)
+                                                   default-slide-background-size)
+                        :data-background-position ,(or (org-element-property :REVEAL_BACKGROUND_POSITION headline)
+                                                       default-slide-background-position)
+                        :data-background-repeat ,(or (org-element-property :REVEAL_BACKGROUND_REPEAT headline)
+                                                     default-slide-background-repeat)
+                        :data-background-transition ,(or (org-element-property :REVEAL_BACKGROUND_TRANS headline)
+                                                         default-slide-background-transition)))))
+
 ;; Copied from org-html-headline and modified to embed org-re-reveal
 ;; specific attributes.
 (defun org-re-reveal-headline (headline contents info)
@@ -738,39 +759,23 @@ holding contextual information."
                                  (org-element-property :ID headline)))
                (hlevel (org-re-reveal--get-hlevel info))
                (header (plist-get info :reveal-slide-header))
-               (header-div (when header (format org-re-reveal-slide-header-html header)))
+               (header-div (if header (format org-re-reveal-slide-header-html header) ""))
                (footer (plist-get info :reveal-slide-footer))
-               (footer-div (when footer (format org-re-reveal-slide-footer-html footer)))
+               (footer-div (if footer (format org-re-reveal-slide-footer-html footer) ""))
                (first-sibling (org-export-first-sibling-p headline info))
-               (default-slide-background (plist-get info :reveal-default-slide-background))
-               (default-slide-background-size (plist-get info :reveal-default-slide-background-size))
-               (default-slide-background-position (plist-get info :reveal-default-slide-background-position))
-               (default-slide-background-repeat (plist-get info :reveal-default-slide-background-repeat))
-               (default-slide-background-transition (plist-get info :reveal-default-slide-background-transition))
-               (slide-section-tag (format "<section %s%s>\n"
-                                          (org-html--make-attribute-string
-                                           `(:id ,(format "%s%s" org-re-reveal--slide-id-prefix preferred-id)
-                                                 :data-transition ,(org-element-property :REVEAL_DATA_TRANSITION headline)
-                                                 :data-state ,(org-element-property :REVEAL_DATA_STATE headline)
-                                                 :data-background ,(or (org-element-property :REVEAL_BACKGROUND headline)
-                                                                       default-slide-background)
-                                                 :data-background-size ,(or (org-element-property :REVEAL_BACKGROUND_SIZE headline)
-                                                                            default-slide-background-size)
-                                                 :data-background-position ,(or (org-element-property :REVEAL_BACKGROUND_POSITION headline)
-                                                                                default-slide-background-position)
-                                                 :data-background-repeat ,(or (org-element-property :REVEAL_BACKGROUND_REPEAT headline)
-                                                                              default-slide-background-repeat)
-                                                 :data-background-transition ,(or (org-element-property :REVEAL_BACKGROUND_TRANS headline)
-                                                                                  default-slide-background-transition)))
-                                          (let ((extra-attrs (org-element-property :REVEAL_EXTRA_ATTR headline)))
-                                            (if extra-attrs (format " %s" extra-attrs) ""))))
+               (attrs (org-re-reveal--section-attrs headline info))
+               (extra-attrs (org-element-property :REVEAL_EXTRA_ATTR headline))
+               (slide-section-tag (format "<section id=\"%s\"%s%s>\n"
+                                          (format "%s%s" org-re-reveal--slide-id-prefix preferred-id)
+                                          (if (> (length attrs) 0) (format " %s" attrs) "")
+                                          (if extra-attrs (format " %s" extra-attrs) "")))
                (ret (concat
                      (if (or (/= level 1) (not first-sibling))
-                         ;; Not the first heading. Close previou slide.
+                         ;; Not the first heading. Close previous slide.
                          (concat
-                          ;; Slide footer if any
+                          ;; Slide footer if any.
                           footer-div
-                          ;; Close previous slide
+                          ;; Close previous slide.
                           "</section>\n"
                           (if (<= level hlevel)
                               ;; Close previous vertical slide group.
