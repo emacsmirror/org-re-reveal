@@ -27,11 +27,18 @@ all:
 # org-re-reveal requires ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 
 TOP         := $(dir $(lastword $(MAKEFILE_LIST)))
+EMACS_RAW    := $(sort $(shell compgen -c emacs- | xargs))
+EXPECT_EMACS  += 24.4 24.5
+EXPECT_EMACS  += 25.1 25.2 25.3
+EXPECT_EMACS  += 26.1 26.2
+
+ALL_EMACS    := $(filter $(EMACS_RAW),$(EXPECT_EMACS:%=emacs-%))
 
 EMACS       ?= emacs
 BATCH       := $(EMACS) -Q --batch -L $(TOP)
 
 DEPENDS     := org-plus-contrib htmlize
+ADDITON     := test-cases
 
 TESTFILE    := org-re-reveal-tests.el
 ELS         := org-re-reveal.el ox-re-reveal.el
@@ -48,11 +55,56 @@ all: build
 
 build: $(ELS:%.el=%.elc)
 
-test: build
+##############################
+#
+#  one-time test (on top level)
+#
+
+check: build
 	$(BATCH) $(DEPENDS:%=-L %/) -l $(TESTFILE) -f cort-test-run
 
 diff:
 	echo $(REVEALTEST) | xargs -n1 -t -I% bash -c "cd test-cases; diff -u expect-%.html test-%.html"
+
+##############################
+#
+#  multi Emacs version test (on independent environment)
+#
+
+allcheck: $(ALL_EMACS:%=.make/verbose-%)
+	@echo ""
+	@cat $(^:%=%/.make-test-log) | grep =====
+	@rm -rf $^
+
+.make/verbose-%: $(DEPENDS)
+	mkdir -p $@
+	cp -rf $(ELS) $(CORTELS) $(DEPENDS) $(ADDITON) $@/
+	cd $@; echo $(ELS) | xargs -n1 -t $* -Q --batch -L ./ $(DEPENDS:%=-L ./%/) -f batch-byte-compile
+	cd $@; $* -Q --batch -L ./ $(DEPENDS:%=-L ./%/) -l $(TESTFILE) -f cort-test-run | tee .make-test-log
+
+##############################
+#
+#  silent `allcheck' job
+#
+
+test: $(ALL_EMACS:%=.make/silent-%)
+	@echo ""
+	@cat $(^:%=%/.make-test-log) | grep =====
+	@rm -rf $^
+
+.make/silent-%: $(DEPENDS)
+	@mkdir -p $@
+	@cp -rf $(ELS) $(CORTELS) $(DEPENDS) $(ADDITON) $@/
+	@cd $@; echo $(ELS) | xargs -n1 $* -Q --batch -L ./ $(DEPENDS:%=-L ./%/) -f batch-byte-compile
+	@cd $@; $* -Q --batch -L ./ $(DEPENDS:%=-L ./%/) -l $(TESTFILE) -f cort-test-run > .make-test-log 2>&1
+
+##############################
+#
+#  other make jobs
+#
+
+clean:
+	rm -rf $(ELC) $(DEPENDS) .make
 
 ##############################
 
