@@ -40,6 +40,8 @@ REVEALTEST  := highlightjs klipsify slide-numbers slide-numbers-toc split
 
 ##################################################
 
+.PHONY: all build test diff clean
+
 all: build
 
 ##############################
