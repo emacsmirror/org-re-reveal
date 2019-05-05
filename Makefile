@@ -55,6 +55,9 @@ all: build
 
 build: $(ELS:%.el=%.elc)
 
+%.elc: %.el $(DEPENDS)
+	$(BATCH) $(DEPENDS:%=-L %/) -f batch-byte-compile $<
+
 ##############################
 #
 #  one-time test (on top level)
@@ -107,9 +110,6 @@ clean:
 	rm -rf $(ELC) $(DEPENDS) .make
 
 ##############################
-
-%.elc: %.el $(DEPENDS)
-	$(BATCH) $(DEPENDS:%=-L %/) -f batch-byte-compile $<
 
 org-plus-contrib:
 	curl -L https://orgmode.org/elpa/org-plus-contrib-20190422.tar > $@.tar
