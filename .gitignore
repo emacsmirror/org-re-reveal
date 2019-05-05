@@ -1,5 +1,6 @@
 # temporary files
 *~
+/.make
 
 # Emacs Lisp compiled files 
 *.elc
