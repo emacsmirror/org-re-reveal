@@ -26,24 +26,24 @@ all:
 
 # org-re-reveal requires ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 
-TOP         := $(dir $(lastword $(MAKEFILE_LIST)))
+TOP          := $(dir $(lastword $(MAKEFILE_LIST)))
 EMACS_RAW    := $(sort $(shell compgen -c emacs- | xargs))
-EXPECT_EMACS  += 24.4 24.5
+EXPECT_EMACS := 24.4 24.5
 EXPECT_EMACS  += 25.1 25.2 25.3
 EXPECT_EMACS  += 26.1 26.2
 
 ALL_EMACS    := $(filter $(EMACS_RAW),$(EXPECT_EMACS:%=emacs-%))
 
-DEPENDS     := org-plus-contrib htmlize
-ADDITON     := test-cases
+DEPENDS      := org-plus-contrib htmlize
+ADDITON      := test-cases
 
-EMACS       ?= emacs
-BATCHARGS   := -Q --batch -L ./ $(DEPENDS:%=-L ./%/)
+EMACS        ?= emacs
+BATCHARGS    := -Q --batch -L ./ $(DEPENDS:%=-L ./%/)
 
-TESTFILE    := org-re-reveal-tests.el
-ELS         := org-re-reveal.el ox-re-reveal.el
+TESTFILE     := org-re-reveal-tests.el
+ELS          := org-re-reveal.el ox-re-reveal.el
 
-REVEALTEST  := highlightjs klipsify slide-numbers slide-numbers-toc split
+REVEALTEST   := highlightjs klipsify slide-numbers slide-numbers-toc split
 
 ##################################################
 
