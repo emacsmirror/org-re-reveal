@@ -34,11 +34,11 @@ EXPECT_EMACS  += 26.1 26.2
 
 ALL_EMACS    := $(filter $(EMACS_RAW),$(EXPECT_EMACS:%=emacs-%))
 
-EMACS       ?= emacs
-BATCH       := $(EMACS) -Q --batch -L $(TOP)
-
 DEPENDS     := org-plus-contrib htmlize
 ADDITON     := test-cases
+
+EMACS       ?= emacs
+BATCHARGS   := -Q --batch -L ./ $(DEPENDS:%=-L ./%/)
 
 TESTFILE    := org-re-reveal-tests.el
 ELS         := org-re-reveal.el ox-re-reveal.el
@@ -61,7 +61,7 @@ build: $(ELS:%.el=%.elc)
 #
 
 check: build
-	$(BATCH) $(DEPENDS:%=-L %/) -l $(TESTFILE) -f cort-test-run
+	$(EMACS) $(BATCHARGS) -l $(TESTFILE) -f cort-test-run
 
 diff:
 	echo $(REVEALTEST) | xargs -n1 -t -I% bash -c "cd test-cases; diff -u expect-%.html test-%.html"
@@ -79,8 +79,8 @@ allcheck: $(ALL_EMACS:%=.make/verbose-%)
 .make/verbose-%: $(DEPENDS)
 	mkdir -p $@
 	cp -rf $(ELS) $(CORTELS) $(DEPENDS) $(ADDITON) $@/
-	cd $@; echo $(ELS) | xargs -n1 -t $* -Q --batch -L ./ $(DEPENDS:%=-L ./%/) -f batch-byte-compile
-	cd $@; $* -Q --batch -L ./ $(DEPENDS:%=-L ./%/) -l $(TESTFILE) -f cort-test-run | tee .make-test-log
+	cd $@; echo $(ELS) | xargs -n1 -t $* $(BATCHARGS) -f batch-byte-compile
+	cd $@; $* $(BATCHARGS) -l $(TESTFILE) -f cort-test-run | tee .make-test-log
 
 ##############################
 #
@@ -95,8 +95,8 @@ test: $(ALL_EMACS:%=.make/silent-%)
 .make/silent-%: $(DEPENDS)
 	@mkdir -p $@
 	@cp -rf $(ELS) $(CORTELS) $(DEPENDS) $(ADDITON) $@/
-	@cd $@; echo $(ELS) | xargs -n1 $* -Q --batch -L ./ $(DEPENDS:%=-L ./%/) -f batch-byte-compile
-	@cd $@; $* -Q --batch -L ./ $(DEPENDS:%=-L ./%/) -l $(TESTFILE) -f cort-test-run > .make-test-log 2>&1
+	@cd $@; echo $(ELS) | xargs -n1 $* $(BATCHARGS) -f batch-byte-compile
+	@cd $@; $* $(BATCHARGS) -l $(TESTFILE) -f cort-test-run > .make-test-log 2>&1
 
 ##############################
 #
