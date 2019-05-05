@@ -31,13 +31,7 @@ TOP         := $(dir $(lastword $(MAKEFILE_LIST)))
 EMACS       ?= emacs
 BATCH       := $(EMACS) -Q --batch -L $(TOP)
 
-PACKAGES    := org-plus-contrib htmlize
-
-ORG         := org-plus-contrib
-HTMLIZE     := htmlize
-DEPENDS     := $(ORG) $(HTMLIZE)
-
-ORG_VER     := 20190422
+DEPENDS     := org-plus-contrib htmlize
 
 TESTFILE    := org-re-reveal-tests.el
 ELS         := org-re-reveal.el ox-re-reveal.el
@@ -60,13 +54,15 @@ diff:
 
 ##############################
 
-%.elc: %.el $(PACKAGES)
+%.elc: %.el $(DEPENDS)
 	$(BATCH) $(DEPENDS:%=-L %/) -f batch-byte-compile $<
 
 org-plus-contrib:
-	curl -L https://orgmode.org/elpa/org-plus-contrib-$(ORG_VER).tar > $@.tar
+	curl -L https://orgmode.org/elpa/org-plus-contrib-20190422.tar > $@.tar
 	mkdir $@ && tar xf $@.tar -C $@ --strip-components 1
+	rm -rf $@.tar
 
 htmlize:
 	curl -L https://github.com/hniksic/emacs-htmlize/archive/master.tar.gz > $@.tar.gz
 	mkdir $@ && tar xf $@.tar.gz -C $@ --strip-components 1
+	rm -rf $@.tar.gz
