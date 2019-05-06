@@ -27,7 +27,7 @@ all:
 # org-re-reveal requires ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 
 TOP          := $(dir $(lastword $(MAKEFILE_LIST)))
-EMACS_RAW    := $(sort $(shell compgen -c emacs- | xargs))
+EMACS_RAW    := $(sort $(shell find `echo $$PATH | tr : ' '` -type f -name 'emacs-*' 2>/dev/null | sed 's|.*/||'))
 EXPECT_EMACS := 24.4 24.5
 EXPECT_EMACS  += 25.1 25.2 25.3
 EXPECT_EMACS  += 26.1 26.2
