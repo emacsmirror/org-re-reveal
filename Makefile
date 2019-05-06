@@ -43,6 +43,8 @@ BATCHARGS    := -Q --batch -L ./ $(DEPENDS:%=-L ./%/)
 TESTFILE     := org-re-reveal-tests.el
 ELS          := org-re-reveal.el ox-re-reveal.el
 
+CORTELS      := $(TESTFILE) cort-test.el
+
 REVEALTEST   := highlightjs klipsify slide-numbers slide-numbers-toc split
 
 ##################################################
