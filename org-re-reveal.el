@@ -1781,7 +1781,8 @@ to `org-export-to-file'."
   (interactive)
   (let* ((extension (concat "." org-html-extension))
          (file (org-export-output-file-name extension subtreep))
-         (clientfile (org-export-output-file-name (concat "_client" extension) subtreep)))
+         (clientfile (org-export-output-file-name (concat "_client" extension) subtreep))
+         (org-html-container-element "div"))
 
     (setq org-re-reveal-client-multiplex nil)
     (org-export-to-file 're-reveal file
