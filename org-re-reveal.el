@@ -7,7 +7,7 @@
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 1.1.3
+;; Version: 1.1.4
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -299,7 +299,6 @@ slide's HTML code (containing the above escape sequences)."
   :group 'org-export-re-reveal
   :type 'string)
 
-
 (defcustom org-re-reveal-multiplex-id ""
   "The ID to use for multiplexing.
 To enable multiplex, see `org-re-reveal-plugins'."
@@ -388,15 +387,17 @@ To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'boolean)
 
-(defcustom org-re-reveal-width -1
-  "Slide width."
+(defcustom org-re-reveal-width nil
+  "Slide width as positive integer (pixels) or string (percentage) or nil."
   :group 'org-export-re-reveal
-  :type 'integer)
+  :type '(choice integer string (const nil))
+  :package-version '(org-re-reveal . "1.1.4"))
 
-(defcustom org-re-reveal-height -1
-  "Slide height."
+(defcustom org-re-reveal-height nil
+  "Slide height as positive integer (pixels) or string (percentage) or nil."
   :group 'org-export-re-reveal
-  :type 'integer)
+  :type '(choice integer string (const nil))
+  :package-version '(org-re-reveal . "1.1.4"))
 
 (defcustom org-re-reveal-margin "-1"
   "Slide margin (in a string)."
@@ -947,16 +948,30 @@ overview: %s,
               ""))
           (if (plist-get info :reveal-overview) "true" "false")))
 
+(defun org-re-reveal--to-string (option)
+  "Return OPTION as string.
+If OPTION is an integer > 0, return as string.
+If OPTION is a string, embed in quotation marks.
+If OPTION is nil, return nil (not the empty string).
+Otherwise, raise error."
+  (cond ((and (integerp option) (> option 0)) (format "%d" option))
+        ((stringp option) (format "\"%s\"" option))
+        ((eq option nil) nil)
+        (t (error "Option »%s« must be string, positive integer, or nil; not %s"
+                  option (type-of option)))))
+
 (defun org-re-reveal-scripts--main-configures (info)
   "Internal function for `org-re-reveal-scripts' with INFO."
   (concat
    ;; slide width
    (let ((width (plist-get info :reveal-width)))
-     (if (> width 0) (format "width: %d,\n" width) ""))
+     (org-re-reveal--if-format "width: %s,\n"
+                               (org-re-reveal--to-string width)))
 
    ;; slide height
    (let ((height (plist-get info :reveal-height)))
-     (if (> height 0) (format "height: %d,\n" height) ""))
+     (org-re-reveal--if-format "height: %s,\n"
+                               (org-re-reveal--to-string height)))
 
    ;; slide margin
    (let ((margin (string-to-number (plist-get info :reveal-margin))))

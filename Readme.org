@@ -78,42 +78,8 @@ I use emacs-reveal to generate Open Educational Resources (OER):
      - Improve klipse support (add variable org-re-reveal-klipse-languages,
        fix PHP support)
 
-
 ** Additional user-facing changes by org-re-reveal
-   - Version 1.0.0
-     - Improved documentation
-     - New export key binding (~C-c C-e v v~), customizable via
-       ~org-re-reveal-keys~
-   - Version 1.0.1
-     - Fix and document changes for speaker notes template with
-       Org version 9.2 and later
-       - That version needs ~org-tempo~, templates are lower-case
-   - Version 1.0.2
-     - Allow to enable Klipse per source code block with configurable
-       width and height
-   - Version 1.0.3
-     - New customizable variable ~org-re-reveal-body-attrs~
-   - Version 1.0.4
-     - Update of MathJax URL
-
-   #+REVEAL: split
-
-   - Version 1.1.0
-     - Improved customization interfaces for slide transitions, CSS
-       themes, and reveal.js URL
-     - Bugs related to multiplexing, highlight.js, and slide splitting
-       fixed
-   - Version 1.1.1
-     - New customizable option ~org-re-reveal-generate-custom-ids~ for
-       (more) stable slide URLs
-   - Version 1.1.2
-     - New choice ~draft~ for ~org-re-reveal-generate-custom-ids~,
-       which can now also be set as option ~reveal_generate_ids~
-   - Version 1.1.3
-     - ~org-re-reveal-generate-custom-ids~ reverted to Boolean;
-       option ~draft~ not necessary any longer
-     - Slide splitting fixed; background options remain in
-       effect for parts
+   See file [[https://gitlab.com/oer/org-re-reveal/tree/master/CHANGELOG][CHANGELOG]]
 
 * Reveal.js and org-re-reveal
 
