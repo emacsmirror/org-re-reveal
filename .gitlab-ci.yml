@@ -5,6 +5,6 @@ image: registry.gitlab.com/oer/docker/debian-emacs-tex
 
 test:
   script:
-  - make test
+  - make check
   only:
   - master
