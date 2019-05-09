@@ -79,7 +79,7 @@ I use emacs-reveal to generate Open Educational Resources (OER):
        fix PHP support)
 
 ** Additional user-facing changes by org-re-reveal
-   See file [[https://gitlab.com/oer/org-re-reveal/tree/master/CHANGELOG][CHANGELOG]]
+   See file [[https://gitlab.com/oer/org-re-reveal/tree/master/CHANGELOG.org][CHANGELOG]]
 
 * Reveal.js and org-re-reveal
 
