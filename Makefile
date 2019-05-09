@@ -78,7 +78,7 @@ diff:
 
 allcheck: $(ALL_EMACS:%=.make/verbose-%)
 	@echo ""
-	@cat $(^:%=%/.make-test-log) | grep =====
+	@echo $(^:%=%/.make-test-log) | xargs --no-run-if-empty cat | grep =====
 	@rm -rf $^
 
 .make/verbose-%: $(DEPENDS)
