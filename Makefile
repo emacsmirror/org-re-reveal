@@ -37,7 +37,7 @@ DEPENDS      := org-plus-contrib htmlize
 ADDITON      := test-cases
 
 EMACS        ?= emacs
-BATCHARGS    := -Q --batch -L ./ $(DEPENDS:%=-L ./%/)
+BATCH        := $(EMACS) -Q --batch -L ./ $(DEPENDS:%=-L ./%/)
 
 TESTFILE     := org-re-reveal-tests.el
 ELS          := org-re-reveal.el ox-re-reveal.el
@@ -57,7 +57,7 @@ all: build
 build: $(ELS:%.el=%.elc)
 
 %.elc: %.el $(DEPENDS)
-	$(EMACS) $(BATCHARGS) $(DEPENDS:%=-L %/) -f batch-byte-compile $<
+	$(BATCH) $(DEPENDS:%=-L %/) -f batch-byte-compile $<
 
 ##############################
 #
@@ -65,7 +65,7 @@ build: $(ELS:%.el=%.elc)
 #
 
 check: build
-	$(EMACS) $(BATCHARGS) -l $(TESTFILE) -f cort-test-run
+	$(BATCH) -l $(TESTFILE) -f cort-test-run
 
 diff:
 	echo $(REVEALTEST) | xargs -n1 -t -I% bash -c "cd test-cases; diff -u expect-%.html test-%.html"
