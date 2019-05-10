@@ -108,10 +108,10 @@ test: $(DOCKER_EMACS:%=.make/silent-%)
 #
 
 clean-soft:
-	rm -rf $(ELC) .make
+	rm -rf $(ELS:%.el=%.elc) .make
 
 clean:
-	rm -rf $(ELC) $(DEPENDS) .make
+	rm -rf $(ELS:%.el=%.elc) $(DEPENDS) .make
 
 ##############################
 #
