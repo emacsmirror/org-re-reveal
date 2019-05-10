@@ -1686,7 +1686,7 @@ First, map each `attr_reveal' attribute to corresponding
 Second, if `org-re-reveal-generate-custom-ids' is t (or option
 \"reveal_generate_ids\" is t), generate \"CUSTOM_ID\" values for
 section headings that do not have one already."
-  (cl-assert (eq backend 're-reveal) nil
+  (cl-assert (org-export-derived-backend-p backend 're-reveal) nil 
              (format "Function org-re-reveal-filter-parse-tree called on unexpected backend: %s" backend))
   (let ((default-frag-style (plist-get info :reveal-default-frag-style)))
     (org-element-map tree (remq 'item org-element-all-elements)
