@@ -28,7 +28,7 @@ all:
 
 TOP          := $(dir $(lastword $(MAKEFILE_LIST)))
 
-UUID         := $(shell type uuidgen > /dev/null 2>&1 && uuidgen)
+UUID         := $(shell type uuidgen > /dev/null 2>&1 && uuidgen | cut -c -7)
 UBUNTU_EMACS := 24.4 24.5
 ALPINE_EMACS := 25.3 26.2
 DOCKER_EMACS := $(UBUNTU_EMACS:%=ubuntu-min-%) $(ALPINE_EMACS:%=alpine-min-%)
@@ -75,32 +75,32 @@ diff:
 #  multi Emacs version test (on independent environment)
 #
 
-allcheck: $(DOCKER_EMACS:%=.make/verbose-%)
+allcheck: $(DOCKER_EMACS:%=.make/verbose-${UUID}-emacs-test--%)
 	@echo ""
 	@cat $^ | grep =====
 	@rm -rf $^
 
 .make/verbose-%: .make $(DEPENDS)
-	docker run -itd --name ${UUID}-$* conao3/emacs:$* /bin/sh
-	docker cp . ${UUID}-$*:/test
-	docker exec ${UUID}-$* sh -c "cd test && make clean-soft && make check 2>&1" | tee $@
-	docker rm -f ${UUID}-$*
+	docker run -itd --name $(*F) conao3/emacs:$(shell echo $* | sed "s/.*--//") /bin/sh
+	docker cp . $(*F):/test
+	docker exec $(*F) sh -c "cd test && make clean-soft && make check 2>&1" | tee $@
+	docker rm -f $(*F)
 
 ##############################
 #
 #  silent `allcheck' job
 #
 
-test: $(DOCKER_EMACS:%=.make/silent-%)
+test: $(DOCKER_EMACS:%=.make/silent-${UUID}-emacs-test--%)
 	@echo ""
 	@cat $^ | grep =====
 	@rm -rf $^
 
 .make/silent-%: .make $(DEPENDS)
-	docker run -itd --name ${UUID}-$* conao3/emacs:$* /bin/sh
-	docker cp . ${UUID}-$*:/test
-	docker exec ${UUID}-$* sh -c "cd test && make clean-soft && make check 2>&1" > $@
-	docker rm -f ${UUID}-$*
+	docker run -itd --name $(*F) conao3/emacs:$(shell echo $* | sed "s/.*--//") /bin/sh
+	docker cp . $(*F):/test
+	docker exec $(*F) sh -c "cd test && make clean-soft && make check 2>&1" > $@
+	docker rm -f $(*F)
 
 .make:
 	mkdir $@
