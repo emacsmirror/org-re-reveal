@@ -49,7 +49,7 @@ REVEALTEST   := highlightjs klipsify slide-numbers slide-numbers-toc split
 
 ##################################################
 
-.PHONY: all build diff check allcheck test clean
+.PHONY: all build diff check allcheck test clean clean-soft
 
 all: build
 
@@ -107,6 +107,9 @@ test: $(ALL_EMACS:%=.make/silent-%)
 #
 #  other make jobs
 #
+
+clean-soft:
+	rm -rf $(ELC) .make
 
 clean:
 	rm -rf $(ELC) $(DEPENDS) .make
