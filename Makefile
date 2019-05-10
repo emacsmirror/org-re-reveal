@@ -83,8 +83,7 @@ allcheck: $(DOCKER_EMACS:%=.make/verbose-%)
 .make/verbose-%: .make $(DEPENDS)
 	docker run -itd --name ${UUID}-$* conao3/emacs:$* /bin/sh
 	docker cp . ${UUID}-$*:/test
-	docker exec ${UUID}-$* sh -c "cd test && make clean-soft && make check" 2>&1 > $@
-	cat $@
+	docker exec ${UUID}-$* sh -c "cd test && make clean-soft && make check 2>&1" | tee $@
 	docker rm -f ${UUID}-$*
 
 ##############################
@@ -100,7 +99,7 @@ test: $(DOCKER_EMACS:%=.make/silent-%)
 .make/silent-%: .make $(DEPENDS)
 	docker run -itd --name ${UUID}-$* conao3/emacs:$* /bin/sh
 	docker cp . ${UUID}-$*:/test
-	docker exec ${UUID}-$* sh -c "cd test && make clean-soft && make check" 2>&1 > $@
+	docker exec ${UUID}-$* sh -c "cd test && make clean-soft && make check 2>&1" > $@
 	docker rm -f ${UUID}-$*
 
 .make:
