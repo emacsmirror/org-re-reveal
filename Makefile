@@ -48,7 +48,7 @@ REVEALTEST   := highlightjs klipsify slide-numbers slide-numbers-toc split
 
 ##################################################
 
-.PHONY: all build diff check allcheck test clean clean-soft
+.PHONY: all build diff check allcheck test clean clean-soft clean-docker
 
 all: build
 
@@ -109,6 +109,9 @@ test: $(DOCKER_EMACS:%=.make/silent-${UUID}-emacs-test--%)
 #
 #  other make jobs
 #
+
+clean-docker:
+	docker ps -aqf "name=-emacs-test--" | xargs docker rm -f
 
 clean-soft:
 	rm -rf $(ELS:%.el=%.elc) .make
