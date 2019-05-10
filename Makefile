@@ -27,12 +27,11 @@ all:
 # org-re-reveal requires ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 
 TOP          := $(dir $(lastword $(MAKEFILE_LIST)))
-EMACS_RAW    := $(sort $(shell find `echo $$PATH | tr : ' '` -type f -name 'emacs-*' 2>/dev/null | sed 's|.*/||'))
-EXPECT_EMACS := 24.4 24.5
-EXPECT_EMACS  += 25.1 25.2 25.3
-EXPECT_EMACS  += 26.1 26.2
 
-ALL_EMACS    := $(filter $(EMACS_RAW),$(EXPECT_EMACS:%=emacs-%))
+UUID         := $(shell type uuidgen > /dev/null 2>&1 && uuidgen)
+UBUNTU_EMACS := 24.4 24.5
+ALPINE_EMACS := 25.3 26.2
+DOCKER_EMACS := $(UBUNTU_EMACS:%=ubuntu-min-%) $(ALPINE_EMACS:%=alpine-min-%)
 
 DEPENDS      := org-plus-contrib htmlize
 ADDITON      := test-cases
@@ -58,7 +57,7 @@ all: build
 build: $(ELS:%.el=%.elc)
 
 %.elc: %.el $(DEPENDS)
-	$(BATCH) $(DEPENDS:%=-L %/) -f batch-byte-compile $<
+	$(EMACS) $(BATCHARGS) $(DEPENDS:%=-L %/) -f batch-byte-compile $<
 
 ##############################
 #
@@ -76,32 +75,32 @@ diff:
 #  multi Emacs version test (on independent environment)
 #
 
-allcheck: $(ALL_EMACS:%=.make/verbose-%)
+allcheck: $(DOCKER_EMACS:%=.make/verbose-%)
 	@echo ""
-	@echo $(^:%=%/.make-test-log) | xargs --no-run-if-empty cat | grep =====
+	@cat $^ | grep =====
 	@rm -rf $^
 
 .make/verbose-%: $(DEPENDS)
-	mkdir -p $@
-	cp -rf $(ELS) $(CORTELS) $(DEPENDS) $(ADDITON) $@/
-	cd $@; echo $(ELS) | xargs -n1 -t $* $(BATCHARGS) -f batch-byte-compile
-	cd $@; $* $(BATCHARGS) -l $(TESTFILE) -f cort-test-run | tee .make-test-log
+	docker run -itd --name ${UUID}-$* conao3/emacs:$* /bin/sh
+	docker cp . ${UUID}-$*:/test
+	docker exec ${UUID}-$* sh -c "cd test && make clean-soft && make check" 2>&1 | tee $@
+	docker rm -f ${UUID}-$*
 
 ##############################
 #
 #  silent `allcheck' job
 #
 
-test: $(ALL_EMACS:%=.make/silent-%)
+test: $(DOCKER_EMACS:%=.make/silent-%)
 	@echo ""
-	@cat $(^:%=%/.make-test-log) | grep =====
+	@cat $^ | grep =====
 	@rm -rf $^
 
 .make/silent-%: $(DEPENDS)
-	@mkdir -p $@
-	@cp -rf $(ELS) $(CORTELS) $(DEPENDS) $(ADDITON) $@/
-	@cd $@; echo $(ELS) | xargs -n1 $* $(BATCHARGS) -f batch-byte-compile
-	@cd $@; $* $(BATCHARGS) -l $(TESTFILE) -f cort-test-run > .make-test-log 2>&1
+	docker run -itd --name ${UUID}-$* conao3/emacs:$* /bin/sh
+	docker cp . ${UUID}-$*:/test
+	docker exec ${UUID}-$* sh -c "cd test && make clean-soft && make check" 2>&1 > $@
+	docker rm -f ${UUID}-$*
 
 ##############################
 #
