@@ -29,6 +29,7 @@ all:
 TOP          := $(dir $(lastword $(MAKEFILE_LIST)))
 
 UUID         := $(shell type uuidgen > /dev/null 2>&1 && uuidgen | cut -c -7)
+
 UBUNTU_EMACS := 24.4 24.5
 ALPINE_EMACS := 25.3 26.2
 DOCKER_EMACS := $(UBUNTU_EMACS:%=ubuntu-min-%) $(ALPINE_EMACS:%=alpine-min-%)
@@ -57,7 +58,7 @@ all: build
 build: $(ELS:%.el=%.elc)
 
 %.elc: %.el $(DEPENDS)
-	$(BATCH) $(DEPENDS:%=-L %/) -f batch-byte-compile $<
+	$(BATCH) -f batch-byte-compile $<
 
 ##############################
 #
