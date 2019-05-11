@@ -81,10 +81,10 @@ allcheck: $(DOCKER_EMACS:%=.make/verbose-${UUID}-emacs-test--%)
 	@rm -rf $^
 
 .make/verbose-%: .make $(DEPENDS)
-	docker run -itd --name $(*F) conao3/emacs:$(shell echo $* | sed "s/.*--//") /bin/sh
-	docker cp . $(*F):/test
-	docker exec $(*F) sh -c "cd test && make clean-soft && make check 2>&1" | tee $@
-	docker rm -f $(*F)
+	docker run -itd --name $* conao3/emacs:$(shell echo $* | sed "s/.*--//") /bin/sh
+	docker cp . $*:/test
+	docker exec $* sh -c "cd test && make clean-soft && make check 2>&1" | tee $@
+	docker rm -f $*
 
 ##############################
 #
@@ -97,10 +97,10 @@ test: $(DOCKER_EMACS:%=.make/silent-${UUID}-emacs-test--%)
 	@rm -rf $^
 
 .make/silent-%: .make $(DEPENDS)
-	docker run -itd --name $(*F) conao3/emacs:$(shell echo $* | sed "s/.*--//") /bin/sh
-	docker cp . $(*F):/test
-	docker exec $(*F) sh -c "cd test && make clean-soft && make check 2>&1" > $@ || ( docker rm -f $* && false )
-	docker rm -f $(*F)
+	docker run -itd --name $* conao3/emacs:$(shell echo $* | sed "s/.*--//") /bin/sh
+	docker cp . $*:/test
+	docker exec $* sh -c "cd test && make clean-soft && make check 2>&1" > $@ || ( docker rm -f $* && false )
+	docker rm -f $*
 
 .make:
 	mkdir $@
