@@ -29,6 +29,7 @@ all:
 TOP          := $(dir $(lastword $(MAKEFILE_LIST)))
 
 UUID         := $(shell type uuidgen > /dev/null 2>&1 && uuidgen | cut -c -7)
+
 UBUNTU_EMACS := 24.4 24.5
 ALPINE_EMACS := 25.3 26.2
 DOCKER_EMACS := $(UBUNTU_EMACS:%=ubuntu-min-%) $(ALPINE_EMACS:%=alpine-min-%)
@@ -48,7 +49,7 @@ REVEALTEST   := highlightjs klipsify slide-numbers slide-numbers-toc split
 
 ##################################################
 
-.PHONY: all build diff check allcheck test clean clean-soft clean-docker
+.PHONY: all build diff check allcheck test clean clean-soft
 
 all: build
 
@@ -57,7 +58,7 @@ all: build
 build: $(ELS:%.el=%.elc)
 
 %.elc: %.el $(DEPENDS)
-	$(BATCH) $(DEPENDS:%=-L %/) -f batch-byte-compile $<
+	$(BATCH) -f batch-byte-compile $<
 
 ##############################
 #
@@ -81,10 +82,10 @@ allcheck: $(DOCKER_EMACS:%=.make/verbose-${UUID}-emacs-test--%)
 	@rm -rf $^
 
 .make/verbose-%: .make $(DEPENDS)
-	docker run -itd --name $(*F) conao3/emacs:$(shell echo $* | sed "s/.*--//") /bin/sh
-	docker cp . $(*F):/test
-	docker exec $(*F) sh -c "cd test && make clean-soft && make check 2>&1" | tee $@
-	docker rm -f $(*F)
+	docker run -itd --name $* conao3/emacs:$(shell echo $* | sed "s/.*--//") /bin/sh
+	docker cp . $*:/test
+	docker exec $* sh -c "cd test && make clean-soft && make check -j 2>&1" | tee $@
+	docker rm -f $*
 
 ##############################
 #
@@ -97,10 +98,10 @@ test: $(DOCKER_EMACS:%=.make/silent-${UUID}-emacs-test--%)
 	@rm -rf $^
 
 .make/silent-%: .make $(DEPENDS)
-	docker run -itd --name $(*F) conao3/emacs:$(shell echo $* | sed "s/.*--//") /bin/sh
-	docker cp . $(*F):/test
-	docker exec $(*F) sh -c "cd test && make clean-soft && make check 2>&1" > $@
-	docker rm -f $(*F)
+	docker run -itd --name $* conao3/emacs:$(shell echo $* | sed "s/.*--//") /bin/sh
+	docker cp . $*:/test
+	docker exec $* sh -c "cd test && make clean-soft && make check -j 2>&1" > $@ || ( docker rm -f $*; cat $@ || false )
+	docker rm -f $*
 
 .make:
 	mkdir $@
@@ -109,9 +110,6 @@ test: $(DOCKER_EMACS:%=.make/silent-${UUID}-emacs-test--%)
 #
 #  other make jobs
 #
-
-clean-docker:
-	docker ps -aqf "name=-emacs-test--" | xargs docker rm -f
 
 clean-soft:
 	rm -rf $(ELS:%.el=%.elc) .make
