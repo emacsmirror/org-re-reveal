@@ -99,7 +99,7 @@ test: $(DOCKER_EMACS:%=.make/silent-${UUID}-emacs-test--%)
 .make/silent-%: .make $(DEPENDS)
 	docker run -itd --name $(*F) conao3/emacs:$(shell echo $* | sed "s/.*--//") /bin/sh
 	docker cp . $(*F):/test
-	docker exec $(*F) sh -c "cd test && make clean-soft && make check 2>&1" > $@
+	docker exec $(*F) sh -c "cd test && make clean-soft && make check 2>&1" > $@ || ( docker rm -f $* && false )
 	docker rm -f $(*F)
 
 .make:
