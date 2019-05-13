@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(require 'cort-test)
+(load "cort-test")
 (require 'org-re-reveal)
 
 (defun org-re-reveal-tests-f-parent (path)
