@@ -32,5 +32,10 @@ integrated later on.
 [This document](https://github.com/NARKOZ/gitlab/blob/master/CONTRIBUTING.md#pull-requests)
 explains how create merge/pull requests based on topic branches, which
 is also recommended for larger contributions here.  Smaller changes
-might also be performed using the `edit` button when viewing a file of your
-fork in GitLab’s Web interface.
+might also be performed using the buttons `edit` or `Web IDE` when
+viewing a file of your fork in GitLab’s Web interface.
+
+Please make sure that your merge requests pass tests (`make check`,
+maybe also `make allcheck` which sets up Docker images first).
+Depending on the nature of your changes, you may need to update the
+files `test-cases/expect-*`.
