@@ -96,6 +96,7 @@
       (:reveal-keyboard nil "reveal_keyboard" org-re-reveal-keyboard t)
       (:reveal-mousewheel nil "reveal_mousewheel" org-re-reveal-mousewheel t)
       (:reveal-fragmentinurl nil "reveal_fragmentinurl" org-re-reveal-fragmentinurl t)
+      (:reveal-hashonebasedindex nil "reveal_hashonebasedindex" org-re-reveal-hashonebasedindex t)
       (:reveal-pdfseparatefragments nil "reveal_pdfseparatefragments" org-re-reveal-pdfseparatefragments t)
       (:reveal-defaulttiming nil "reveal_defaulttiming" org-re-reveal-defaulttiming t)
       (:reveal-generate-ids nil "reveal_generate_ids" org-re-reveal-generate-custom-ids t)
@@ -368,6 +369,11 @@ To enable multiplex, see `org-re-reveal-plugins'."
   :type 'boolean)
 
 (defcustom org-re-reveal-fragmentinurl nil
+  "Reveal use fragmentInURL setting."
+  :group 'org-export-re-reveal
+  :type 'boolean)
+
+(defcustom org-re-reveal-hashonebasedindex nil
   "Reveal use fragmentInURL setting."
   :group 'org-export-re-reveal
   :type 'boolean)
@@ -927,6 +933,7 @@ rollingLinks: %s,
 keyboard: %s,
 mouseWheel: %s,
 fragmentInURL: %s,
+hashOneBasedIndex: %s,
 pdfSeparateFragments: %s,
 %s
 overview: %s,
@@ -942,6 +949,7 @@ overview: %s,
           (if (plist-get info :reveal-keyboard) "true" "false")
           (if (plist-get info :reveal-mousewheel) "true" "false")
           (if (plist-get info :reveal-fragmentinurl) "true" "false")
+          (if (plist-get info :reveal-hashonebasedindex) "true" "false")
           (if (plist-get info :reveal-pdfseparatefragments) "true" "false")
           (let ((timing (plist-get info :reveal-defaulttiming)))
             (if timing (format "defaultTiming: %s," timing)
