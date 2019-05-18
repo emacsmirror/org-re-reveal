@@ -41,3 +41,7 @@
     elsewhere, see issue #13)
   - Also allow string values (percentages) for ~org-re-reveal-width~
     and ~org-re-reveal-height~, suggested in issue #13
+- Version 1.1.5
+  - Support for option hashOneBasedIndex of reveal.js, MR !22
+  - Do not create title slide for empty string, fix documentation for
+    avoidance of title slide in Readme.org, addresses issue #17

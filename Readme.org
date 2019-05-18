@@ -302,12 +302,9 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    title, the author, the Email, the date and the time-stamp of the
    Org document, controlled by Org's [[https://orgmode.org/org.html#Export-settings][export settings]].
 
-   To avoid a title slide, please set variable
-   ~org-re-reveal-title-slide~ to ~nil~, or add ~reveal_title_slide:nil~ to
-   ~#+OPTIONS:~ line.
-
-   To restore the default title slide, please set variable
-   ~org-re-reveal-title-slide~ to ~'auto~.
+   To avoid a title slide, set variable
+   ~org-re-reveal-title-slide~ to ~nil~ or add the following header line:
+   ~#+REVEAL_TITLE_SLIDE:~
 
 *** Customize the Title Slide
 

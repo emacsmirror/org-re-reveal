@@ -7,7 +7,7 @@
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 1.1.4
+;; Version: 1.1.5
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -233,10 +233,10 @@ else get value from custom variable `org-re-reveal-hlevel'."
       org-re-reveal-hlevel)))
 
 (defcustom org-re-reveal-title-slide 'auto
-  "Non-nil means insert a title slide.
-
-When set to `auto', an automatic title slide is generated.  When
-set to a string, use this string as a format string for title
+  "If nil or empty string, do not insert a title slide.
+Otherwise (`auto' or non-empty string), insert title slide.
+When `auto', generate automatic title slide.
+When set to a string, use this string as format string for the title
 slide, where the following escaping elements are allowed:
 
   %t stands for the title.
@@ -1633,7 +1633,9 @@ INFO is a plist holding export options."
 <div class=\"slides\">\n"
    ;; Title slides
    (let ((title-slide (plist-get info :reveal-title-slide)))
-     (when (and title-slide (not (plist-get info :reveal-subtree)))
+     (when (and (or (eq 'auto title-slide)
+                    (and (stringp title-slide) (< 0 (length title-slide))))
+                (not (plist-get info :reveal-subtree)))
        (let ((title-slide-background (plist-get info :reveal-title-slide-background))
              (title-slide-background-size (plist-get info :reveal-title-slide-background-size))
              (title-slide-background-position (plist-get info :reveal-title-slide-background-position))
@@ -1694,7 +1696,7 @@ First, map each `attr_reveal' attribute to corresponding
 Second, if `org-re-reveal-generate-custom-ids' is t (or option
 \"reveal_generate_ids\" is t), generate \"CUSTOM_ID\" values for
 section headings that do not have one already."
-  (cl-assert (org-export-derived-backend-p backend 're-reveal) nil 
+  (cl-assert (org-export-derived-backend-p backend 're-reveal) nil
              (format "Function org-re-reveal-filter-parse-tree called on unexpected backend: %s" backend))
   (let ((default-frag-style (plist-get info :reveal-default-frag-style)))
     (org-element-map tree (remq 'item org-element-all-elements)
