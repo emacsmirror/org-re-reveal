@@ -45,3 +45,5 @@
   - Support for option hashOneBasedIndex of reveal.js, MR !22
   - Do not create title slide for empty string, fix documentation for
     avoidance of title slide in Readme.org, addresses issue #17
+- Version 1.1.6
+  - Fix issue #22

@@ -886,8 +886,11 @@ based on `org-re-reveal-external-plugins'."
     (if file-contents
         (cl-loop for value in (split-string (string-trim file-contents) "\n")
                  collect (format value root-path))
-      (cl-loop for (nil . value) in external-plugins
-               collect (format value root-path)))))
+      (let ((plugins (if (listp external-plugins)
+                         external-plugins
+                       (read external-plugins))))
+        (cl-loop for (nil . value) in plugins
+                 collect (format value root-path))))))
 
 (defvar org-re-reveal-client-multiplex nil
   "Used to cause generation of client html file for multiplex.")
