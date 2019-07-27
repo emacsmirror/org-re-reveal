@@ -42,7 +42,9 @@ plugins as submodules, combined with suitable Emacs configuration.
 A [[https://gitlab.com/oer/emacs-reveal-howto][Howto for the generation of reveal.js presentations (slides with audio) with emacs-reveal]]
 exists as well.
 
-I use emacs-reveal to generate Open Educational Resources (OER):
+I use emacs-reveal to generate Open Educational Resources (OER), and
+macros coming with emacs-reveal simplify license attribution for
+embedded figures considerably:
 [[https://oer.gitlab.io/OS/][OER presentations for a course on operating systems]]
 
 ** Extensions of fork compared to upstream
