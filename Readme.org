@@ -212,6 +212,14 @@ I use emacs-reveal to generate Open Educational Resources (OER):
    cool slides.  (Of course, the location of reveal.js must be
    configured properly, as explained earlier.)
 
+** Error about head.min.js
+   Older versions of reveal.js included an initialization file
+   ~head.min.js~, which does not exist with newer versions.  By
+   default, ~org-re-reveal~ tries to load all files of
+   ~org-re-reveal-script-files~.  If you see an error (in the
+   browser’s console) that ~lib/js/head.min.js~ does not exist,
+   customize ~org-re-reveal-script-files~ to remove it.
+
 ** The HLevel
 
    org-re-reveal maps each heading and its contents to one reveal.js
