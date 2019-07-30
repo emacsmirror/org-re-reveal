@@ -8,3 +8,4 @@ test:
   - make check
   only:
   - master
+  - merge_requests
