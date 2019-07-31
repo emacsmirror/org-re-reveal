@@ -5,6 +5,7 @@
 ;;                         https://github.com/yjwen/org-reveal/commits/master
 ;; Copyright (C) 2017-2019 Jens Lechtenbörger
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
+;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
 ;; Version: 1.1.6
@@ -112,6 +113,7 @@
       (:reveal-theme "REVEAL_THEME" nil org-re-reveal-theme t)
       (:reveal-extra-css "REVEAL_EXTRA_CSS" nil org-re-reveal-extra-css newline)
       (:reveal-extra-js "REVEAL_EXTRA_JS" nil org-re-reveal-extra-js nil)
+      (:reveal-extra-attr "REVEAL_EXTRA_ATTR" nil org-re-reveal-extra-attr nil)
       (:reveal-hlevel "REVEAL_HLEVEL" nil nil t)
       (:reveal-title-slide "REVEAL_TITLE_SLIDE" nil org-re-reveal-title-slide newline)
       (:reveal-academic-title "REVEAL_ACADEMIC_TITLE" nil nil t)
@@ -294,6 +296,13 @@ slide's HTML code (containing the above escape sequences)."
   "URL to extra JS file."
   :group 'org-export-re-reveal
   :type 'string)
+
+(defcustom org-re-reveal-extra-attr nil
+  "Global Reveal Extra Attrs for all slides."
+  :group 'org-export-re-reveal
+  :type '(choice
+          string
+          (const nil)))
 
 (defcustom org-re-reveal-extra-css ""
   "URL to extra css file."
@@ -745,7 +754,8 @@ holding contextual information."
              (footer-div (if footer (format org-re-reveal-slide-footer-html footer) ""))
              (first-sibling (org-export-first-sibling-p headline info))
              (attrs (org-re-reveal--section-attrs headline info))
-             (extra-attrs (org-element-property :REVEAL_EXTRA_ATTR headline))
+             (extra-attrs (or (org-element-property :REVEAL_EXTRA_ATTR headline)
+                              (plist-get info :reveal-extra-attr)))
              (slide-section-tag (format "<section id=\"%s\"%s%s>\n"
                                         (format "%s%s" org-re-reveal--slide-id-prefix preferred-id)
                                         attrs
