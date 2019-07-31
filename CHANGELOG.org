@@ -47,3 +47,6 @@
     avoidance of title slide in Readme.org, addresses issue #17
 - Version 1.1.6
   - Fix issue #22
+- Version 1.1.7
+  - New customizable variable ~org-re-reveal-extra-attr~, MR !24
+    - Add extra attributes for all slides
