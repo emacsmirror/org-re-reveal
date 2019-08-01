@@ -1,0 +1,13 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2019 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_EXTRA_OPTIONS: controlsTutorial: false, controlsLayout: 'edges'
+
+#+Title: Passing extra options
+#+Author: Jens Lechtenbörger
+
+* Just a slide
+  - Nothing really special here
+  - Note that controls are at the edges
