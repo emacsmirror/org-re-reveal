@@ -383,7 +383,7 @@ To enable multiplex, see `org-re-reveal-plugins'."
   :type 'boolean)
 
 (defcustom org-re-reveal-hashonebasedindex nil
-  "Reveal use fragmentInURL setting."
+  "Reveal use hashOneBasedIndex setting."
   :group 'org-export-re-reveal
   :type 'boolean)
 
