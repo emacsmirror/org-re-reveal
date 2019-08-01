@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 1.1.7
+;; Version: 1.1.8
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -107,6 +107,7 @@
       (:reveal-margin "REVEAL_MARGIN" nil org-re-reveal-margin t)
       (:reveal-min-scale "REVEAL_MIN_SCALE" nil org-re-reveal-min-scale t)
       (:reveal-max-scale "REVEAL_MAX_SCALE" nil org-re-reveal-max-scale t)
+      (:reveal-extra-options "REVEAL_EXTRA_OPTIONS" nil org-re-reveal-extra-options t)
       (:reveal-root "REVEAL_ROOT" nil org-re-reveal-root t)
       (:reveal-trans "REVEAL_TRANS" nil org-re-reveal-transition t)
       (:reveal-speed "REVEAL_SPEED" nil org-re-reveal-transition-speed t)
@@ -428,6 +429,16 @@ To enable multiplex, see `org-re-reveal-plugins'."
   "Maximum bound for scaling slide (in a string)."
   :group 'org-export-re-reveal
   :type 'string)
+
+(defcustom org-re-reveal-extra-options nil
+  "Extra options to be passed to Reveal.initialize().
+Useful to specify options without keyword in org-re-reveal, e.g.,
+\"controlsTutorial: false, controlsLayout: 'edges'\".
+Individual options are separated by comma.
+For the current list of reveal.js options, see URL
+`https://github.com/hakimel/reveal.js/#configuration.'"
+  :group 'org-export-re-reveal
+  :type '(choice string (const nil)))
 
 (defcustom org-re-reveal-mathjax-url
   "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
@@ -1012,7 +1023,10 @@ theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
 transition: Reveal.getQueryHash().transition || '%s', // see README of reveal.js for options
 transitionSpeed: '%s',\n"
            (plist-get info :reveal-trans)
-           (plist-get info :reveal-speed))))
+           (plist-get info :reveal-speed))
+
+   (let ((options (plist-get info :reveal-extra-options)))
+     (org-re-reveal--if-format "%s,\n" options))))
 
 (defun org-re-reveal-scripts--multiplex (info)
   "Internal function for `org-re-reveal-scripts' with INFO."

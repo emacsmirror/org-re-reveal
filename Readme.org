@@ -621,9 +621,12 @@ embedded figures considerably:
       =org-re-reveal-mousewheel=, =org-re-reveal-defaulttiming=,
       =org-re-reveal-fragmentinurl=, =org-re-reveal-pdfseparatefragments=,
       =org-re-reveal-overview=, =org-re-reveal-inter-presentation-links=,
-      =org-re-reveal-generate-custom-ids=
+      =org-re-reveal-generate-custom-ids=, =org-re-reveal-extra-options=
 
     For examples, please refer to the heading part of this document.
+    Note that =#+REVEAL_EXTRA_OPTIONS: your_comma_separated_options=
+    and =org-re-reveal-extra-options= allow to specify all
+    [[https://github.com/hakimel/reveal.js/#configuration][configuration options of reveal.js]].
 
 ** Third-Party Plugins
    Reveal.js is also extensible through third-party plugins, which can

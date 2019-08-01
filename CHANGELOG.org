@@ -50,3 +50,6 @@
 - Version 1.1.7
   - New customizable variable ~org-re-reveal-extra-attr~, MR !24
     - Add extra attributes for all slides
+- Version 1.1.8
+  - New customizable variable ~org-re-reveal-extra-options~
+    - Address issue #16
