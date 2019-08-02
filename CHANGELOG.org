@@ -2,7 +2,35 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2019 Jens Lechtenbörger
 
-* Documentation of user-facing changes of org-re-reveal
+* Initial differences of fork org-reveal from upstream (until Feb 2019)
+In roughly chronological order
+- (Next to code changes for lexical binding and to avoid warnings by
+  checkdoc, package lint, byte compiler)
+- Variables org-re-reveal-title-slide and
+  org-re-reveal-external-plugins can be filenames (to maintain
+  non-trivial code separately)
+- Allow to add data-state to title and TOC slide, class to TOC slide
+- Allow audio to be played with fragments (with audio-slideshow plugin)
+- Allow custom title and location for TOC (new options
+  reveal-toc-slide-state, reveal-toc-slide-class, reveal-toc-slide-title)
+- Enable links to slides of other presentations (with new option
+  reveal-inter-presentation-links)
+- More reveal.js options: mouseWheel, defaultTiming, fragmentInURL,
+  pdfSeparateFragments
+- Allow frag-index on source blocks
+- Improve timing of presentations (org-re-reveal-defaulttiming,
+  reveal-title-slide-timing)
+- New function org-re-reveal-format-spec
+- New options reveal-toc-footer, reveal-title-slide-state
+- New customizable variable org-re-reveal-slide-footer-html
+- Add customizable variable org-re-reveal-script-files (avoid loading
+  of head.min.js in versions of reveal.js where it does not exist)
+- Allow to add class attribute to headline
+- Add class attributes (backwardlink, forwardlink) to internal links
+- Improve klipse support (add variable org-re-reveal-klipse-languages,
+  fix PHP support)
+
+* Documentation of user-facing changes of org-re-reveal (since Feb 2019)
 - Version 1.0.0
   - Improved documentation
   - New export key binding (~C-c C-e v v~), customizable via
