@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 1.1.9
+;; Version: 1.1.10
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -607,8 +607,7 @@ registering the completion."
     ("php" . "selector_eval_php")
     ("python" . "selector_eval_python_client")
     ("ruby" . "selector_eval_ruby")
-    ("scheme" . "selector_eval_scheme")
-    ("sql" . "selector_sql"))
+    ("scheme" . "selector_eval_scheme"))
   "Supported klipse languages with selectors.
 This is a list of pairs (language . selector).  Each language needs to be the
 language of an Org source block.  For existing klipse selectors, see URL
@@ -620,7 +619,7 @@ at URL `https://gitlab.com/oer/org-re-reveal/issues/23'?"
           (cons
            (string :tag "Language")
            (string :tag "Selector")))
-  :package-version '(org-re-reveal . "1.1.9"))
+  :package-version '(org-re-reveal . "1.1.10"))
 
 (defvar org-re-reveal-klipse-languages
   (mapcar #'car org-re-reveal-klipse-setup)
