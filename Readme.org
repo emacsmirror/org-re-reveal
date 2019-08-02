@@ -693,11 +693,11 @@ embedded figures considerably:
 #+MACRO: klipse-languages (eval (message "%s" (mapconcat #'identity org-re-reveal-klipse-languages ", ")))
 ** Editable and Executable Source Code
    It is now possible to embed code blocks in a codemirror instance in
-   order to edit and execute code during a presentation.  At present, this
-   capacity is turned on or off at time export using these defcustoms:
+   order to edit and execute code during a presentation.  Relevant defcustoms:
    - ~org-re-reveal-klipsify-src~
    - ~org-re-reveal-klipse-css~
    - ~org-re-reveal-klipse-js~
+   - ~org-re-reveal-klipse-setup~
    This feature is turned off by default and needs to be switched on,
    either globally with ~org-re-reveal-klipsify-src~ or per code block
    with ~#+ATTR_REVEAL: :klipsify t~.
@@ -995,9 +995,9 @@ embedded figures considerably:
    ~klipse-width~ (see next slide for an example).
 
    Src blocks with the languages contained in
-   ~org-re-reveal-klipse-languages~ will be executed with output shown
-   in a console-like environment.  See the source code of
-   ~org-re-reveal-src-block~ for more details.
+   ~org-re-reveal-klipse-setup~ will be executed with output shown in
+   a console-like environment.  See its documentation for more
+   details.
 
 *** HTML Src Block
 #+ATTR_REVEAL: :klipsify t :klipse-height 200px

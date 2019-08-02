@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 1.1.8
+;; Version: 1.1.9
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -599,8 +599,31 @@ registering the completion."
   :group 'org-export-re-reveal
   :type 'string)
 
-(defconst org-re-reveal-klipse-languages
-  '("clojure" "html" "javascript" "js" "php" "python" "ruby" "scheme")
+(defcustom org-re-reveal-klipse-setup
+  '(("clojure" . "selector")
+    ("html" . "selector_eval_html")
+    ("javascript" . "selector_eval_js")
+    ("js" . "selector_eval_js")
+    ("php" . "selector_eval_php")
+    ("python" . "selector_eval_python_client")
+    ("ruby" . "selector_eval_ruby")
+    ("scheme" . "selector_eval_scheme")
+    ("sql" . "selector_sql"))
+  "Supported klipse languages with selectors.
+This is a list of pairs (language . selector).  Each language needs to be the
+language of an Org source block.  For existing klipse selectors, see URL
+`https://github.com/viebel/klipse/blob/master/README.md#page-level-configuration'.
+If additional languages work for you, maybe you could report that in issue #23
+at URL `https://gitlab.com/oer/org-re-reveal/issues/23'?"
+  :group 'org-export-re-reveal
+  :type '(repeat
+          (cons
+           (string :tag "Language")
+           (string :tag "Selector")))
+  :package-version '(org-re-reveal . "1.1.9"))
+
+(defvar org-re-reveal-klipse-languages
+  (mapcar #'car org-re-reveal-klipse-setup)
   "List of languages supported by org-re-reveal.")
 
 (defcustom org-re-reveal-klipse-height "500px"
@@ -1523,15 +1546,7 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
                               :attr_reveal src-block :klipse-width)
                              org-re-reveal-klipse-width))
            (langselector
-            (cond ((or (string= lang "js") (string= lang "javascript"))
-                   "selector_eval_js")
-                  ((string= lang "clojure") "selector")
-                  ((string= lang "html") "selector_eval_html")
-                  ((string= lang "php") "selector_eval_php")
-                  ((string= lang "python") "selector_eval_python_client")
-                  ((string= lang "ruby") "selector_eval_ruby")
-                  ((string= lang "scheme") "selector_eval_scheme")
-                  )))
+            (cdr (assoc lang org-re-reveal-klipse-setup))))
       (if (not lang)
           (format "<pre %s%s>\n%s</pre>"
                   (or (org-re-reveal--frag-class frag info) " class=\"example\"")
