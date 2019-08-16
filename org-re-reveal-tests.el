@@ -116,5 +116,5 @@
         "slide-numbers-toc"
         "split"))
 
-(provide 'org-re-reveal-tests)
+;; (provide 'org-re-reveal-tests)
 ;;; org-re-reveal-tests.el ends here
