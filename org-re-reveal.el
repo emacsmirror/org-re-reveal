@@ -517,7 +517,7 @@ Must constain exactly one %-sequence \"%s\"."
   :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-plugins
-  '(classList markdown zoom notes)
+  '(markdown zoom notes search)
   "Default builtin plugins.
 
 By default,　variables related to multiplex are hidden.
@@ -525,17 +525,17 @@ Include 'multiplex in this variable to enable it.
 
 This variable, like any other variable, can be overridden
 in the org buffer comments as follows:
-  #+REVEAL_PLUGINS: (classList markdown zoom notes multiplex)"
+  #+REVEAL_PLUGINS: (markdown zoom notes multiplex)"
   :group 'org-export-re-reveal
   :type '(set
-          (const classList)
           (const markdown)
           (const highlight)
           (const zoom)
           (const notes)
           (const search)
-          (const remotes)
-          (const multiplex)))
+          (const multiplex)
+          (const :tag "classList (absent from modern reveal.js)" classList)
+          (const :tag "remotes (absent from modern reveal.js)" remotes)))
 
 (defcustom org-re-reveal-external-plugins nil
   "Additional third-party plugins to load with reveal.js.
@@ -1050,18 +1050,23 @@ transitionSpeed: '%s',\n"
    (let ((options (plist-get info :reveal-extra-options)))
      (org-re-reveal--if-format "%s,\n" options))))
 
-(defun org-re-reveal-scripts--multiplex (info)
-  "Internal function for `org-re-reveal-scripts' with INFO."
-  (let* (;; (plist-get info :reveal-plugins) maybe list or string representing list
-         (raw-enabled-builtin-plugins (plist-get info :reveal-plugins))
+(defun org-re-reveal--parse-plugins (info)
+  "Parse and return \":reveal-plugins\" in INFO.
+That value may be a list or a string representing a list."
+  (let* ((raw-enabled-builtin-plugins (plist-get info :reveal-plugins))
          (enabled-builtin-plugins
           (condition-case err
               (if (listp raw-enabled-builtin-plugins)
                   raw-enabled-builtin-plugins
                 (if (listp (read raw-enabled-builtin-plugins))
                     (read raw-enabled-builtin-plugins)
-                  (error "#+REVEAL_PLUGINS expect symbol list, like \"#+REVEAL_PLUGINS: (classList markdown zoom notes)\"")))
+                  (error "#+REVEAL_PLUGINS expects a symbol list, like \"#+REVEAL_PLUGINS: (markdown zoom notes)\"")))
             (error (signal (car err) (cdr err))))))
+    enabled-builtin-plugins))
+
+(defun org-re-reveal-scripts--multiplex (info)
+  "Internal function for `org-re-reveal-scripts' with INFO."
+  (let ((enabled-builtin-plugins (org-re-reveal--parse-plugins info)))
     (when (memq 'multiplex enabled-builtin-plugins)
       (format
        "multiplex: {
@@ -1078,25 +1083,13 @@ transitionSpeed: '%s',\n"
 (defun org-re-reveal-scripts--dependencies (info)
   "Internal function for `org-re-reveal-scripts' with INFO."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
-
          (in-single-file (plist-get info :reveal-single-file))
-
-         ;; (plist-get info :reveal-plugins) maybe list or string representing list
-         (raw-enabled-builtin-plugins (plist-get info :reveal-plugins))
-         (enabled-builtin-plugins
-          (condition-case err
-              (if (listp raw-enabled-builtin-plugins)
-                  raw-enabled-builtin-plugins
-                (if (listp (read raw-enabled-builtin-plugins))
-                    (read raw-enabled-builtin-plugins)
-                  (error "#+REVEAL_PLUGINS expect symbol list, like \"#+REVEAL_PLUGINS: (classList markdown zoom notes)\"")))
-            (error (signal (car err) (cdr err)))))
-         )
+         (enabled-builtin-plugins (org-re-reveal--parse-plugins info)))
     ;; optional JS library heading
     (if in-single-file ""
       (concat
        "
-// Optional libraries used to extend on reveal.js
+// Optional libraries used to extend reveal.js
 dependencies: [
 "
        ;; JS libraries
