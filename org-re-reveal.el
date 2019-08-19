@@ -538,7 +538,8 @@ in the org buffer comments as follows:
           (const search)
           (const multiplex)
           (const :tag "classList (absent from modern reveal.js)" classList)
-          (const :tag "remotes (absent from modern reveal.js)" remotes)))
+          (const :tag "remotes (absent from modern reveal.js)" remotes))
+  :package-version '(org-re-reveal . "1.1.11"))
 
 (defcustom org-re-reveal-external-plugins nil
   "Additional third-party plugins to load with reveal.js.
