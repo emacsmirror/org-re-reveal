@@ -86,3 +86,27 @@ In roughly chronological order
     - Address issue #23
 - Version 1.1.10
   - Remove SQL from ~org-re-reveal-klipse-setup~
+- Version 1.1.11
+  - Rewrite klipse support for SQL support, again for issue #23
+    - Instead of iframes, ordinary HTML elements are used now
+      - Now, state can be shared between slides, e.g., for SQL
+      - Now, scaling must be disabled for reveal.js with klipse
+        functionality
+        - Readme.org and test-cases/test-klipsify.org contain examples
+    - Width and height of code blocks are no longer configurable per
+      code block
+    - The following customizable variables are relevant now
+      - ~org-re-reveal-klipsify-src~ (with option
+        ~reveal_klipsify_src~), ~org-re-reveal-klipse-js~ (now with
+        non-minified version in view of
+        https://github.com/viebel/klipse/issues/334),
+        ~org-re-reveal-klipse-css~, ~org-re-reveal-klipse-setup~ (now
+        a list of triples), ~org-re-reveal-klipse-extra-css~,
+        ~org-re-reveal-klipse-codemirror~ (with keyword
+        =REVEAL_CODEMIRROR_CONFIG=),
+        ~org-re-reveal-klipse-extra-config~ (with keyword
+        =REVEAL_KLIPSE_EXTRA_CONFIG=)
+  - New third option for syntax highlighting: Disabled by default with
+    activation per source code block, see ~org-re-reveal-no-htmlize-src~
+  - Variable ~org-re-reveal-plugins~ has new default value, see
+    customize interface
