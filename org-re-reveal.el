@@ -520,7 +520,7 @@ Must constain exactly one %-sequence \"%s\"."
   :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-plugins
-  '(markdown zoom notes search)
+  '(markdown notes search zoom)
   "Default builtin plugins.
 
 By default,　variables related to multiplex are hidden.
