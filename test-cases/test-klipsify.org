@@ -12,6 +12,7 @@
 
 # Enable display of SQL result table, which is HTML.
 # Warning! This is a global setting for the entire presentation.
+# See https://github.com/viebel/klipse/issues/346
 #+REVEAL_KLIPSE_EXTRA_CONFIG: window.klipse_settings.editor_type = "html";
 
 # Some optional settings for CodeMirror.
