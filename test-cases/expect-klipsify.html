@@ -11,6 +11,35 @@
 
 <link rel="stylesheet" href="./reveal.js/css/theme/moon.css" id="theme"/>
 
+<link rel="stylesheet" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css"/>
+<style>
+/* Position computations of klipse get confused by reveal.js's scaling.
+   Hence, scaling should be disabled with this code.  Fix height of code area
+   with vertical scrollbar: */
+.reveal section pre { max-height: 70vh; height: auto; overflow-y: auto; }
+/* Reset some reveal.js settings: */
+.CodeMirror pre { font-size: 2em; box-shadow: none; width: auto; padding: 0.4em; }
+/* Enlarge cursor: */
+.CodeMirror-cursor { border-left: 3px solid black; }
+</style>
+<script>
+    window.klipse_settings = {
+codemirror_options_in: {
+lineNumbers: true,
+autoCloseBrackets: true
+},
+        selector: '.language-klipse',
+        selector_eval_html: '.language-klipse-html',
+        selector_eval_js: '.language-klipse-javascript',
+        selector_eval_js: '.language-klipse-js',
+        selector_eval_php: '.language-klipse-php',
+        selector_eval_python_client: '.language-klipse-python',
+        selector_eval_ruby: '.language-klipse-ruby',
+        selector_eval_scheme: '.language-klipse-scheme',
+        selector_sql: '.language-klipse-sql'
+    };
+    window.klipse_settings.editor_type = "html";
+</script>
 
 <!-- If the query includes 'print-pdf', include the PDF print sheet -->
 <script>
@@ -34,13 +63,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#/slide-1">1. Tests for different languages, with klipsify</a>
+<li><a href="#/slide-1">1. Different languages</a>
 <ul>
 <li><a href="#/slide-1-1">1.1. HTML</a></li>
 <li><a href="#/slide-1-2">1.2. JavaScript</a></li>
 <li><a href="#/slide-1-3">1.3. Python</a></li>
 </ul>
 </li>
+<li><a href="#/slide-2">2. SQL as example of state across slides</a>
+<ul>
+<li><a href="#/slide-2-1">2.1. SQL, Populate Database</a></li>
+<li><a href="#/slide-2-2">2.2. SQL, Query 1</a></li>
+<li><a href="#/slide-2-3">2.3. SQL, Query 2</a></li>
+</ul>
+</li>
+<li><a href="#/slide-3">3. An exception, no klipse here</a></li>
 </ul>
 </div>
 </div>
@@ -49,51 +86,29 @@
 
 <section>
 <section id="slide-1">
-<h2 id="1"><span class="section-number-2">1</span> Tests for different languages, with klipsify</h2>
+<h2 id="1"><span class="section-number-2">1</span> Different languages</h2>
 <div class="outline-text-2" id="text-1">
 </div>
 </section>
 <section id="slide-1-1">
 <h3 id="1-1"><span class="section-number-3">1.1</span> HTML</h3>
-<iframe style="background-color:white;" height="500px" width="100%" srcdoc='<html><body><pre><code data-editor-type="html" class="klipse" >
-&amp;lt;h1 class="whatever"&amp;gt;hello, what&#39;s your name&amp;lt;/h1&amp;gt;
-
+<pre><code class="language-klipse-html" >
+&lt;h1 class="whatever"&gt;hello, what&#39;s your name&lt;/h1&gt;
 </code></pre>
-<link rel= "stylesheet" type= "text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
-<style>
-.CodeMirror { font-size: 2em; }
-</style>
-<script>
-window.klipse_settings = { selector_eval_html: ".klipse" };
-</script>
-<script src= "https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script></body></html>
-'>
-</iframe>
 
 </section>
 <section id="slide-1-2">
 <h3 id="1-2"><span class="section-number-3">1.2</span> JavaScript</h3>
-<iframe style="background-color:white;" height="500px" width="100%" srcdoc='<html><body><pre><code class="klipse" >
+<pre><code class="language-klipse-js" >
 console.log(<span style="font-style: italic;">"success"</span>);
 <span style="font-weight: bold;">var</span> <span style="font-weight: bold; font-style: italic;">x</span>=<span style="font-style: italic;">&#39;string using single quote&#39;</span>;
 x
-
 </code></pre>
-<link rel= "stylesheet" type= "text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
-<style>
-.CodeMirror { font-size: 2em; }
-</style>
-<script>
-window.klipse_settings = { selector_eval_js: ".klipse" };
-</script>
-<script src= "https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script></body></html>
-'>
-</iframe>
 
 </section>
 <section id="slide-1-3">
 <h3 id="1-3"><span class="section-number-3">1.3</span> Python</h3>
-<iframe style="background-color:white;" height="500px" width="100%" srcdoc='<html><body><pre><code class="klipse" >
+<pre><code class="language-klipse-python" >
 <span style="font-weight: bold;">def</span> <span style="font-weight: bold;">factorial</span>(n):
     <span style="font-weight: bold;">if</span> n &lt; 2:
         <span style="font-weight: bold;">return</span> 1
@@ -101,18 +116,57 @@ window.klipse_settings = { selector_eval_js: ".klipse" };
         <span style="font-weight: bold;">return</span> n * factorial(n - 1)
 
 <span style="font-weight: bold;">print</span>(factorial(10))
-
 </code></pre>
-<link rel= "stylesheet" type= "text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
-<style>
-.CodeMirror { font-size: 2em; }
-</style>
-<script>
-window.klipse_settings = { selector_eval_python_client: ".klipse" };
-</script>
-<script src= "https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script></body></html>
-'>
-</iframe>
+
+</section>
+</section>
+<section>
+<section id="slide-2">
+<h2 id="2"><span class="section-number-2">2</span> SQL as example of state across slides</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+</section>
+<section id="slide-2-1">
+<h3 id="2-1"><span class="section-number-3">2.1</span> SQL, Populate Database</h3>
+<pre><code class="language-klipse-sql" >
+<span style="font-weight: bold;">CREATE</span> <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">Software</span> (<span style="font-weight: bold;">Name</span>, License, Rating);
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> Software <span style="font-weight: bold;">VALUES</span>
+   ("GNU Emacs", "GPLv3", 5),
+   ("GNU/Linux", "FLOSS", 5),
+   ("Powerpoint", "Proprietary", 3);
+</code></pre>
+
+</section>
+<section id="slide-2-2">
+<h3 id="2-2"><span class="section-number-3">2.2</span> SQL, Query 1</h3>
+<pre><code class="language-klipse-sql" >
+<span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span> Software;
+</code></pre>
+
+</section>
+<section id="slide-2-3">
+<h3 id="2-3"><span class="section-number-3">2.3</span> SQL, Query 2</h3>
+<pre><code class="language-klipse-sql" >
+<span style="font-weight: bold;">SELECT</span> <span style="font-weight: bold;">Name</span> <span style="font-weight: bold;">FROM</span> Software <span style="font-weight: bold;">WHERE</span> Rating = 5;
+</code></pre>
+
+
+</section>
+</section>
+<section>
+<section id="slide-3">
+<h2 id="3"><span class="section-number-2">3</span> An exception, no klipse here</h2>
+<div class="org-src-container">
+
+<pre  class="src src-python"><span style="font-weight: bold;">def</span> <span style="font-weight: bold;">factorial</span>(n):
+    <span style="font-weight: bold;">if</span> n &lt; 2:
+        <span style="font-weight: bold;">return</span> 1
+    <span style="font-weight: bold;">else</span>:
+        <span style="font-weight: bold;">return</span> n * factorial(n - 1)
+
+<span style="font-weight: bold;">print</span>(factorial(10))
+</pre>
+</div>
 </section>
 </section>
 </div>
@@ -139,20 +193,31 @@ pdfSeparateFragments: true,
 overview: true,
 width: 1400,
 height: 1000,
+minScale: 1.00,
+maxScale: 1.00,
 
 theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
 transition: Reveal.getQueryHash().transition || 'convex', // see README of reveal.js for options
 transitionSpeed: 'default',
 
-// Optional libraries used to extend on reveal.js
+// Optional libraries used to extend reveal.js
 dependencies: [
- { src: './reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
  { src: './reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
  { src: './reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
- { src: './reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
- { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+ { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }]
 
 });
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
+<script>
+/* Recompute layout upon changes by klipse.  Code fragment from
+   asciidoctor-revealjs-klipse by Timothy Pratley:
+   https://github.com/timothypratley/asciidoctor-revealjs-klipse/blob/master/docs/docinfo-footer.html */
+Reveal.addEventListener( 'slidechanged', function( event ) {
+    window.dispatchEvent( new Event('resize') );
+} );
 </script>
 </body>
 </html>
