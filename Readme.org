@@ -812,16 +812,13 @@ embedded figures considerably:
 ** Select Built-In Scripts
 
    Set option =REVEAL_PLUGINS= or variable =org-re-reveal-plugins= to a
-   lisp list to select built-in scripts.
+   lisp list to activate additional reveal.js functionality.
 
-   Available built-in scripts are:
-   classList/markdown/highlight/zoom/notes/search/remotes.
+   Variable =org-re-reveal-plugins= allows to select among available plugins.
 
-   Default built-ins are: classList/markdown/highlight/zoom/notes/multiplex.
-
-   The following examples select /markdown/ and /highlight/ only.
+   The following example selects /markdown/, /highlight/, and /search/.
 #+BEGIN_SRC org
-,#+REVEAL_PLUGINS: (markdown highlight)
+,#+REVEAL_PLUGINS: (markdown highlight search)
 #+END_SRC
 
 ** Extra Dependent Script
