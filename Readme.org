@@ -628,21 +628,18 @@ embedded figures considerably:
 
 ** Highlight Source Code
 
-   There are two ways to highlight source code.
-   1. Use your Emacs theme
+   There are three options to highlight source code (or not), see doc
+   string of customizable variable ~org-re-reveal-no-htmlize-src~.
+   1. Use your Emacs theme with ~htmlize.el~
    2. Use highlight.js
+   3. Disable htmlize with above variable, enable on selected source
+      code blocks
 
    To use your Emacs theme, please make sure ~htmlize.el~ is
    installed. Then no more setup is necessary.
 
-   Below is an example. Codes are copied from [[https://wiki.haskell.org/The_Fibonacci_sequence][Haskell Wiki]].
-   #+BEGIN_SRC haskell
-   fibs = 0 : 1 : next fibs
-       where next (a : t@(b:_)) = (a+b) : next t
-   #+END_SRC
-
-   If you saw odd indentation, please set variable =org-html-indent=
-   to =nil= and export again.
+   If indentation is wrong, maybe set variable =org-html-indent=
+   to =nil= and/or =org-src-preserve-indentation= to =t=.  Then export again.
 
 *** Using highlight.js
 
