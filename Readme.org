@@ -17,10 +17,11 @@
 #+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t num:nil
 #+OPTIONS: reveal_width:1400 reveal_height:1000
 #+OPTIONS: toc:1
+#+OPTIONS: reveal_klipsify_src:t
+#+REVEAL_MIN_SCALE: 1.0
+#+REVEAL_MAX_SCALE: 1.0
 #+REVEAL_PLUGINS: (notes search zoom)
 #+REVEAL_MARGIN: 0.1
-#+REVEAL_MIN_SCALE: 0.5
-#+REVEAL_MAX_SCALE: 2.5
 #+REVEAL_TRANS: cube
 #+REVEAL_THEME: moon
 #+REVEAL_HLEVEL: 2
@@ -73,8 +74,6 @@ embedded figures considerably:
     - For source code highlighting, which is explained below
       - Depending on your version of Org mode, htmlize.el may be
         necessary even if you want to use highlight.js
-      - (Code for highlight.js is taken over from org-reveal but was
-        never tested with org-re-reveal)
 
 ** Install reveal.js
 
@@ -221,6 +220,8 @@ embedded figures considerably:
     be mapped to vertical slides below the slides of heading H2.
 
     [[./images/hlevel.png]]
+
+#+REVEAL: split
 
     If HLevel is changed to 2, slides of heading H2.1 will be changed
     to the main horizontal queue, and slides of heading H2.1.1 will be
@@ -660,20 +661,22 @@ embedded figures considerably:
 
 #+MACRO: klipse-languages (eval (message "%s" (mapconcat #'identity org-re-reveal-klipse-languages ", ")))
 ** Editable and Executable Source Code
-   It is now possible to embed code blocks in a codemirror instance in
-   order to edit and execute code during a presentation.  Relevant defcustoms:
-   - ~org-re-reveal-klipsify-src~
-   - ~org-re-reveal-klipse-css~
-   - ~org-re-reveal-klipse-js~
-   - ~org-re-reveal-klipse-setup~
-   This feature is turned off by default and needs to be switched on,
-   either globally with ~org-re-reveal-klipsify-src~ or per code block
-   with ~#+ATTR_REVEAL: :klipsify t~.
+   Thanks to [[https://github.com/viebel/klipse][klipse]], it is
+   possible to embed code blocks in CodeMirror instance in order to
+   edit and execute code during a presentation.  Note that klipse
+   support has been rewritten in org-re-reveal 1.1.11.  Previously,
+   code was displayed in iframes, which does not allow to share state
+   between different pieces of code; in particular, SQL did not work
+   (see [[https://gitlab.com/oer/org-re-reveal/issues/23][this issue]]).
+
+   Now, without iframes, some CSS settings of klipse and reveal.js are
+   in conflict.  In particular, scaling needs to be disabled with
+   klipse.  See settings of this Readme and examples in the Tips
+   section under [[Executable Source Blocks]] as well as that
+   [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-klipsify.org][test file]]
+   to get started.
 
    At present code editing is supported in: {{{klipse-languages}}}
-
-   Some examples follow in the Tips section under [[Executable Source Blocks]].
-
 
 ** MathJax
   :PROPERTIES:
@@ -751,8 +754,6 @@ embedded figures considerably:
    plug-in setting by specifying =#+REVEAL_PLUGINS= or by setting
    variable =org-re-reveal-plugins=, please make sure ~notes~ is in the
    plug-in list to enable speaker notes.
-
-#+REVEAL: split
 
    Due to a bug in reveal.js, sometimes the speaker notes window
    shows only blank screens. A workaround to this issue is to put
@@ -957,25 +958,21 @@ embedded figures considerably:
 ** Executable Source Blocks
    To allow live execution of code in some languages, enable the
    klipse plugin
-   - either globally by setting ~org-re-reveal-klipsify-src~ to non-nil
-   - or per code block by adding ~#+ATTR_REVEAL: :klipsify t~.
-   The latter also allows to specify attributes ~klipse-height~ and
-   ~klipse-width~ (see next slide for an example).
+   with ~org-re-reveal-klipsify-src~ (or with option ~reveal_klipsify_src:t~)
 
    Src blocks with the languages contained in
    ~org-re-reveal-klipse-setup~ will be executed with output shown in
-   a console-like environment.  See its documentation for more
-   details.
+   a console-like environment.  See
+   [[https://github.com/viebel/klipse#klipse][the README of klipse]]
+   for more details.
+
+   Additional examples (e.g., Python and SQL) can be found in a
+   [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-klipsify.org][test file]].
 
 *** HTML Src Block
-#+ATTR_REVEAL: :klipsify t :klipse-height 200px
 #+BEGIN_SRC html
 <h1 class="whatever">hello, what's your name</h1>
 #+END_SRC
-
-- Above code block activates Klipse via ~#+ATTR_REVEAL: :klipsify t~
-  - Regardless of ~org-re-reveal-klipsify-src~
-- Subsequent code blocks do not do so
 
 *** Javascript Src Block
 #+BEGIN_SRC js
