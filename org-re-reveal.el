@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 1.1.10
+;; Version: 1.1.11
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -87,7 +87,7 @@
        (,(nth 3 org-re-reveal-keys)
         "Current subtree to file" org-re-reveal-export-current-subtree)))
 
-    :options-alist
+    :options-alist ; See org-export-options-alist for meaning of parts.
     '((:reveal-control nil "reveal_control" org-re-reveal-control t)
       (:reveal-progress nil "reveal_progress" org-re-reveal-progress t)
       (:reveal-history nil  "reveal_history" org-re-reveal-history t)
@@ -104,6 +104,7 @@
       (:reveal-overview nil "reveal_overview" org-re-reveal-overview t)
       (:reveal-width nil "reveal_width" org-re-reveal-width t)
       (:reveal-height nil "reveal_height" org-re-reveal-height t)
+      (:reveal-klipsify-src nil "reveal_klipsify_src" org-re-reveal-klipsify-src t)
       (:reveal-margin "REVEAL_MARGIN" nil org-re-reveal-margin t)
       (:reveal-min-scale "REVEAL_MIN_SCALE" nil org-re-reveal-min-scale t)
       (:reveal-max-scale "REVEAL_MAX_SCALE" nil org-re-reveal-max-scale t)
@@ -153,7 +154,9 @@
       (:reveal-single-file nil "reveal_single_file" org-re-reveal-single-file t)
       (:reveal-inter-presentation-links nil "reveal_inter_presentation_links" org-re-reveal-inter-presentation-links t)
       (:reveal-init-script "REVEAL_INIT_SCRIPT" nil org-re-reveal-init-script space)
-      (:reveal-highlight-css "REVEAL_HIGHLIGHT_CSS" nil org-re-reveal-highlight-css nil))
+      (:reveal-highlight-css "REVEAL_HIGHLIGHT_CSS" nil org-re-reveal-highlight-css nil)
+      (:reveal-codemirror-config "REVEAL_CODEMIRROR_CONFIG" nil org-re-reveal-klipse-codemirror newline)
+      (:reveal-klipse-extra-config "REVEAL_KLIPSE_EXTRA_CONFIG" nil org-re-reveal-klipse-extra-config newline))
 
     :translate-alist
     '((headline . org-re-reveal-headline)
@@ -584,8 +587,24 @@ registering the completion."
   :group 'org-export-re-reveal
   :type '(choice (const nil) string))
 
+(defcustom org-re-reveal-no-htmlize-src nil
+  "For syntax highlighting with org-re-reveal, three options exist:
+1. Use reveal.js plugin highlight for syntax highlighting with highlight.js.
+   This applies to all source code blocks.
+2. If plugin highlight is not enabled, by default the library htmlize
+   is used.
+3. Do not use highlight and customize this variable to t.
+   This disables syntax highlighting but you can activate htmlize for
+   individual source code blocks with attributes:
+\"#+ATTR_REVEAL: :htmlize t\""
+  :group 'org-export-re-reveal
+  :type 'boolean)
+
 (defcustom org-re-reveal-klipsify-src nil
-  "Set to non-nil to make source code blocks editable in exported presentation."
+  "Set to non-nil to enable live code execution with klipse.
+See test-cases/test-klipsify.org in the source repository for examples.
+To export a source code block without klipse, use the following:
+\"#+ATTR_REVEAL: :no-klipsify t\""
   :group 'org-export-re-reveal
   :type 'boolean)
 
@@ -594,46 +613,67 @@ registering the completion."
   :group 'org-export-re-reveal
   :type 'string)
 
-(defcustom org-re-reveal-klipse-js "https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"
-  "Location of the klipse js source code."
+(defcustom org-re-reveal-klipse-extra-css "<style>
+/* Position computations of klipse get confused by reveal.js's scaling.
+   Hence, scaling should be disabled with this code.  Fix height of code area
+   with vertical scrollbar: */
+.reveal section pre { max-height: 70vh; height: auto; overflow-y: auto; }
+/* Reset some reveal.js settings: */
+.CodeMirror pre { font-size: 2em; box-shadow: none; width: auto; padding: 0.4em; }
+/* Enlarge cursor: */
+.CodeMirror-cursor { border-left: 3px solid black; }
+</style>\n"
+  "CSS string to ensure compatibility between klipse and reveal.js."
   :group 'org-export-re-reveal
   :type 'string)
 
+(defcustom org-re-reveal-klipse-codemirror nil
+  "If not nil, a string to pass as CodeMirror options to \"klipse_setting\"."
+  :group 'org-export-re-reveal
+  :type '(choice (const nil) string))
+
+(defcustom org-re-reveal-klipse-js "https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"
+  "Location of the klipse js source code.
+The minified version may not work, see URL
+`https://github.com/viebel/klipse/issues/334'."
+  :group 'org-export-re-reveal
+  :type 'string
+  :package-version '(org-re-reveal . "1.1.11"))
+
 (defcustom org-re-reveal-klipse-setup
-  '(("clojure" . "selector")
-    ("html" . "selector_eval_html")
-    ("javascript" . "selector_eval_js")
-    ("js" . "selector_eval_js")
-    ("php" . "selector_eval_php")
-    ("python" . "selector_eval_python_client")
-    ("ruby" . "selector_eval_ruby")
-    ("scheme" . "selector_eval_scheme"))
+  '(("clojure" "selector" "language-klipse")
+    ("html" "selector_eval_html" "language-klipse-html")
+    ("javascript" "selector_eval_js" "language-klipse-javascript")
+    ("js" "selector_eval_js" "language-klipse-js")
+    ("php" "selector_eval_php" "language-klipse-php")
+    ("python" "selector_eval_python_client" "language-klipse-python")
+    ("ruby" "selector_eval_ruby" "language-klipse-ruby")
+    ("scheme" "selector_eval_scheme" "language-klipse-scheme")
+    ("sql" "selector_sql" "language-klipse-sql"))
   "Supported klipse languages with selectors.
-This is a list of pairs (language . selector).  Each language needs to be the
-language of an Org source block.  For existing klipse selectors, see URL
+This is a list of triples (language  selectorname selectorvalue).
+Each language needs to be the language of an Org source block.
+For existing names of klipse selectors, see URL
 `https://github.com/viebel/klipse/blob/master/README.md#page-level-configuration'.
 If additional languages work for you, maybe you could report that in issue #23
 at URL `https://gitlab.com/oer/org-re-reveal/issues/23'?"
   :group 'org-export-re-reveal
   :type '(repeat
-          (cons
+          (list
            (string :tag "Language")
-           (string :tag "Selector")))
-  :package-version '(org-re-reveal . "1.1.10"))
+           (string :tag "Selector name")
+           (string :tag "CSS class")))
+  :package-version '(org-re-reveal . "1.1.11"))
 
 (defvar org-re-reveal-klipse-languages
   (mapcar #'car org-re-reveal-klipse-setup)
   "List of languages supported by org-re-reveal.")
 
-(defcustom org-re-reveal-klipse-height "500px"
-  "Height of iframe for klipse."
+(defcustom org-re-reveal-klipse-extra-config nil
+  "If not nil, extra JavaScript string to execute for klipse initialization.
+E.g., window.klipse_settings.editor_type = \"html\"; for SQL."
   :group 'org-export-re-reveal
-  :type 'string)
-
-(defcustom org-re-reveal-klipse-width "100%"
-  "Width of iframe for klipse."
-  :group 'org-export-re-reveal
-  :type 'string)
+  :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-generate-custom-ids t
   "If t, generate CUSTOM_IDs for headings that don't have one.
@@ -860,6 +900,41 @@ otherwise, a `<link>' label is generated."
               (if style-id  (format " id=\"%s\"" style-id))
               "/>\n"))))
 
+(defun org-re-reveal--klipsify-header (info)
+  "Return code (CSS and JavaScript) to activate klipse when indicated by INFO."
+  (if (plist-get info :reveal-klipsify-src)
+      (concat (format "<link rel=\"stylesheet\" href=\"%s\"/>\n"
+                      org-re-reveal-klipse-css)
+              org-re-reveal-klipse-extra-css
+              (format "<script>
+    window.klipse_settings = {
+%s%s
+    };\n"
+                      (org-re-reveal--if-format
+                       "%s,\n" (plist-get info :reveal-codemirror-config))
+                      (mapconcat (lambda (elem)
+                                   (format "        %s: '.%s'"
+                                           (cadr elem) (caddr elem)))
+                                 org-re-reveal-klipse-setup ",\n"))
+              (org-re-reveal--if-format
+               "    %s\n" (plist-get info :reveal-klipse-extra-config))
+              "</script>\n")
+    ""))
+
+(defun org-re-reveal--klipsify-script (info)
+  "Return script element for klipse when indicated by INFO."
+  (if (plist-get info :reveal-klipsify-src)
+      (format "<script src=\"%s\"></script>
+<script>
+/* Recompute layout upon changes by klipse.  Code fragment from
+   asciidoctor-revealjs-klipse by Timothy Pratley:
+   https://github.com/timothypratley/asciidoctor-revealjs-klipse/blob/master/docs/docinfo-footer.html */
+Reveal.addEventListener( 'slidechanged', function( event ) {
+    window.dispatchEvent( new Event('resize') );
+} );
+</script>\n" org-re-reveal-klipse-js)
+    ""))
+
 (defun org-re-reveal-stylesheets (info)
   "Return HTML code for reveal stylesheets using INFO and `org-re-reveal-root'."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
@@ -884,13 +959,17 @@ otherwise, a `<link>' label is generated."
 
      ;; Include CSS for highlight.js if necessary
      (if (org-re-reveal--using-highlight.js info)
-         (format "<link rel=\"stylesheet\" href=\"%s\"/>"
+         (format "<link rel=\"stylesheet\" href=\"%s\"/>\n"
                  (format-spec (plist-get info :reveal-highlight-css)
-                              `((?r . ,(directory-file-name root-path))))))
+                              `((?r . ,(directory-file-name root-path)))))
+       "")
+
+     ;; Include CSS for klipse if necessary
+     (org-re-reveal--klipsify-header info)
+
      ;; print-pdf
      (if in-single-file ""
-       (format "
-<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+       (format "\n<!-- If the query includes 'print-pdf', include the PDF print sheet -->
 <script>
     if( window.location.search.match( /print-pdf/gi ) ) {
         var link = document.createElement( 'link' );
@@ -964,8 +1043,8 @@ based on `org-re-reveal-external-plugins'."
                                                       local-libs))
                                     ", "))))
       (mapconcat (lambda (file)
-                   (concat "<script src=\"" file "\"></script>"))
-                 root-libs "\n"))))
+                   (concat "<script src=\"" file "\"></script>\n"))
+                 root-libs ""))))
 
 (defun org-re-reveal-scripts--reveal-options (info)
   "Internal function for `org-re-reveal-scripts' with INFO."
@@ -1137,8 +1216,7 @@ Use INFO and custom variable `org-re-reveal-root'."
    (org-re-reveal-scripts--external-js info)
 
    ;; start of <script> tag
-   "
-<script>
+   "<script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
 Reveal.initialize({
@@ -1512,9 +1590,12 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
   (if (org-export-read-attribute :attr_html src-block :textarea)
       (org-html--textarea-block src-block)
     (let* ((use-highlight (org-re-reveal--using-highlight.js info))
+           (use-htmlize (or (not org-re-reveal-no-htmlize-src)
+                            (org-export-read-attribute
+                             :attr_reveal src-block :htmlize)))
            (lang (org-element-property :language src-block))
            (caption (org-export-get-caption src-block))
-           (code (if (not use-highlight)
+           (code (if (and (not use-highlight) use-htmlize)
                      (org-html-format-code src-block info)
                    (cl-letf (((symbol-function
                                'org-html-htmlize-region-for-paste)
@@ -1527,59 +1608,35 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
            (label (let ((lbl (org-element-property :name src-block)))
                     (if (not lbl) ""
                       (format " id=\"%s\"" lbl))))
-           (klipsify (and (or org-re-reveal-klipsify-src
-                              (org-export-read-attribute
-                               :attr_reveal src-block :klipsify))
-                          (member lang org-re-reveal-klipse-languages)))
-           (klipse-height (or (org-export-read-attribute
-                               :attr_reveal src-block :klipse-height)
-                              org-re-reveal-klipse-height))
-           (klipse-width (or (org-export-read-attribute
-                              :attr_reveal src-block :klipse-width)
-                             org-re-reveal-klipse-width))
-           (langselector
-            (cdr (assoc lang org-re-reveal-klipse-setup))))
+           (klipsify (and (member lang org-re-reveal-klipse-languages)
+                          (plist-get info :reveal-klipsify-src)
+                          (not (org-export-read-attribute
+                                :attr_reveal src-block :no-klipsify)))))
       (if (not lang)
           (format "<pre %s%s>\n%s</pre>"
                   (or (org-re-reveal--frag-class frag info) " class=\"example\"")
                   label
                   code)
         (if klipsify
-            (concat
-             "<iframe style=\"background-color:white;\" height=\""
-             klipse-height "\" width=\"" klipse-width
-             "\" srcdoc='<html><body><pre><code "
-             (if (string= lang "html")
-                 "data-editor-type=\"html\" "
-               "")
-             "class=\"klipse\" " code-attribs ">
-"
-             (if (string= lang "html")
-                 (replace-regexp-in-string
-                  "'" "&#39;"
-                  (replace-regexp-in-string
-                   "&" "&amp;"
+            (let* ((triple (assoc lang org-re-reveal-klipse-setup))
+                   (selectorclass (caddr triple)))
+              (concat
+               "<pre><code class=\"" selectorclass "\" " code-attribs ">\n"
+               (if (string= lang "html")
                    (replace-regexp-in-string
-                    "<" "&lt;"
+                    "'" "&#39;"
                     (replace-regexp-in-string
-                     ">" "&gt;"
-                     (cl-letf (((symbol-function
-                                 'org-html-htmlize-region-for-paste)
-                                #'buffer-substring))
-                       (org-html-format-code src-block info))))))
-               (replace-regexp-in-string "'" "&#39;" code))
-             "
-</code></pre>
-<link rel= \"stylesheet\" type= \"text/css\" href=\"" org-re-reveal-klipse-css "\">
-<style>
-.CodeMirror { font-size: 2em; }
-</style>
-<script>
-window.klipse_settings = { " langselector ": \".klipse\" };
-</script>
-<script src= \"" org-re-reveal-klipse-js "\"></script></body></html>
-'>
-</iframe>")
+                     "<" "&lt;"
+                     (replace-regexp-in-string
+                      ">" "&gt;"
+                      (replace-regexp-in-string
+                       "&" "&amp;"
+                       (cl-letf (((symbol-function
+                                   'org-html-htmlize-region-for-paste)
+                                  #'buffer-substring))
+                         (org-html-format-code src-block info))))))
+                 (replace-regexp-in-string "'" "&#39;" code))
+               "</code></pre>\n"))
           (format
            "<div class=\"org-src-container\">\n%s%s\n</div>"
            (if (not caption) ""
@@ -1716,6 +1773,7 @@ INFO is a plist holding export options."
 </div>\n"
    (org-re-reveal--build-pre-postamble 'postamble info)
    (org-re-reveal-scripts info)
+   (org-re-reveal--klipsify-script info)
    "</body>
 </html>\n"))
 
