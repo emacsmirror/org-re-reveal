@@ -15,10 +15,11 @@
 <style>
 /* Position computations of klipse get confused by reveal.js's scaling.
    Hence, scaling should be disabled with this code.  Fix height of code area
-   with vertical scrollbar: */
-.reveal section pre { max-height: 70vh; height: auto; overflow-y: auto; }
-/* Reset some reveal.js settings: */
-.CodeMirror pre { font-size: 2em; box-shadow: none; width: auto; padding: 0.4em; }
+   with scrollbar (use overflow instead of overflow-y to restore CodeMirror
+   setting afterwards): */
+.reveal section pre { max-height: 70vh; height: auto; overflow: auto; }
+/* Reset some reveal.js and oer-reveal settings: */
+.reveal section pre .CodeMirror pre { font-size: 2em; box-shadow: none; width: auto; padding: 0.4em; display: block; overflow: visible; }
 /* Enlarge cursor: */
 .CodeMirror-cursor { border-left: 3px solid black; }
 </style>

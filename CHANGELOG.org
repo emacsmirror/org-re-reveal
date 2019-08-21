@@ -86,7 +86,7 @@ In roughly chronological order
     - Address issue #23
 - Version 1.1.10
   - Remove SQL from ~org-re-reveal-klipse-setup~
-- Version 1.1.11
+- Version 1.1.11 = Version 2.0.0
   - Rewrite klipse support for SQL support, again for issue #23
     - Instead of iframes, ordinary HTML elements are used now
       - Now, state can be shared between slides, e.g., for SQL
@@ -110,3 +110,6 @@ In roughly chronological order
     activation per source code block, see ~org-re-reveal-no-htmlize-src~
   - Variable ~org-re-reveal-plugins~ has new default value, see
     customize interface
+- Version 2.0.1
+  - Adjust ~org-re-reveal-klipse-extra-css~ for compatibility with
+    oer-reveal CSS settings

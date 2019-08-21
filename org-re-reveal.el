@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.0.0
+;; Version: 2.0.1
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -617,16 +617,18 @@ To export a source code block without klipse, use the following:
 (defcustom org-re-reveal-klipse-extra-css "<style>
 /* Position computations of klipse get confused by reveal.js's scaling.
    Hence, scaling should be disabled with this code.  Fix height of code area
-   with vertical scrollbar: */
-.reveal section pre { max-height: 70vh; height: auto; overflow-y: auto; }
-/* Reset some reveal.js settings: */
-.CodeMirror pre { font-size: 2em; box-shadow: none; width: auto; padding: 0.4em; }
+   with scrollbar (use overflow instead of overflow-y to restore CodeMirror
+   setting afterwards): */
+.reveal section pre { max-height: 70vh; height: auto; overflow: auto; }
+/* Reset some reveal.js and oer-reveal settings: */
+.reveal section pre .CodeMirror pre { font-size: 2em; box-shadow: none; width: auto; padding: 0.4em; display: block; overflow: visible; }
 /* Enlarge cursor: */
 .CodeMirror-cursor { border-left: 3px solid black; }
 </style>\n"
   "CSS string to ensure compatibility between klipse and reveal.js."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type 'string
+  :package-version '(org-re-reveal . "2.0.1"))
 
 (defcustom org-re-reveal-klipse-codemirror nil
   "If not nil, a string to pass as CodeMirror options to \"klipse_setting\"."
