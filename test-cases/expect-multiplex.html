@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Multiplexing</title>
+<meta name="author" content="Jens Lechtenbörger"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/css/theme/black.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide">
+<h1 class="title">Multiplexing</h1><h2 class="author">Jens Lechtenbörger</h2><p class="date">Created:{{date}}</p>
+</section>
+
+<section>
+<section id="slide-1">
+<h2 id="1"><span class="section-number-2">1</span> What is this?</h2>
+<ul>
+<li><a href="https://github.com/hakimel/reveal.js#multiplexing">Multiplexing</a>
+means that your audience views your presentation on their devices
+<ul>
+<li>Your presentation mirrored on their devices</li>
+
+</ul></li>
+<li>Three ingredients
+<ol>
+<li>You control the <i>master</i> presentation</li>
+<li>Publicly accessible URL for <i>client</i> presentations</li>
+<li>Publicly accessible socket.io server to distribute master events to clients</li>
+
+</ol></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-2">
+<h2 id="2"><span class="section-number-2">2</span> Instructions</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+</section>
+<section id="slide-2-1">
+<h3 id="2-1"><span class="section-number-3">2.1</span> Basic setup</h3>
+<ul>
+<li class="fragment appear">Please follow instructions in
+<a href="https://github.com/hakimel/reveal.js#multiplexing">README of reveal.js</a></li>
+<li class="fragment appear">Obtain your own socketID and secret and use them as in header of
+this presentation</li>
+<li class="fragment appear">Point audience to client URL
+<ul>
+<li>Master presentation is usual HTML file generated from <code>org</code> file</li>
+<li>Replace <code>.html</code> to obtain client URL: <code>_client.html</code></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-2-2">
+<h3 id="2-2"><span class="section-number-3">2.2</span> Presentation in Git?</h3>
+<ul>
+<li>Obviously, you should not publish the master presentation
+containing the secret
+<ul>
+<li>Otherwise, your audience might use the master URL and mess with
+your presentation</li>
+<li>Maybe use separate file, say <code>private/secret.org</code>
+<ul>
+<li>Add <code>private/secret.org</code> to <code>.gitignore</code></li>
+<li>Add <code>#+REVEAL_MULTIPLEX_SECRET:
+         15664574924923436538</code> to file <code>private/secret.org</code></li>
+<li>In presentation, replace <code>#+REVEAL_MULTIPLEX_SECRET:
+         15664574924923436538</code> with <code>#+INCLUDE: "private/secret.org"</code></li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-2-3">
+<h3 id="2-3"><span class="section-number-3">2.3</span> Master presentation device?</h3>
+<ul>
+<li>Publish presentations with
+<a href="https://gitlab.com/oer/emacs-reveal">emacs-reveal</a>
+as GitLab Pages
+<ul>
+<li>Without socket.io secret
+<ul>
+<li>Hence, client usable, master not</li>
+
+</ul></li>
+
+</ul></li>
+<li>Generate master presentation locally
+<ul>
+<li>Present with Firefox from local file system
+<ul>
+<li>This works with multiplexing and speaker notes
+<ul>
+<li>(May need to set <code>security.fileuri.strict_origin_policy</code> to
+<code>false</code> if local fonts are refused; use separate profile then)</li>
+<li>Without <code>node</code> installation mentioned in README of reveal.js</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/lib/js/head.min.js"></script>
+<script src="./reveal.js/js/reveal.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+
+overview: true,
+width: 1280,
+height: 960,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'convex', // see README of reveal.js for options
+transitionSpeed: 'default',
+multiplex: {
+    secret: '15664574924923436538', // null if client
+    id: '768546279c1de63f', // id, obtained from socket.io server
+    url: 'https://reveal-js-multiplex-ccjbegmaii.now.sh' // Location of socket.io server
+},
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+ { src: 'https://cdn.socket.io/socket.io-1.3.5.js', async: true },
+ { src: './reveal.js/plugin/multiplex/master.js', async: true },
+ { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }]
+
+});
+</script>
+</body>
+</html>

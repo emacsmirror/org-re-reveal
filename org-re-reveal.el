@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.0.1
+;; Version: 2.1.0-alpha
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -315,27 +315,35 @@ slide's HTML code (containing the above escape sequences)."
 
 (defcustom org-re-reveal-multiplex-id ""
   "The ID to use for multiplexing.
+E.g., per README of reveal.js 3.8.0, generate id and secrete by visiting
+URL `https://reveal-js-multiplex-ccjbegmaii.now.sh/'.
 To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string)
 
 (defcustom org-re-reveal-multiplex-secret ""
-  "The secret to use for master slide.
+  "The secret to use for the master presentation.
+E.g., per README of reveal.js 3.8.0, generate id and secrete by visiting
+URL `https://reveal-js-multiplex-ccjbegmaii.now.sh/'.
 To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string)
 
-(defcustom org-re-reveal-multiplex-url ""
+(defcustom org-re-reveal-multiplex-url
+  "https://reveal-js-multiplex-ccjbegmaii.now.sh"
   "The url of the socketio server.
 To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type 'string
+  :package-version '(org-re-reveal . "2.1.0-alpha"))
 
-(defcustom org-re-reveal-multiplex-socketio-url ""
+(defcustom org-re-reveal-multiplex-socketio-url
+  "https://cdn.socket.io/socket.io-1.3.5.js"
   "The url of the socketio.js library.
 To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type 'string
+  :package-version '(org-re-reveal . "2.1.0-alpha"))
 
 (defcustom org-re-reveal-control t
   "Reveal control applet."
@@ -635,7 +643,8 @@ To export a source code block without klipse, use the following:
   :group 'org-export-re-reveal
   :type '(choice (const nil) string))
 
-(defcustom org-re-reveal-klipse-js "https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"
+(defcustom org-re-reveal-klipse-js
+  "https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"
   "Location of the klipse js source code.
 The minified version may not work, see URL
 `https://github.com/viebel/klipse/issues/334'."

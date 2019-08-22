@@ -1,0 +1,60 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2019 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1280 reveal_height:960
+#+REVEAL_THEME: black
+#+REVEAL_PLUGINS: (multiplex notes search zoom)
+
+# The following ID and SECRET are real.  Do not use them unless you
+# like others to mess with your presentation.
+#+REVEAL_MULTIPLEX_ID: 768546279c1de63f
+#+REVEAL_MULTIPLEX_SECRET: 15664574924923436538
+
+#+Title: Multiplexing
+#+Author: Jens Lechtenbörger
+
+* What is this?
+  - [[https://github.com/hakimel/reveal.js#multiplexing][Multiplexing]]
+    means that your audience views your presentation on their devices
+    - Your presentation mirrored on their devices
+  - Three ingredients
+    1. You control the /master/ presentation
+    2. Publicly accessible URL for /client/ presentations
+    3. Publicly accessible socket.io server to distribute master events to clients
+
+* Instructions
+** Basic setup
+   #+ATTR_REVEAL: :frag (appear)
+   - Please follow instructions in
+     [[https://github.com/hakimel/reveal.js#multiplexing][README of reveal.js]]
+   - Obtain your own socketID and secret and use them as in header of
+     this presentation
+   - Point audience to client URL
+     - Master presentation is usual HTML file generated from ~org~ file
+     - Replace ~.html~ to obtain client URL: ~_client.html~
+
+** Presentation in Git?
+   - Obviously, you should not publish the master presentation
+     containing the secret
+     - Otherwise, your audience might use the master URL and mess with
+       your presentation
+     - Maybe use separate file, say ~private/secret.org~
+       - Add ~private/secret.org~ to ~.gitignore~
+       - Add ~#+REVEAL_MULTIPLEX_SECRET:
+         15664574924923436538~ to file ~private/secret.org~
+       - In presentation, replace ~#+REVEAL_MULTIPLEX_SECRET:
+         15664574924923436538~ with ~#+INCLUDE: "private/secret.org"~
+
+** Master presentation device?
+   - Publish presentations with
+     [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]]
+     as GitLab Pages
+     - Without socket.io secret
+       - Hence, client usable, master not
+   - Generate master presentation locally
+     - Present with Firefox from local file system
+       - This works with multiplexing and speaker notes
+         - (May need to set ~security.fileuri.strict_origin_policy~ to
+           ~false~ if local fonts are refused; use separate profile then)
+         - Without ~node~ installation mentioned in README of reveal.js

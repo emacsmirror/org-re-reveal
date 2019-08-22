@@ -111,6 +111,7 @@
 (mapc #'org-re-reveal-tests-create-normal-test
       '("highlightjs"
         "klipsify"
+        "multiplex"
         "options"
         "slide-numbers"
         "slide-numbers-toc"
