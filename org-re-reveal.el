@@ -917,7 +917,7 @@ otherwise, a `<link>' label is generated."
                        "%s,\n" (plist-get info :reveal-codemirror-config))
                       (mapconcat (lambda (elem)
                                    (format "        %s: '.%s'"
-                                           (cadr elem) (caddr elem)))
+                                           (nth 1 elem) (nth 2 elem)))
                                  org-re-reveal-klipse-setup ",\n"))
               (org-re-reveal--if-format
                "    %s\n" (plist-get info :reveal-klipse-extra-config))
@@ -1622,7 +1622,7 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
                   code)
         (if klipsify
             (let* ((triple (assoc lang org-re-reveal-klipse-setup))
-                   (selectorclass (caddr triple)))
+                   (selectorclass (nth 2 triple)))
               (concat
                "<pre><code class=\"" selectorclass "\" " code-attribs ">\n"
                (if (string= lang "html")
