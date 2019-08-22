@@ -1,0 +1,17 @@
+# Local IspellDict: en
+#+STARTUP: showeverything
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2019 Jens Lechtenbörger
+
+#+OPTIONS: html-style:nil
+#+OPTIONS: toc:nil
+
+* Generated presentations for test cases of [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]
+  - [[file:test-cases/test-highlightjs.org][Syntax highlighting]]
+  - [[file:test-cases/test-klipsify.org][Code execution with klipse]]
+  - [[file:test-cases/test-multiplex.org][Multiplex master]]
+  - [[file:test-cases/test-options.org][Use of extra options]]
+  - [[file:test-cases/test-slide-numbers.org][Headline slide numbers for stable slide IDs]]
+  - [[file:test-cases/test-slide-numbers-toc.org][Table of contents with working links at chosen position]]
+  - [[file:test-cases/test-split.org][Splitting slides with attributes]]
+#  - [[file:test-cases/test-.org][]]

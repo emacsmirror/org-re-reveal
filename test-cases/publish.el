@@ -25,19 +25,34 @@
       (org-re-reveal-history t)
       (org-re-reveal-script-files oer-reveal-script-files)
       (org-re-reveal--href-fragment-prefix org-re-reveal--slide-id-prefix)
+      (org-html-postamble t)
+      (org-html-postamble-format '(("en" "<p class=\"date\">Created: %C</p>")))
       (org-publish-project-alist
        (list
 	(list "org-presentations"
 	      :base-directory "test-cases"
 	      :base-extension "org"
+              :exclude "index"
 	      :publishing-function 'org-re-reveal-publish-to-reveal
+	      :publishing-directory "./public/test-cases")
+        (list "images"
+	      :base-directory "images"
+	      :base-extension (regexp-opt '("png" "jpg" "ico" "svg" "gif"))
+	      :publishing-directory "./public/images"
+	      :publishing-function 'org-publish-attachment
+	      :recursive t)
+        (list "index"
+	      :base-directory "."
+	      :include '("index.org")
+	      :exclude ".*"
+	      :publishing-function '(org-html-publish-to-html)
 	      :publishing-directory "./public")
 	(list "reveal-static"
 	      :base-directory (expand-file-name
 			       "reveal.js" oer-reveal-submodules-dir)
 	      :exclude "\\.git"
 	      :base-extension 'any
-	      :publishing-directory "./public/reveal.js"
+	      :publishing-directory "./public/test-cases/reveal.js"
 	      :publishing-function 'org-publish-attachment
 	      :recursive t)
 	(list "reveal.js-jump-plugin"
@@ -45,7 +60,7 @@
 			       "reveal.js-jump-plugin/jump"
 			       oer-reveal-submodules-dir)
 	      :base-extension 'any
-	      :publishing-directory "./public/reveal.js/plugin/jump"
+	      :publishing-directory "./public/test-cases/reveal.js/plugin/jump"
 	      :publishing-function 'org-publish-attachment
 	      :recursive t))))
   (oer-reveal-setup-plugins)
