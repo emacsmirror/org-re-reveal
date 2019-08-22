@@ -1,7 +1,7 @@
 # Copyright (C) 2017-2019 Jens Lechtenbörger
 # SPDX-License-Identifier: CC0-1.0
 
-image: registry.gitlab.com/oer/docker/debian-emacs-tex
+image: registry.gitlab.com/oer/docker/emacs-reveal
 
 test:
   script:
@@ -9,3 +9,14 @@ test:
   only:
   - master
   - merge_requests
+
+pages:
+  stage: deploy
+  script:
+  - emacs --batch --load test-cases/publish.el
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
+  - lechten
