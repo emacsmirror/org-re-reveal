@@ -11,7 +11,7 @@
 The software [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]
 simplifies the generation of [[https://revealjs.com/][reveal.js]] HTML
 presentations from [[https://orgmode.org/][Org Mode]] source files.
-Below, you find the Readme and several test cases.  Please The FLOSS software
+Below, you find the Readme and several test cases.  Note that the FLOSS software
 bundle [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]] embeds
 org-re-reveal to offer a more powerful approach.
 
