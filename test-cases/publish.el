@@ -25,8 +25,9 @@
       (org-re-reveal-history t)
       (org-re-reveal-script-files oer-reveal-script-files)
       (org-re-reveal--href-fragment-prefix org-re-reveal--slide-id-prefix)
-      (org-html-postamble t)
-      (org-html-postamble-format '(("en" "<p class=\"date\">Created: %C</p>")))
+      (org-re-reveal-preamble "<div class=\"legalese\"><p><a href=\"/imprint.html\">Imprint</a> | <a href=\"/privacy.html\">Privacy Policy</a></p></div>")
+      (org-html-postamble "<p class=\"date\">Created: <span property=\"dc:created\">%C</span></p>
+<div class=\"legalese\"><p><a href=\"/imprint.html\">Imprint</a> | <a href=\"/privacy.html\">Privacy Policy</a></p></div>")
       (org-publish-project-alist
        (list
 	(list "org-presentations"
@@ -35,6 +36,18 @@
               :exclude "index"
 	      :publishing-function 'org-re-reveal-publish-to-reveal
 	      :publishing-directory "./public/test-cases")
+        (list "readme"
+	      :base-directory "."
+	      :include '("Readme.org")
+	      :exclude ".*"
+	      :publishing-function 'org-re-reveal-publish-to-reveal
+	      :publishing-directory "./public")
+        (list "css"
+	      :base-directory "."
+	      :include '("local.css")
+	      :exclude ".*"
+	      :publishing-function 'org-publish-attachment
+	      :publishing-directory "./public")
         (list "images"
 	      :base-directory "images"
 	      :base-extension (regexp-opt '("png" "jpg" "ico" "svg" "gif"))

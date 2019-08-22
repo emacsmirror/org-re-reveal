@@ -3,10 +3,21 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2019 Jens Lechtenbörger
 
+#+TITLE: Sample presentations generated with org-re-reveal
+#+AUTHOR: Jens Lechtenbörger
 #+OPTIONS: html-style:nil
 #+OPTIONS: toc:nil
 
-* Generated presentations for test cases of [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]
+The software [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]
+simplifies the generation of [[https://revealjs.com/][reveal.js]] HTML
+presentations from [[https://orgmode.org/][Org Mode]] source files.
+Below, you find the Readme and several test cases.  Please The FLOSS software
+bundle [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]] embeds
+org-re-reveal to offer a more powerful approach.
+
+* [[file:Readme.org][Readme of org-re-reveal]]
+
+* Test cases
   - [[file:test-cases/test-highlightjs.org][Syntax highlighting]]
   - [[file:test-cases/test-klipsify.org][Code execution with klipse]]
   - [[file:test-cases/test-multiplex.org][Multiplex master]]
