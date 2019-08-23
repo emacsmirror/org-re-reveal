@@ -17,6 +17,9 @@ Note that the FLOSS software bundle
 [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]] embeds
 org-re-reveal to offer a more powerful approach.
 
+As usual for reveal.js presentations, press “?” to see key bindings;
+notably, “n” and “p” move to next and previous slides.
+
 * [[file:Readme.org][Readme of org-re-reveal]]
 
 * Test cases
