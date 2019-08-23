@@ -17,7 +17,7 @@
 * What is this?
   - [[https://github.com/hakimel/reveal.js#multiplexing][Multiplexing]]
     means that your audience views your presentation on their devices
-    - Your presentation mirrored on their devices
+    - State of your presentation mirrored on their devices
   - Three ingredients
     1. You control the /master/ presentation
     2. Publicly accessible URL for /client/ presentations
@@ -30,9 +30,13 @@
      [[https://github.com/hakimel/reveal.js#multiplexing][README of reveal.js]]
    - Obtain your own socketID and secret and use them as in header of
      this presentation
-   - Point audience to client URL
-     - Master presentation is usual HTML file generated from ~org~ file
+   - Point audience to URL of client presentation
      - Replace ~.html~ to obtain client URL: ~_client.html~
+       - Maybe generate with ~org-re-reveal-publish-to-reveal-client~
+         (see [[*GitLab CI for client presentation][GitLab CI for client presentation]]
+         below)
+       - (Or export with ~C-c C-e v v~ as usual, which generates
+         client and master presentations)
 
 ** Presentation in Git?
    - Obviously, you should not publish the master presentation
@@ -43,9 +47,9 @@
        - Use separate file, say ~private/secret.org~
          - Add ~private/secret.org~ to ~.gitignore~
          - Add ~#+REVEAL_MULTIPLEX_SECRET:
-           15664574924923436538~ to file ~private/secret.org~
+           0815...~ to file ~private/secret.org~
          - In presentation, replace ~#+REVEAL_MULTIPLEX_SECRET:
-           15664574924923436538~ with ~#+INCLUDE: "private/secret.org"~
+           0815...~ with ~#+INCLUDE: "private/secret.org"~
 
 *** GitLab CI for client presentation
     - Publish presentations with
@@ -53,7 +57,7 @@
       as GitLab Pages
       - In ~.gitlab-ci.yml~ create bogus secret in ~before_script~:
 
-        ~mkdir private; echo "#+REVEAL_MULTIPLEX_SECRET: bogus" > private/secret.org~
+        ~mkdir private; echo "#+REVEAL_MULTIPLEX_SECRET: 42" > private/secret.org~
       - Use ~org-re-reveal-publish-to-reveal-client~ to publish client
         presentation
         - See
