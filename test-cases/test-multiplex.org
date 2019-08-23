@@ -39,19 +39,23 @@
      containing the secret
      - Otherwise, your audience might use the master URL and mess with
        your presentation
-     - Maybe use separate file, say ~private/secret.org~
-       - Add ~private/secret.org~ to ~.gitignore~
-       - Add ~#+REVEAL_MULTIPLEX_SECRET:
-         15664574924923436538~ to file ~private/secret.org~
-       - In presentation, replace ~#+REVEAL_MULTIPLEX_SECRET:
-         15664574924923436538~ with ~#+INCLUDE: "private/secret.org"~
+     - My plan, /to be checked/
+       - Use separate file, say ~private/secret.org~
+         - Add ~private/secret.org~ to ~.gitignore~
+         - Add ~#+REVEAL_MULTIPLEX_SECRET:
+           15664574924923436538~ to file ~private/secret.org~
+         - In presentation, replace ~#+REVEAL_MULTIPLEX_SECRET:
+           15664574924923436538~ with ~#+INCLUDE: "private/secret.org"~
 
 ** Master presentation device?
    - Publish presentations with
      [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]]
      as GitLab Pages
-     - Without socket.io secret
-       - Hence, client usable, master not
+     - In ~.gitlab-ci.yml~ create bogus secret in ~before_script~:
+
+       ~mkdir private; echo "#+REVEAL_MULTIPLEX_SECRET: bogus" > private/secret.org~
+     - Use ~org-re-reveal-publish-to-reveal-client~ to publish client
+       presentation
    - Generate master presentation locally
      - Present with Firefox from local file system
        - This works with multiplexing and speaker notes

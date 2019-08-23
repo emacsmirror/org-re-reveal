@@ -20,11 +20,20 @@
 
 ;;; Code:
 (package-initialize)
+
+;; Prefer most recent version of org-re-reveal from parent directory
+;; over the one embedded in emacs-reveal:
+(add-to-list 'load-path
+	     (expand-file-name "../" (file-name-directory load-file-name)))
+(require 'org-re-reveal)
+
 (require 'oer-reveal)
 (let ((oer-reveal-plugins '("reveal.js-jump-plugin"))
       (org-re-reveal-history t)
       (org-re-reveal-script-files oer-reveal-script-files)
       (org-re-reveal--href-fragment-prefix org-re-reveal--slide-id-prefix)
+      (org-re-reveal-multiplex-url "https://reveal-js-multiplex-ccjbegmaii.now.sh")
+      (org-re-reveal-multiplex-socketio-url "https://cdn.socket.io/socket.io-1.3.5.js")
       (org-re-reveal-preamble "<div class=\"legalese\"><p><a href=\"/imprint.html\">Imprint</a> | <a href=\"/privacy.html\">Privacy Policy</a></p></div>")
       (org-html-postamble "<p class=\"date\">Created: <span property=\"dc:created\">%C</span></p>
 <div class=\"legalese\"><p><a href=\"/imprint.html\">Imprint</a> | <a href=\"/privacy.html\">Privacy Policy</a></p></div>")
@@ -35,6 +44,12 @@
 	      :base-extension "org"
               :exclude "index"
 	      :publishing-function 'org-re-reveal-publish-to-reveal
+	      :publishing-directory "./public/test-cases")
+        (list "multiplex-client"
+	      :base-directory "test-cases"
+	      :include '("test-multiplex.org")
+	      :exclude ".*"
+	      :publishing-function 'org-re-reveal-publish-to-reveal-client
 	      :publishing-directory "./public/test-cases")
         (list "readme"
 	      :base-directory "."

@@ -1951,7 +1951,19 @@ FILENAME is the filename of the Org file to be published.  PLIST
 is the property list for the given project.  PUB-DIR is the
 publishing directory.
 Return output file name."
-  (org-publish-org-to 're-reveal filename ".html" plist pub-dir))
+  (let ((org-re-reveal-client-multiplex nil))
+    (org-publish-org-to 're-reveal filename ".html" plist pub-dir)))
+
+;;;###autoload
+(defun org-re-reveal-publish-to-reveal-client
+    (plist filename pub-dir)
+  "Publish an Org file to HTML as multiplex client.
+FILENAME is the filename of the Org file to be published.  PLIST
+is the property list for the given project.  PUB-DIR is the
+publishing directory.
+Return output file name."
+  (let ((org-re-reveal-client-multiplex t))
+    (org-publish-org-to 're-reveal filename "_client.html" plist pub-dir)))
 
 ;; Register auto-completion for speaker notes.
 (when org-re-reveal-note-key-char
