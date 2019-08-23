@@ -5,18 +5,26 @@ image: registry.gitlab.com/oer/docker/emacs-reveal
 
 test:
   script:
-  - make check
+    - make check
   only:
-  - master
-  - merge_requests
+    refs:
+      - master
+      - merge_requests
+    changes:
+      - Makefile
+      - "**/*.el"
 
 pages:
   stage: deploy
   script:
-  - emacs --batch --load test-cases/publish.el
+    - emacs --batch --load test-cases/publish.el
   artifacts:
     paths:
-    - public
+      - public
   only:
-  - master
-  - lechten
+    refs:
+      - master
+      - lechten
+    changes:
+      - "**/*.org"
+      - "**/*.el"
