@@ -56,6 +56,9 @@
         ~mkdir private; echo "#+REVEAL_MULTIPLEX_SECRET: bogus" > private/secret.org~
       - Use ~org-re-reveal-publish-to-reveal-client~ to publish client
         presentation
+        - See
+          [[https://gitlab.com/oer/org-re-reveal/blob/master/.gitlab-ci.yml][.gitlab-ci.yml]]
+          that generates this presentation
 
 *** Local master presentation
     - Generate master presentation locally
