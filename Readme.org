@@ -776,29 +776,12 @@ embedded figures considerably:
    or laptop. As the master presentation navigates the slides, all client
    presentations will update in real time.
 
-   *Warning!* The following is copied from ~org-reveal~ but untested
-   with ~org-re-reveal~!
-
-   You can enable multiplexing for your slide generation by including the
-   following options:
-#+BEGIN_SRC org
-#+REVEAL_MULTIPLEX_ID: [Obtained from the socket.io server. ]
-#+REVEAL_MULTIPLEX_SECRET: [Obtained from socket.io server. Gives the master control of the presentation.]
-#+REVEAL_MULTIPLEX_URL: http://revealjs.jit.su:80 [Location of socket.io server]
-#+REVEAL_MULTIPLEX_SOCKETIO_URL: http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js
-#+REVEAL_PLUGINS: ([any other plugins you are using] multiplex)
-#+END_SRC
-
-#+REVEAL: split
-   You must generate unique values for the =REVEAL_MULTIPLEX_ID= and
-   =REVEAL_MULTIPLEX_SECRET= options, obtaining these from the socket.io server
-   you are using.
-
-   If you include these options in your .org file, reveal-org will enable your
-   .html file as the master file for multiplexing and will generate a file named
-   in the form =[filename]_client.html= in the same directory as the client
-   .html file. Provide your audience with a link to the client file to allow
-   them to track your presentation on their own device.
+   Please see
+   [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-multiplex.org][this sample presentation for instructions]].
+   Briefly, you need to configure ~multiplex~ as plugin, with
+   URL, ID and Secret of a socket.io server.  Then, generate master
+   (with Secret) and client presentations and publish the client
+   presentation for your audience.
 
 ** Extra Stylesheets
 
