@@ -37,7 +37,7 @@
 <li><a href="https://github.com/hakimel/reveal.js#multiplexing">Multiplexing</a>
 means that your audience views your presentation on their devices
 <ul>
-<li>Your presentation mirrored on their devices</li>
+<li>State of your presentation mirrored on their devices</li>
 
 </ul></li>
 <li>Three ingredients
@@ -65,10 +65,17 @@ means that your audience views your presentation on their devices
 <a href="https://github.com/hakimel/reveal.js#multiplexing">README of reveal.js</a></li>
 <li class="fragment appear">Obtain your own socketID and secret and use them as in header of
 this presentation</li>
-<li class="fragment appear">Point audience to client URL
+<li class="fragment appear">Point audience to URL of client presentation
 <ul>
-<li>Master presentation is usual HTML file generated from <code>org</code> file</li>
-<li>Replace <code>.html</code> to obtain client URL: <code>_client.html</code></li>
+<li>Replace <code>.html</code> to obtain client URL: <code>_client.html</code>
+<ul>
+<li>Maybe generate with <code>org-re-reveal-publish-to-reveal-client</code>
+(see <a href="#/slide-2-2-1" class="forwardlink">GitLab CI for client presentation</a>
+below)</li>
+<li>(Or export with <code>C-c C-e v v</code> as usual, which generates
+client and master presentations)</li>
+
+</ul></li>
 
 </ul></li>
 
@@ -83,13 +90,17 @@ containing the secret
 <ul>
 <li>Otherwise, your audience might use the master URL and mess with
 your presentation</li>
-<li>Maybe use separate file, say <code>private/secret.org</code>
+<li>My plan, <i>to be checked</i>
+<ul>
+<li>Use separate file, say <code>private/secret.org</code>
 <ul>
 <li>Add <code>private/secret.org</code> to <code>.gitignore</code></li>
 <li>Add <code>#+REVEAL_MULTIPLEX_SECRET:
-         15664574924923436538</code> to file <code>private/secret.org</code></li>
+           0815...</code> to file <code>private/secret.org</code></li>
 <li>In presentation, replace <code>#+REVEAL_MULTIPLEX_SECRET:
-         15664574924923436538</code> with <code>#+INCLUDE: "private/secret.org"</code></li>
+           0815...</code> with <code>#+INCLUDE: "private/secret.org"</code></li>
+
+</ul></li>
 
 </ul></li>
 
@@ -98,20 +109,37 @@ your presentation</li>
 </ul>
 
 </section>
-<section id="slide-2-3">
-<h3 id="2-3"><span class="section-number-3">2.3</span> Master presentation device?</h3>
+<section id="slide-2-2-1">
+<h4 id="2-2-1"><span class="section-number-4">2.2.1</span> GitLab CI for client presentation</h4>
 <ul>
 <li>Publish presentations with
 <a href="https://gitlab.com/oer/emacs-reveal">emacs-reveal</a>
 as GitLab Pages
 <ul>
-<li>Without socket.io secret
+<li><p>
+In <code>.gitlab-ci.yml</code> create bogus secret in <code>before_script</code>:
+</p>
+
+<p>
+<code>mkdir private; echo "#+REVEAL_MULTIPLEX_SECRET: 42" &gt; private/secret.org</code>
+</p></li>
+<li>Use <code>org-re-reveal-publish-to-reveal-client</code> to publish client
+presentation
 <ul>
-<li>Hence, client usable, master not</li>
+<li>See
+<a href="https://gitlab.com/oer/org-re-reveal/blob/master/.gitlab-ci.yml">.gitlab-ci.yml</a>
+that generates this presentation</li>
 
 </ul></li>
 
 </ul></li>
+
+</ul>
+
+</section>
+<section id="slide-2-2-2">
+<h4 id="2-2-2"><span class="section-number-4">2.2.2</span> Local master presentation</h4>
+<ul>
 <li>Generate master presentation locally
 <ul>
 <li>Present with Firefox from local file system
