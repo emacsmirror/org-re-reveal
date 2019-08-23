@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.1.0-alpha
+;; Version: 2.1.0
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -335,7 +335,7 @@ To enable multiplex, see `org-re-reveal-plugins'."
 To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string
-  :package-version '(org-re-reveal . "2.1.0-alpha"))
+  :package-version '(org-re-reveal . "2.1.0"))
 
 (defcustom org-re-reveal-multiplex-socketio-url
   "https://cdn.socket.io/socket.io-1.3.5.js"
@@ -343,7 +343,7 @@ To enable multiplex, see `org-re-reveal-plugins'."
 To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string
-  :package-version '(org-re-reveal . "2.1.0-alpha"))
+  :package-version '(org-re-reveal . "2.1.0"))
 
 (defcustom org-re-reveal-control t
   "Reveal control applet."
@@ -1963,7 +1963,8 @@ is the property list for the given project.  PUB-DIR is the
 publishing directory.
 Return output file name."
   (let ((org-re-reveal-client-multiplex t))
-    (org-publish-org-to 're-reveal filename "_client.html" plist pub-dir)))
+    (org-publish-org-to 're-reveal filename "_client.html" plist pub-dir))
+  :package-version '(org-re-reveal . "2.1.0"))
 
 ;; Register auto-completion for speaker notes.
 (when org-re-reveal-note-key-char
