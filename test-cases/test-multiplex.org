@@ -43,9 +43,9 @@
      containing the secret
      - Otherwise, your audience might use the master URL and mess with
        your presentation
-     - My plan, /to be checked/
+     - My approach
        - Use separate file, say ~private/secret.org~
-         - Add ~private/secret.org~ to ~.gitignore~
+         - Add ~private~ to ~.gitignore~
          - Add ~#+REVEAL_MULTIPLEX_SECRET:
            0815...~ to file ~private/secret.org~
          - In presentation, replace ~#+REVEAL_MULTIPLEX_SECRET:
@@ -57,12 +57,15 @@
       as GitLab Pages
       - In ~.gitlab-ci.yml~ create bogus secret in ~before_script~:
 
-        ~mkdir private; echo "#+REVEAL_MULTIPLEX_SECRET: 42" > private/secret.org~
+        - ~mkdir private~
+        - ~"echo '#+REVEAL_MULTIPLEX_SECRET: 42' > private/secret.org"~
+          - Note quotation marks above
       - Use ~org-re-reveal-publish-to-reveal-client~ to publish client
         presentation
         - See
           [[https://gitlab.com/oer/org-re-reveal/blob/master/.gitlab-ci.yml][.gitlab-ci.yml]]
           that generates this presentation
+        - Or alternative [[https://gitlab.com/lechten/talks-2019b/blob/master/.gitlab-ci.yml][.gitlab-ci.yml]]
 
 *** Local master presentation
     - Generate master presentation locally

@@ -90,11 +90,11 @@ containing the secret
 <ul>
 <li>Otherwise, your audience might use the master URL and mess with
 your presentation</li>
-<li>My plan, <i>to be checked</i>
+<li>My approach
 <ul>
 <li>Use separate file, say <code>private/secret.org</code>
 <ul>
-<li>Add <code>private/secret.org</code> to <code>.gitignore</code></li>
+<li>Add <code>private</code> to <code>.gitignore</code></li>
 <li>Add <code>#+REVEAL_MULTIPLEX_SECRET:
            0815...</code> to file <code>private/secret.org</code></li>
 <li>In presentation, replace <code>#+REVEAL_MULTIPLEX_SECRET:
@@ -116,19 +116,24 @@ your presentation</li>
 <a href="https://gitlab.com/oer/emacs-reveal">emacs-reveal</a>
 as GitLab Pages
 <ul>
-<li><p>
-In <code>.gitlab-ci.yml</code> create bogus secret in <code>before_script</code>:
-</p>
+<li>In <code>.gitlab-ci.yml</code> create bogus secret in <code>before_script</code>:
 
-<p>
-<code>mkdir private; echo "#+REVEAL_MULTIPLEX_SECRET: 42" &gt; private/secret.org</code>
-</p></li>
+<ul>
+<li><code>mkdir private</code></li>
+<li><code>"echo '#+REVEAL_MULTIPLEX_SECRET: 42' &gt; private/secret.org"</code>
+<ul>
+<li>Note quotation marks above</li>
+
+</ul></li>
+
+</ul></li>
 <li>Use <code>org-re-reveal-publish-to-reveal-client</code> to publish client
 presentation
 <ul>
 <li>See
 <a href="https://gitlab.com/oer/org-re-reveal/blob/master/.gitlab-ci.yml">.gitlab-ci.yml</a>
 that generates this presentation</li>
+<li>Or alternative <a href="https://gitlab.com/lechten/talks-2019b/blob/master/.gitlab-ci.yml">.gitlab-ci.yml</a></li>
 
 </ul></li>
 
