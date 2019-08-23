@@ -39,7 +39,7 @@ It provides an export back-end for HTML presentations with
 
 For a reveal.js presentation for
 [[https://gitlab.com/oer/org-re-reveal/blob/master/Readme.org][this Org mode Readme]],
-see there: https://oer.gitlab.io/org-re-reveal/
+see there: [[https://oer.gitlab.io/org-re-reveal/]]
 
 ** Emacs-reveal
 If you are interested in org-re-reveal, I suggest that you take
