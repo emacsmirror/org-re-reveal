@@ -47,18 +47,20 @@
          - In presentation, replace ~#+REVEAL_MULTIPLEX_SECRET:
            15664574924923436538~ with ~#+INCLUDE: "private/secret.org"~
 
-** Master presentation device?
-   - Publish presentations with
-     [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]]
-     as GitLab Pages
-     - In ~.gitlab-ci.yml~ create bogus secret in ~before_script~:
+*** GitLab CI for client presentation
+    - Publish presentations with
+      [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]]
+      as GitLab Pages
+      - In ~.gitlab-ci.yml~ create bogus secret in ~before_script~:
 
-       ~mkdir private; echo "#+REVEAL_MULTIPLEX_SECRET: bogus" > private/secret.org~
-     - Use ~org-re-reveal-publish-to-reveal-client~ to publish client
-       presentation
-   - Generate master presentation locally
-     - Present with Firefox from local file system
-       - This works with multiplexing and speaker notes
-         - (May need to set ~security.fileuri.strict_origin_policy~ to
-           ~false~ if local fonts are refused; use separate profile then)
-         - Without ~node~ installation mentioned in README of reveal.js
+        ~mkdir private; echo "#+REVEAL_MULTIPLEX_SECRET: bogus" > private/secret.org~
+      - Use ~org-re-reveal-publish-to-reveal-client~ to publish client
+        presentation
+
+*** Local master presentation
+    - Generate master presentation locally
+      - Present with Firefox from local file system
+        - This works with multiplexing and speaker notes
+          - (May need to set ~security.fileuri.strict_origin_policy~ to
+            ~false~ if local fonts are refused; use separate profile then)
+          - Without ~node~ installation mentioned in README of reveal.js
