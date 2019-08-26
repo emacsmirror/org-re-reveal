@@ -69,6 +69,7 @@ autoCloseBrackets: true
 <li><a href="#/slide-1-1">1.1. HTML</a></li>
 <li><a href="#/slide-1-2">1.2. JavaScript</a></li>
 <li><a href="#/slide-1-3">1.3. Python</a></li>
+<li><a href="#/slide-1-4">1.4. Clojure</a></li>
 </ul>
 </li>
 <li><a href="#/slide-2">2. SQL as example of state across slides</a>
@@ -117,6 +118,15 @@ x
         <span style="font-weight: bold;">return</span> n * factorial(n - 1)
 
 <span style="font-weight: bold;">print</span>(factorial(10))
+</code></pre>
+
+</section>
+<section id="slide-1-4">
+<h3 id="1-4"><span class="section-number-3">1.4</span> Clojure</h3>
+<pre><code class="language-klipse" >
+(defn greet [person]
+  (str "Hello " person))
+(map greet ["Alice" "Bob" "Carol"])
 </code></pre>
 
 </section>
@@ -214,7 +224,7 @@ dependencies: [
 <script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js"></script>
 <script>
 /* Recompute layout upon changes by klipse.  Code fragment from
-   asciidoctor-revealjs-klipse by Timothy Pratley:
+   asciidoctor-revealjs-klipse by Timothy Pratley under GPLv3:
    https://github.com/timothypratley/asciidoctor-revealjs-klipse/blob/master/docs/docinfo-footer.html */
 Reveal.addEventListener( 'slidechanged', function( event ) {
     window.dispatchEvent( new Event('resize') );

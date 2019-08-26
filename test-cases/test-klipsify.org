@@ -52,6 +52,15 @@ def factorial(n):
 print(factorial(10))
 #+END_SRC
 
+** Clojure
+# Code copied from there:
+# https://github.com/timothypratley/asciidoctor-revealjs-klipse/issues/8
+#+begin_src clojure
+(defn greet [person]
+  (str "Hello " person))
+(map greet ["Alice" "Bob" "Carol"])
+#+end_src
+
 * SQL as example of state across slides
 ** SQL, Populate Database
    #+begin_src sql
