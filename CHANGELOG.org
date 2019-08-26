@@ -15,6 +15,11 @@ Older changes are summarized in subsequent sections.
 *** Fixed
     - Allow fragment indices and HTML attributes on quote blocks, see
       [[https://gitlab.com/oer/org-re-reveal/-/merge_requests/30][MR !30]]
+    - Allow classes added via ~:attr_html~ and the classes for
+      fragements defined with ~:attr_reveal~ to be merged correctly.
+      Previously classes for elements added via ~:attr_html~ were added
+      to a separate html class-attribute, which isn’t supported.
+      See [[https://gitlab.com/oer/org-re-reveal/-/merge_requests/31][MR !31]]
 
 ** [3.2.0] - 2020-09-01
 *** Added

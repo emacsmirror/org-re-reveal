@@ -934,7 +934,7 @@ exporter."
         (format "<aside class=\"notes\">\n%s\n</aside>\n" contents)
       (org-html-special-block special-block contents info))))
 
-(defun org-re-reveal--add-class (elem value)
+(defun org-re-reveal--html-header-add-class (elem value)
   "Add VALUE as \"class\" attribute in HTML header element ELEM.
 Do nothing if \"class\" attribute is already present."
   (let ((match (string-match "\\`<h[1-9][^>]+>" elem)))
@@ -970,7 +970,7 @@ have been appropriate..."
             ;; Return the HTML content unchanged
             html)))
     (if class
-        (org-re-reveal--add-class nodiv class)
+        (org-re-reveal--html-header-add-class nodiv class)
       nodiv)))
 
 (defun org-re-reveal--section-attrs (headline info)
@@ -1780,11 +1780,12 @@ such links are assumed to point into other presentations."
      (concat "<a href=\"#" org-re-reveal--href-fragment-prefix)
      link)))
 
-(defun org-re-reveal--add-direction (elem direction)
-  "Add DIRECTION as class attribute to ELEM."
+(defun org-re-reveal--add-class (elem class)
+  "Add CLASS to the class attribute of ELEM.
+Merge CLASS with any previous classes in the :attr_html :class attribute"
   (let* ((attrs (org-export-read-attribute :attr_html elem))
-         (class (plist-get attrs :class))
-         (newclass (if class (concat direction " " class) direction))
+         (oldclass (plist-get attrs :class))
+         (newclass (if oldclass (concat class " " oldclass) class))
          (newattrs (mapconcat (lambda (elem) (format "%s" elem))
                               (plist-put attrs :class newclass)
                               " ")))
@@ -1808,8 +1809,8 @@ requires a version of org-mode as of 2018-12-08 or newer."
                             "backwardlink"
                           "forwardlink"))
              (parent (org-export-get-parent-element link)))
-        (org-re-reveal--add-direction parent direction)
-        (org-re-reveal--add-direction link direction)))))
+        (org-re-reveal--add-class parent direction)
+        (org-re-reveal--add-class link direction)))))
 
 (defun org-re-reveal-link (link desc info)
   "Transcode a LINK object with DESC and INFO from Org to Reveal.
@@ -2146,13 +2147,15 @@ section headings that do not have one already."
 FRAG is the fragment style, a DEFAULT-STYLE may be used;
 optional FRAG-INDEX and FRAG-AUDIO may indicate fragment positions
 and audio files."
-  (let ((attr-html (org-element-property :attr_html elem)))
-    (when (and frag (not (string= frag "none")))
-      (push (if (string= frag t)
-                (if default-style (format ":class fragment %s" default-style)
-                  ":class fragment")
-              (format ":class fragment %s" frag))
-            attr-html)
+  (when (and frag (not (string= frag "none")))
+    (org-re-reveal--add-class
+     elem
+     (if (string= frag t)
+         (if default-style
+             (format "fragment %s" default-style)
+           "fragment")
+       (format "fragment %s" frag)))
+    (let ((attr-html (org-element-property :attr_html elem)))
       (when frag-index
         ;; Index positions should be numbers or the minus sign.
         (cl-assert (or (integerp frag-index)
@@ -2163,8 +2166,8 @@ and audio files."
                    nil "Index cannot be a list: %s" frag-index)
         (push (format ":data-fragment-index %s" frag-index) attr-html))
       (when (and frag-audio (not (string= frag-audio "none")))
-        (push (format ":data-audio-src %s" frag-audio) attr-html)))
-    (org-element-put-property elem :attr_html attr-html)))
+        (push (format ":data-audio-src %s" frag-audio) attr-html))
+      (org-element-put-property elem :attr_html attr-html))))
 
 (defun org-re-reveal-append-frag (elem default-style)
   "Append transformed fragment from ELEM with DEFAULT-STYLE.
