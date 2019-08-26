@@ -939,7 +939,7 @@ otherwise, a `<link>' label is generated."
       (format "<script src=\"%s\"></script>
 <script>
 /* Recompute layout upon changes by klipse.  Code fragment from
-   asciidoctor-revealjs-klipse by Timothy Pratley:
+   asciidoctor-revealjs-klipse by Timothy Pratley under GPLv3:
    https://github.com/timothypratley/asciidoctor-revealjs-klipse/blob/master/docs/docinfo-footer.html */
 Reveal.addEventListener( 'slidechanged', function( event ) {
     window.dispatchEvent( new Event('resize') );
