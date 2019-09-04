@@ -558,6 +558,10 @@ embedded figures considerably:
    * =REVEAL_TITLE_SLIDE_STATE=
    * =REVEAL_TOC_SLIDE_STATE=
 
+   To add a ~class~ attribute to a ~section~ element, use
+   an [[*Extra Slide Attribute][Extra Slide Attribute]]
+   (e.g., property ~:reveal_extra_attr: class="my-class"~).
+
    To add a ~class~ attribute to the ~section~ element of a generated
    table of contents slide, you can use the option
    =REVEAL_TOC_SLIDE_CLASS=.
