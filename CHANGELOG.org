@@ -13,6 +13,11 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.2.0] - 2019-09-04
+*** Added
+    - A subheading for a slide can be created with the new property
+      ~NOSLIDE~ on the subheading, see file:test-cases/test-noslide.org
+
 ** [2.1.0] - 2019-08-23
 *** Added
     - Job ~pages~ in file:.gitlab-ci.yml

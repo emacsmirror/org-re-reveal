@@ -1,0 +1,16 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2019 Jens Lechtenbörger
+
+#+Title: Slide with subheading
+#+Author: Jens Lechtenbörger
+
+* A normal slide
+** A subheading
+   :PROPERTIES:
+   :UNNUMBERED: notoc
+   :NOSLIDE: t
+   :END:
+
+   - Just a list
+   - with bullet points

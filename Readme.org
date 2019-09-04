@@ -247,6 +247,20 @@ embedded figures considerably:
 ,#+REVEAL_HLEVEL: 2
 #+END_SRC
 
+** Subheadings
+
+   If you want one slide to have its usual heading followed by a
+   subheading, you can add a ~NOSLIDE~ property (and make sure that
+   the subheading does not appear in the table of contents):
+#+BEGIN_SRC org
+,* A normal slide
+,** A subheading
+   :PROPERTIES:
+   :UNNUMBERED: notoc
+   :NOSLIDE: t
+   :END:
+#+END_SRC
+
 ** Force Split
 
    If one heading has too many things to fit into one slide, you can

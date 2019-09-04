@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.1.0
+;; Version: 2.2.0
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -824,7 +824,8 @@ Return empty string or one starting with a space character."
 CONTENTS holds the contents of the headline.  INFO is a plist
 holding contextual information."
   (unless (org-element-property :footnote-section-p headline)
-    (if (org-export-low-level-p headline info)
+    (if (or (org-export-low-level-p headline info)
+            (org-element-property :NOSLIDE headline))
         ;; This is a deep sub-tree: export it as in ox-html.
         (org-html-headline headline contents info)
       ;; Standard headline.  Export it as a slide
