@@ -27,6 +27,12 @@
 	     (expand-file-name "../" (file-name-directory load-file-name)))
 (require 'org-re-reveal)
 
+(defun publish-readme-to-reveal (plist filename pub-dir)
+  "Publish readme with correct path to reveal.js.
+Pass PLIST, FILENAME, and PUB-DIR to `org-re-reveal-publish-to-reveal'."
+  (let ((org-re-reveal-root "test-cases/reveal.js"))
+    (org-re-reveal-publish-to-reveal plist filename pub-dir)))
+
 (require 'oer-reveal)
 (let ((oer-reveal-plugins '("reveal.js-jump-plugin"))
       (org-re-reveal-history t)
@@ -55,7 +61,7 @@
 	      :base-directory "."
 	      :include '("Readme.org")
 	      :exclude ".*"
-	      :publishing-function 'org-re-reveal-publish-to-reveal
+	      :publishing-function 'publish-readme-to-reveal
 	      :publishing-directory "./public")
         (list "css"
 	      :base-directory "."
