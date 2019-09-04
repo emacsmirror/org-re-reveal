@@ -13,6 +13,12 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.3.0] - 2019-09-04
+*** Added
+    - Variable [[file:org-re-reveal.el::(defcustom%20org-re-reveal-subtree-with-title-slide][org-re-reveal-subtree-with-title-slide]]
+      with option ~reveal_subtree_with_title_slide~ to include title
+      slides upon subtree exports
+
 ** [2.2.0] - 2019-09-04
 *** Added
     - A subheading for a slide can be created with the new property

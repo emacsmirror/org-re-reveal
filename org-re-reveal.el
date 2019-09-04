@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.2.0
+;; Version: 2.3.0
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -102,6 +102,7 @@
       (:reveal-defaulttiming nil "reveal_defaulttiming" org-re-reveal-defaulttiming t)
       (:reveal-generate-ids nil "reveal_generate_ids" org-re-reveal-generate-custom-ids t)
       (:reveal-overview nil "reveal_overview" org-re-reveal-overview t)
+      (:reveal-subtree-with-title-slide nil "reveal_subtree_with_title_slide" org-re-reveal-subtree-with-title-slide t)
       (:reveal-width nil "reveal_width" org-re-reveal-width t)
       (:reveal-height nil "reveal_height" org-re-reveal-height t)
       (:reveal-klipsify-src nil "reveal_klipsify_src" org-re-reveal-klipsify-src t)
@@ -411,6 +412,11 @@ To enable multiplex, see `org-re-reveal-plugins'."
 
 (defcustom org-re-reveal-overview t
   "Reveal show overview."
+  :group 'org-export-re-reveal
+  :type 'boolean)
+
+(defcustom org-re-reveal-subtree-with-title-slide nil
+  "If t, export title slide also for subtree exports."
   :group 'org-export-re-reveal
   :type 'boolean)
 
@@ -1739,7 +1745,8 @@ INFO is a plist holding export options."
    (let ((title-slide (plist-get info :reveal-title-slide)))
      (when (and (or (eq 'auto title-slide)
                     (and (stringp title-slide) (< 0 (length title-slide))))
-                (not (plist-get info :reveal-subtree)))
+                (or (not (plist-get info :reveal-subtree))
+                    (plist-get info :reveal-subtree-with-title-slide)))
        (let ((title-slide-background (plist-get info :reveal-title-slide-background))
              (title-slide-background-size (plist-get info :reveal-title-slide-background-size))
              (title-slide-background-position (plist-get info :reveal-title-slide-background-position))

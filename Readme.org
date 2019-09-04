@@ -889,6 +889,9 @@ embedded figures considerably:
   without the title slide and the table of content, for a quick preview
   of your current edition.
 
+  Customize ~org-re-reveal-subtree-with-title-slide~ to also export a
+  title slide.
+
 * Tips
 
 ** En-/Disable Heading Numbers
