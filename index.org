@@ -27,6 +27,7 @@ notably, “n” and “p” move to next and previous slides.
   - [[file:test-cases/test-klipsify.org][Code execution with klipse]]
   - [[file:test-cases/test-multiplex.org][Multiplex master]]
   - [[file:test-cases/test-multiplex_client.html][Multiplex client]]
+  - [[file:test-cases/test-noslide.org][Add subheading to slide]]
   - [[file:test-cases/test-options.org][Use of extra options]]
   - [[file:test-cases/test-slide-numbers.org][Headline slide numbers for stable slide IDs]]
   - [[file:test-cases/test-slide-numbers-toc.org][Table of contents with working links at chosen position]]
