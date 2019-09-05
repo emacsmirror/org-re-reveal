@@ -1018,20 +1018,26 @@ Otherwise, return nil."
       (insert-file-contents-literally filename)
       (buffer-string))))
 
+(defun org-re-reveal--external-plugins-maybe-from-file (info)
+  "Create list of plugin dependencies from INFO.
+In INFO, `:reveal-external-plugins' can be a list or a filename.
+If it is a filename, split lines to produce a list."
+  (let* ((external-plugins (plist-get info :reveal-external-plugins))
+         (file-contents (org-re-reveal--read-file-as-string external-plugins)))
+    (if file-contents
+        (mapcar (lambda (line) (cons 'dummy line))
+                (split-string (string-trim file-contents) "\n"))
+      (if (listp external-plugins)
+          external-plugins
+        (read external-plugins)))))
+
 (defun org-re-reveal--external-plugin-init (info root-path)
   "Build initialization strings for plugins of INFO under ROOT-PATH.
 Parameter INFO determines plugins and their initializations
 based on `org-re-reveal-external-plugins'."
-  (let* ((external-plugins (plist-get info :reveal-external-plugins))
-         (file-contents (org-re-reveal--read-file-as-string external-plugins)))
-    (if file-contents
-        (cl-loop for value in (split-string (string-trim file-contents) "\n")
-                 collect (format value root-path))
-      (let ((plugins (if (listp external-plugins)
-                         external-plugins
-                       (read external-plugins))))
-        (cl-loop for (nil . value) in plugins
-                 collect (format value root-path))))))
+  (let ((plugins (org-re-reveal--external-plugins-maybe-from-file info)))
+    (cl-loop for (nil . value) in plugins
+             collect (format value root-path))))
 
 (defvar org-re-reveal-client-multiplex nil
   "Used to cause generation of client html file for multiplex.")
