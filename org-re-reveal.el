@@ -1938,7 +1938,10 @@ to `org-export-to-file'."
 Optional ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY, EXT-PLIST are passed
 to `org-re-reveal-export-to-html'."
   (interactive)
-  (browse-url-of-file (expand-file-name (org-re-reveal-export-to-html async subtreep visible-only body-only ext-plist))))
+  (browse-url-of-file
+   (expand-file-name
+    (org-re-reveal-export-to-html
+     async subtreep visible-only body-only ext-plist))))
 
 (defun org-re-reveal-export-current-subtree
     (&optional async subtreep visible-only body-only ext-plist)
@@ -1947,7 +1950,9 @@ Optional ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY, EXT-PLIST are passed
 to `org-re-reveal-export-to-html'."
   (interactive)
   (org-narrow-to-subtree)
-  (let ((ret (org-re-reveal-export-to-html async subtreep visible-only body-only (plist-put ext-plist :reveal-subtree t))))
+  (let ((ret (org-re-reveal-export-to-html
+              async subtreep visible-only body-only
+              (plist-put ext-plist :reveal-subtree t))))
     (widen)
     ret))
 
