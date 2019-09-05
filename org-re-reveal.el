@@ -1801,7 +1801,7 @@ INFO is a plist holding export options."
   "Do filtering before parsing TREE.
 TREE is the parse tree being exported.  BACKEND is the export
 back-end used.  INFO is a plist-used as a communication channel.
-BACKEND must be `re-reveal'.
+BACKEND must be (or be derived from) `re-reveal'.
 Modify the TREE in two ways:
 First, map each `attr_reveal' attribute to corresponding
 `attr_html' attributes.
