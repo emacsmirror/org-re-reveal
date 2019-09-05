@@ -1919,24 +1919,26 @@ attr_html plist."
       elem)))
 
 (defun org-re-reveal-export-to-html
-    (&optional async subtreep visible-only body-only ext-plist)
+    (&optional async subtreep visible-only body-only ext-plist backend)
   "Export current buffer to a reveal.js HTML file.
 Optional ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY, EXT-PLIST are passed
-to `org-export-to-file'."
+to `org-export-to-file'.
+Optional BACKEND must be `re-reveal' or a backend derived from it."
   (interactive)
-  (let* ((extension (concat "." org-html-extension))
+  (let* ((backend (or backend 're-reveal))
+         (extension (concat "." org-html-extension))
          (file (org-export-output-file-name extension subtreep))
          (clientfile (org-export-output-file-name (concat "_client" extension) subtreep))
          (org-html-container-element "div"))
 
     (setq org-re-reveal-client-multiplex nil)
-    (org-export-to-file 're-reveal file
+    (org-export-to-file backend file
       async subtreep visible-only body-only ext-plist)
 
     ;; Export the client HTML file if org-re-reveal-client-multiplex is set true
     ;; by previous call to org-export-to-file
     (if org-re-reveal-client-multiplex
-        (org-export-to-file 're-reveal clientfile
+        (org-export-to-file backend clientfile
           async subtreep visible-only body-only ext-plist))
     file))
 

@@ -12,6 +12,10 @@ So far, only versions starting with version [[*%5B1.1.11%5D - 2019-08-19][1.1.11
 created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
+*** Added
+    - New optional argument ~backend~ in
+      [[file:org-re-reveal.el::(defun%20org-re-reveal-export-to-html][org-re-reveal-export-to-html]]
+      for exports with derived backends
 
 ** [2.3.0] - 2019-09-04
 *** Added
