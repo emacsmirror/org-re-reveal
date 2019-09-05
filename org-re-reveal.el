@@ -1222,7 +1222,9 @@ dependencies: [
               (all-plugins (if external-plugins (append external-plugins builtin-codes) builtin-codes))
               (extra-codes (plist-get info :reveal-extra-js))
               (total-codes
-               (if (string= "" extra-codes) all-plugins (append (list extra-codes) all-plugins))                ))
+               (if (string= "" extra-codes)
+                   all-plugins
+                 (append (list extra-codes) all-plugins))))
          (mapconcat 'identity total-codes ",\n"))
        "]\n\n"))))
 
