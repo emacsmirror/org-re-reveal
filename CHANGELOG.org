@@ -13,7 +13,7 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 *** Added
-    - New optional argument ~backend~ in
+    - Optional argument ~backend~ in
       [[file:org-re-reveal.el::(defun%20org-re-reveal-export-to-html][org-re-reveal-export-to-html]]
       for exports with derived backends
 
