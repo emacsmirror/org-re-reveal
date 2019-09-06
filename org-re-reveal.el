@@ -1018,6 +1018,17 @@ Otherwise, return nil."
       (insert-file-contents-literally filename)
       (buffer-string))))
 
+(defun org-re-reveal--read-list (thing)
+  "Return THING if it is a list.
+Otherwise, `read' THING and return value if it is a list.
+Otherwise, raise an error."
+  (if (listp thing)
+      thing
+    (let ((lthing (read thing)))
+      (if (listp lthing)
+          lthing
+        (error "Expected a list, but got: %s" thing)))))
+
 (defun org-re-reveal--external-plugins-maybe-from-file (info)
   "Create list of plugin dependencies from INFO.
 In INFO, `:reveal-external-plugins' can be a list or a filename.
@@ -1027,9 +1038,7 @@ If it is a filename, split lines to produce a list."
     (if file-contents
         (mapcar (lambda (line) (cons 'dummy line))
                 (split-string (string-trim file-contents) "\n"))
-      (if (listp external-plugins)
-          external-plugins
-        (read external-plugins)))))
+      (org-re-reveal--read-list external-plugins))))
 
 (defun org-re-reveal--external-plugin-init (info root-path)
   "Build initialization strings for plugins of INFO under ROOT-PATH.
@@ -1157,16 +1166,7 @@ transitionSpeed: '%s',\n"
 (defun org-re-reveal--parse-plugins (info)
   "Parse and return \":reveal-plugins\" in INFO.
 That value may be a list or a string representing a list."
-  (let* ((raw-enabled-builtin-plugins (plist-get info :reveal-plugins))
-         (enabled-builtin-plugins
-          (condition-case err
-              (if (listp raw-enabled-builtin-plugins)
-                  raw-enabled-builtin-plugins
-                (if (listp (read raw-enabled-builtin-plugins))
-                    (read raw-enabled-builtin-plugins)
-                  (error "#+REVEAL_PLUGINS expects a symbol list, like \"#+REVEAL_PLUGINS: (markdown zoom notes)\"")))
-            (error (signal (car err) (cdr err))))))
-    enabled-builtin-plugins))
+  (org-re-reveal--read-list (plist-get info :reveal-plugins)))
 
 (defun org-re-reveal-scripts--multiplex (info)
   "Internal function for `org-re-reveal-scripts' with INFO."
