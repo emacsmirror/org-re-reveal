@@ -10,11 +10,6 @@
 #+REVEAL_MIN_SCALE: 1.0
 #+REVEAL_MAX_SCALE: 1.0
 
-# Enable display of SQL result table, which is HTML.
-# Warning! This is a global setting for the entire presentation.
-# See https://github.com/viebel/klipse/issues/346
-#+REVEAL_KLIPSE_EXTRA_CONFIG: window.klipse_settings.editor_type = "html";
-
 # Some optional settings for CodeMirror.
 #+REVEAL_CODEMIRROR_CONFIG: codemirror_options_in: {
 #+REVEAL_CODEMIRROR_CONFIG:   lineNumbers: true,
