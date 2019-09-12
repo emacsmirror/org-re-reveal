@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.4.0
+;; Version: 2.4.1
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -68,7 +68,8 @@
 
 (require 'ox-html)
 (require 'cl-lib)   ; cl-mapcar and autoloads for:
-                    ; cl-loop, cl-letf, cl-assert, cl-case, cl-every
+                    ; cl-loop, cl-letf, cl-assert, cl-case, cl-every,
+                    ; cl-delete-duplicates
 (require 'subr-x)   ; string-trim
 (require 'url-parse)
 
@@ -969,11 +970,14 @@ Reveal.addEventListener( 'slidechanged', function( event ) {
 </style>
 "
      ;; stylesheets
-     (mapconcat (lambda (elem) (org-re-reveal--css-label in-single-file (car elem) (cdr elem)))
+     (mapconcat (lambda (elem) (org-re-reveal--css-label
+                                in-single-file (car elem) (cdr elem)))
                 (append (list (cons reveal-css nil)
                               (cons theme-css "theme"))
                         (mapcar (lambda (a) (cons a nil))
-                                (split-string extra-css "\n")))
+                                (cl-delete-duplicates
+                                 (split-string extra-css "\n" t)
+                                 :test #'equal)))
                 "\n")
 
      ;; Include CSS for highlight.js if necessary

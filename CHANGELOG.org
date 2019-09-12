@@ -13,6 +13,11 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.4.1] - 2019-09-12
+*** Fixed
+    - Do not generate empty CSS file names
+    - Do not include CSS files multiple times
+
 ** [2.4.0] - 2019-09-07
 *** Added
     - Optional argument ~backend~ in
