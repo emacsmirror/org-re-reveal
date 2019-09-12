@@ -307,21 +307,15 @@ embedded figures considerably:
 
 *** Customize the Title Slide
 
-    To customize the title slide, please set ~org-re-reveal-title-slide~
-    to a string of HTML markups. The following escape sequences can
-    be used to retrieve document information:
-    | ~%t~ | Title            |
-    | ~%s~ | Subtitle         |
-    | ~%a~ | Author           |
-    | ~%A~ | Academic title   |
-    | ~%e~ | Email            |
-    | ~%d~ | Date             |
-    | ~%m~ | Misc information |
-    | ~%%~ | Literal %        |
+    To customize the title slide, set ~org-re-reveal-title-slide~
+    to a string with HTML code.  Escape sequences are documented for
+    variable ~org-re-reveal-title-slide~; they can be used to retrieve
+    document information.  See
+    [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-title-slide.org][test-title-slide.org]]
+    for an example.
 
-#+REVEAL: split
     Alternatively, you can also write the title slide's HTML code
-    (containing the above escape sequences) into a separate file and
+    (with escape sequences) into a separate file and
     set ~org-re-reveal-title-slide~ to the name of that file.
 
 ** Set Slide Background

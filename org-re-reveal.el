@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.4.1
+;; Version: 2.5.0
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -72,6 +72,7 @@
                     ; cl-delete-duplicates
 (require 'subr-x)   ; string-trim
 (require 'url-parse)
+(require 'url-util)
 
 (defvar org-re-reveal-keys) ; Silence byte compiler
 
@@ -122,6 +123,8 @@
       (:reveal-title-slide "REVEAL_TITLE_SLIDE" nil org-re-reveal-title-slide newline)
       (:reveal-academic-title "REVEAL_ACADEMIC_TITLE" nil nil t)
       (:reveal-miscinfo "REVEAL_MISCINFO" nil nil t)
+      (:reveal-talk-qr-code "REVEAL_TALK_QR_CODE" nil nil t)
+      (:reveal-talk-url "REVEAL_TALK_URL" nil nil t)
       (:reveal-slide-global-header nil "reveal_global_header" org-re-reveal-global-header t)
       (:reveal-slide-global-footer nil "reveal_global_footer" org-re-reveal-global-footer t)
       (:reveal-slide-toc-footer nil "reveal_toc_footer" org-re-reveal-toc-footer t)
@@ -247,14 +250,16 @@ When `auto', generate automatic title slide.
 When set to a string, use this string as format string for the title
 slide, where the following escaping elements are allowed:
 
-  %t stands for the title.
-  %s stands for the subtitle.
-  %a stands for the author's name.
-  %A stands for the author's academic title.
-  %e stands for the author's email.
-  %d stands for the date.
-  %m stands for misc information.
-  %% stands for a literal %.
+  %t for the title.
+  %s for the subtitle.
+  %a for the author's name.
+  %e for the author's email.
+  %d for the date.
+  %A for the author's academic title (set with #+REVEAL_ACADEMIC_TITLE).
+  %q for the name of a file to a QR code (set with #+REVEAL_TALK_QR_CODE).
+  %u for the URL of the presentation (set with #+REVEAL_TALK_URL).
+  %m for misc information (set with #+REVEAL_MISCINFO).
+  %% for a literal %.
 
 Alternatively, the string can also be the name of a file with the title
 slide's HTML code (containing the above escape sequences)."
@@ -1570,13 +1575,19 @@ Extract and set `attr_html' to plain-list tag attributes."
 
 (defun org-re-reveal-format-spec (info)
   "Return format specification with INFO.
-Formatting extends `org-html-format-spec' with elements for
+Formatting extends `org-html-format-spec' as follows:
 misc information and academic title."
   (append (org-html-format-spec info)
           `((?A . ,(org-export-data
                     (plist-get info :reveal-academic-title) info))
             (?m . ,(org-export-data
-                    (plist-get info :reveal-miscinfo) info)))))
+                    (plist-get info :reveal-miscinfo) info))
+            (?q . ,(url-encode-url
+                    (org-export-data
+                     (plist-get info :reveal-talk-qr-code) info)))
+            (?u . ,(url-encode-url
+                    (org-export-data
+                     (plist-get info :reveal-talk-url) info))))))
 
 (defun org-re-reveal--build-pre-postamble (type info)
   "Depending on TYPE, return preamble or postamble for INFO as string, or nil."

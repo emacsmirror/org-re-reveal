@@ -13,6 +13,12 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.5.0] - 2019-09-12
+*** Added
+    - New keywords and escape sequences to show QR code and URL on
+      title slide; documented at
+      [[file:org-re-reveal.el::(defcustom%20org-re-reveal-title-slide]]
+
 ** [2.4.1] - 2019-09-12
 *** Fixed
     - Do not generate empty CSS file names
