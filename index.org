@@ -32,4 +32,5 @@ notably, “n” and “p” move to next and previous slides.
   - [[file:test-cases/test-slide-numbers.org][Headline slide numbers for stable slide IDs]]
   - [[file:test-cases/test-slide-numbers-toc.org][Table of contents with working links at chosen position]]
   - [[file:test-cases/test-split.org][Splitting slides with attributes]]
+  - [[file:test-cases/test-title-slide.org][Custom title slide]]
 #  - [[file:test-cases/test-.org][]]
