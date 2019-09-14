@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.5.0
+;; Version: 2.5.1
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -727,9 +727,9 @@ which leads to broken links that are not understood outside reveal.js.
 See there: https://github.com/hakimel/reveal.js/issues/2276")
 
 (defun org-re-reveal--if-format (fmt val)
-  "Apply `format' to FMT and VAL if VAL is not nil.
+  "Apply `format' to FMT and VAL if VAL is a non-empty string.
 Otherwise, return empty string."
-  (if val (format fmt val) ""))
+  (if (and (stringp val) (> (length val) 0)) (format fmt val) ""))
 
 (defun org-re-reveal--frag-style (frag info)
   "Return fragment string according to FRAG and the default fragment style.
@@ -1241,7 +1241,9 @@ dependencies: [
   "Internal function for `org-re-reveal-scripts' with INFO."
   (let ((init-script (plist-get info :reveal-init-script))
         (in-single-file (plist-get info :reveal-single-file)))
-    (if init-script (concat (if in-single-file "" ",") init-script))))
+    (if (and (stringp init-script) (> (length init-script) 0))
+        (concat (if in-single-file "" ",") init-script)
+      "")))
 
 (defun org-re-reveal-scripts (info)
   "Return necessary scripts to initialize reveal.js.

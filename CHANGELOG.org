@@ -13,6 +13,12 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.5.1] - 2019-09-14
+*** Fixed
+    - Treat empty configuration strings as absent
+      - E.g., do not produce invalid HTML if REVEAL_EXTRA_OPTIONS is
+        the empty string (which it should not be in the first place)
+
 ** [2.5.0] - 2019-09-12
 *** Added
     - New keywords and escape sequences to show QR code and URL on
