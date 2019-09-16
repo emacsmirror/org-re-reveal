@@ -412,7 +412,9 @@ To enable multiplex, see `org-re-reveal-plugins'."
   :type 'boolean)
 
 (defcustom org-re-reveal-defaulttiming nil
-  "Reveal use defaultTiming for speaker notes view."
+  "If non-nil, use defaultTiming for speaker notes view.
+For indivual timing of specific slides, use \"REVEAL_TITLE_SLIDE_TIMING\" for
+the title slide, and assign data-timing attributes to other headlines/slides."
   :group 'org-export-re-reveal
   :type '(choice integer (const nil)))
 

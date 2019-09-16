@@ -748,31 +748,37 @@ embedded figures considerably:
 
 ** Speaker Notes
    Reveal.js supports speaker notes, which are displayed in a separate
-   browser window. Pressing 's' on slide's windows will pop up a window
-   displaying the current slide, the next slide and the speaker notes on the current
-   slide.
-
-   org-re-reveal recognize texts between =#+BEGIN_NOTES= and =#+END_NOTES=
-   as speaker notes. See the example below.
+   browser window. Pressing 's' on slide's windows opens a popup
+   window (or indicates if you need to enable this browser feature)
+   displaying the current slide with its speaker notes, a timer, and a preview
+   of upcoming contents.  To configure timing, see
+   ~org-re-reveal-defaulttiming~.
+   The following example shows how to define speaker notes for a slide
+   with an estimated talk time of 120s.
 
 #+BEGIN_SRC org
 ,* Heading 1
+   :PROPERTIES:
+   :reveal_extra_attr: data-timing="120"
+   :END:
    Some contents.
 ,#+BEGIN_NOTES
   Enter speaker notes here.
+  - With bullet points
+    - If necessary
 ,#+END_NOTES
 #+END_SRC
 
 #+REVEAL: split
-   Speaker notes requires the ~notes~ plug-in. If you changed default
-   plug-in setting by specifying =#+REVEAL_PLUGINS= or by setting
-   variable =org-re-reveal-plugins=, please make sure ~notes~ is in the
-   plug-in list to enable speaker notes.
+   Speaker note functionality requires that ~notes~ is configured as
+   plugin (which is true by default with ~org-re-reveal-plugins~) and
+   that popup windows are permitted.
 
-   Due to a bug in reveal.js, sometimes the speaker notes window
-   shows only blank screens. A workaround to this issue is to put
-   the presentation HTML file into the reveal.js root directory and
-   reopen it in the browser.
+   Due to a bug in reveal.js, sometimes the speaker notes window does
+   not initialize properly.  As workaround, close the speaker notes
+   windows and press ’s’ again; notes should be working then.
+   If this does not work, you may need to put the presentation HTML
+   file into the reveal.js root directory and reopen it in the browser.
 
 *** Easy-Template for Speaker Notes
 
