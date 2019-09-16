@@ -3,6 +3,7 @@
 # Copyright (C) 2019 Jens Lechtenbörger
 
 #+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
 #+REVEAL_EXTRA_OPTIONS: controlsTutorial: false, controlsLayout: 'edges'
 
 #+Title: Passing extra options

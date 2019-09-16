@@ -23,7 +23,7 @@
 #+REVEAL_PLUGINS: (notes search zoom)
 #+REVEAL_MARGIN: 0.1
 #+REVEAL_TRANS: cube
-#+REVEAL_THEME: moon
+#+REVEAL_THEME: black
 #+REVEAL_HLEVEL: 2
 #+REVEAL_HEAD_PREAMBLE: <meta name="description" content="Org-re-reveal Introduction.">
 #+REVEAL_POSTAMBLE: <p> Based upon work by yjwen. </p>

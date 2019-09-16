@@ -4,6 +4,7 @@
 
 #+STARTUP: showeverything
 #+OPTIONS: reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
 
 # The following option is not strictly necessary, but shows the changing
 # fragment URLs in the address bar.
