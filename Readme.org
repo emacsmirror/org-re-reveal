@@ -38,7 +38,7 @@ It provides an export back-end for HTML presentations with
 [[https://orgmode.org/][Org mode]] source files.
 
 For a reveal.js presentation for
-[[https://gitlab.com/oer/org-re-reveal/blob/master/Readme.org][this Org mode Readme]],
+[[https://gitlab.com/oer/org-re-reveal/blob/master/Readme.org][this Readme (which is written in the lightweight markup language Org mode)]],
 see there: [[https://oer.gitlab.io/org-re-reveal/]]
 
 ** Emacs-reveal
