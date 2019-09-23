@@ -22,10 +22,17 @@
 
 
 * Different languages
-** HTML
-# Code copied from Readme.org
+** HTML and CSS
+#+ATTR_REVEAL: :code_attribs roll-in
 #+BEGIN_SRC html
-<h1 class="whatever">hello, what's your name</h1>
+<style>
+h1.demo-headline { color: blue; }
+p.demo-para { color: green; }
+#demo-id { color: yellow; }
+</style>
+<h1 class="demo-headline">Hello World!</h1>
+<p class="demo-para">This is a paragraph of text with class “demo-para”.</p>
+<p id="demo-id">This is another paragraph with id “demo-id”.</p>
 #+END_SRC
 
 ** JavaScript

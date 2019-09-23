@@ -64,7 +64,7 @@ autoCloseBrackets: true
 <ul>
 <li><a href="#/slide-1">1. Different languages</a>
 <ul>
-<li><a href="#/slide-1-1">1.1. HTML</a></li>
+<li><a href="#/slide-1-1">1.1. HTML and CSS</a></li>
 <li><a href="#/slide-1-2">1.2. JavaScript</a></li>
 <li><a href="#/slide-1-3">1.3. Python</a></li>
 <li><a href="#/slide-1-4">1.4. Clojure</a></li>
@@ -91,9 +91,16 @@ autoCloseBrackets: true
 </div>
 </section>
 <section id="slide-1-1">
-<h3 id="1-1"><span class="section-number-3">1.1</span> HTML</h3>
-<pre><code class="language-klipse-html" >
-&lt;h1 class="whatever"&gt;hello, what&#39;s your name&lt;/h1&gt;
+<h3 id="1-1"><span class="section-number-3">1.1</span> HTML and CSS</h3>
+<pre><code class="language-klipse-html" roll-in>
+&lt;style&gt;
+h1.demo-headline { color: blue; }
+p.demo-para { color: green; }
+#demo-id { color: yellow; }
+&lt;/style&gt;
+&lt;h1 class="demo-headline"&gt;Hello World!&lt;/h1&gt;
+&lt;p class="demo-para"&gt;This is a paragraph of text with class “demo-para”.&lt;/p&gt;
+&lt;p id="demo-id"&gt;This is another paragraph with id “demo-id”.&lt;/p&gt;
 </code></pre>
 
 </section>
