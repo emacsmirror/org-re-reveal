@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.6.0
+;; Version: 2.6.1
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -161,8 +161,8 @@
       (:reveal-init-script "REVEAL_INIT_SCRIPT" nil org-re-reveal-init-script space)
       (:reveal-highlight-css "REVEAL_HIGHLIGHT_CSS" nil org-re-reveal-highlight-css nil)
       (:reveal-codemirror-config "REVEAL_CODEMIRROR_CONFIG" nil org-re-reveal-klipse-codemirror newline)
-      (:reveal-klipse-js-url "REVEAL_KLIPSE_JS_URL" org-re-reveal-klipse-js t)
-      (:reveal-klipse-css-url "REVEAL_KLIPSE_CSS_URL" org-re-reveal-klipse-css t)
+      (:reveal-klipse-js-url "REVEAL_KLIPSE_JS_URL" nil org-re-reveal-klipse-js t)
+      (:reveal-klipse-css-url "REVEAL_KLIPSE_CSS_URL" nil org-re-reveal-klipse-css t)
       (:reveal-klipse-extra-config "REVEAL_KLIPSE_EXTRA_CONFIG" nil org-re-reveal-klipse-extra-config newline))
 
     :translate-alist
