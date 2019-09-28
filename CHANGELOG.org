@@ -13,6 +13,12 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.6.0] - 2019-09-28
+*** Added
+    - Keywords ~REVEAL_KLIPSE_JS_URL~ and ~REVEAL_KLIPSE_CSS_URL~ for
+      variables ~org-re-reveal-klipse-js~ and
+      ~org-re-reveal-klipse-css~
+
 ** [2.5.1] - 2019-09-14
 *** Fixed
     - Treat empty configuration strings as absent

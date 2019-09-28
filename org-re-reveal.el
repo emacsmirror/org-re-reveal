@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.5.1
+;; Version: 2.6.0
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -161,6 +161,8 @@
       (:reveal-init-script "REVEAL_INIT_SCRIPT" nil org-re-reveal-init-script space)
       (:reveal-highlight-css "REVEAL_HIGHLIGHT_CSS" nil org-re-reveal-highlight-css nil)
       (:reveal-codemirror-config "REVEAL_CODEMIRROR_CONFIG" nil org-re-reveal-klipse-codemirror newline)
+      (:reveal-klipse-js-url "REVEAL_KLIPSE_JS_URL" org-re-reveal-klipse-js t)
+      (:reveal-klipse-css-url "REVEAL_KLIPSE_CSS_URL" org-re-reveal-klipse-css t)
       (:reveal-klipse-extra-config "REVEAL_KLIPSE_EXTRA_CONFIG" nil org-re-reveal-klipse-extra-config newline))
 
     :translate-alist
@@ -931,7 +933,7 @@ otherwise, a `<link>' label is generated."
   "Return code (CSS and JavaScript) to activate klipse when indicated by INFO."
   (if (plist-get info :reveal-klipsify-src)
       (concat (format "<link rel=\"stylesheet\" href=\"%s\"/>\n"
-                      org-re-reveal-klipse-css)
+                      (plist-get info :reveal-klipse-css-url))
               org-re-reveal-klipse-extra-css
               (format "<script>
     window.klipse_settings = {
@@ -959,7 +961,7 @@ otherwise, a `<link>' label is generated."
 Reveal.addEventListener( 'slidechanged', function( event ) {
     window.dispatchEvent( new Event('resize') );
 } );
-</script>\n" org-re-reveal-klipse-js)
+</script>\n" (plist-get info :reveal-klipse-js-url))
     ""))
 
 (defun org-re-reveal-stylesheets (info)
