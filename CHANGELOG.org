@@ -13,6 +13,10 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.6.1] - 2019-09-28
+*** Fixed
+    - Fixed configuration if keywords are not present
+
 ** [2.6.0] - 2019-09-28
 *** Added
     - Keywords ~REVEAL_KLIPSE_JS_URL~ and ~REVEAL_KLIPSE_CSS_URL~ for
