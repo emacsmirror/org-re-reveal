@@ -112,6 +112,7 @@
 (mapc #'org-re-reveal-tests-create-normal-test
       '("highlightjs"
         "klipsify"
+        "klipsify-python"
         "multiplex"
         "noslide"
         "options"

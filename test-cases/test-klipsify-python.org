@@ -1,0 +1,55 @@
+# Local IspellDict: en
+#+STARTUP: showeverything
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2019 Jens Lechtenbörger
+
+#+OPTIONS: reveal_width:1400 reveal_height:1000 toc:nil
+#+REVEAL_THEME: black
+
+# Enable klipse, but disable scaling, which interferes.
+#+OPTIONS: reveal_klipsify_src:t
+#+REVEAL_MIN_SCALE: 1.0
+#+REVEAL_MAX_SCALE: 1.0
+
+#+REVEAL_KLIPSE_SETUP: (("python" "selector_eval_python_client" "language-klipse-python"))
+#+REVEAL_KLIPSE_JS_URL: ./reveal.js/plugin/klipse/klipse_plugin.js
+#+REVEAL_KLIPSE_CSS_URL: ./reveal.js/plugin/klipse/codemirror.css
+#+REVEAL_CODEMIRROR_CONFIG: scripts_root: './reveal.js/plugin/klipse',
+#+REVEAL_CODEMIRROR_CONFIG: codemirror_root: './reveal.js/plugin/klipse'
+
+#+Title: Test local klipse for Python
+#+Author: Jens Lechtenbörger
+
+* Note
+  - This is meant for self-contained presentations, suitable for
+    offline use, where CSS and JavaScript for klipse are present in a
+    plugin folder of reveal.js
+  - The header of this presentation sets up klipse only for Python
+
+** Python, klipsified
+# Code copied from howto.org of emacs-reveal-howto
+#+BEGIN_SRC python
+def factorial(n):
+    if n < 2:
+        return 1
+    else:
+        return n * factorial(n - 1)
+
+print(factorial(10))
+#+END_SRC
+
+** Clojure, not klipsified
+# Code copied from there:
+# https://github.com/timothypratley/asciidoctor-revealjs-klipse/issues/8
+#+begin_src clojure
+(defn greet [person]
+  (str "Hello " person))
+(map greet ["Alice" "Bob" "Carol"])
+#+end_src
+
+# The following prevents replacement of 8 spaces with tabs,
+# which would destroy indentation for Python.
+
+# Local Variables:
+# org-src-preserve-indentation: t
+# End:

@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.6.1
+;; Version: 2.7.0
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -161,6 +161,7 @@
       (:reveal-init-script "REVEAL_INIT_SCRIPT" nil org-re-reveal-init-script space)
       (:reveal-highlight-css "REVEAL_HIGHLIGHT_CSS" nil org-re-reveal-highlight-css nil)
       (:reveal-codemirror-config "REVEAL_CODEMIRROR_CONFIG" nil org-re-reveal-klipse-codemirror newline)
+      (:reveal-klipse-setup "REVEAL_KLIPSE_SETUP" nil org-re-reveal-klipse-setup t)
       (:reveal-klipse-js-url "REVEAL_KLIPSE_JS_URL" nil org-re-reveal-klipse-js t)
       (:reveal-klipse-css-url "REVEAL_KLIPSE_CSS_URL" nil org-re-reveal-klipse-css t)
       (:reveal-klipse-extra-config "REVEAL_KLIPSE_EXTRA_CONFIG" nil org-re-reveal-klipse-extra-config newline))
@@ -898,6 +899,27 @@ holding contextual information."
                         "</section>\n</section>\n")))))
         ret))))
 
+(defun org-re-reveal--read-list (thing)
+  "Return THING if it is a list.
+Otherwise, `read' THING and return value if it is a list.
+Otherwise, raise an error."
+  (if (listp thing)
+      thing
+    (let ((lthing (read thing)))
+      (if (listp lthing)
+          lthing
+        (error "Expected a list, but got: %s" thing)))))
+
+(defun org-re-reveal--parse-plugins (info)
+  "Parse and return \":reveal-plugins\" in INFO.
+That value may be a list or a string representing a list."
+  (org-re-reveal--read-list (plist-get info :reveal-plugins)))
+
+(defun org-re-reveal--parse-klipse-setup (info)
+  "Parse and return \":reveal-klipse-setup\" in INFO.
+That value may be a list or a string representing a list."
+  (org-re-reveal--read-list (plist-get info :reveal-klipse-setup)))
+
 (defun org-re-reveal--read-file (file)
   "Return the content of FILE."
   (with-temp-buffer
@@ -944,7 +966,8 @@ otherwise, a `<link>' label is generated."
                       (mapconcat (lambda (elem)
                                    (format "        %s: '.%s'"
                                            (nth 1 elem) (nth 2 elem)))
-                                 org-re-reveal-klipse-setup ",\n"))
+                                 (org-re-reveal--parse-klipse-setup info)
+                                 ",\n"))
               (org-re-reveal--if-format
                "    %s\n" (plist-get info :reveal-klipse-extra-config))
               "</script>\n")
@@ -1030,17 +1053,6 @@ Otherwise, return nil."
     (with-temp-buffer
       (insert-file-contents-literally filename)
       (buffer-string))))
-
-(defun org-re-reveal--read-list (thing)
-  "Return THING if it is a list.
-Otherwise, `read' THING and return value if it is a list.
-Otherwise, raise an error."
-  (if (listp thing)
-      thing
-    (let ((lthing (read thing)))
-      (if (listp lthing)
-          lthing
-        (error "Expected a list, but got: %s" thing)))))
 
 (defun org-re-reveal--external-plugins-maybe-from-file (info)
   "Create list of plugin dependencies from INFO.
@@ -1175,11 +1187,6 @@ transitionSpeed: '%s',\n"
 
    (let ((options (plist-get info :reveal-extra-options)))
      (org-re-reveal--if-format "%s,\n" options))))
-
-(defun org-re-reveal--parse-plugins (info)
-  "Parse and return \":reveal-plugins\" in INFO.
-That value may be a list or a string representing a list."
-  (org-re-reveal--read-list (plist-get info :reveal-plugins)))
 
 (defun org-re-reveal-scripts--multiplex (info)
   "Internal function for `org-re-reveal-scripts' with INFO."
@@ -1656,7 +1663,8 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
            (label (let ((lbl (org-element-property :name src-block)))
                     (if (not lbl) ""
                       (format " id=\"%s\"" lbl))))
-           (klipsify (and (member lang org-re-reveal-klipse-languages)
+           (klipse-setup (org-re-reveal--parse-klipse-setup info))
+           (klipsify (and (member lang (mapcar #'car klipse-setup))
                           (plist-get info :reveal-klipsify-src)
                           (not (org-export-read-attribute
                                 :attr_reveal src-block :no-klipsify)))))
@@ -1666,7 +1674,7 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
                   label
                   code)
         (if klipsify
-            (let* ((triple (assoc lang org-re-reveal-klipse-setup))
+            (let* ((triple (assoc lang klipse-setup))
                    (selectorclass (nth 2 triple)))
               (concat
                "<pre><code class=\"" selectorclass "\" " code-attribs ">\n"
