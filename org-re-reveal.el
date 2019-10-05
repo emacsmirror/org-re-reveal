@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.7.0
+;; Version: 2.8.0
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -160,6 +160,7 @@
       (:reveal-inter-presentation-links nil "reveal_inter_presentation_links" org-re-reveal-inter-presentation-links t)
       (:reveal-init-script "REVEAL_INIT_SCRIPT" nil org-re-reveal-init-script space)
       (:reveal-highlight-css "REVEAL_HIGHLIGHT_CSS" nil org-re-reveal-highlight-css nil)
+      (:reveal-highlight-url "REVEAL_HIGHLIGHT_URL" nil org-re-reveal-highlight-url nil)
       (:reveal-codemirror-config "REVEAL_CODEMIRROR_CONFIG" nil org-re-reveal-klipse-codemirror newline)
       (:reveal-klipse-setup "REVEAL_KLIPSE_SETUP" nil org-re-reveal-klipse-setup t)
       (:reveal-klipse-js-url "REVEAL_KLIPSE_JS_URL" nil org-re-reveal-klipse-js t)
@@ -599,6 +600,12 @@ That file embeds JS scripts and pictures."
   "Hightlight.js CSS file."
   :group 'org-export-re-reveal
   :type 'string)
+
+(defcustom org-re-reveal-highlight-url nil
+  "Location of Hightlight.js.
+If nil (default), the local plugin file is used."
+  :group 'org-export-re-reveal
+  :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-note-key-char "n"
   "If not nil, register key for Org structure completion for speaker notes.
@@ -1217,11 +1224,14 @@ transitionSpeed: '%s',\n"
 dependencies: [
 "
        ;; JS libraries
-       (let* ((builtins
+       (let* ((highlight-url (plist-get info :reveal-highlight-url))
+              (builtins
                `(classList ,(format " { src: '%slib/js/classList.js', condition: function() { return !document.body.classList; } }" root-path)
                            markdown ,(format " { src: '%splugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
  { src: '%splugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }" root-path root-path)
-                           highlight ,(format " { src: '%splugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }" root-path)
+                           highlight ,(if highlight-url
+                                          (format " { src: '%s', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }" highlight-url)
+                                        (format " { src: '%splugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }" root-path))
                            zoom ,(format " { src: '%splugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
                            notes ,(format " { src: '%splugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
                            search ,(format " { src: '%splugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)

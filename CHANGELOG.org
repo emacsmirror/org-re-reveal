@@ -13,6 +13,15 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.8.0] - 2019-10-05
+*** Added
+    - Keyword ~REVEAL_HIGHLIGHT_URL~ and variable ~org-re-reveal-highlight-url~
+      (workaround for issue #27)
+
+*** Fixed
+    - Copy and paste error related to audio on fragmented lists in
+      ~org-re-reveal-append-frag~
+
 ** [2.7.0] - 2019-09-29
 *** Added
     - Keyword ~REVEAL_KLIPSE_SETUP~ for variable ~org-re-reveal-klipse-setup~
