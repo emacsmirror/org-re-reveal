@@ -1937,7 +1937,7 @@ attr_html plist."
             (when frag-audio
               (cl-assert (= (length frag-audio) itemno) nil
                          "Use one audio file per item!  %s has %d, need %d"
-                         frag-audio (length frag-index) itemno))
+                         frag-audio (length frag-audio) itemno))
             (if frag-audio
                 (cl-mapcar 'org-re-reveal--update-attr-html
                            items frag-list style-list frag-index frag-audio)
