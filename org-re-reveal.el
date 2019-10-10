@@ -922,15 +922,10 @@ Otherwise, raise an error."
           lthing
         (error "Expected a list, but got: %s" thing)))))
 
-(defun org-re-reveal--parse-plugins (info)
-  "Parse and return \":reveal-plugins\" in INFO.
-That value may be a list or a string representing a list."
-  (org-re-reveal--read-list (plist-get info :reveal-plugins)))
-
-(defun org-re-reveal--parse-klipse-setup (info)
-  "Parse and return \":reveal-klipse-setup\" in INFO.
-That value may be a list or a string representing a list."
-  (org-re-reveal--read-list (plist-get info :reveal-klipse-setup)))
+(defun org-re-reveal--parse-listoption (info option)
+  "Parse and return OPTION in INFO.
+That value for OPTION may be a list or a string representing a list."
+  (org-re-reveal--read-list (plist-get info option)))
 
 (defun org-re-reveal--read-file (file)
   "Return the content of FILE."
@@ -978,7 +973,8 @@ otherwise, a `<link>' label is generated."
                       (mapconcat (lambda (elem)
                                    (format "        %s: '.%s'"
                                            (nth 1 elem) (nth 2 elem)))
-                                 (org-re-reveal--parse-klipse-setup info)
+                                 (org-re-reveal--parse-listoption
+                                  info :reveal-klipse-setup)
                                  ",\n"))
               (org-re-reveal--if-format
                "    %s\n" (plist-get info :reveal-klipse-extra-config))
@@ -1202,7 +1198,8 @@ transitionSpeed: '%s',\n"
 
 (defun org-re-reveal-scripts--multiplex (info)
   "Internal function for `org-re-reveal-scripts' with INFO."
-  (let ((enabled-builtin-plugins (org-re-reveal--parse-plugins info)))
+  (let ((enabled-builtin-plugins
+         (org-re-reveal--parse-listoption info :reveal-plugins)))
     (when (memq 'multiplex enabled-builtin-plugins)
       (format
        "multiplex: {
@@ -1220,7 +1217,8 @@ transitionSpeed: '%s',\n"
   "Internal function for `org-re-reveal-scripts' with INFO."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
          (in-single-file (plist-get info :reveal-single-file))
-         (enabled-builtin-plugins (org-re-reveal--parse-plugins info)))
+         (enabled-builtin-plugins (org-re-reveal--parse-listoption
+                                   info :reveal-plugins)))
     ;; optional JS library heading
     (if in-single-file ""
       (concat
@@ -1678,7 +1676,8 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
            (label (let ((lbl (org-element-property :name src-block)))
                     (if (not lbl) ""
                       (format " id=\"%s\"" lbl))))
-           (klipse-setup (org-re-reveal--parse-klipse-setup info))
+           (klipse-setup (org-re-reveal--parse-listoption
+                          info :reveal-klipse-setup))
            (klipsify (and (member lang (mapcar #'car klipse-setup))
                           (plist-get info :reveal-klipsify-src)
                           (not (org-export-read-attribute
