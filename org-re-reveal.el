@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.8.0
+;; Version: 2.8.1
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -291,8 +291,12 @@ slide's HTML code (containing the above escape sequences)."
                 (const "slow")
                 (string :tag "Other transition speed")))
 
-(defcustom org-re-reveal-theme "moon"
-  "Reveal theme."
+(defcustom org-re-reveal-theme "black"
+  "Reveal theme.
+Note that most themes load fonts from remote servers, which (a)
+obviously limits offline use of presentations and (b) is not privacy
+friendly.  See URL `https://github.com/hakimel/reveal.js/issues/2491'
+and URL `https://github.com/google/fonts/issues/1495'."
   :group 'org-export-re-reveal
   :type '(radio (const "beige")
                 (const "black")
@@ -305,7 +309,8 @@ slide's HTML code (containing the above escape sequences)."
                 (const "sky")
                 (const "solarized")
                 (const "white")
-                (string :tag "Other theme")))
+                (string :tag "Other theme"))
+  :package-version '(org-re-reveal . "2.8.1"))
 
 (defcustom org-re-reveal-extra-js ""
   "URL to extra JS file."

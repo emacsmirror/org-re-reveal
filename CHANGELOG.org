@@ -13,11 +13,17 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.8.1] - 2019-10-10
+*** Fixed
+    - Change default for ~org-re-reveal-theme~ to ~black~
+      - Previous default, ~moon~, loads remote fonts
+        - Not privacy friendly
+        - Not available offline
+
 ** [2.8.0] - 2019-10-05
 *** Added
     - Keyword ~REVEAL_HIGHLIGHT_URL~ and variable ~org-re-reveal-highlight-url~
       (workaround for issue #27)
-
 *** Fixed
     - Copy and paste error related to audio on fragmented lists in
       ~org-re-reveal-append-frag~
