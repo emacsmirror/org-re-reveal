@@ -113,11 +113,13 @@
       (:reveal-max-scale "REVEAL_MAX_SCALE" nil org-re-reveal-max-scale t)
       (:reveal-extra-options "REVEAL_EXTRA_OPTIONS" nil org-re-reveal-extra-options t)
       (:reveal-root "REVEAL_ROOT" nil org-re-reveal-root t)
+      (:reveal-script-files "REVEAL_SCRIPT_FILES" nil org-re-reveal-script-files t)
       (:reveal-trans "REVEAL_TRANS" nil org-re-reveal-transition t)
       (:reveal-speed "REVEAL_SPEED" nil org-re-reveal-transition-speed t)
       (:reveal-theme "REVEAL_THEME" nil org-re-reveal-theme t)
       (:reveal-extra-css "REVEAL_EXTRA_CSS" nil org-re-reveal-extra-css newline)
       (:reveal-extra-js "REVEAL_EXTRA_JS" nil org-re-reveal-extra-js nil)
+      (:reveal-extra-scripts "REVEAL_EXTRA_SCRIPTS" nil org-re-reveal-extra-scripts nil)
       (:reveal-extra-attr "REVEAL_EXTRA_ATTR" nil org-re-reveal-extra-attr nil)
       (:reveal-hlevel "REVEAL_HLEVEL" nil nil t)
       (:reveal-title-slide "REVEAL_TITLE_SLIDE" nil org-re-reveal-title-slide newline)
@@ -313,9 +315,18 @@ and URL `https://github.com/google/fonts/issues/1495'."
   :package-version '(org-re-reveal . "2.8.1"))
 
 (defcustom org-re-reveal-extra-js ""
-  "URL to extra JS file."
+  "URL to extra JS file.
+If you use this variable, please take the time to report your current
+usage at URL `https://gitlab.com/oer/org-re-reveal/issues/31'."
   :group 'org-export-re-reveal
   :type 'string)
+
+(defcustom org-re-reveal-extra-scripts nil
+  "List of URLs to extra JavaScript files."
+  :group 'org-export-re-reveal
+  :type '(repeat string))
+(make-obsolete-variable 'org-re-reveal-extra-js
+                        'org-re-reveal-extra-scripts "org-re-reveal 2.9.0")
 
 (defcustom org-re-reveal-extra-attr nil
   "Global Reveal Extra Attrs for all slides."
@@ -1087,16 +1098,20 @@ based on `org-re-reveal-external-plugins'."
 (defun org-re-reveal-scripts--external-js (info)
   "Internal function for `org-re-reveal-scripts' with INFO."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
+         (script-files (org-re-reveal--parse-listoption
+                        info :reveal-script-files))
+         (extra-script-files (org-re-reveal--parse-listoption
+                              info :reveal-extra-scripts))
          (root-libs (mapcar (lambda (file) (concat root-path file))
-                            org-re-reveal-script-files))
+                            script-files))
          ;; Local files
          (local-root-path (org-re-reveal--file-url-to-path root-path))
-         (local-libs (mapcar (lambda (file) (concat local-root-path file))
-                             org-re-reveal-script-files))
+         (local-libs (append (mapcar (lambda (file) (concat local-root-path file))
+                                     script-files)
+                             extra-script-files))
          (local-libs-exist-p (cl-every #'file-readable-p local-libs))
          (in-single-file (plist-get info :reveal-single-file)))
-    (if (and in-single-file
-             local-libs-exist-p)
+    (if (and in-single-file local-libs-exist-p)
         ;; Embed scripts into HTML
         (concat "<script>\n"
                 (mapconcat #'org-re-reveal--read-file local-libs "\n")
@@ -1111,7 +1126,7 @@ based on `org-re-reveal-external-plugins'."
                                     ", "))))
       (mapconcat (lambda (file)
                    (concat "<script src=\"" file "\"></script>\n"))
-                 root-libs ""))))
+                 (append root-libs extra-script-files) ""))))
 
 (defun org-re-reveal-scripts--reveal-options (info)
   "Internal function for `org-re-reveal-scripts' with INFO."
