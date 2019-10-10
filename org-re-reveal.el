@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.8.1
+;; Version: 2.9.0
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -230,6 +230,7 @@ browsing that file, subtree export to file."
 
 (defcustom org-re-reveal-script-files '("lib/js/head.min.js" "js/reveal.js")
   "Specify files to initialize reveal.js.
+Note that file names here are relative under `org-re-reveal-root'.
 On 2018-10-04, head.min.js was removed on the dev branch of reveal.js.
 If you are using a version including that removal, customize this variable
 to remove the first file name."
@@ -322,7 +323,9 @@ usage at URL `https://gitlab.com/oer/org-re-reveal/issues/31'."
   :type 'string)
 
 (defcustom org-re-reveal-extra-scripts nil
-  "List of URLs to extra JavaScript files."
+  "List of filenames or URLs to extra JavaScript files.
+If relative filenames are used, they must be relative to the presentation's
+HTML file."
   :group 'org-export-re-reveal
   :type '(repeat string))
 (make-obsolete-variable 'org-re-reveal-extra-js
