@@ -110,7 +110,8 @@
               "https://gitlab.com/oer/org-re-reveal")))
 
 (mapc #'org-re-reveal-tests-create-normal-test
-      '("highlightjs"
+      '("extra-scripts"
+        "highlightjs"
         "klipsify"
         "klipsify-python"
         "multiplex"

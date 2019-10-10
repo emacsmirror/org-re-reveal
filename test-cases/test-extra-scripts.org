@@ -1,0 +1,17 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2019 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+#+REVEAL_SCRIPT_FILES: ("js/reveal.js")
+
+# The following is just for export testing.  The file does not exist.
+#+REVEAL_EXTRA_SCRIPTS: ("reveal.js/lib/js/head.min.js")
+
+#+Title: Loading an extra script
+#+Author: Jens Lechtenbörger
+
+* Just a slide
+  - Nothing special here
