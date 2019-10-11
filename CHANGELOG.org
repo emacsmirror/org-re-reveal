@@ -13,6 +13,11 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.10.0] - 2019-10-11
+*** Changed
+    - Variable ~org-re-reveal-extra-scripts~ can now also contain
+      entire script elements.
+
 ** [2.9.0] - 2019-10-10
 *** Added
     - Variable ~org-re-reveal-extra-scripts~ with keyword

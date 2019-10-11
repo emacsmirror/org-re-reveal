@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<title>Loading an extra script</title>
+<title>Embedding extra scripts</title>
 <meta name="author" content="Jens Lechtenbörger"/>
 <style type="text/css">
 .underline { text-decoration: underline; }
@@ -26,7 +26,7 @@
 <div class="reveal">
 <div class="slides">
 <section id="sec-title-slide">
-<h1 class="title">Loading an extra script</h1><h2 class="author">Jens Lechtenbörger</h2><p class="date">Created:{{date}}</p>
+<h1 class="title">Embedding extra scripts</h1><h2 class="author">Jens Lechtenbörger</h2><p class="date">Created:{{date}}</p>
 </section>
 
 <section>
@@ -42,6 +42,7 @@
 </div>
 <script src="./reveal.js/js/reveal.js"></script>
 <script src="reveal.js/lib/js/head.min.js"></script>
+<script>console.log("Empty script.")</script>
 <script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration

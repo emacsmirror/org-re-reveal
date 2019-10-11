@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.9.0
+;; Version: 2.10.0
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -69,7 +69,7 @@
 (require 'ox-html)
 (require 'cl-lib)   ; cl-mapcar and autoloads for:
                     ; cl-loop, cl-letf, cl-assert, cl-case, cl-every,
-                    ; cl-delete-duplicates
+                    ; cl-delete-duplicates, cl-remove-if
 (require 'subr-x)   ; string-trim
 (require 'url-parse)
 (require 'url-util)
@@ -323,11 +323,14 @@ usage at URL `https://gitlab.com/oer/org-re-reveal/issues/31'."
   :type 'string)
 
 (defcustom org-re-reveal-extra-scripts nil
-  "List of filenames or URLs to extra JavaScript files.
+  "List of extra scripts.
+Each list element can be the filename or URL of a JavaScript file or an
+entire HTML script element.
 If relative filenames are used, they must be relative to the presentation's
 HTML file."
   :group 'org-export-re-reveal
-  :type '(repeat string))
+  :type '(repeat string)
+  :package-version '(org-re-reveal . "2.10.0"))
 (make-obsolete-variable 'org-re-reveal-extra-js
                         'org-re-reveal-extra-scripts "org-re-reveal 2.9.0")
 
@@ -1107,29 +1110,43 @@ This includes reveal.js libraries in `org-re-reveal-script-files' under
                         info :reveal-script-files))
          (root-libs (mapcar (lambda (file) (concat root-path file))
                             script-files))
-         (extra-script-files (org-re-reveal--parse-listoption
-                              info :reveal-extra-scripts))
+         (extra-scripts (org-re-reveal--parse-listoption
+                         info :reveal-extra-scripts))
+         ;; Treat extra scripts not starting with <script> as filenames.
+         (extra-script-files
+          (cl-remove-if (lambda (s) (string-prefix-p "<script>" s))
+                        extra-scripts))
+         ;; Treat extra scripts starting with <script> as elements.
+         (extra-script-elements
+          (cl-remove-if-not (lambda (s) (string-prefix-p "<script>" s))
+                            extra-scripts))
          (in-single-file (plist-get info :reveal-single-file)))
-    (if in-single-file
-        (let* ((local-root-path (org-re-reveal--file-url-to-path root-path))
-               (local-libs (append (mapcar (lambda (file)
-                                             (concat local-root-path file))
-                                           script-files)
-                                   extra-script-files))
-               (local-libs-exist-p (cl-every #'file-readable-p local-libs)))
-          (if local-libs-exist-p
-              ;; Embed scripts into HTML
-              (concat "<script>\n"
-                      (mapconcat #'org-re-reveal--read-file local-libs "\n")
-                      "\n</script>")
-            (error
-             (concat "Cannot read "
-                     (mapconcat 'identity
-                                (cl-remove-if #'file-readable-p local-libs)
-                                ", ")))))
-      (mapconcat (lambda (file)
-                   (concat "<script src=\"" file "\"></script>\n"))
-                 (append root-libs extra-script-files) ""))))
+    (concat
+     (if in-single-file
+         (let* ((local-root-path (org-re-reveal--file-url-to-path root-path))
+                (local-libs (append (mapcar (lambda (file)
+                                              (concat local-root-path file))
+                                            script-files)
+                                    extra-script-files))
+                (local-libs-exist-p (cl-every #'file-readable-p local-libs)))
+           (if local-libs-exist-p
+               ;; Embed contents of files.
+               (mapconcat (lambda (file)
+                            (format "<script>\n%s\n</script>\n"
+                                    (org-re-reveal--read-file file)))
+                          local-libs "")
+             (error
+              (concat "Cannot read "
+                      (mapconcat 'identity
+                                 (cl-remove-if #'file-readable-p local-libs)
+                                 ", ")))))
+       ;; Embed script files with src.
+       (mapconcat (lambda (file)
+                    (concat "<script src=\"" file "\"></script>\n"))
+                  (append root-libs extra-script-files) ""))
+     ;; Embed script tags.
+     (mapconcat 'identity extra-script-elements "\n")
+     (if extra-script-elements "\n" ""))))
 
 (defun org-re-reveal-scripts--reveal-options (info)
   "Internal function for `org-re-reveal-scripts' with INFO."

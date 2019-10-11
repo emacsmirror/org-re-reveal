@@ -5,12 +5,12 @@
 #+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
 #+REVEAL_THEME: black
 
+# The following is just for export testing.  The file head.min.js does
+# not exist for newer versions of reveal.js.
 #+REVEAL_SCRIPT_FILES: ("js/reveal.js")
+#+REVEAL_EXTRA_SCRIPTS: ("reveal.js/lib/js/head.min.js" "<script>console.log(\"Empty script.\")</script>")
 
-# The following is just for export testing.  The file does not exist.
-#+REVEAL_EXTRA_SCRIPTS: ("reveal.js/lib/js/head.min.js")
-
-#+Title: Loading an extra script
+#+Title: Embedding extra scripts
 #+Author: Jens Lechtenbörger
 
 * Just a slide
