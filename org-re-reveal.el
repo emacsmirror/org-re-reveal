@@ -1098,35 +1098,35 @@ based on `org-re-reveal-external-plugins'."
 (defvar org-re-reveal-client-multiplex nil
   "Used to cause generation of client html file for multiplex.")
 
-(defun org-re-reveal-scripts--external-js (info)
-  "Internal function for `org-re-reveal-scripts' with INFO."
+(defun org-re-reveal-scripts--libraries (info)
+  "Internal function to generate script tags with INFO.
+This includes reveal.js libraries in `org-re-reveal-script-files' under
+`org-re-reveal-root', and libraries in `org-re-reveal-extra-scripts'."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
          (script-files (org-re-reveal--parse-listoption
                         info :reveal-script-files))
-         (extra-script-files (org-re-reveal--parse-listoption
-                              info :reveal-extra-scripts))
          (root-libs (mapcar (lambda (file) (concat root-path file))
                             script-files))
-         ;; Local files
-         (local-root-path (org-re-reveal--file-url-to-path root-path))
-         (local-libs (append (mapcar (lambda (file) (concat local-root-path file))
-                                     script-files)
-                             extra-script-files))
-         (local-libs-exist-p (cl-every #'file-readable-p local-libs))
+         (extra-script-files (org-re-reveal--parse-listoption
+                              info :reveal-extra-scripts))
          (in-single-file (plist-get info :reveal-single-file)))
-    (if (and in-single-file local-libs-exist-p)
-        ;; Embed scripts into HTML
-        (concat "<script>\n"
-                (mapconcat #'org-re-reveal--read-file local-libs "\n")
-                "\n</script>")
-      ;; Fall-back to extern script links
-      (if in-single-file
-          ;; Tried to embed scripts but failed. Print a message about possible errors.
-          (error (concat "Cannot read "
-                         (mapconcat 'identity
-                                    (delq nil (mapcar (lambda (file) (if (not (file-readable-p file)) file))
-                                                      local-libs))
-                                    ", "))))
+    (if in-single-file
+        (let* ((local-root-path (org-re-reveal--file-url-to-path root-path))
+               (local-libs (append (mapcar (lambda (file)
+                                             (concat local-root-path file))
+                                           script-files)
+                                   extra-script-files))
+               (local-libs-exist-p (cl-every #'file-readable-p local-libs)))
+          (if local-libs-exist-p
+              ;; Embed scripts into HTML
+              (concat "<script>\n"
+                      (mapconcat #'org-re-reveal--read-file local-libs "\n")
+                      "\n</script>")
+            (error
+             (concat "Cannot read "
+                     (mapconcat 'identity
+                                (cl-remove-if #'file-readable-p local-libs)
+                                ", ")))))
       (mapconcat (lambda (file)
                    (concat "<script src=\"" file "\"></script>\n"))
                  (append root-libs extra-script-files) ""))))
@@ -1291,11 +1291,10 @@ dependencies: [
   "Return necessary scripts to initialize reveal.js.
 Use INFO and custom variable `org-re-reveal-root'."
   (concat
-   ;; reveal.js/lib/js/head.min.js
-   ;; reveal.js/js/reveal.js
-   (org-re-reveal-scripts--external-js info)
+   ;; Libraries in script tags, including reveal.js itself.
+   (org-re-reveal-scripts--libraries info)
 
-   ;; start of <script> tag
+   ;; Create <script> tag for Reveal.initialize(...).
    "<script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
