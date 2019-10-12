@@ -877,8 +877,9 @@ holding contextual information."
       ;; Standard headline.  Export it as a slide
       (let* ((level (org-export-get-relative-level headline info))
              (preferred-id (or (org-element-property :CUSTOM_ID headline)
-                                 (org-export-get-reference headline info)
-                                 (org-element-property :ID headline)))
+                               (and (fboundp 'org-export-get-reference)
+                                    (org-export-get-reference headline info))
+                               (org-element-property :ID headline)))
              (hlevel (org-re-reveal--get-hlevel info))
              (header (plist-get info :reveal-slide-header))
              (header-div (if header (format org-re-reveal-slide-header-html header) ""))
