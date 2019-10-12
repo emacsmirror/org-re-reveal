@@ -2,6 +2,9 @@
 #+Title: Introduction to org-re-reveal
 #+Author: Yujie Wen and others
 
+#+KEYWORDS: org mode, reveal.js, presentation, HTML, slide show, org-re-reveal, emacs-reveal, OER
+#+DESCRIPTION: Readme for org-re-reveal to generate HTML/reveal.js presentations from Org mode source files.
+
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Authors: Yujie Wen <yjwen.ty@gmail.com> and contributors to
 #          org-reveal and org-re-reveal, see there:
@@ -82,6 +85,9 @@ embedded figures considerably:
 
 ** Install reveal.js
 
+   *Note:* This is only necessary if you do not use [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]],
+   which installs and configures reveal.js with several of it plugins.
+
    Download reveal.js packages from [[https://github.com/hakimel/reveal.js/][here]].
 
    Extract reveal.js folders from the downloaded zip file.
@@ -127,19 +133,127 @@ embedded figures considerably:
 
 * Configuration
 
+** Options and Plug-ins
+
+   All options, keywords, and customizable variables of org-re-reveal are
+   shown in the following table, with hints on the next slide.
+
+| Option                            | Keyword                                      | Variable                                 |
+|-----------------------------------+----------------------------------------------+------------------------------------------|
+| ~reveal_center~                   | ~nil~                                        | ~org-re-reveal-center~                   |
+| ~reveal_control~                  | ~nil~                                        | ~org-re-reveal-control~                  |
+| ~reveal_defaulttiming~            | ~nil~                                        | ~org-re-reveal-defaulttiming~            |
+| ~reveal_fragmentinurl~            | ~nil~                                        | ~org-re-reveal-fragmentinurl~            |
+| ~reveal_generate_ids~             | ~nil~                                        | ~org-re-reveal-generate-custom-ids~      |
+| ~reveal_hashonebasedindex~        | ~nil~                                        | ~org-re-reveal-hashonebasedindex~        |
+| ~reveal_height~                   | ~nil~                                        | ~org-re-reveal-height~                   |
+| ~reveal_history~                  | ~nil~                                        | ~org-re-reveal-history~                  |
+| ~reveal_inter_presentation_links~ | ~nil~                                        | ~org-re-reveal-inter-presentation-links~ |
+| ~reveal_keyboard~                 | ~nil~                                        | ~org-re-reveal-keyboard~                 |
+| ~reveal_klipsify_src~             | ~nil~                                        | ~org-re-reveal-klipsify-src~             |
+| ~reveal_mousewheel~               | ~nil~                                        | ~org-re-reveal-mousewheel~               |
+| ~reveal_overview~                 | ~nil~                                        | ~org-re-reveal-overview~                 |
+| ~reveal_pdfseparatefragments~     | ~nil~                                        | ~org-re-reveal-pdfseparatefragments~     |
+| ~reveal_progress~                 | ~nil~                                        | ~org-re-reveal-progress~                 |
+| ~reveal_rolling_links~            | ~nil~                                        | ~org-re-reveal-rolling-links~            |
+| ~reveal_single_file~              | ~nil~                                        | ~org-re-reveal-single-file~              |
+| ~reveal_global_footer~            | ~nil~                                        | ~org-re-reveal-global-footer~            |
+| ~reveal_global_header~            | ~nil~                                        | ~org-re-reveal-global-header~            |
+| ~reveal_slide_number~             | ~nil~                                        | ~org-re-reveal-slide-number~             |
+| ~reveal_toc_footer~               | ~nil~                                        | ~org-re-reveal-toc-footer~               |
+| ~reveal_subtree_with_title_slide~ | ~nil~                                        | ~org-re-reveal-subtree-with-title-slide~ |
+| ~reveal_width~                    | ~nil~                                        | ~org-re-reveal-width~                    |
+| ~nil~                             | ~REVEAL_ACADEMIC_TITLE~                      | ~nil~                                    |
+| ~nil~                             | ~REVEAL_CODEMIRROR_CONFIG~                   | ~org-re-reveal-klipse-codemirror~        |
+| ~nil~                             | ~REVEAL_DEFAULT_FRAG_STYLE~                  | ~org-re-reveal-default-frag-style~       |
+| ~nil~                             | ~REVEAL_DEFAULT_SLIDE_BACKGROUND~            | ~nil~                                    |
+| ~nil~                             | ~REVEAL_DEFAULT_SLIDE_BACKGROUND_SIZE~       | ~nil~                                    |
+| ~nil~                             | ~REVEAL_DEFAULT_SLIDE_BACKGROUND_POSITION~   | ~nil~                                    |
+| ~nil~                             | ~REVEAL_DEFAULT_SLIDE_BACKGROUND_REPEAT~     | ~nil~                                    |
+| ~nil~                             | ~REVEAL_DEFAULT_SLIDE_BACKGROUND_TRANSITION~ | ~nil~                                    |
+| ~nil~                             | ~REVEAL_EXTERNAL_PLUGINS~                    | ~org-re-reveal-external-plugins~         |
+| ~nil~                             | ~REVEAL_EXTRA_ATTR~                          | ~org-re-reveal-extra-attr~               |
+| ~nil~                             | ~REVEAL_EXTRA_CSS~                           | ~org-re-reveal-extra-css~                |
+| ~nil~                             | ~REVEAL_EXTRA_JS~                            | ~org-re-reveal-extra-js~                 |
+| ~nil~                             | ~REVEAL_EXTRA_OPTIONS~                       | ~org-re-reveal-extra-options~            |
+| ~nil~                             | ~REVEAL_EXTRA_SCRIPTS~                       | ~org-re-reveal-extra-scripts~            |
+| ~nil~                             | ~REVEAL_HEAD_PREAMBLE~                       | ~org-re-reveal-head-preamble~            |
+| ~nil~                             | ~REVEAL_INIT_SCRIPT~                         | ~org-re-reveal-init-script~              |
+| ~nil~                             | ~REVEAL_HIGHLIGHT_CSS~                       | ~org-re-reveal-highlight-css~            |
+| ~nil~                             | ~REVEAL_HIGHLIGHT_URL~                       | ~org-re-reveal-highlight-url~            |
+| ~nil~                             | ~REVEAL_HLEVEL~                              | ~nil~                                    |
+| ~nil~                             | ~REVEAL_KLIPSE_CSS_URL~                      | ~org-re-reveal-klipse-css~               |
+| ~nil~                             | ~REVEAL_KLIPSE_EXTRA_CONFIG~                 | ~org-re-reveal-klipse-extra-config~      |
+| ~nil~                             | ~REVEAL_KLIPSE_JS_URL~                       | ~org-re-reveal-klipse-js~                |
+| ~nil~                             | ~REVEAL_KLIPSE_SETUP~                        | ~org-re-reveal-klipse-setup~             |
+| ~nil~                             | ~REVEAL_MARGIN~                              | ~org-re-reveal-margin~                   |
+| ~nil~                             | ~REVEAL_MATHJAX_URL~                         | ~org-re-reveal-mathjax-url~              |
+| ~nil~                             | ~REVEAL_MAX_SCALE~                           | ~org-re-reveal-max-scale~                |
+| ~nil~                             | ~REVEAL_MIN_SCALE~                           | ~org-re-reveal-min-scale~                |
+| ~nil~                             | ~REVEAL_MISCINFO~                            | ~nil~                                    |
+| ~nil~                             | ~REVEAL_MULTIPLEX_ID~                        | ~org-re-reveal-multiplex-id~             |
+| ~nil~                             | ~REVEAL_MULTIPLEX_SECRET~                    | ~org-re-reveal-multiplex-secret~         |
+| ~nil~                             | ~REVEAL_MULTIPLEX_SOCKETIO_URL~              | ~org-re-reveal-multiplex-socketio-url~   |
+| ~nil~                             | ~REVEAL_MULTIPLEX_URL~                       | ~org-re-reveal-multiplex-url~            |
+| ~nil~                             | ~REVEAL_PLUGINS~                             | ~org-re-reveal-plugins~                  |
+| ~nil~                             | ~REVEAL_POSTAMBLE~                           | ~org-re-reveal-postamble~                |
+| ~nil~                             | ~REVEAL_PREAMBLE~                            | ~org-re-reveal-preamble~                 |
+| ~nil~                             | ~REVEAL_ROOT~                                | ~org-re-reveal-root~                     |
+| ~nil~                             | ~REVEAL_SCRIPT_FILES~                        | ~org-re-reveal-script-files~             |
+| ~nil~                             | ~REVEAL_SLIDE_HEADER~                        | ~org-re-reveal-slide-header~             |
+| ~nil~                             | ~REVEAL_SLIDE_FOOTER~                        | ~org-re-reveal-slide-footer~             |
+| ~nil~                             | ~REVEAL_SPEED~                               | ~org-re-reveal-transition-speed~         |
+| ~nil~                             | ~REVEAL_TALK_QR_CODE~                        | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TALK_URL~                            | ~nil~                                    |
+| ~nil~                             | ~REVEAL_THEME~                               | ~org-re-reveal-theme~                    |
+| ~nil~                             | ~REVEAL_TITLE_SLIDE~                         | ~org-re-reveal-title-slide~              |
+| ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND~              | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TITLE_SLIDE_STATE~                   | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TITLE_SLIDE_TIMING~                  | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND_SIZE~         | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND_POSITION~     | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND_REPEAT~       | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND_TRANSITION~   | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TOC_SLIDE_STATE~                     | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TOC_SLIDE_CLASS~                     | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TOC_SLIDE_TITLE~                     | ~org-re-reveal-toc-slide-title~          |
+| ~nil~                             | ~REVEAL_TRANS~                               | ~org-re-reveal-transition~               |
+
+#+REVEAL: split
+   For documentation of variables, see their doc strings.  E.g.,
+   either invoke ~C-h v~ followed by the name of the variable or
+   browse the customization group ~org-export-re-reveal~: enter
+   ~M-x customize-group~, then ~org-export-re-reveal~.
+
+   For examples, please refer to the heading part of this document
+   and to [[https://gitlab.com/oer/org-re-reveal/tree/master/test-cases][test-cases in the GitLab repository]].
+
+   Options and keywords that do not have a variable documenting their
+   effects are explained in this document.  Search in reveal.js
+   presentations is invoked with ~C-S-f~ (which means “Control” and
+   “Shift” and “f”; curiously, “f” is shown as “F” on keyboards, which
+   actually is “Shift f”).
+
+   Note that =#+REVEAL_EXTRA_OPTIONS: your_comma_separated_options=
+   and =org-re-reveal-extra-options= allow to specify all
+   [[https://github.com/hakimel/reveal.js/#configuration][configuration options of reveal.js]].
+
+
 ** Set the location of reveal.js
 
    org-re-reveal must know where reveal.js is on your computer before
-   exporting Org contents. The location of reveal.js is the path to
+   exporting Org contents.  You do not have to worry about any of this with
+   [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]].
+
+   The location of reveal.js is the path to
    the top directory of the reveal.js packages, the directory which contains
    file *README.md*, but *not* the one that contains the file reveal.js.
 
    The default location is =./reveal.js=, relative to the Org file.
 
-   Changing =org-re-reveal-root= 's value will change the location
-   globally.  By setting option =REVEAL_ROOT=, the location is only
-   affected within the Org file.  For example, add the following
-   statement to your .emacs file:
+   Customize =org-re-reveal-root= to change the location
+   globally, or use keyword =REVEAL_ROOT= in an individual Org file.
+   For example, add the following statement to your .emacs file:
 #+BEGIN_SRC lisp
 (setq org-re-reveal-root "file:///d:/reveal.js")
 #+END_SRC
@@ -147,7 +261,7 @@ embedded figures considerably:
 #+REVEAL: split
    *IMPORTANT*: If you use absolute paths to reveal.js as illustrated
    above, they should be in URL form,
-   "file:///path_to_reveal.js".
+   ~file:///path_to_reveal.js~.
 
    #+BEGIN_SRC org
    ,#+REVEAL_ROOT: file:///d:/reveal.js
@@ -165,13 +279,13 @@ embedded figures considerably:
 *** URL form for file location
 
     For example if you cloned this repository to your home directory,
-    this file in Mac OS X would be referred to as
-    "file:///Users/username/org-re-reveal/Readme.org".  This file in
-    GNU/Linux would be "file:///home/username/org-re-reveal/Readme.org" and
-    in Windows this file would be
-    "file:///c:/Users/username/org-re-reveal/Readme.org".  For more
-    detail on this standard please refer to
-    [[https://en.wikipedia.org/wiki/File_URI_scheme]]
+    this file in Mac OS X might be referred to as
+    ~file:///Users/username/org-re-reveal/Readme.org~.  This file in
+    GNU/Linux could be ~file:///home/username/org-re-reveal/Readme.org~,
+    in Windows
+    ~file:///c:/Users/username/org-re-reveal/Readme.org~.  For more
+    details on this standard please refer to
+    [[https://en.wikipedia.org/wiki/File_URI_scheme]].
 
 ** First Try
 
@@ -236,16 +350,16 @@ embedded figures considerably:
 
 *** Configure HLevel's Value
 
-    * Change variable =org-re-reveal-hlevel='s value to set HLevel globally.\\
+    * Change variable =org-re-reveal-hlevel='s value to set HLevel globally.
       For example, add the following statement to your =.emacs= file.
-#+BEGIN_SRC lisp
+      #+BEGIN_SRC lisp
 (setq org-re-reveal-hlevel 2)
-#+END_SRC
+      #+END_SRC
 
-    * Setting Org files local HLevel to option =REVEAL_HLEVEL=.
-#+BEGIN_SRC org
+    * Set HLevel within individual Org file with option =REVEAL_HLEVEL=:
+      #+BEGIN_SRC org
 ,#+REVEAL_HLEVEL: 2
-#+END_SRC
+      #+END_SRC
 
 ** Subheadings
 
@@ -312,7 +426,8 @@ embedded figures considerably:
     variable ~org-re-reveal-title-slide~; they can be used to retrieve
     document information.  See
     [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-title-slide.org][test-title-slide.org]]
-    for an example.
+    for an example including ~REVEAL_ACADEMIC_TITLE~,
+    ~REVEAL_TALK_URL~, ~REVEAL_TALK_QR_CODE~
 
     Alternatively, you can also write the title slide's HTML code
     (with escape sequences) into a separate file and
@@ -320,21 +435,32 @@ embedded figures considerably:
 
 ** Set Slide Background
 
-   Slide background can be set to a color, an image or a repeating image
+   Slide background can be set to a color, an image, or a repeating image
    array by setting heading properties.
 
-*** Single Colored Background
+   Keywords ~REVEAL_DEFAULT_SLIDE_BACKGROUND~, ~REVEAL_DEFAULT_SLIDE_BACKGROUND_POSITION~,
+   ~REVEAL_DEFAULT_SLIDE_BACKGROUND_REPEAT~, ~REVEAL_DEFAULT_SLIDE_BACKGROUND_SIZE~, and
+   ~REVEAL_DEFAULT_SLIDE_BACKGROUND_TRANSITION~ can be used to specify
+   default values for options explained subsequently for individual
+   slides.  Additional keywords ~REVEAL_TITLE_SLIDE_BACKGROUND~,
+   ~REVEAL_TITLE_SLIDE_BACKGROUND_POSITION~,
+   ~REVEAL_TITLE_SLIDE_BACKGROUND_REPEAT~,
+   ~REVEAL_TITLE_SLIDE_BACKGROUND_SIZE~,
+   ~REVEAL_TITLE_SLIDE_BACKGROUND_TRANSITION~ set those options for
+   the title slide.
+
+*** Colored Background
    :PROPERTIES:
-   :reveal_background: #543210
+   :reveal_background: linear-gradient(to left, #910830, #521623)
    :END:
 
     Set property =reveal_background= to either an RGB color value, or any
     supported CSS color format.
 
 #+BEGIN_SRC org
-,*** Single Colored Background
+,*** Colored Background
    :PROPERTIES:
-   :reveal_background: #123456
+   :reveal_background: linear-gradient(to left, #910830, #521623)
    :END:
 #+END_SRC
 
@@ -405,23 +531,23 @@ embedded figures considerably:
 
 ** Slide Numbering
 
-   By default, a flatten slide number is showed at the lower-right corner of each slide.
+   By default, the slide number is showed at the lower-right corner of each slide.
 
-   To disable slide numbering, please add ~reveal_slide_number:nil~ to
+   To disable slide numbering, please add ~reveal_slide_number:nil~ to the
    ~#+OPTIONS:~ line.
 
    From reveal.js 3.1.0, slide numbering can have several custom
    formats. To choose one format, please set ~reveal_slide_number~ to
    its proper string. For example, ~reveal_slide_number:h/v~.
 
-   Supported format string can be found in [[https://github.com/hakimel/reveal.js/#slide-number][reveal.js manual]].
+   Supported format strings can be found in the [[https://github.com/hakimel/reveal.js/#slide-number][reveal.js manual]].
 
 
 ** Slide Header/Footer
-   Specify Slide header/footer by =#+REVEAL_SLIDE_HEADER:= and
+   Specify slide header/footer by =#+REVEAL_SLIDE_HEADER:= and
    =#+REVEAL_SLIDE_FOOTER:=. The option content will be put into
    divisions of class =slide-header= and =slide-footer=, so you can
-   control their appearance in custom CSS file(see [[Extra Stylesheets]]).
+   control their appearance in custom CSS file (see [[Extra Stylesheets]]).
    By default header/footer content will only display on content
    slides. To show them also on the title and toc slide you can add
    ~reveal_global_header:t~ and ~reveal_global_footer:t~ to
@@ -578,48 +704,15 @@ embedded figures considerably:
    =html_headline_class= to the headline.
 
 
-** Plug-ins
-
-   Reveal.js provides several plug-in functions.
-
-   - reveal-control : Show/hide browsing control pad.
-   - reveal-progress : Show/hide progress bar.
-   - reveal-history : Enable/disable slide history track.
-   - reveal-center : Enable/disable slide centering.
-   - multiplex : Enable audience to view presentation on secondary devices.
-
-*** Configure Plug-ins and Options
-
-    Each plugin can be toggled on/off by adding =#+OPTIONS= tags or
-    by setting custom variables.
-
-    - =#+OPTIONS= tags:\\
-      =reveal_control=, =reveal_progress=, =reveal_history=,
-      =reveal_center=, =reveal_rolling_links=, =reveal_keyboard=,
-      =reveal_mousewheel=, =reveal_defaulttiming=, =reveal_overview=,
-      =reveal_fragmentinurl=, =reveal_pdfseparatefragments=,
-      =reveal_inter_presentation_links=, =reveal_generate_ids=
-#+REVEAL: split
-    - Custom variables:\\
-      =org-re-reveal-control=, =org-re-reveal-progress=,
-      =org-re-reveal-history=, =org-re-reveal-center=,
-      =org-re-reveal-rolling-links=, =org-re-reveal-keyboard=,
-      =org-re-reveal-mousewheel=, =org-re-reveal-defaulttiming=,
-      =org-re-reveal-fragmentinurl=, =org-re-reveal-pdfseparatefragments=,
-      =org-re-reveal-overview=, =org-re-reveal-inter-presentation-links=,
-      =org-re-reveal-generate-custom-ids=, =org-re-reveal-extra-options=
-
-    For examples, please refer to the heading part of this document.
-    Note that =#+REVEAL_EXTRA_OPTIONS: your_comma_separated_options=
-    and =org-re-reveal-extra-options= allow to specify all
-    [[https://github.com/hakimel/reveal.js/#configuration][configuration options of reveal.js]].
-
 ** Third-Party Plugins
    Reveal.js is also extensible through third-party plugins, which can
-   be loaded with org-re-reveal. The paths to javascript loading code
+   be loaded with org-re-reveal. Several plugins are included and
+   configured with [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]].
+
+   The paths to javascript loading code
    need to be customized in the variable
    ~org-re-reveal-external-plugins~. This variable can be an
-   associative list or a file. If it is an associative list the first
+   associative list or a filename. If it is an associative list the first
    element of each Assoc cell is a symbol -- the name of the plugin --
    and the second is a string that will be expanded by the ~format~
    function when the plugin is loaded. So, this second element should
@@ -827,12 +920,12 @@ embedded figures considerably:
 ,#+REVEAL_PLUGINS: (markdown highlight search)
 #+END_SRC
 
-** Extra Dependent Script
+** Extra JavaScript Libraries
 
-   Set =REVEAL_EXTRA_JS= to the url of extra reveal.js dependent
-   script if necessary.
+   Set =REVEAL_EXTRA_SCRIPTS= to a list of extra JavaScript
+   libraries of script elements.
 #+BEGIN_SRC org
-,#+REVEAL_EXTRA_JS: url-to-custom-script.js
+,#+REVEAL_EXTRA_SCRIPTS: ("filename.js" "<script>Your code here\n</script>")
 #+END_SRC
 
 ** Extra Slide Attribute
@@ -961,7 +1054,7 @@ embedded figures considerably:
 ** Executable Source Blocks
    To allow live execution of code in some languages, enable the
    klipse plugin
-   with ~org-re-reveal-klipsify-src~ (or with option ~reveal_klipsify_src:t~)
+   with variable ~org-re-reveal-klipsify-src~ (or with option ~reveal_klipsify_src:t~)
 
    Src blocks with the languages contained in
    ~org-re-reveal-klipse-setup~ will be executed with output shown in
