@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2019 Jens Lechtenbörger
 
+# WARNING! This file is kept for backward compatibility.  Table of
+# Contents at chosen position should be generated with keyword
+# REVEAL_TOC, not with TOC.  See Readme.
+
 #+STARTUP: showeverything
 #+OPTIONS: reveal_width:1400 reveal_height:1000
 #+REVEAL_THEME: black
@@ -45,10 +49,6 @@ Moin moin!
 
 Has hash id, as no number assigned.  Not shown in LaTeX TOC.
 
-# Custom IDs are used for headlines/sections closed up to this point,
-# but not beyond.  Use option reveal_generate_ids:draft above to generate
-# custom IDs throughout the document.  That leads to broken links from
-# TOC to the subsequent headlines without explicitly assigned custom IDs.
 #+TOC: headlines 3
 
 * Heading 1 again, no custom ID
