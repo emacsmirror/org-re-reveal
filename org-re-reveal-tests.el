@@ -117,7 +117,9 @@
         "multiplex"
         "noslide"
         "options"
+        "reveal-toc"
         "slide-numbers"
+        "slide-numbers-reveal-toc"
         "slide-numbers-toc"
         "split"
         "title-slide"))

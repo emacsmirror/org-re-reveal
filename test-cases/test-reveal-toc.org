@@ -1,0 +1,32 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2019 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil
+#+REVEAL_THEME: black
+
+#+Title: TOC at chosen location
+#+Author: Jens Lechtenbörger
+
+* Top-level slide with subtitle
+** A subheading
+   :PROPERTIES:
+   :UNNUMBERED: notoc
+   :NOSLIDE: t
+   :END:
+
+   - Just a list
+   - with bullet points
+
+# Note how the following creates a headline of your choice for the
+# TOC, with UNNUMBERED: notoc to avoid inclusion in TOC.
+# TOC contents generated with keyword REVEAL_TOC.
+** Table of Contents
+   :PROPERTIES:
+   :UNNUMBERED: notoc
+   :END:
+#+REVEAL_TOC: headlines 1
+
+* Second top-level slide
+** With contained 2nd-level slide
+   With text

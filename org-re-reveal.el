@@ -1477,19 +1477,42 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
       (REVEAL_HTML value)
       (HTML value)
       ;; Handling of TOC at arbitrary position is a hack.
-      ;; We end the previous section by inserting a closing section tag.
+      ;; We end the previous section by inserting a closing section tag,
+      ;; which will *break* the presentation if other tags are still open.
       ;; To avoid unbalanced tags, remove the TOC's closing tag.
       ;; If slide footers are used, insert it before closing the section.
       ;; In any case, if footers are used, the one of the closed section
       ;; is sufficient, and the one contained in the TOC needs to be removed.
-      (TOC (concat footer-div
+      (TOC (message "Please use #+REVEAL_TOC instead of #+TOC.  See Readme.")
+           (sit-for 2)
+           (concat footer-div
                    "</section>\n"
                    (replace-regexp-in-string
                     (format "</section>\\|%s"
                             (format org-re-reveal-slide-footer-html ".*"))
                     ""
                     (org-re-reveal-toc-1
-                     (org-html-keyword keyword contents info) info)))))))
+                     (org-html-keyword keyword contents info) info))))
+      (REVEAL_TOC
+       ;; Following code stiched together with snippets from
+       ;; org-html-keyword and org-html-toc.
+       (when (string-match "\\<headlines\\>" value)
+	 (let* ((depth (and (string-match "\\<[0-9]+\\>" value)
+			    (string-to-number (match-string 0 value))))
+	        (toc-entries
+	         (mapcar (lambda (headline)
+		           (cons (org-html--format-toc-headline headline info)
+			         (org-export-get-relative-level headline info)))
+		         (org-export-collect-headlines info depth))))
+           (when toc-entries
+             (let ((toc (concat "<div id=\"text-table-of-contents\">"
+			        (org-html--toc-text toc-entries)
+			        "</div>\n")))
+               ;; Use link format of reveal.js.
+	       (replace-regexp-in-string
+                "<a href=\"#"
+                (concat "<a href=\"#" org-re-reveal--href-fragment-prefix)
+                toc)))))))))
 
 (defun org-re-reveal-embedded-svg (path)
   "Embed the SVG content at PATH into Reveal HTML."
