@@ -13,6 +13,13 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.11.0] - 2019-10-12
+*** Added
+    - Keyword REVEAL_TOC to insert table of contents at position of
+      choice.
+*** Changed
+    - Keyword TOC recommends to switch to new keyword.
+
 ** [2.10.0] - 2019-10-11
 *** Changed
     - Variable ~org-re-reveal-extra-scripts~ can now also contain
