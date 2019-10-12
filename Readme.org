@@ -1009,12 +1009,25 @@ embedded figures considerably:
 
    This is actually an option recognized by =org-export=.
 
-   When using that option, you can also insert a slide with the table
-   of contents at a position of your choice with a command like the
-   following (where the number after =headlines= defines the depth of
-   headlines to include):
+** Table of Contents at Specified Position
+   When using option =toc:nil=, you can also insert a slide with the table
+   of contents at a position of your choice with keyword =REVEAL_TOC=
+   (where the number after =headlines= defines the depth of headlines
+   to include) in a section of its own (see this
+   [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-slide-numbers-reveal-toc.org][test file]]):
 
-   =#+TOC: headlines 1=
+#+BEGIN_SRC org
+,** Table of Contents
+   :PROPERTIES:
+   :UNNUMBERED: notoc
+   :END:
+,#+REVEAL_TOC: headlines 1
+#+END_SRC
+
+*WARNING:* Previous versions of org-re-reveal used keyword =TOC= (which
+generates the table of contents in a section with default headline)
+instead of =REVEAL_TOC=.  Keyword =TOC= may or may not work for you.
+Its use is discouraged as it may break some presentations.
 
 ** Internal Links
 
