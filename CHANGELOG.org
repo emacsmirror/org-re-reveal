@@ -13,9 +13,13 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.11.2] - 2019-10-15
+*** Fixed
+    - In ~org-re-reveal--add-class~ add class only to first headline.
+
 ** [2.11.1] - 2019-10-12
 *** Fixed
-    - Added missing expect files for CI pipeline
+    - Add missing expect files for CI pipeline.
 
 ** [2.11.0] - 2019-10-12
 *** Added

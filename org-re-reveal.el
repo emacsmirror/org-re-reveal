@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.11.1
+;; Version: 2.11.2
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -804,12 +804,12 @@ exporter."
 (defun org-re-reveal--add-class (elem value)
   "Add VALUE as \"class\" attribute in HTML header element ELEM.
 Do nothing if \"class\" attribute is already present."
-  (let ((match (string-match "^<h[1-9][^>]+>" elem)))
+  (let ((match (string-match "\\`<h[1-9][^>]+>" elem)))
     (unless match (error "Element no headline: %s" elem))
     (let ((tag (match-string 0 elem)))
       (if (string-match "class" tag)
           elem
-        (replace-regexp-in-string "\\(<h[1-9][^>]+\\)>"
+        (replace-regexp-in-string "\\`\\(<h[1-9][^>]+\\)>"
                                   (format "\\1 class=\"%s\">" value)
                                   elem)))))
 
