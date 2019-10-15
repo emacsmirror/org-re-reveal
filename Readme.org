@@ -77,6 +77,21 @@ Whether anyone wants to use those package in isolation is up to them.
    See file [[https://gitlab.com/oer/org-re-reveal/tree/master/CHANGELOG.org][CHANGELOG]]
    for changes of org-re-reveal compared to org-reveal and onward
 
+** Side note: Customization of variables
+   - GNU Emacs can be customized in various ways, and /org-re-reveal/
+     is no exception in that regard.
+     - This Readme frequently suggests “to customize” some variables.
+   - You may want to read the
+     [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Customization.html][manual entry on customization]].
+   - As shortcut
+     - Type ~C-h v~ (which means press the ~Ctrl~ key and ~h~
+       simultaneously, then ~v~).  You are asked for a variable name.
+       Enter it, e.g., ~org-re-reveal-script-files~.  You wind up in a
+       help buffer, showing the current value and a “customize” link.
+       Enter/press the link, leading to a customization buffer, where
+       you can change the value and “Apply” (or “Apply and
+       Save”) it.
+
 * Reveal.js and org-re-reveal
 
   - [[https://revealjs.com/][Reveal.js]] is a tool for creating
