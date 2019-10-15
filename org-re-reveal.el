@@ -803,7 +803,7 @@ exporter."
 
 (defun org-re-reveal--add-class (elem value)
   "Add VALUE as \"class\" attribute in HTML header element ELEM.
-Do nothing if \"class\" attribute is alredy present."
+Do nothing if \"class\" attribute is already present."
   (let ((match (string-match "^<h[1-9][^>]+>" elem)))
     (unless match (error "Element no headline: %s" elem))
     (let ((tag (match-string 0 elem)))
