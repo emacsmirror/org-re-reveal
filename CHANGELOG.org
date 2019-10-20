@@ -13,6 +13,13 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.12.0] - 2019-10-20
+*** Added
+    - Optional parameter backend in ~org-re-reveal-publish-to-reveal~
+      and ~org-re-reveal-publish-to-reveal-client~.
+    - Variable ~org-re-reveal-client-multiplex-filter~ allows to
+      suppress publication of multiplex client files based on filename.
+
 ** [2.11.2] - 2019-10-15
 *** Fixed
     - In ~org-re-reveal--add-class~ add class only to first headline.

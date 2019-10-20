@@ -8,7 +8,7 @@
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 2.11.2
+;; Version: 2.12.0
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -377,6 +377,20 @@ To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string
   :package-version '(org-re-reveal . "2.1.0"))
+
+(defcustom org-re-reveal-client-multiplex-filter nil
+  "If non-nil, a regular expression to filter multiplex client publication.
+When using `org-re-reveal-publish-to-reveal-client', by default all Org
+files are also published as multiplex client files (which roughly
+doubles the amount of time necessary for publication).  If you have got
+a mix of Org files that use multiplexing and that do not, set to this
+variable to a regular expression matching files for which a multiplex
+client file should be generated."
+  :group 'org-export-re-reveal
+  :type '(choice
+          regexp
+          (const nil))
+  :package-version '(org-re-reveal . "2.12.0"))
 
 (defcustom org-re-reveal-control t
   "Reveal control applet."
@@ -2069,26 +2083,37 @@ to `org-re-reveal-export-to-html'."
 
 ;;;###autoload
 (defun org-re-reveal-publish-to-reveal
-    (plist filename pub-dir)
+    (plist filename pub-dir &optional backend)
   "Publish an Org file to HTML.
 FILENAME is the filename of the Org file to be published.  PLIST
 is the property list for the given project.  PUB-DIR is the
-publishing directory.
+publishing directory.  Optional BACKEND may specify a derived export
+backend.
 Return output file name."
   (let ((org-re-reveal-client-multiplex nil))
-    (org-publish-org-to 're-reveal filename ".html" plist pub-dir)))
+    (org-publish-org-to
+     (or backend 're-reveal) filename ".html" plist pub-dir)))
 
 ;;;###autoload
 (defun org-re-reveal-publish-to-reveal-client
-    (plist filename pub-dir)
+    (plist filename pub-dir &optional backend)
   "Publish an Org file to HTML as multiplex client.
 FILENAME is the filename of the Org file to be published.  PLIST
 is the property list for the given project.  PUB-DIR is the
-publishing directory.
+publishing directory.  Optional BACKEND may specify a derived export
+backend.
+If `org-re-reveal-client-multiplex-filter' is non-nil, use it as regular
+expression to only publish FILENAME if it matches this regular expression.
 Return output file name."
-  (let ((org-re-reveal-client-multiplex t))
-    (org-publish-org-to 're-reveal filename "_client.html" plist pub-dir))
-  :package-version '(org-re-reveal . "2.1.0"))
+  (if (or (not org-re-reveal-client-multiplex-filter)
+          (string-match org-re-reveal-client-multiplex-filter filename))
+      (let ((org-re-reveal-client-multiplex t))
+        (org-publish-org-to
+         (or backend 're-reveal) filename "_client.html" plist pub-dir))
+    (message "File '%s' not published (not matched by '%s')."
+             filename org-re-reveal-client-multiplex-filter)
+    nil)
+  :package-version '(org-re-reveal . "2.12.0"))
 
 ;; Register auto-completion for speaker notes.
 (when org-re-reveal-note-key-char
