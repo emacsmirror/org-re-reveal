@@ -32,7 +32,7 @@
 #+REVEAL_POSTAMBLE: <p> Based upon work by yjwen. </p>
 #+REVEAL_EXTRA_CSS: ./local.css
 
-* Note
+* Notes
 
 The project /org-re-reveal/ is a
 [[https://github.com/lechten/org-reveal][fork of org-reveal]].
@@ -40,9 +40,14 @@ It provides an export back-end for HTML presentations with
 [[https://revealjs.com/][reveal.js]] from
 [[https://orgmode.org/][Org mode]] source files.
 
-For a /reveal.js/ presentation for
-[[https://gitlab.com/oer/org-re-reveal/blob/master/Readme.org][this Readme (which is written in the lightweight markup language Org mode)]],
-see there: [[https://oer.gitlab.io/org-re-reveal/]]
+Note that this Readme is written in the lightweight markup language
+Org mode, for which browser support on GitLab is limited.  In
+particular, hyperlinks won’t work.  I suggest to either open
+[[https://gitlab.com/oer/org-re-reveal/blob/master/Readme.org][this Readme]]
+in Emacs or to view the generated
+[[https://oer.gitlab.io/org-re-reveal/Readme.html][Readme for org-re-reveal as /reveal.js/ presentation]].
+Generated /reveal.js/ presentations for test cases are available as well:
+[[https://oer.gitlab.io/org-re-reveal/]]
 
 ** Emacs-reveal
 If you are interested in /org-re-reveal/, I suggest that you take
