@@ -17,7 +17,7 @@ test:
 pages:
   stage: deploy
   script:
-    - emacs --batch --load test-cases/publish.el
+    - emacs --batch -l /root/.emacs -l test-cases/publish.el
   artifacts:
     paths:
       - public
