@@ -78,7 +78,7 @@ Originally, /emacs-reveal/ was created to enhance /org-reveal/, and it
 contained the code of what is now maintained separately as
 /org-re-reveal-ref/ and /oer-reveal/.  Those packages were separated
 to make as much of /emacs-reveal/ available on MELPA as possible.
-Whether anyone wants to use those package in isolation is up to them.
+Whether anyone wants to use those package in isolation, is up to them.
 
 ** Changelog
    See file [[https://gitlab.com/oer/org-re-reveal/tree/master/CHANGELOG.org][CHANGELOG]]
@@ -467,7 +467,7 @@ Whether anyone wants to use those package in isolation is up to them.
     for an example including ~REVEAL_ACADEMIC_TITLE~,
     ~REVEAL_TALK_URL~, ~REVEAL_TALK_QR_CODE~
 
-    Alternatively, you can also write the title slide's HTML code
+    Alternatively, you can write the title slide's HTML code
     (with escape sequences) into a separate file and
     set ~org-re-reveal-title-slide~ to the name of that file.
 
@@ -504,7 +504,7 @@ Whether anyone wants to use those package in isolation is up to them.
 
 *** Single Image Background - Instructions
 
-    Set property =reveal_background= to an URL of background image.
+    Set property =reveal_background= to a URL of background image.
     Set property =reveal_background_trans= to =slide= to make background image
     sliding rather than fading.
 #+BEGIN_SRC org
@@ -586,8 +586,8 @@ Whether anyone wants to use those package in isolation is up to them.
    =#+REVEAL_SLIDE_FOOTER:=. The option content will be put into
    divisions of class =slide-header= and =slide-footer=, so you can
    control their appearance in custom CSS file (see [[Extra Stylesheets]]).
-   By default header/footer content will only display on content
-   slides. To show them also on the title and toc slide you can add
+   By default, header/footer content will only display on content
+   slides. To show them additionally on the title and toc slide you can add
    ~reveal_global_header:t~ and ~reveal_global_footer:t~ to
    ~#+OPTIONS:~ line. To show the footer on the toc slide but not on
    the title slide, use option ~reveal_toc_footer:t~.
@@ -810,7 +810,7 @@ Whether anyone wants to use those package in isolation is up to them.
    possible to embed code blocks in CodeMirror instance in order to
    edit and execute code during a presentation.  Note that klipse
    support has been rewritten in org-re-reveal 1.1.11.  Previously,
-   code was displayed in iframes, which does not allow to share state
+   code was displayed in iframes, which does not allow sharing state
    between different pieces of code; in particular, SQL did not work
    (see [[https://gitlab.com/oer/org-re-reveal/issues/23][this issue]]).
 
@@ -918,14 +918,14 @@ Whether anyone wants to use those package in isolation is up to them.
     inserts ~#+begin_notes~ and ~#+end_notes~.  For this to work with
     Org version 9.2 or newer, you need to place ~(require 'org-tempo)~
     into your ~.emacs~ or add ~org-tempo~ to ~org-modules~.  (Besides,
-    function ~org-insert-structure-template~ allows to insert different
-    kinds of block structures.)
+    function ~org-insert-structure-template~ allows the insertion of
+    different kinds of block structures.)
 
     Customize ~org-re-reveal-note-key-char~ to change the default key
     'n'.  Set to nil to avoid auto-completion for speaker notes.
 
 ** Multiplexing
-   Reveal.js supports multiplexing, which allows allows your audience to view
+   Reveal.js supports multiplexing, which allows your audience to view
    the slides of the presentation you are controlling on their own phone, tablet
    or laptop. As the master presentation navigates the slides, all client
    presentations will update in real time.
@@ -951,7 +951,7 @@ Whether anyone wants to use those package in isolation is up to them.
    Set option =REVEAL_PLUGINS= or variable =org-re-reveal-plugins= to a
    lisp list to activate additional reveal.js functionality.
 
-   Variable =org-re-reveal-plugins= allows to select among available plugins.
+   Variable =org-re-reveal-plugins= allows the selection of available plugins.
 
    The following example selects /markdown/, /highlight/, and /search/.
 #+BEGIN_SRC org
