@@ -255,7 +255,7 @@ else get value from custom variable `org-re-reveal-hlevel'."
 Otherwise (`auto' or non-empty string), insert title slide.
 When `auto', generate automatic title slide.
 When set to a string, use this string as format string for the title
-slide, where the following escaping elements are allowed:
+slide, where the following %-sequences are allowed:
 
   %t for the title.
   %s for the subtitle.
@@ -1673,8 +1673,8 @@ Extract and set `attr_html' to plain-list tag attributes."
 
 (defun org-re-reveal-format-spec (info)
   "Return format specification with INFO.
-Formatting extends `org-html-format-spec' as follows:
-misc information and academic title."
+Formatting extends `org-html-format-spec' such that
+%-sequences for `org-re-reveal-title-slide' are available."
   (append (org-html-format-spec info)
           `((?A . ,(org-export-data
                     (plist-get info :reveal-academic-title) info))
