@@ -28,3 +28,4 @@ pages:
     changes:
       - "**/*.org"
       - "**/*.el"
+      - ".gitlab-ci.yml"
