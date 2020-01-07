@@ -2,10 +2,10 @@
 ;; -*- Mode: Emacs-Lisp -*-
 ;; -*- coding: utf-8 -*-
 
-;; Copyright (C) 2017-2019 Jens Lechtenbörger
+;; SPDX-FileCopyrightText: 2017-2020 Jens Lechtenbörger
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
-;;; License: GPLv3
+;;; License: GPL-3.0-or-later
 
 ;;; Commentary:
 ;; Publication of Org source files to reveal.js uses Org export
@@ -21,17 +21,20 @@
 ;;; Code:
 (package-initialize)
 
-;; Prefer most recent version of org-re-reveal from parent directory
-;; over the one embedded in emacs-reveal:
+;; Add Docker paths for org, org-re-reveal, and oer-reveal.
 (add-to-list 'load-path
-	     (expand-file-name "../" (file-name-directory load-file-name)))
+	     "/root/.emacs.d/elpa/emacs-reveal/org-mode/lisp")
+(add-to-list 'load-path
+	     "/root/.emacs.d/elpa/emacs-reveal/org-re-reveal")
+(add-to-list 'load-path
+	     "/root/.emacs.d/elpa/emacs-reveal/oer-reveal")
 (require 'org-re-reveal)
 
 (defun publish-readme-to-reveal (plist filename pub-dir)
   "Publish readme with correct path to reveal.js.
 Pass PLIST, FILENAME, and PUB-DIR to `org-re-reveal-publish-to-reveal'."
   (let ((org-re-reveal-root "test-cases/reveal.js"))
-    (org-re-reveal-publish-to-reveal plist filename pub-dir)))
+    (oer-reveal-publish-to-reveal plist filename pub-dir)))
 
 (require 'oer-reveal)
 (let ((oer-reveal-plugins '("reveal.js-jump-plugin"))
@@ -97,5 +100,4 @@ Pass PLIST, FILENAME, and PUB-DIR to `org-re-reveal-publish-to-reveal'."
 	      :publishing-directory "./public/test-cases/reveal.js/plugin/jump"
 	      :publishing-function 'org-publish-attachment
 	      :recursive t))))
-  (oer-reveal-setup-plugins)
-  (org-publish-all))
+  (oer-reveal-publish-all))
