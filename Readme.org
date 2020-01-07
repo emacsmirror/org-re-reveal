@@ -28,7 +28,6 @@
 #+REVEAL_TRANS: cube
 #+REVEAL_THEME: black
 #+REVEAL_HLEVEL: 2
-#+REVEAL_HEAD_PREAMBLE: <meta name="description" content="Org-re-reveal Introduction.">
 #+REVEAL_POSTAMBLE: <p> Based upon work by yjwen. </p>
 #+REVEAL_EXTRA_CSS: ./local.css
 
