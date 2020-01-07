@@ -13,7 +13,7 @@
 
 # Copyright (C) 2013-2018 Yujie Wen and contributors to org-reveal, see:
 #                         https://github.com/yjwen/org-reveal/commits/master
-# Copyright (C) 2017-2019 Jens Lechtenbörger
+# Copyright (C) 2017-2020 Jens Lechtenbörger
 # Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
 #+OPTIONS: reveal_center:t reveal_progress:t reveal_history:nil reveal_control:t
@@ -66,13 +66,13 @@ embedded figures considerably:
 
 ** Relationships between packages
 
-| Package                                                           | Description                                                                                                                                          |
-|-------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [[https://github.com/yjwen/org-reveal][org-reveal]]               | Origin of org-re-reveal                                                                                                                              |
-| [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]           | Fork of org-reveal, initially to add audio fragments, now with [[https://gitlab.com/oer/org-re-reveal/blob/master/CHANGELOG.org][various changes]]   |
-| [[https://gitlab.com/oer/org-re-reveal-ref][org-re-reveal-ref]]   | Addon to org-re-reveal for bibliography slide based on [[https://github.com/jkitchin/org-ref][org-ref]]                                              |
-| [[https://gitlab.com/oer/oer-reveal][oer-reveal]]                 | Export backend derived from org-re-reveal; functionality for installation of reveal.js and plugins; simplification of licensing for OER              |
-| [[https://gitlab.com/oer/emacs-reveal/][emacs-reveal]]            | Bundling of org-re-reveal, org-re-reveal-ref, and oer-reveal                                                                                         |
+| Package                                                         | Description                                                                                                                                        |
+|-----------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------|
+| [[https://github.com/yjwen/org-reveal][org-reveal]]             | Origin of org-re-reveal                                                                                                                            |
+| [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]         | Fork of org-reveal, initially to add audio fragments, now with [[https://gitlab.com/oer/org-re-reveal/blob/master/CHANGELOG.org][various changes]] |
+| [[https://gitlab.com/oer/org-re-reveal-ref][org-re-reveal-ref]] | Addon to org-re-reveal for bibliography slide based on [[https://github.com/jkitchin/org-ref][org-ref]]                                            |
+| [[https://gitlab.com/oer/oer-reveal][oer-reveal]]               | Export backend derived from org-re-reveal; functionality for installation of reveal.js and plugins; simplification of licensing for OER            |
+| [[https://gitlab.com/oer/emacs-reveal/][emacs-reveal]]          | Bundling of org-re-reveal, org-re-reveal-ref, and oer-reveal                                                                                       |
 
 Originally, /emacs-reveal/ was created to enhance /org-reveal/, and it
 contained the code of what is now maintained separately as
@@ -124,7 +124,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 ** Install reveal.js
 
    *Note:* This is only necessary if you do not use [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]],
-   which installs and configures reveal.js with several of it plugins.
+   which installs and configures reveal.js with several of its plugins.
 
    Download reveal.js packages from [[https://github.com/hakimel/reveal.js/][here]].
 
@@ -771,7 +771,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 =#+REVEAL_EXTERNAL_PLUGINS: external_plugins.js=
 
    In any case, org-re-reveal will add the plugins to the dependencies
-   parameter when Reveal is initialized.
+   parameter when Reveal.js is initialized.
 
 
 ** Highlight Source Code
