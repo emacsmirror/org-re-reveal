@@ -1,7 +1,7 @@
-# Copyright (C) 2017-2019 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2017-2020 Jens Lechtenbörger
 # SPDX-License-Identifier: CC0-1.0
 
-image: registry.gitlab.com/oer/docker/emacs-reveal
+image: registry.gitlab.com/oer/docker/emacs-reveal:6.2.0
 
 test:
   script:
