@@ -13,6 +13,12 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.12.1] - 2020-02-06
+*** Fixed
+    - Better error messages to notify users of mis-configurations
+      - Attempted single file export with remote reveal.js location
+      - Use of head.min.js when it is not available
+
 ** [2.12.0] - 2019-10-20
 *** Added
     - Optional parameter backend in ~org-re-reveal-publish-to-reveal~
