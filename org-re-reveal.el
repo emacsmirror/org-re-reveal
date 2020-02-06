@@ -1844,10 +1844,24 @@ contextual information."
                 (plist-get info :html-metadata-timestamp-format))
                "</p>")))))
 
+(defun org-re-reveal--remote-file-p (file-name)
+  "Return t if FILE-NAME is an HTTP or FTP URL."
+  (string-match-p "^\\(https?\\|ftp\\)://" file-name))
+
+(defun org-re-reveal--check-single-file (info)
+  "Raise error if INFO violates single file export requirements."
+  (let ((root-path (plist-get info :reveal-root))
+        (in-single-file (plist-get info :reveal-single-file)))
+    (when (and in-single-file
+               (org-re-reveal--remote-file-p root-path))
+      (org-re-reveal--abort-with-message-box
+       "Single file export requires local reveal.js resources (no CDN).  See Readme.org and customize `org-re-reveal-root' or set \"REVEAL_ROOT\"."))))
+
 (defun org-re-reveal-template (contents info)
   "Return complete document string after HTML conversion.
 CONTENTS is the transcoded contents string.
 INFO is a plist holding export options."
+  (org-re-reveal--check-single-file info)
   (concat
    (format "<!DOCTYPE html>\n<html%s>\n<head>\n"
            (org-re-reveal--if-format " lang=\"%s\"" (plist-get info :language)))
