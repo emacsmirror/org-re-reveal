@@ -971,6 +971,11 @@ That value for OPTION may be a list or a string representing a list."
    (if (string-equal system-type "windows-nt") "^file:///" "^file://")
    "" url))
 
+(defun org-re-reveal--abort-with-message-box (message &rest args)
+  "Call `message-box' with MESSAGE and ARGS, then raise error."
+  (message-box message args)
+  (error "Aborted"))
+
 (defun org-re-reveal--css-label (in-single-file file-name style-id)
   "Generate HTML code to include CSS file FILE-NAME.
 If IN-SINGLE-FILE is t, the content of FILE-NAME is embedded;
@@ -984,7 +989,8 @@ otherwise, a `<link>' label is generated."
                       (org-re-reveal--read-file local-file-name)
                       "\n</style>\n")
             ;; But file is not readable.
-            (error "Cannot read %s" file-name)))
+            (org-re-reveal--abort-with-message-box
+             "CSS file not readable for single-file embedding: %s" file-name)))
       ;; Not in-single-file
       (concat "<link rel=\"stylesheet\" href=\"" file-name "\""
               (if style-id  (format " id=\"%s\"" style-id))
@@ -1150,11 +1156,11 @@ This includes reveal.js libraries in `org-re-reveal-script-files' under
                             (format "<script>\n%s\n</script>\n"
                                     (org-re-reveal--read-file file)))
                           local-libs "")
-             (error
-              (concat "Cannot read "
-                      (mapconcat 'identity
-                                 (cl-remove-if #'file-readable-p local-libs)
-                                 ", ")))))
+             (org-re-reveal--abort-with-message-box
+              "Subsequently listed libraries not readable for single-file embedding.  Maybe customize `org-re-reveal-script-files'?  %s"
+              (mapconcat 'identity
+                         (cl-remove-if #'file-readable-p local-libs)
+                         ", "))))
        ;; Embed script files with src.
        (mapconcat (lambda (file)
                     (concat "<script src=\"" file "\"></script>\n"))
@@ -1637,7 +1643,8 @@ the result is the Data URI of the referenced image."
     (if can-embed-image
         (org-re-reveal--format-image-data-uri link clean-path info)
       (if want-embed-image
-          (error "Cannot embed image %s" raw-path)
+          (org-re-reveal--abort-with-message-box
+           "Image not readable for single-file embedding: %s" raw-path)
         (org-re-reveal--internal-link-class link info)
         (org-re-reveal--maybe-replace-in-link (org-html-link link desc info)
                                               allow-inter-link)))))
