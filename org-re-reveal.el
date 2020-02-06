@@ -3,7 +3,7 @@
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Copyright (C) 2013-2018 Yujie Wen and contributors to org-reveal, see:
 ;;                         https://github.com/yjwen/org-reveal/commits/master
-;; Copyright (C) 2017-2019 Jens Lechtenbörger
+;; Copyright (C) 2017-2020 Jens Lechtenbörger
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 
