@@ -130,7 +130,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    Extract reveal.js folders from the downloaded zip file.
 
    If you do not wish to download reveal.js yourself and would rather get a copy from a CDN,
-   see the section [[https://gitlab.com/oer/org-re-reveal#set-the-location-of-revealjs][Set the location of reveal.js]]
+   see the section [[#revealjs-location][Set the location of reveal.js]]
 
 ** Install org-re-reveal from MELPA
 
@@ -277,14 +277,17 @@ Whether anyone wants to use those package in isolation, is up to them.
 
 
 ** Set the location of reveal.js
+   :PROPERTIES:
+   :CUSTOM_ID: revealjs-location
+   :END:
 
-   org-re-reveal must know where reveal.js is on your computer before
+   Package org-re-reveal must know where reveal.js is on your computer before
    exporting Org contents.  You do not have to worry about any of this with
    [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]].
 
-   The location of reveal.js is the path to
-   the top directory of the reveal.js packages, the directory which contains
-   file ~README.md~, but *not* the one that contains the file reveal.js.
+   The location of reveal.js is the path to the top directory of the
+   reveal.js installation, the directory which contains file
+   ~README.md~, but *not* the one that contains the file reveal.js.
 
    The default location is =./reveal.js=, relative to the Org file.
 
@@ -990,7 +993,8 @@ Whether anyone wants to use those package in isolation, is up to them.
    single file, so presentations with remote images will still require an Internet
    connection.
 
-   Attention: This needs locally available reveal.js files!
+   Attention: This needs locally available reveal.js files (no CDN
+   files)!  [[#revealjs-location][Instructions to set location of reveal.js.]].
 
    #+BEGIN_SRC org
    ,#+OPTIONS: reveal_single_file:t
