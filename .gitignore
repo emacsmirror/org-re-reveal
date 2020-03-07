@@ -2,12 +2,15 @@
 *~
 /.make
 
-# Emacs Lisp compiled files 
+# Emacs Lisp compiled files
 *.elc
 
 # exported files except those required for testing
 *.html
 !expect*.html
+
+# published files
+/public
 
 # dependency files
 /org-plus-contrib
