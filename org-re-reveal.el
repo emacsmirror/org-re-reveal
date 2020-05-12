@@ -1877,8 +1877,8 @@ INFO is a plist holding export options."
    (org-re-reveal--if-format "<meta name=\"keywords\" content=\"%s\"/>\n"
                              (plist-get info :keywords))
    (org-re-reveal-stylesheets info)
-   (org-re-reveal-mathjax-scripts info)
    (org-re-reveal--build-pre-postamble 'head-preamble info)
+   (org-re-reveal-mathjax-scripts info)
    (org-element-normalize-string (plist-get info :html-head))
    (org-element-normalize-string (plist-get info :html-head-extra))
    "</head>\n<body"
