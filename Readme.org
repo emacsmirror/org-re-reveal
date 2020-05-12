@@ -849,9 +849,9 @@ Whether anyone wants to use those package in isolation, is up to them.
    should explain this.
 
 *** Configuration of MathJax
-    If you want to
+    To
     [[http://docs.mathjax.org/en/latest/options/output/chtml.html][configure MathJax]],
-    you may use =REVEAL_HEAD_PREAMBLE= (that keyword and related ones
+    use =REVEAL_HEAD_PREAMBLE= (that keyword and related ones
     are documented on subsequent slides).
 
     #+BEGIN_SRC org
