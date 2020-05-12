@@ -13,6 +13,11 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [2.12.2] - 2020-05-12
+*** Fixed
+    - Generate head preamble before MathJax script tags, allowing
+      configuration of MathJax in preamble.  Addresses issue #42.
+
 ** [2.12.1] - 2020-02-06
 *** Fixed
     - Better error messages to notify users of mis-configurations
