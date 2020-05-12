@@ -848,6 +848,16 @@ Whether anyone wants to use those package in isolation, is up to them.
    If you use MathJax from a remote location, your privacy policy
    should explain this.
 
+*** Configuration of MathJax
+    If you want to
+    [[http://docs.mathjax.org/en/latest/options/output/chtml.html][configure MathJax]],
+    you may use =REVEAL_HEAD_PREAMBLE= (that keyword and related ones
+    are documented on subsequent slides).
+
+    #+BEGIN_SRC org
+      ,#+REVEAL_HEAD_PREAMBLE: <script>MathJax = { chtml: {scale: 0.85} };</script>
+    #+END_SRC
+
 ** Preamble and Postamble
 
    You can define preamble and postamble contents which will not be
