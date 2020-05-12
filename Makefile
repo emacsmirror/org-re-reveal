@@ -123,7 +123,7 @@ clean:
 #
 
 org-plus-contrib:
-	curl -L https://orgmode.org/elpa/org-plus-contrib-20190422.tar > $@.tar
+	curl -L https://orgmode.org/elpa/org-plus-contrib-20200504.tar > $@.tar
 	mkdir $@ && tar xf $@.tar -C $@ --strip-components 1
 	rm -rf $@.tar
 
