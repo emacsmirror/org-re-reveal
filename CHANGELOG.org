@@ -12,6 +12,11 @@ So far, only versions starting with version [[*%5B1.1.11%5D - 2019-08-19][1.1.11
 created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
+*** Added
+    - Customizable variable ~org-re-reveal-revealjs-version~ with
+      keyword ~REVEAL_VERSION~ for compatibility with reveal.js 4.x
+*** Changed
+    - ~org-re-reveal-script-files~ is no longer customizable
 
 ** [2.12.2] - 2020-05-12
 *** Fixed
