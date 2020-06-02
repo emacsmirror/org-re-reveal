@@ -118,7 +118,7 @@
         "noslide"
         "options"
         "reveal-toc"
-        "revealjs-version"
+        ;; "revealjs-version"
         "slide-numbers"
         "slide-numbers-reveal-toc"
         "slide-numbers-toc"
