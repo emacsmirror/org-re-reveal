@@ -167,7 +167,8 @@
       (:reveal-toc-slide-class "REVEAL_TOC_SLIDE_CLASS" nil nil t)
       (:reveal-toc-slide-state "REVEAL_TOC_SLIDE_STATE" nil nil t)
       (:reveal-toc-slide-title "REVEAL_TOC_SLIDE_TITLE" nil org-re-reveal-toc-slide-title t)
-      (:reveal-trans "REVEAL_TRANS" nil org-re-reveal-transition t))
+      (:reveal-trans "REVEAL_TRANS" nil org-re-reveal-transition t)
+      (:reveal-version "REVEAL_VERSION" nil org-re-reveal-revealjs-version t))
 
     :translate-alist
     '((headline . org-re-reveal-headline)
@@ -222,20 +223,43 @@ browsing that file, subtree export to file."
                (character :tag "Key for subtree export to file"))
   :set #'org-re-reveal-define-menu)
 
+(defvar org-re-reveal-script-files '("lib/js/head.min.js" "js/reveal.js")
+  "Specify files to initialize reveal.js.
+This variable is not meant to be changed by users.  Customize
+`org-re-reveal-revealjs-version' instead.")
+
+(defvar org-re-reveal-css-path "css"
+  "Specify subdirectory where CSS files are located.
+This variable is not meant to be changed by users.  Customize
+`org-re-reveal-revealjs-version' instead.")
+
+(defun org-re-reveal--setup-paths (value)
+  "Setup paths for version VALUE of reveal.js.
+This uses `setq' on `org-re-reveal-script-files' and
+`org-re-reveal-css-path'."
+  (cond ((string= value "4")
+         (setq org-re-reveal-script-files '("dist/reveal.js")
+               org-re-reveal-css-path "dist"))
+        ((string= value "3.8")
+         (setq org-re-reveal-script-files '("js/reveal.js")
+               org-re-reveal-css-path "css"))
+        (t (setq org-re-reveal-script-files '("lib/js/head.min.js" "js/reveal.js")
+                 org-re-reveal-css-path "css"))))
+
+(defcustom org-re-reveal-revealjs-version nil
+  "Specify version of reveal.js.  If nil, guess."
+  :group 'org-export-re-reveal
+  :type '(radio (const :tag "reveal.js 4.0 and later" "4")
+                (const :tag "reveal.js 3.8 and 3.9" "3.8")
+                (const :tag "reveal.js before 3.8" "3")
+                (const :tag "Guess" nil))
+  :package-version '(org-re-reveal . "3.0.0"))
+
 (defcustom org-re-reveal-root "./reveal.js"
   "Specify root directory of reveal.js containing js/reveal.js."
   :group 'org-export-re-reveal
   :type '(radio (const :tag "Online at https://revealjs.com" "https://revealjs.com")
                 (string :tag "Other directory path")))
-
-(defcustom org-re-reveal-script-files '("lib/js/head.min.js" "js/reveal.js")
-  "Specify files to initialize reveal.js.
-Note that file names here are relative under `org-re-reveal-root'.
-On 2018-10-04, head.min.js was removed on the dev branch of reveal.js.
-If you are using a version including that removal, customize this variable
-to remove the first file name."
-  :group 'org-export-re-reveal
-  :type '(repeat string))
 
 (defcustom org-re-reveal-hlevel 1
   "Specify minimum level of headings for grouping into vertical slides."
@@ -1038,9 +1062,13 @@ Reveal.addEventListener( 'slidechanged', function( event ) {
 (defun org-re-reveal-stylesheets (info)
   "Return HTML code for reveal stylesheets using INFO and `org-re-reveal-root'."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
-         (reveal-css (concat root-path "css/reveal.css"))
+         (reveal-version (plist-get info :reveal-version))
+         (css-path (file-name-as-directory
+                    (concat root-path org-re-reveal-css-path)))
+         (theme-path (file-name-as-directory (concat css-path "theme")))
+         (reveal-css (concat css-path "reveal.css"))
          (theme (plist-get info :reveal-theme))
-         (theme-css (concat root-path "css/theme/" theme ".css"))
+         (theme-css (concat theme-path theme ".css"))
          (extra-css (plist-get info :reveal-extra-css))
          (in-single-file (plist-get info :reveal-single-file)))
     (concat
@@ -1071,7 +1099,10 @@ Reveal.addEventListener( 'slidechanged', function( event ) {
      (org-re-reveal--klipsify-header info)
 
      ;; print-pdf
-     (if in-single-file ""
+     (if (or in-single-file
+             (and (stringp reveal-version)
+                  (version< "3.9" reveal-version)))
+         ""
        (format "\n<!-- If the query includes 'print-pdf', include the PDF print sheet -->
 <script>
     if( window.location.search.match( /print-pdf/gi ) ) {
@@ -1243,13 +1274,19 @@ Otherwise, raise error."
    (let ((max-scale (string-to-number (plist-get info :reveal-max-scale))))
      (if (> max-scale 0) (format "maxScale: %.2f,\n" max-scale) ""))
 
-   ;; thems and transitions
-   (format "
+   ;; themes and transitions
+   (let ((reveal-version (plist-get info :reveal-version)))
+     (format (if (or (not reveal-version)
+                     (version< reveal-version "4"))
+                 "
 theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
 transition: Reveal.getQueryHash().transition || '%s', // see README of reveal.js for options
 transitionSpeed: '%s',\n"
+               "
+transition: '%s',
+transitionSpeed: '%s',\n")
            (plist-get info :reveal-trans)
-           (plist-get info :reveal-speed))
+           (plist-get info :reveal-speed)))
 
    (let ((options (plist-get info :reveal-extra-options)))
      (org-re-reveal--if-format "%s,\n" options))))
@@ -1864,6 +1901,7 @@ contextual information."
 CONTENTS is the transcoded contents string.
 INFO is a plist holding export options."
   (org-re-reveal--check-single-file info)
+  (org-re-reveal--setup-paths (plist-get info :reveal-version))
   (concat
    (format "<!DOCTYPE html>\n<html%s>\n<head>\n"
            (org-re-reveal--if-format " lang=\"%s\"" (plist-get info :language)))
