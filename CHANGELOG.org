@@ -16,7 +16,10 @@ created on 2019-08-19, are documented properly.
     - Customizable variable ~org-re-reveal-revealjs-version~ with
       keyword ~REVEAL_VERSION~ for compatibility with reveal.js 4.x
 *** Changed
+    - ~org-re-reveal-highlight-css~ allows to select among symbols
     - ~org-re-reveal-script-files~ is no longer customizable
+*** Removed
+    - ~org-re-reveal-extra-js~
 
 ** [2.12.2] - 2020-05-12
 *** Fixed
