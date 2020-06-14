@@ -1765,12 +1765,9 @@ holding contextual information."
 
 (defun org-re-reveal--using-highlight.js (info)
   "Check with INFO whether highlight.js plugin is enabled."
-  (let ((reveal-plugins (condition-case nil
-                            (car (read-from-string (plist-get info :reveal-plugins)))
-                          (end-of-file nil)
-                          (wrong-type-argument nil))))
-    (memq 'highlight (or (and reveal-plugins (listp reveal-plugins) reveal-plugins)
-                         org-re-reveal-plugins))))
+  (let ((reveal-plugins
+         (org-re-reveal--parse-listoption info :reveal-plugins)))
+    (memq 'highlight reveal-plugins)))
 
 (defun org-re-reveal--buffer-substring-html-escape (start end)
   "Convert buffer substring characters from plain text to HTML equivalent.
