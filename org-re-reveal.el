@@ -1196,9 +1196,11 @@ This includes reveal.js libraries in `org-re-reveal-script-files' under
          (root-libs (mapcar (lambda (file) (concat root-path file))
                             script-files))
          (reveal-version (or (plist-get info :reveal-version) "3"))
+         (in-single-file (plist-get info :reveal-single-file))
          ;; Plugin config for reveal.js 4.x
          (enabled-builtin-plugins
-          (when (version< "3" reveal-version)
+          (when (and (not in-single-file)
+                     (version< "3" reveal-version))
             ;; Multiplex is no builtin in 4.x.
             (cl-remove 'multiplex (org-re-reveal--parse-listoption
                                    info :reveal-plugins))))
@@ -1218,8 +1220,7 @@ This includes reveal.js libraries in `org-re-reveal-script-files' under
          ;; Treat extra scripts starting with <script> as elements.
          (extra-script-elements
           (cl-remove-if-not (lambda (s) (string-prefix-p "<script>" s))
-                            extra-scripts))
-         (in-single-file (plist-get info :reveal-single-file)))
+                            extra-scripts)))
     (concat
      (if in-single-file
          (let* ((local-root-path (org-re-reveal--file-url-to-path root-path))
