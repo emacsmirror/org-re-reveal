@@ -649,13 +649,18 @@ That file embeds JS scripts and pictures."
   :group 'org-export-re-reveal
   :type '(choice (const nil) string))
 
-(defcustom org-re-reveal-highlight-css "%r/lib/css/zenburn.css"
-  "Hightlight.js CSS file."
+(defcustom org-re-reveal-highlight-css 'zenburn
+  "Highlight.js CSS style.
+Styles distributed with reveal.js are monokai and zenburn.
+Alternatively, use any file path or URL."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(choice (const 'monokai)
+                 (const 'zenburn)
+                 (string :tag "Other CSS file or URL"))
+  :package-version '(org-re-reveal . "3.0.0"))
 
 (defcustom org-re-reveal-highlight-url nil
-  "Location of Hightlight.js.
+  "Location of Highlight.js.
 If nil (default), the local plugin file is used."
   :group 'org-export-re-reveal
   :type '(choice (const nil) string))
@@ -1050,6 +1055,19 @@ Reveal.addEventListener( 'slidechanged', function( event ) {
 </script>\n" (plist-get info :reveal-klipse-js-url))
     ""))
 
+
+(defun org-re-reveal--highlight-css-path (info)
+  "Return location of CSS for highlight plugin with INFO."
+  (let ((highlight-css (plist-get info :reveal-highlight-css))
+        (version (or (plist-get info :reveal-version) "3")))
+    (if (symbolp highlight-css)
+        (concat "%r/" (format "%s/%s.css"
+                              (if (version< version "4")
+                                  "lib/css"
+                                "plugin/highlight")
+                              highlight-css))
+      highlight-css)))
+
 (defun org-re-reveal-stylesheets (info)
   "Return HTML code for reveal stylesheets using INFO and `org-re-reveal-root'."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
@@ -1082,7 +1100,7 @@ Reveal.addEventListener( 'slidechanged', function( event ) {
      ;; Include CSS for highlight.js if necessary
      (if (org-re-reveal--using-highlight.js info)
          (format "<link rel=\"stylesheet\" href=\"%s\"/>\n"
-                 (format-spec (plist-get info :reveal-highlight-css)
+                 (format-spec (org-re-reveal--highlight-css-path info)
                               `((?r . ,(directory-file-name root-path)))))
        "")
 
