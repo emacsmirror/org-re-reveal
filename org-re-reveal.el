@@ -602,10 +602,11 @@ Must constain exactly one %-sequence \"%s\"."
   '(markdown notes search zoom)
   "Default builtin plugins.
 
-By default,　variables related to multiplex are hidden.
+By default, multiplex is not enabled.  With reveal.js 4.x, multiplex
+needs to be downloaded separately.
 Include 'multiplex in this variable to enable it.
 
-This variable, like any other variable, can be overridden
+This variable, like lots of other variables, can be overridden
 in the org buffer comments as follows:
   #+REVEAL_PLUGINS: (markdown zoom notes multiplex)"
   :group 'org-export-re-reveal
@@ -615,10 +616,31 @@ in the org buffer comments as follows:
           (const zoom)
           (const notes)
           (const search)
-          (const multiplex)
+          (const :tag "math (reveal.js 4.x)" math)
+          (const :tag "multiplex (not included in reveal.js 4.x)" multiplex)
           (const :tag "classList (absent from modern reveal.js)" classList)
           (const :tag "remotes (absent from modern reveal.js)" remotes))
-  :package-version '(org-re-reveal . "1.1.11"))
+  :package-version '(org-re-reveal . "3.0.0"))
+
+(defcustom org-re-reveal-plugin-config
+  '((highlight "RevealHighlight" "plugin/highlight/highlight.js")
+    (markdown "RevealMarkdown" "plugin/markdown/markdown.js")
+    (math "RevealMath" "plugin/math/math.js")
+    (notes "RevealNotes" "plugin/notes/notes.js")
+    (search "RevealSearch" "plugin/search/search.js")
+    (zoom "RevealZoom" "plugin/zoom/zoom.js"))
+  "Initialization for reveal.js 4.x plugins.
+This is a list of triples.  Each triple consists of
+- the plugin name, listed in `org-re-reveal-plugins',
+- the JavaScript name for the plugin,
+- the name of the JavaScript file."
+  :group 'org-export-oer-reveal
+  :type '(repeat
+          (list
+           (symbol :tag "Plugin name")
+           (string :tag "JavaScript plugin name")
+           (string :tag "JavaScript file name")))
+  :package-version '(org-re-reveal . "3.0.0"))
 
 (defcustom org-re-reveal-external-plugins nil
   "Additional third-party plugins to load with reveal.js.
@@ -1173,6 +1195,20 @@ This includes reveal.js libraries in `org-re-reveal-script-files' under
                         info :reveal-script-files))
          (root-libs (mapcar (lambda (file) (concat root-path file))
                             script-files))
+         (reveal-version (or (plist-get info :reveal-version) "3"))
+         ;; Plugin config for reveal.js 4.x
+         (enabled-builtin-plugins
+          (when (version< "3" reveal-version)
+            ;; Multiplex is no builtin in 4.x.
+            (cl-remove 'multiplex (org-re-reveal--parse-listoption
+                                   info :reveal-plugins))))
+         (plugin-libs
+          (mapcar
+           (lambda (plugin)
+             (concat root-path
+                     (nth 2 (assoc plugin
+                                   org-re-reveal-plugin-config))))
+           enabled-builtin-plugins))
          (extra-scripts (org-re-reveal--parse-listoption
                          info :reveal-extra-scripts))
          ;; Treat extra scripts not starting with <script> as filenames.
@@ -1190,6 +1226,7 @@ This includes reveal.js libraries in `org-re-reveal-script-files' under
                 (local-libs (append (mapcar (lambda (file)
                                               (concat local-root-path file))
                                             script-files)
+                                    plugin-libs
                                     extra-script-files))
                 (local-libs-exist-p (cl-every #'file-readable-p local-libs)))
            (if local-libs-exist-p
@@ -1199,14 +1236,14 @@ This includes reveal.js libraries in `org-re-reveal-script-files' under
                                     (org-re-reveal--read-file file)))
                           local-libs "")
              (org-re-reveal--abort-with-message-box
-              "Subsequently listed libraries not readable for single-file embedding.  Maybe customize `org-re-reveal-script-files'?  %s"
+              "Subsequently listed libraries not readable for single-file embedding.  %s"
               (mapconcat 'identity
                          (cl-remove-if #'file-readable-p local-libs)
                          ", "))))
        ;; Embed script files with src.
        (mapconcat (lambda (file)
                     (concat "<script src=\"" file "\"></script>\n"))
-                  (append root-libs extra-script-files) ""))
+                  (append root-libs plugin-libs extra-script-files) ""))
      ;; Embed script tags.
      (mapconcat 'identity extra-script-elements "\n")
      (if extra-script-elements "\n" ""))))
@@ -1321,18 +1358,35 @@ transitionSpeed: '%s',\n")
   "Internal function for `org-re-reveal-scripts' with INFO."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
          (in-single-file (plist-get info :reveal-single-file))
+         (reveal-version (or (plist-get info :reveal-version) "3"))
          (enabled-builtin-plugins (org-re-reveal--parse-listoption
                                    info :reveal-plugins)))
     ;; optional JS library heading
     (if in-single-file ""
       (concat
-       "
-// Optional libraries used to extend reveal.js
-dependencies: [
-"
+       (if (version< reveal-version "4")
+           ""
+         (format "\n// Plugins with reveal.js 4.x
+plugins: [ %s ],\n"
+                 (mapconcat
+                  (lambda (plugin)
+                    (nth 1 (assoc plugin org-re-reveal-plugin-config)))
+                  enabled-builtin-plugins
+                  ", ")))
+       "\n// Optional libraries used to extend reveal.js
+dependencies: [\n"
        ;; JS libraries
        (let* ((highlight-url (plist-get info :reveal-highlight-url))
-              (builtins
+              (builtin-multiplex (format " { src: '%s', async: true },\n%s"
+                                         (plist-get info :reveal-multiplex-socketio-url)
+                                         ;; following ensures that either client.js or master.js is included depending on defvar org-re-reveal-client-multiplex value state
+                                         (if (not org-re-reveal-client-multiplex)
+                                             (progn
+                                               (if (not (string= "" (plist-get info :reveal-multiplex-secret)))
+                                                   (setq org-re-reveal-client-multiplex t))
+                                               (format " { src: '%splugin/multiplex/master.js', async: true }" root-path))
+                                           (format " { src: '%splugin/multiplex/client.js', async: true }" root-path))))
+              (builtins-v3
                `(classList ,(format " { src: '%slib/js/classList.js', condition: function() { return !document.body.classList; } }" root-path)
                            markdown ,(format " { src: '%splugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
  { src: '%splugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }" root-path root-path)
@@ -1343,26 +1397,21 @@ dependencies: [
                            notes ,(format " { src: '%splugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
                            search ,(format " { src: '%splugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
                            remotes ,(format " { src: '%splugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
-                           multiplex ,(format " { src: '%s', async: true },\n%s"
-                                              (plist-get info :reveal-multiplex-socketio-url)
-                                              ;; following ensures that either client.js or master.js is included depending on defvar org-re-reveal-client-multiplex value state
-                                              (if (not org-re-reveal-client-multiplex)
-                                                  (progn
-                                                    (if (not (string= "" (plist-get info :reveal-multiplex-secret)))
-                                                        (setq org-re-reveal-client-multiplex t))
-                                                    (format " { src: '%splugin/multiplex/master.js', async: true }" root-path))
-                                                (format " { src: '%splugin/multiplex/client.js', async: true }" root-path)))))
+                           multiplex ,builtin-multiplex))
               (builtin-codes
-               (mapcar (lambda (p) (plist-get builtins p)) enabled-builtin-plugins))
+               (if (version< reveal-version "4")
+                   (mapcar (lambda (p) (plist-get builtins-v3 p))
+                           enabled-builtin-plugins)
+                 ;; Multiplex plugin is a dependency with version 4.x
+                 (when (memq 'multiplex enabled-builtin-plugins)
+                   (list builtin-multiplex))))
               (external-plugins
                (org-re-reveal--external-plugin-init info root-path))
-              (all-plugins (if external-plugins (append external-plugins builtin-codes) builtin-codes))
-              (extra-codes (plist-get info :reveal-extra-js))
-              (total-codes
-               (if (string= "" extra-codes)
-                   all-plugins
-                 (append (list extra-codes) all-plugins))))
-         (mapconcat 'identity total-codes ",\n"))
+              (all-plugins
+               (if external-plugins
+                   (append external-plugins builtin-codes)
+                 builtin-codes)))
+         (mapconcat 'identity all-plugins ",\n"))
        "]\n\n"))))
 
 (defun org-re-reveal-scripts--init-script (info)
