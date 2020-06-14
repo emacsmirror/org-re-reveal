@@ -223,14 +223,14 @@ browsing that file, subtree export to file."
                (character :tag "Key for subtree export to file"))
   :set #'org-re-reveal-define-menu)
 
-(defvar org-re-reveal-script-files '("lib/js/head.min.js" "js/reveal.js")
-  "Specify files to initialize reveal.js.
-This variable is not meant to be changed by users.  Customize
+(defvar org-re-reveal-script-files nil
+  "Files to initialize reveal.js.
+Changes by users will be overwritten.  Customize
 `org-re-reveal-revealjs-version' instead.")
 
-(defvar org-re-reveal-css-path "css"
-  "Specify subdirectory where CSS files are located.
-This variable is not meant to be changed by users.  Customize
+(defvar org-re-reveal-css-path nil
+  "Subdirectory where CSS files are located.
+Changes by users will be overwritten.  Customize
 `org-re-reveal-revealjs-version' instead.")
 
 (defun org-re-reveal--setup-paths (value)
