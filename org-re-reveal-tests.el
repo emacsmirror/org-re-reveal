@@ -118,12 +118,13 @@
         "noslide"
         "options"
         "reveal-toc"
-        ;; "revealjs-version"
+        ;; "revealjs4"
         "slide-numbers"
         "slide-numbers-reveal-toc"
         "slide-numbers-toc"
         "split"
-        "title-slide"))
+        "title-slide"
+        ))
 
 ;; (provide 'org-re-reveal-tests)
 ;;; org-re-reveal-tests.el ends here

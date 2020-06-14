@@ -45,7 +45,7 @@ ELS          := org-re-reveal.el ox-re-reveal.el
 
 CORTELS      := $(TESTFILE) cort-test.el
 
-REVEALTEST   := extra-scripts highlightjs klipsify klipsify-python multiplex noslide options reveal-toc revealjs-version slide-numbers slide-numbers-toc slide-numbers-reveal-toc split title-slide
+REVEALTEST   := extra-scripts highlightjs klipsify klipsify-python multiplex noslide options reveal-toc revealjs4 slide-numbers slide-numbers-toc slide-numbers-reveal-toc split title-slide
 
 ##################################################
 
