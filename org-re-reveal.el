@@ -124,7 +124,6 @@
       (:reveal-external-plugins "REVEAL_EXTERNAL_PLUGINS" nil org-re-reveal-external-plugins t)
       (:reveal-extra-attr "REVEAL_EXTRA_ATTR" nil org-re-reveal-extra-attr nil)
       (:reveal-extra-css "REVEAL_EXTRA_CSS" nil org-re-reveal-extra-css newline)
-      (:reveal-extra-js "REVEAL_EXTRA_JS" nil org-re-reveal-extra-js nil)
       (:reveal-extra-options "REVEAL_EXTRA_OPTIONS" nil org-re-reveal-extra-options t)
       (:reveal-extra-scripts "REVEAL_EXTRA_SCRIPTS" nil org-re-reveal-extra-scripts nil)
       (:reveal-head-preamble "REVEAL_HEAD_PREAMBLE" nil org-re-reveal-head-preamble newline)
@@ -340,13 +339,6 @@ and URL `https://github.com/google/fonts/issues/1495'."
                 (string :tag "Other theme"))
   :package-version '(org-re-reveal . "2.8.1"))
 
-(defcustom org-re-reveal-extra-js ""
-  "URL to extra JS file.
-If you use this variable, please take the time to report your current
-usage at URL `https://gitlab.com/oer/org-re-reveal/issues/31'."
-  :group 'org-export-re-reveal
-  :type 'string)
-
 (defcustom org-re-reveal-extra-scripts nil
   "List of extra scripts.
 Each list element can be the filename or URL of a JavaScript file or an
@@ -356,8 +348,6 @@ HTML file."
   :group 'org-export-re-reveal
   :type '(repeat string)
   :package-version '(org-re-reveal . "2.10.0"))
-(make-obsolete-variable 'org-re-reveal-extra-js
-                        'org-re-reveal-extra-scripts "org-re-reveal 2.9.0")
 
 (defcustom org-re-reveal-extra-attr nil
   "Global Reveal Extra Attrs for all slides."
