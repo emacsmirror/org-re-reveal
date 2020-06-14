@@ -250,10 +250,10 @@ This uses `setq' on:
 (defcustom org-re-reveal-revealjs-version nil
   "Specify version of reveal.js.  If nil, guess."
   :group 'org-export-re-reveal
-  :type '(radio (const :tag "reveal.js 4.0 and later" "4")
-                (const :tag "reveal.js 3.8 and 3.9" "3.8")
-                (const :tag "reveal.js before 3.8" "3")
-                (const :tag "Guess" nil))
+  :type '(choice (const :tag "reveal.js 4.0 and later" "4")
+                 (const :tag "reveal.js 3.8 and 3.9" "3.8")
+                 (const :tag "reveal.js before 3.8" "3")
+                 (const :tag "Guess" nil))
   :package-version '(org-re-reveal . "3.0.0"))
 
 (defcustom org-re-reveal-root "./reveal.js"
