@@ -233,14 +233,15 @@ Changes by users will be overwritten.  Customize
 Changes by users will be overwritten.  Customize
 `org-re-reveal-revealjs-version' instead.")
 
-(defun org-re-reveal--setup-paths (value)
-  "Setup paths for version VALUE of reveal.js.
-This uses `setq' on `org-re-reveal-script-files' and
-`org-re-reveal-css-path'."
-  (cond ((string= value "4")
+(defun org-re-reveal--setup-paths (version)
+  "Setup paths for version VERSION of reveal.js.
+This uses `setq' on:
+- `org-re-reveal-script-files'
+- `org-re-reveal-css-path'"
+  (cond ((string= version "4")
          (setq org-re-reveal-script-files '("dist/reveal.js")
                org-re-reveal-css-path "dist"))
-        ((string= value "3.8")
+        ((string= version "3.8")
          (setq org-re-reveal-script-files '("js/reveal.js")
                org-re-reveal-css-path "css"))
         (t (setq org-re-reveal-script-files '("lib/js/head.min.js" "js/reveal.js")
