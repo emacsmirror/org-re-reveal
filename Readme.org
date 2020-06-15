@@ -81,7 +81,12 @@ Whether anyone wants to use those package in isolation, is up to them.
 
 ** Changelog
    See file [[https://gitlab.com/oer/org-re-reveal/tree/master/CHANGELOG.org][CHANGELOG]]
-   for changes of org-re-reveal compared to org-reveal and onward
+   for changes of /org-re-reveal/ compared to /org-reveal/ and onward
+
+   Note that /org-re-reveal/ 3.0.0 supports backwards-incompatible
+   changes introduced with /reveal.js/ 4.0.  By default,
+   /org-re-reveal/ targets /reveal.js/ 3.x.  If you want support for
+   /reveal.js/ 4.x, see [[#revealjs-version][~org-re-reveal-revealjs-version~]].
 
 ** Side note: Customization of variables
    - GNU Emacs can be customized in various ways, and /org-re-reveal/
@@ -92,7 +97,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    - As shortcut
      - Type ~C-h v~ (which means press the ~Ctrl~ key and ~h~
        simultaneously, then ~v~).  You are asked for a variable name.
-       Enter it, e.g., ~org-re-reveal-script-files~.  You wind up in a
+       Enter it, e.g., ~org-re-reveal-revealjs-version~.  You wind up in a
        help buffer, showing the current value and a “customize” link.
        Enter/press the link, leading to a customization buffer, where
        you can change the value and “Apply” (or “Apply and
@@ -211,7 +216,6 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_EXTERNAL_PLUGINS~                    | ~org-re-reveal-external-plugins~         |
 | ~nil~                             | ~REVEAL_EXTRA_ATTR~                          | ~org-re-reveal-extra-attr~               |
 | ~nil~                             | ~REVEAL_EXTRA_CSS~                           | ~org-re-reveal-extra-css~                |
-| ~nil~                             | ~REVEAL_EXTRA_JS~                            | ~org-re-reveal-extra-js~                 |
 | ~nil~                             | ~REVEAL_EXTRA_OPTIONS~                       | ~org-re-reveal-extra-options~            |
 | ~nil~                             | ~REVEAL_EXTRA_SCRIPTS~                       | ~org-re-reveal-extra-scripts~            |
 | ~nil~                             | ~REVEAL_HEAD_PREAMBLE~                       | ~org-re-reveal-head-preamble~            |
@@ -255,6 +259,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_TOC_SLIDE_CLASS~                     | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TOC_SLIDE_TITLE~                     | ~org-re-reveal-toc-slide-title~          |
 | ~nil~                             | ~REVEAL_TRANS~                               | ~org-re-reveal-transition~               |
+| ~nil~                             | ~REVEAL_VERSION~                             | ~org-re-reveal-revealjs-version~         |
 
 #+REVEAL: split
    For documentation of variables, see their doc strings.  E.g.,
@@ -273,7 +278,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 
    Note that =#+REVEAL_EXTRA_OPTIONS: your_comma_separated_options=
    and =org-re-reveal-extra-options= allow to specify all
-   [[https://github.com/hakimel/reveal.js/#configuration][configuration options of reveal.js]].
+   arbitrary options of reveal.js.
 
 
 ** Set the location of reveal.js
@@ -292,7 +297,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    The default location is =./reveal.js=, relative to the Org file.
 
    Customize =org-re-reveal-root= to change the location
-   globally, or use keyword =REVEAL_ROOT= in an individual Org file.
+   globally, or use keyword =#+REVEAL_ROOT= in an individual Org file.
    For example, add the following statement to your .emacs file:
 #+BEGIN_SRC lisp
 (setq org-re-reveal-root "file:///d:/reveal.js")
@@ -341,13 +346,26 @@ Whether anyone wants to use those package in isolation, is up to them.
    cool slides.  (Of course, the location of reveal.js must be
    configured properly, as explained earlier.)
 
+** Configure your version of reveal.js
+   :PROPERTIES:
+   :CUSTOM_ID: revealjs-version
+   :END:
+   Org-re-reveal supports reveal.js 3.x and 4.x, which are
+   incompatible with each other.  You can customize
+   ~org-re-reveal-revealjs-version~ (or use keyword
+   =#+REVEAL_VERSION=) to indicate your version.
+   With the default value of ~nil~, org-re-reveal tries to guess your
+   version, which works when ~org-re-reveal-root~ (or keyword
+   =#+REVEAL_ROOT=) points to a local directory: Based on the contents
+   of that directory, your version is inferred.  However, if
+   ~org-re-reveal-root~ is a remote URL, this does not work.
+
 ** Error about head.min.js
    Older versions of reveal.js included an initialization file
-   ~head.min.js~, which does not exist with newer versions.  By
-   default, ~org-re-reveal~ tries to load all files of
-   ~org-re-reveal-script-files~.  If you see an error (in the
-   browser’s console) that ~lib/js/head.min.js~ does not exist,
-   customize ~org-re-reveal-script-files~ to remove it.
+   ~head.min.js~, which does not exist with newer versions.  If
+   org-re-reveal cannot determine that you use a newer version, it
+   tries to load all files of older versions.  If that leads to
+   errors, customize ~org-re-reveal-revealjs-version~.
 
 ** The HLevel
 
@@ -447,7 +465,7 @@ Whether anyone wants to use those package in isolation, is up to them.
     directory and customized via ~org-re-reveal-theme~.
 
     Available transitions can be found in the
-    [[https://github.com/hakimel/reveal.js/blob/master/README.md][README of reveal.js]]
+    [[https://revealjs.com/transitions/][documentation of reveal.js]]
     and customized via ~org-re-reveal-transition~.
 
 ** Set The Title Slide
