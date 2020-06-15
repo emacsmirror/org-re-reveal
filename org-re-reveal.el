@@ -232,22 +232,57 @@ Changes by users will be overwritten.  Customize
 Changes by users will be overwritten.  Customize
 `org-re-reveal-revealjs-version' instead.")
 
-(defun org-re-reveal--setup-paths (version)
-  "Setup paths for version VERSION of reveal.js.
+(defconst org-re-reveal-revealjs-4-file "dist/reveal.js")
+(defconst org-re-reveal-revealjs-3-file "js/reveal.js")
+(defconst org-re-reveal-revealjs-pre-3.8-file "lib/js/head.min.js")
+
+(defvar org-re-reveal-guessed-revealjs-version nil
+  "Guessed version of reveal.js.")
+
+(defun org-re-reveal--guess-revealjs-version (info)
+  "Guess version of reveal.js with INFO.
+Assign guess version of reveal.js to `org-re-reveal-guessed-revealjs-version'.
+use `org-re-reveal-revealjs-version' if it is non-nil.
+Otherwise, check for existence of files under `org-re-reveal-root' and
+- assign \"4\" if `org-re-reveal-revealjs-4-file' exists;
+- otherwise, if `org-re-reveal-revealjs-3-file' exists and
+  `org-re-reveal-revealjs-pre-3.8-file' does not exist, assign \"3.8\";
+- otherwise, assign \"3\"."
+  (let ((version (plist-get info :reveal-version))
+        (root-path (file-name-as-directory (plist-get info :reveal-root))))
+    (setq org-re-reveal-guessed-revealjs-version
+          (if version
+              version
+            (if (file-exists-p
+                 (concat root-path org-re-reveal-revealjs-4-file))
+                "4"
+              (if (and
+                   (file-exists-p
+                    (concat root-path org-re-reveal-revealjs-3-file))
+                   (not (file-exists-p
+                         (concat root-path org-re-reveal-revealjs-pre-3.8-file))))
+                  "3.8"
+                "3"))))))
+
+(defun org-re-reveal--setup-paths (info)
+  "Setup paths for reveal.js based on INFO.
 This uses `setq' on:
 - `org-re-reveal-script-files'
 - `org-re-reveal-css-path'"
-  (cond ((string= version "4")
+  (org-re-reveal--guess-revealjs-version info)
+  (cond ((string= org-re-reveal-guessed-revealjs-version "4")
          (setq org-re-reveal-script-files '("dist/reveal.js")
                org-re-reveal-css-path "dist"))
-        ((string= version "3.8")
+        ((string= org-re-reveal-guessed-revealjs-version "3.8")
          (setq org-re-reveal-script-files '("js/reveal.js")
                org-re-reveal-css-path "css"))
         (t (setq org-re-reveal-script-files '("lib/js/head.min.js" "js/reveal.js")
                  org-re-reveal-css-path "css"))))
 
 (defcustom org-re-reveal-revealjs-version nil
-  "Specify version of reveal.js.  If nil, guess."
+  "Specify version of reveal.js.
+If nil, `org-re-reveal' tries to guess the version, which works if
+`org-re-reveal-root' is a local directory."
   :group 'org-export-re-reveal
   :type '(choice (const :tag "reveal.js 4.0 and later" "4")
                  (const :tag "reveal.js 3.8 and 3.9" "3.8")
@@ -1081,7 +1116,7 @@ Reveal.addEventListener( 'slidechanged', function( event ) {
 (defun org-re-reveal--highlight-css-path (info)
   "Return location of CSS for highlight plugin with INFO."
   (let ((highlight-css (plist-get info :reveal-highlight-css))
-        (version (or (plist-get info :reveal-version) "3")))
+        (version org-re-reveal-guessed-revealjs-version))
     (if (symbolp highlight-css)
         (concat "%r/" (format "%s/%s.css"
                               (if (version< version "4")
@@ -1093,7 +1128,7 @@ Reveal.addEventListener( 'slidechanged', function( event ) {
 (defun org-re-reveal-stylesheets (info)
   "Return HTML code for reveal stylesheets using INFO and `org-re-reveal-root'."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
-         (reveal-version (plist-get info :reveal-version))
+         (reveal-version org-re-reveal-guessed-revealjs-version)
          (css-path (file-name-as-directory
                     (concat root-path org-re-reveal-css-path)))
          (theme-path (file-name-as-directory (concat css-path "theme")))
@@ -1131,8 +1166,7 @@ Reveal.addEventListener( 'slidechanged', function( event ) {
 
      ;; print-pdf
      (if (or in-single-file
-             (and (stringp reveal-version)
-                  (version< "3.9" reveal-version)))
+             (version< "3.9" reveal-version))
          ""
        (format "\n<!-- If the query includes 'print-pdf', include the PDF print sheet -->
 <script>
@@ -1188,19 +1222,19 @@ based on `org-re-reveal-external-plugins'."
 
 (defun org-re-reveal-scripts--libraries (info)
   "Internal function to generate script tags with INFO.
-This includes reveal.js libraries in `org-re-reveal-script-files' under
+This includes reveal.js libraries in `:reveal-script-files' under
 `org-re-reveal-root', and libraries in `org-re-reveal-extra-scripts'."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
          (script-files (org-re-reveal--parse-listoption
                         info :reveal-script-files))
          (root-libs (mapcar (lambda (file) (concat root-path file))
                             script-files))
-         (reveal-version (or (plist-get info :reveal-version) "3"))
+         (reveal-version org-re-reveal-guessed-revealjs-version)
          (in-single-file (plist-get info :reveal-single-file))
          ;; Plugin config for reveal.js 4.x
          (enabled-builtin-plugins
           (when (and (not in-single-file)
-                     (version< "3" reveal-version))
+                     (version< "3.9" reveal-version))
             ;; Multiplex is no builtin in 4.x.
             (cl-remove 'multiplex (org-re-reveal--parse-listoption
                                    info :reveal-plugins))))
@@ -1322,9 +1356,8 @@ Otherwise, raise error."
      (if (> max-scale 0) (format "maxScale: %.2f,\n" max-scale) ""))
 
    ;; themes and transitions
-   (let ((reveal-version (plist-get info :reveal-version)))
-     (format (if (or (not reveal-version)
-                     (version< reveal-version "4"))
+   (let ((reveal-version org-re-reveal-guessed-revealjs-version))
+     (format (if (version< reveal-version "4")
                  "
 theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
 transition: Reveal.getQueryHash().transition || '%s', // see README of reveal.js for options
@@ -1359,7 +1392,7 @@ transitionSpeed: '%s',\n")
   "Internal function for `org-re-reveal-scripts' with INFO."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
          (in-single-file (plist-get info :reveal-single-file))
-         (reveal-version (or (plist-get info :reveal-version) "3"))
+         (reveal-version org-re-reveal-guessed-revealjs-version)
          (enabled-builtin-plugins (org-re-reveal--parse-listoption
                                    info :reveal-plugins)))
     ;; optional JS library heading
@@ -1957,7 +1990,7 @@ contextual information."
 CONTENTS is the transcoded contents string.
 INFO is a plist holding export options."
   (org-re-reveal--check-single-file info)
-  (org-re-reveal--setup-paths (plist-get info :reveal-version))
+  (org-re-reveal--setup-paths info)
   (concat
    (format "<!DOCTYPE html>\n<html%s>\n<head>\n"
            (org-re-reveal--if-format " lang=\"%s\"" (plist-get info :language)))
