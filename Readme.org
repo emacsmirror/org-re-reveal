@@ -240,7 +240,6 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_POSTAMBLE~                           | ~org-re-reveal-postamble~                |
 | ~nil~                             | ~REVEAL_PREAMBLE~                            | ~org-re-reveal-preamble~                 |
 | ~nil~                             | ~REVEAL_ROOT~                                | ~org-re-reveal-root~                     |
-| ~nil~                             | ~REVEAL_SCRIPT_FILES~                        | ~org-re-reveal-script-files~             |
 | ~nil~                             | ~REVEAL_SLIDE_HEADER~                        | ~org-re-reveal-slide-header~             |
 | ~nil~                             | ~REVEAL_SLIDE_FOOTER~                        | ~org-re-reveal-slide-footer~             |
 | ~nil~                             | ~REVEAL_SPEED~                               | ~org-re-reveal-transition-speed~         |
