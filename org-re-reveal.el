@@ -227,8 +227,8 @@ browsing that file, subtree export to file."
 
 (defun org-re-reveal--guess-revealjs-version (info)
   "Guess version of reveal.js with INFO.
-Assign guessed version of reveal.js to `:reveal-guessed-revealjs-version'.
-use `org-re-reveal-revealjs-version' if it is non-nil.
+Assign guessed version of reveal.js to `:reveal-guessed-revealjs-version':
+Use `org-re-reveal-revealjs-version' if it is non-nil.
 Otherwise, check for existence of files under `org-re-reveal-root' and
 - assign \"4\" if `org-re-reveal-revealjs-4-file' exists;
 - otherwise, if `org-re-reveal-revealjs-3-file' exists and
@@ -246,7 +246,8 @@ Otherwise, check for existence of files under `org-re-reveal-root' and
 			(file-exists-p
 			 (concat root-path org-re-reveal-revealjs-3-file))
 			(not (file-exists-p
-                              (concat root-path org-re-reveal-revealjs-pre-3.8-file))))
+                              (concat root-path
+                                      org-re-reveal-revealjs-pre-3.8-file))))
                        "3.8"
                      "3"))))))
 
