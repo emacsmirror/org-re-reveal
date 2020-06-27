@@ -7,7 +7,6 @@
 
 # The following is just for export testing.  The file head.min.js does
 # not exist for newer versions of reveal.js.
-#+REVEAL_SCRIPT_FILES: ("js/reveal.js")
 #+REVEAL_EXTRA_SCRIPTS: ("reveal.js/lib/js/head.min.js" "<script>console.log(\"Empty script.\")</script>")
 
 #+Title: Embedding extra scripts
