@@ -1712,6 +1712,16 @@ such links are assumed to point into other presentations."
      (concat "<a href=\"#" org-re-reveal--href-fragment-prefix)
      link)))
 
+(defun org-re-reveal--add-class (elem direction)
+  "Add DIRECTION as class attribute to ELEM."
+  (let* ((attrs (org-export-read-attribute :attr_html elem))
+         (class (plist-get attrs :class))
+         (newclass (if class (concat direction " " class) direction))
+         (newattrs (mapconcat (lambda (elem) (format "%s" elem))
+                              (plist-put attrs :class newclass)
+                              " ")))
+    (org-element-put-property elem :attr_html (list newattrs))))
+
 (defun org-re-reveal--internal-link-class (link info)
   "Check if LINK is internal, given INFO, and maybe assign class.
 The direction of the link is assigned as class attribute to the link
@@ -1729,17 +1739,9 @@ requires a version of org-mode as of 2018-12-08 or newer."
              (direction (if (< tbegin lbegin)
                             "backwardlink"
                           "forwardlink"))
-             (parent (org-export-get-parent-element link))
-             (attrs (org-combine-plists
-                     (org-export-read-attribute :attr_html parent)
-                     (org-export-read-attribute :attr_html link)))
-             (class (plist-get attrs :class))
-             (newclass (if class (concat direction " " class) direction))
-             (newattrs (mapconcat (lambda (elem) (format "%s" elem))
-                                  (plist-put attrs :class newclass)
-                                  " ")))
-        (org-element-put-property parent :attr_html (list newattrs))
-        (org-element-put-property link :attr_html (list newattrs))))))
+             (parent (org-export-get-parent-element link)))
+        (org-re-reveal--add-class parent direction)
+        (org-re-reveal--add-class link direction)))))
 
 (defun org-re-reveal-link (link desc info)
   "Transcode a LINK object with DESC and INFO from Org to Reveal.
