@@ -2,6 +2,7 @@
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
+;; Copyright (C) 2020      Jens Lechtenbörger
 
 ;; This file is not part of GNU Emacs.
 
@@ -97,11 +98,26 @@
     (org-re-reveal-tests-get-file-contents
      (format "test-%s.html" name) folder)))
 
+(defun org-re-reveal-tests-string= (str1 str2)
+  "Compare STR1 and STR2 for debug purposes."
+  (or (string= str1 str2)
+      (let ((comparison (compare-strings str1 nil nil str2 nil nil)))
+        (if (booleanp comparison)
+            comparison
+          (unless (= (length str1) (length str2))
+            (message "Strings have different lengths: %s vs %s"
+                     (length str1) (length str2)))
+          (message "Result of `compare-strings' is %s.  First difference: `%s' vs `%s'"
+                   comparison
+                   (substring str1 (- (abs comparison) 1) (abs comparison))
+                   (substring str2 (- (abs comparison) 1) (abs comparison)))
+          nil))))
+
 (defun org-re-reveal-tests-create-normal-test (name)
   "Create normal test for org-re-reveal with NAME."
   (eval
    `(cort-deftest ,(make-symbol (format "org-re-reveal/export-%s" name))
-      `((:string=
+      `((:org-re-reveal-tests-string=
          (org-re-reveal-tests-get-file-contents ,,(format "expect-%s.html" name))
          (org-re-reveal-tests-export-and-get-file-contents ,,name))))))
 
