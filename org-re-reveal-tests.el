@@ -134,7 +134,7 @@
         "noslide"
         "options"
         "reveal-toc"
-        ;; "revealjs4"
+        "revealjs4"
         "slide-numbers"
         "slide-numbers-reveal-toc"
         "slide-numbers-toc"
