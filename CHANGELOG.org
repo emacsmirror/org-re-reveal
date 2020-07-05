@@ -13,6 +13,10 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [3.0.2] - 2020-07-05
+*** Fixed
+    - Rename internal function (duplicate definition)
+
 ** [3.0.1] - 2020-07-01
 *** Fixed
     - Do not combine direction classes for link and its parent
