@@ -1712,7 +1712,7 @@ such links are assumed to point into other presentations."
      (concat "<a href=\"#" org-re-reveal--href-fragment-prefix)
      link)))
 
-(defun org-re-reveal--add-class (elem direction)
+(defun org-re-reveal--add-direction (elem direction)
   "Add DIRECTION as class attribute to ELEM."
   (let* ((attrs (org-export-read-attribute :attr_html elem))
          (class (plist-get attrs :class))
@@ -1740,8 +1740,8 @@ requires a version of org-mode as of 2018-12-08 or newer."
                             "backwardlink"
                           "forwardlink"))
              (parent (org-export-get-parent-element link)))
-        (org-re-reveal--add-class parent direction)
-        (org-re-reveal--add-class link direction)))))
+        (org-re-reveal--add-direction parent direction)
+        (org-re-reveal--add-direction link direction)))))
 
 (defun org-re-reveal-link (link desc info)
   "Transcode a LINK object with DESC and INFO from Org to Reveal.
