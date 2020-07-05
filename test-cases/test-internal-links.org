@@ -1,0 +1,35 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2020 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+#+Title: Test internal links
+#+Author: Jens Lechtenbörger
+
+* Slide 1
+  :PROPERTIES:
+  :CUSTOM_ID: s1
+  :END:
+
+Links have class attributes indicating their direction (see HTML code)
+- Slide with custom ID s1
+- Link to the [[#s2][next slide]]
+
+
+* Slide 2
+  :PROPERTIES:
+  :CUSTOM_ID: s2
+  :END:
+
+- Slide with custom ID s2
+- Link to the [[#s1][previous slide]]
+- Item with links to [[#s1][previous slide]] and [[#s3][next slide]]
+- Item with links to [[#s3][next slide]] and [[#s1][previous slide]]
+
+* Slide 3
+  :PROPERTIES:
+  :CUSTOM_ID: s3
+  :END:
+  - Nothing special here

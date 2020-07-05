@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Test internal links</title>
+<meta name="author" content="Jens Lechtenbörger"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/css/theme/black.css" id="theme"/>
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide">
+<h1 class="title">Test internal links</h1><h2 class="author">Jens Lechtenbörger</h2><p class="date">Created:{{date}}</p>
+</section>
+
+<section>
+<section id="slide-s1">
+<h2 id="s1"><span class="section-number-2">1</span> Slide 1</h2>
+<p>
+Links have class attributes indicating their direction (see HTML code)
+</p>
+<ul>
+<li>Slide with custom ID s1</li>
+<li>Link to the <a href="#/slide-s2" class="forwardlink">next slide</a></li>
+
+</ul>
+
+
+</section>
+</section>
+<section>
+<section id="slide-s2">
+<h2 id="s2"><span class="section-number-2">2</span> Slide 2</h2>
+<ul>
+<li>Slide with custom ID s2</li>
+<li>Link to the <a href="#/slide-s1" class="backwardlink">previous slide</a></li>
+<li>Item with links to <a href="#/slide-s1" class="backwardlink">previous slide</a> and <a href="#/slide-s3" class="forwardlink">next slide</a></li>
+<li>Item with links to <a href="#/slide-s3" class="forwardlink">next slide</a> and <a href="#/slide-s1" class="backwardlink">previous slide</a></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-s3">
+<h2 id="s3"><span class="section-number-2">3</span> Slide 3</h2>
+<ul>
+<li>Nothing special here</li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/lib/js/head.min.js"></script>
+<script src="./reveal.js/js/reveal.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+
+overview: true,
+width: 1400,
+height: 1000,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'convex', // see README of reveal.js for options
+transitionSpeed: 'default',
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+ { src: './reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }]
+
+});
+</script>
+</body>
+</html>

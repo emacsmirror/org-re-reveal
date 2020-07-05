@@ -128,6 +128,7 @@
 (mapc #'org-re-reveal-tests-create-normal-test
       '("extra-scripts"
         "highlightjs"
+        "internal-links"
         "klipsify"
         "klipsify-python"
         "multiplex"
