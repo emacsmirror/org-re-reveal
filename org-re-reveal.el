@@ -276,10 +276,14 @@ If nil, `org-re-reveal' tries to guess the version, which works if
   :package-version '(org-re-reveal . "3.0.0"))
 
 (defcustom org-re-reveal-root "./reveal.js"
-  "Specify root directory of reveal.js containing js/reveal.js."
+  "Specify root directory of reveal.js.
+The root directory is the one containing dist/reveal.js (reveal.js 4.x)
+or js/reveal.js (earlier versions).
+If you set this to a CDN location, make sure that
+`org-re-reveal-revealjs-version' is set properly as well."
   :group 'org-export-re-reveal
-  :type '(radio (const :tag "Online at https://revealjs.com" "https://revealjs.com")
-                (string :tag "Other directory path")))
+  :type 'string
+  :package-version '(org-re-reveal . "3.0.3"))
 
 (defcustom org-re-reveal-hlevel 1
   "Specify minimum level of headings for grouping into vertical slides."
