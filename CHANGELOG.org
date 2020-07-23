@@ -13,6 +13,11 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [3.0.3] - 2020-07-23
+*** Fixed
+    - Turn ~org-re-reveal-root~ from choice to string, remove outdated
+      online CDN location
+
 ** [3.0.2] - 2020-07-05
 *** Fixed
     - Rename internal function (duplicate definition)
