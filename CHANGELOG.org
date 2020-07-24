@@ -13,6 +13,10 @@ created on 2019-08-19, are documented properly.
 
 ** [Unreleased]
 
+** [3.0.4] - 2020-07-24
+*** Fixed
+    - Allow empty strings in list keywords
+
 ** [3.0.3] - 2020-07-23
 *** Fixed
     - Turn ~org-re-reveal-root~ from choice to string, remove outdated
