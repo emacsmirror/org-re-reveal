@@ -1013,14 +1013,17 @@ holding contextual information."
 
 (defun org-re-reveal--read-list (thing)
   "Return THING if it is a list.
+Return nil if THING is the empty string.
 Otherwise, `read' THING and return value if it is a list.
 Otherwise, raise an error."
   (if (listp thing)
       thing
-    (let ((lthing (read thing)))
-      (if (listp lthing)
-          lthing
-        (error "Expected a list, but got: %s" thing)))))
+    (if (and (stringp thing) (= 0 (length thing)))
+        nil
+      (let ((lthing (read thing)))
+        (if (listp lthing)
+            lthing
+          (error "Expected a list, but got: %s" thing))))))
 
 (defun org-re-reveal--parse-listoption (info option)
   "Parse and return OPTION in INFO.
