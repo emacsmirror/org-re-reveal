@@ -1,15 +1,15 @@
 # Local IspellDict: en
 # SPDX-License-Identifier: GPL-3.0-or-later
-# Copyright (C) 2019-2020 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2019-2020 Jens Lechtenbörger
 
 * Changelog
-Eventually, this file might turn into a changelog based on
-[[https://keepachangelog.com/en/1.0.0/][Keep a Changelog]],
-where version numbers starting with version 2.0.0 adhere to
+This changelog documents the evolution of org-re-reveal starting with
+version [[*\[1.1.11\] - 2019-08-19][1.1.11]], created on 2019-08-19,
+based on [[https://keepachangelog.com/en/1.0.0/][Keep a Changelog]].
+Version numbers starting with version 2.0.0 adhere to
 [[https://semver.org/spec/v2.0.0.html][Semantic Versioning]].
 
-So far, only versions starting with version [[*%5B1.1.11%5D - 2019-08-19][1.1.11]],
-created on 2019-08-19, are documented properly.
+Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
