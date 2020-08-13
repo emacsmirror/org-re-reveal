@@ -13,6 +13,11 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.0.5] - 2020-08-13
+*** Fixed
+    - Customization of org-re-reveal-title-slide and
+      org-re-reveal-highlight-css works now
+
 ** [3.0.4] - 2020-07-24
 *** Fixed
     - Allow empty strings in list keywords
