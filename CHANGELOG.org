@@ -13,6 +13,12 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.1.0] - 2020-08-13
+*** Added
+    - Customizable variable ~org-re-reveal-export-notes-to-pdf~ with
+      keyword ~REVEAL_EXPORT_NOTES_TO_PDF~ for export of speaker
+      notes to PDF
+
 ** [3.0.5] - 2020-08-13
 *** Fixed
     - Customization of org-re-reveal-title-slide and
