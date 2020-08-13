@@ -134,6 +134,7 @@
         "multiplex"
         "noslide"
         "options"
+        "pdf-notes"
         "reveal-toc"
         "revealjs4"
         "slide-numbers"
