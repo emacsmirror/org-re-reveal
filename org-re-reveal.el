@@ -320,7 +320,7 @@ Alternatively, the string can also be the name of a file with the title
 slide's HTML code (containing the above escape sequences)."
   :group 'org-export-re-reveal
   :type '(choice (const :tag "No title slide" nil)
-                 (const :tag "Auto title slide" 'auto)
+                 (const :tag "Auto title slide" auto)
                  (string :tag "Custom title slide")))
 
 (defcustom org-re-reveal-transition "convex"
@@ -700,8 +700,8 @@ That file embeds JS scripts and pictures."
 Styles distributed with reveal.js are monokai and zenburn.
 Alternatively, use any file path or URL."
   :group 'org-export-re-reveal
-  :type '(choice (const 'monokai)
-                 (const 'zenburn)
+  :type '(choice (const monokai)
+                 (const zenburn)
                  (string :tag "Other CSS file or URL"))
   :package-version '(org-re-reveal . "3.0.0"))
 
