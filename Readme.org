@@ -87,7 +87,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    Note that /org-re-reveal/ 3.0.0 supports backwards-incompatible
    changes introduced with /reveal.js/ 4.0.  By default,
    /org-re-reveal/ targets /reveal.js/ 3.x.  If you want support for
-   /reveal.js/ 4.x, see [[#revealjs-version][~org-re-reveal-revealjs-version~]].
+   /reveal.js/ 4.x, see [[#revealjs-version][below how to configure the version]].
 
 ** Side note: Customization of variables
    - GNU Emacs can be customized in various ways, and /org-re-reveal/
