@@ -491,8 +491,11 @@ Whether anyone wants to use those package in isolation, is up to them.
 
 ** Set Slide Background
 
-   Slide background can be set to a color, an image, or a repeating image
-   array by setting heading properties.
+   Each slide background can be set to a color, an image, or a
+   repeating image array by setting heading properties.  The following
+   keywords were added in support of features of reveal.js 3.x.  For
+   [[https://revealjs.com/backgrounds/][background images and videos of reveal.js 4]]
+   (and later), we suggest to use [[#slide-attributes][slide attributes]]
 
    Keywords ~REVEAL_DEFAULT_SLIDE_BACKGROUND~, ~REVEAL_DEFAULT_SLIDE_BACKGROUND_POSITION~,
    ~REVEAL_DEFAULT_SLIDE_BACKGROUND_REPEAT~, ~REVEAL_DEFAULT_SLIDE_BACKGROUND_SIZE~, and
@@ -755,7 +758,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    * =REVEAL_TOC_SLIDE_STATE=
 
    To add a ~class~ attribute to a ~section~ element, use
-   an [[*Extra Slide Attribute][Extra Slide Attribute]]
+   [[#slide-attributes][Extra Slide Attributes]]
    (e.g., property ~:reveal_extra_attr: class="my-class"~).
 
    To add a ~class~ attribute to the ~section~ element of a generated
@@ -1007,21 +1010,35 @@ Whether anyone wants to use those package in isolation, is up to them.
 ,#+REVEAL_EXTRA_SCRIPTS: ("filename.js" "<script>Your code here\n</script>")
 #+END_SRC
 
-** Extra Slide Attribute
+** Extra Slide Attributes
+   :PROPERTIES:
+   :CUSTOM_ID: slide-attributes
+   :END:
 
    Set =REVEAL_EXTRA_ATTR= to add any additional attributes to all slides if
-   required.
+   required (such attributes are added to ~section~ elements).
 #+BEGIN_SRC org
 ,#+REVEAL_EXTRA_ATTR: data-autoslide=20000
 #+END_SRC
 
    This global default value can also be overridden per heading by setting
-   =reveal_extra_attr= property on the headings.
+   a =reveal_extra_attr= property on the heading:
 #+BEGIN_SRC org
 ,*** Heading with overriden autoslide
    :PROPERTIES:
    :reveal_extra_attr: data-autoslide=10000
    :END:
+#+END_SRC
+
+#+REVEAL: split
+   In particular, extra attributes allow to configure
+   [[https://revealjs.com/backgrounds/][slide backgrounds of reveal.js]]
+   such as images and videos, e.g.:
+#+BEGIN_SRC org
+,* Headline
+  :PROPERTIES:
+  :reveal_extra_attr: data-background-video="https://static.slid.es/site/homepage/v1/homepage-video-editor.mp4" data-background-video-loop data-background-video-muted
+  :END:
 #+END_SRC
 
 ** Export into Single File
