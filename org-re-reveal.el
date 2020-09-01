@@ -446,6 +446,15 @@ To enable multiplex, see `org-re-reveal-plugins'."
   :type 'string
   :package-version '(org-re-reveal . "2.1.0"))
 
+(defcustom org-re-reveal-multiplex-client-ext "_client"
+  "Extension to insert in names of multiplex client presentations.
+The name of the multiplex master presentation is derived from
+`org-html-extension'.  For client presentations, the value of this
+variable is inserted before the HTML extension."
+  :group 'org-export-re-reveal
+  :type 'string
+  :package-version '(org-re-reveal . "3.2.0"))
+
 (defcustom org-re-reveal-client-multiplex-filter nil
   "If non-nil, a regular expression to filter multiplex client publication.
 When using `org-re-reveal-publish-to-reveal-client', by default all Org
@@ -2227,8 +2236,9 @@ Optional BACKEND must be `re-reveal' or a backend derived from it."
   (interactive)
   (let* ((backend (or backend 're-reveal))
          (extension (concat "." org-html-extension))
+         (client-ext (concat org-re-reveal-multiplex-client-ext extension))
          (file (org-export-output-file-name extension subtreep))
-         (clientfile (org-export-output-file-name (concat "_client" extension) subtreep))
+         (clientfile (org-export-output-file-name client-ext subtreep))
          (org-html-container-element "div"))
 
     (setq org-re-reveal-client-multiplex nil)
@@ -2277,7 +2287,8 @@ backend.
 Return output file name."
   (let ((org-re-reveal-client-multiplex nil))
     (org-publish-org-to
-     (or backend 're-reveal) filename ".html" plist pub-dir)))
+     (or backend 're-reveal) filename
+     (concat "." org-html-extension) plist pub-dir)))
 
 ;;;###autoload
 (defun org-re-reveal-publish-to-reveal-client
@@ -2292,9 +2303,11 @@ expression to only publish FILENAME if it matches this regular expression.
 Return output file name."
   (if (or (not org-re-reveal-client-multiplex-filter)
           (string-match org-re-reveal-client-multiplex-filter filename))
-      (let ((org-re-reveal-client-multiplex t))
+      (let ((org-re-reveal-client-multiplex t)
+            (client-ext (concat org-re-reveal-multiplex-client-ext
+                                "." org-html-extension)))
         (org-publish-org-to
-         (or backend 're-reveal) filename "_client.html" plist pub-dir))
+         (or backend 're-reveal) filename client-ext plist pub-dir))
     (message "File '%s' not published (not matched by '%s')."
              filename org-re-reveal-client-multiplex-filter)
     nil)
