@@ -13,6 +13,10 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.2.0] - 2020-09-01
+*** Added
+    - Customizable variable ~org-re-reveal-multiplex-client-ext~
+
 ** [3.1.1] - 2020-08-23
 *** Fixed
     - Point to Readme as documentation
