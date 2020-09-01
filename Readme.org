@@ -180,8 +180,9 @@ Whether anyone wants to use those package in isolation, is up to them.
 
 ** Options and Plug-ins
 
-   All options, keywords, and customizable variables of org-re-reveal are
-   shown in the following table, with hints on the next slide.
+   All options and keywords with their customizable variables are
+   shown in the following table, with hints and more customizable
+   variables afterwards.
 
 | Option                            | Keyword                                      | Variable                                 |
 |-----------------------------------+----------------------------------------------+------------------------------------------|
@@ -280,9 +281,21 @@ Whether anyone wants to use those package in isolation, is up to them.
    actually is “Shift f”).
 
    Note that =#+REVEAL_EXTRA_OPTIONS: your_comma_separated_options=
-   and =org-re-reveal-extra-options= allow to specify all
+   and =org-re-reveal-extra-options= allow to specify
    arbitrary options of reveal.js.
 
+#+REVEAL: split
+   In addition, the following customizable variables are available
+   (without options/keywords):
+
+   ~org-re-reveal-body-attrs~,
+   ~org-re-reveal-client-multiplex-filter~,
+   ~org-re-reveal-keys~,
+   ~org-re-reveal-klipse-extra-css~,
+   ~org-re-reveal-multiplex-client-ext~,
+   ~org-re-reveal-no-htmlize-src~,
+   ~org-re-reveal-note-key-char~,
+   ~org-re-reveal-plugin-config~
 
 ** Set the location of reveal.js
    :PROPERTIES:
@@ -980,7 +993,9 @@ Whether anyone wants to use those package in isolation, is up to them.
    Briefly, you need to configure ~multiplex~ as plugin, with
    URL, ID and Secret of a socket.io server.  Then, generate master
    (with Secret) and client presentations and publish the client
-   presentation for your audience.
+   presentation for your audience.  Customize
+   ~org-re-reveal-multiplex-client-ext~ to influence the name of the
+   client presentation.
 
 ** Extra Stylesheets
 
