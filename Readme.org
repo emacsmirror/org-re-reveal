@@ -493,9 +493,10 @@ Whether anyone wants to use those package in isolation, is up to them.
 
    Each slide background can be set to a color, an image, or a
    repeating image array by setting heading properties.  The following
-   keywords were added in support of features of reveal.js 3.x.  For
+   keywords were added in support of features of reveal.js 3.x.
+   Support for
    [[https://revealjs.com/backgrounds/][background images and videos of reveal.js 4]]
-   (and later), we suggest to use [[#slide-attributes][slide attributes]]
+   (and later), is provided with [[#slide-attributes][slide attributes]].
 
    Keywords ~REVEAL_DEFAULT_SLIDE_BACKGROUND~, ~REVEAL_DEFAULT_SLIDE_BACKGROUND_POSITION~,
    ~REVEAL_DEFAULT_SLIDE_BACKGROUND_REPEAT~, ~REVEAL_DEFAULT_SLIDE_BACKGROUND_SIZE~, and
