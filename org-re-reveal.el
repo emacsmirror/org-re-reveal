@@ -889,9 +889,11 @@ holding contextual information."
        (format " class=\"%s\"" (org-re-reveal--frag-style frag info))))
 
 (defun org-re-reveal--frag-index (index)
-  "Return attribute string for fragment INDEX if set."
-  (and index
-       (format " data-fragment-index=\"%s\"" index)))
+  "Return attribute string for fragment INDEX.
+Return empty string if INDEX is nil."
+  (if index
+      (format " data-fragment-index=\"%s\"" index)
+    ""))
 
 (defun org-re-reveal-special-block (special-block contents info)
   "Transcode a SPECIAL-BLOCK element from Org to Reveal.
@@ -1949,12 +1951,12 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
            (if use-highlight
                (format "\n<pre%s%s><code class=\"%s %s\" %s>%s</code></pre>"
                        (or (org-re-reveal--frag-class frag info) "")
-                       (or (org-re-reveal--frag-index findex) "")
+                       (org-re-reveal--frag-index findex)
                        label lang code-attribs code)
              (format "\n<pre %s%s%s>%s</pre>"
                      (or (org-re-reveal--frag-class frag info)
                          (format " class=\"src src-%s\"" lang))
-                     (or (org-re-reveal--frag-index findex) "")
+                     (org-re-reveal--frag-index findex)
                      label code))))))))
 
 (defun org-re-reveal-quote-block (quote-block contents info)
