@@ -94,6 +94,12 @@
         "Current subtree to file" org-re-reveal-export-current-subtree)))
 
     :options-alist ; See org-export-options-alist for meaning of parts.
+    ;; First options, then keywords; in both cases with variables for
+    ;; default values.  Final values indicate how multiple occurrences
+    ;; of keywords are treated, including nil, t, newline:
+    ;; nil: Keep old value, discard new one
+    ;; t: Use new value, discard old one
+    ;; newline: Concatenate with newlines
     '((:reveal-center nil "reveal_center" org-re-reveal-center t)
       (:reveal-control nil "reveal_control" org-re-reveal-control t)
       (:reveal-defaulttiming nil "reveal_defaulttiming" org-re-reveal-defaulttiming t)
