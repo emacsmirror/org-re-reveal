@@ -140,41 +140,53 @@ Whether anyone wants to use those package in isolation, is up to them.
    avoiding a local installation; the reveal.js documentation does not
    mention this alternative, though.
 
-** Install org-re-reveal from MELPA
+** Install org-re-reveal
 
-   Package org-re-reveal is available on MELPA.  Use of MELPA requires
-   some setup code in your ~.emacs~ file.
-   See [[https://melpa.org/#/getting-started][here how to get started with MELPA]].
+   You can install org-re-reveal as MELPA package or from GitLab (both
+   options are explained subsequently).
 
-   This package defines the Org export back-end ~re-reveal~.  As usual
-   for export back-ends, you can either customize
-   ~org-export-backends~ to include ~re-reveal~ or add the following
-   to your ~.emacs~ file.
-   #+BEGIN_SRC lisp
-   (require 'org-re-reveal)
-   #+END_SRC
-
-** Install org-re-reveal from GitLab
-
-   You can download org-re-reveal as archive from GitLab
-   ([[https://gitlab.com/oer/org-re-reveal/-/archive/master/org-re-reveal-master.zip][zip archive]]
-   and several ~tar~ variants; note the download icon on the
-   [[https://gitlab.com/oer/org-re-reveal][project page]]).
-
-   Alternatively, you can clone the
-   [[https://gitlab.com/oer/org-re-reveal][repository of org-re-reveal]]:
-   #+BEGIN_SRC sh
-   git clone https://gitlab.com/oer/org-re-reveal.git
-   #+END_SRC
-
-   Add the directory of =org-re-reveal.el= to your Emacs's ~load-path~, and add the
-   following statement to your =.emacs= file.
+   In any case, this package defines the Org export back-end
+   ~re-reveal~.  As usual for export back-ends, you can either
+   customize ~org-export-backends~ to include ~re-reveal~ or add the
+   following to your ~.emacs~ file.
    #+BEGIN_SRC lisp
    (require 'org-re-reveal)
    #+END_SRC
 
    *Note*: It is suggested to use a recent version of Org mode with
    org-re-reveal.  [[https://orgmode.org/][Installation of Org mode.]]
+   ([[https://gitlab.com/oer/emacs-reveal][Emacs-reveal]] also
+   includes Org mode.)
+
+*** Install org-re-reveal from MELPA
+
+    Package org-re-reveal is available on MELPA.  Use of MELPA requires
+    some setup code in your ~.emacs~ file.
+    See [[https://melpa.org/#/getting-started][here how to get started with MELPA]].
+
+    After installation of org-re-reveal, you still need to activate it
+    as suggested on the previous slide.
+
+*** Install org-re-reveal from GitLab
+
+    You can download org-re-reveal as archive from GitLab
+    ([[https://gitlab.com/oer/org-re-reveal/-/archive/master/org-re-reveal-master.zip][zip archive]]
+    and several ~tar~ variants; note the download icon on the
+    [[https://gitlab.com/oer/org-re-reveal][project page]]).  (The
+    disadvantage is that you need to keep track of new versions yourself.)
+
+    Alternatively, you can clone the
+    [[https://gitlab.com/oer/org-re-reveal][repository of org-re-reveal]]
+    (and later execute ~git pull~ in the cloned directory to retrieve updates):
+    #+BEGIN_SRC sh
+    git clone https://gitlab.com/oer/org-re-reveal.git
+    #+END_SRC
+
+    Add the directory of =org-re-reveal.el= to your Emacs's ~load-path~, and add the
+    following statement to your =.emacs= file.
+    #+BEGIN_SRC lisp
+    (require 'org-re-reveal)
+    #+END_SRC
 
 * Configuration
 
