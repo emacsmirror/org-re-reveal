@@ -470,32 +470,37 @@ client file should be generated."
   :package-version '(org-re-reveal . "2.12.0"))
 
 (defcustom org-re-reveal-control t
-  "Reveal control applet."
+  "If nil, hide presentation control arrows.
+See URL `https://revealjs.com/config/'."
   :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-progress t
-  "Reveal progress applet."
+  "If nil, progress bar.
+See URL `https://revealjs.com/config/'."
   :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-history nil
-  "Reveal history applet."
+  "If non-nil, push each slide change to the browser history.
+See URL `https://revealjs.com/config/'."
   :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-center t
-  "Reveal center applet."
+  "If nil, do not center slides vertically.
+See URL `https://revealjs.com/config/'."
   :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-rolling-links nil
-  "Reveal use rolling links."
+  "Option to show links with rolling effect for reveal.js 3.x."
   :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-slide-number "c"
-  "Reveal showing slide numbers."
+  "Choose slide number format.
+See URL `https://revealjs.com/config/'."
   :group 'org-export-re-reveal
   :type '(radio (const :tag "horizontal . vertical slide number" "h.v")
                 (const :tag "horizontal / vertical slide number" "h/v")
@@ -504,39 +509,46 @@ client file should be generated."
                 (string :tag "Other slide number format")))
 
 (defcustom org-re-reveal-keyboard t
-  "Reveal use keyboard navigation."
+  "If nil, disable keyboard navigation.
+See URL `https://revealjs.com/config/'."
   :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-mousewheel nil
-  "Reveal use mousewheel navigation."
+  "If t, enable mousewheel navigation.
+See URL `https://revealjs.com/config/'."
   :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-fragmentinurl nil
-  "Reveal use fragmentInURL setting."
+  "If t, enable fragmentInURL setting.
+See URL `https://revealjs.com/config/'."
   :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-hashonebasedindex nil
-  "Reveal use hashOneBasedIndex setting."
+  "If t, enable hashOneBasedIndex setting.
+See URL `https://revealjs.com/config/'."
   :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-pdfseparatefragments t
-  "Reveal disable pdfSeparateFragments setting."
+  "If nil, disable pdfSeparateFragments setting.
+See URL `https://revealjs.com/config/'."
   :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-defaulttiming nil
   "If non-nil, use defaultTiming for speaker notes view.
+See URL `https://revealjs.com/config/'.
 For indivual timing of specific slides, use \"REVEAL_TITLE_SLIDE_TIMING\" for
 the title slide, and assign data-timing attributes to other headlines/slides."
   :group 'org-export-re-reveal
   :type '(choice integer (const nil)))
 
 (defcustom org-re-reveal-overview t
-  "Reveal show overview."
+  "If nil, disable slide overview mode.
+See URL `https://revealjs.com/config/'."
   :group 'org-export-re-reveal
   :type 'boolean)
 
