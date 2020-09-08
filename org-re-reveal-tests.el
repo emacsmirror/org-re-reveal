@@ -142,6 +142,7 @@
         "slide-numbers-toc"
         "split"
         "title-slide"
+        "blockquote"
         ))
 
 ;; (provide 'org-re-reveal-tests)

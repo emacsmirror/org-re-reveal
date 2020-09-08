@@ -191,7 +191,6 @@
                           (setq info (plist-put info :reveal-mathjax t))
                           (org-html-latex-fragment frag contents info)))
       (plain-list . org-re-reveal-plain-list)
-      (quote-block . org-re-reveal-quote-block)
       (section . org-re-reveal-section)
       (src-block . org-re-reveal-src-block)
       (special-block . org-re-reveal-special-block)
@@ -1985,20 +1984,6 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
                          (format " class=\"src src-%s\"" lang))
                      (org-re-reveal--frag-index findex)
                      label code))))))))
-
-(defun org-re-reveal-quote-block (quote-block contents info)
-  "Transcode a QUOTE-BLOCK element from Org to Reveal.
-CONTENTS holds the contents of the block INFO is a plist holding
-contextual information."
-  (format "<blockquote%s>\n%s</blockquote>"
-          (let ((frag (org-re-reveal--frag-class
-                       (org-export-read-attribute
-                        :attr_reveal quote-block :frag) info)))
-            (if frag
-                (concat " " frag)
-              ""))
-          contents))
-
 
 (defun org-re-reveal--auto-title-slide-template (info)
   "Generate the automatic title slide template with INFO."
