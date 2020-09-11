@@ -1,0 +1,17 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2020 Anders Johansson
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+#+Title: Test blockquote
+#+Author: Anders Johansson
+
+* Slide with quote
+
+#+attr_html: :cite https://tools.ietf.org/html/rfc1149
+#+attr_reveal: :frag t
+#+begin_quote
+Avian carriers can provide high delay, low throughput, and low altitude service. The connection topology is limited to a single point-to-point path for each carrier, used with standard carriers, but many carriers can be used without significant interference with each other, outside of early spring. This is because of the 3D ether space available to the carriers, in contrast to the 1D ether used by IEEE802.3. The carriers have an intrinsic collision avoidance system, which increases availability.
+#+end_quote
