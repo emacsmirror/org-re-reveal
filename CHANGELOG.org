@@ -12,6 +12,9 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+*** Fixed
+    - Allow fragment indices and HTML attributes on quote blocks, see
+      [[https://gitlab.com/oer/org-re-reveal/-/merge_requests/30][MR !30]]
 
 ** [3.2.0] - 2020-09-01
 *** Added
