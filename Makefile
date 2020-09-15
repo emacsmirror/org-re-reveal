@@ -122,8 +122,9 @@ clean:
 #  depend files
 #
 
+# org-plus-contrib-20200914.tar is Org 9.4
 org-plus-contrib:
-	curl -L https://orgmode.org/elpa/org-plus-contrib-20200504.tar > $@.tar
+	curl -L https://orgmode.org/elpa/org-plus-contrib-20200914.tar > $@.tar
 	mkdir $@ && tar xf $@.tar -C $@ --strip-components 1
 	rm -rf $@.tar
 
