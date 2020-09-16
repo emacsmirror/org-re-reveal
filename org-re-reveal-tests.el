@@ -143,6 +143,7 @@
         "split"
         "title-slide"
         "blockquote"
+        "merge-classes"
         ))
 
 ;; (provide 'org-re-reveal-tests)

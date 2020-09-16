@@ -1,0 +1,16 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2020 Anders Johansson
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+#+Title: Test merged classes
+#+Author: Anders Johansson
+
+* Slide with merged classes
+
+#+attr_html: :class largeFont
+#+attr_reveal: :frag t
+A large font paragraph that should appear as a fragment
+
