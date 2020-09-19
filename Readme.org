@@ -854,8 +854,17 @@ Whether anyone wants to use those package in isolation, is up to them.
     reveal.js. To use other themes, please specify the CSS file name by
     ~#+REVEAL_HIGHLIGHT_CSS~ or the variable ~org-re-reveal-highlight-css~.
 
-    The "%r" in the given CSS file name will be replaced by reveal.js'
-    URL.
+    A ~%r~ in the given CSS file name is replaced by the root
+    directory of reveal.js.
+
+#+REVEAL: split
+
+    If you use highlight.js, org-re-reveal exports the source code
+    inside an HTML ~code~ element, to which you can assign attributes
+    ([[https://revealjs.com/code/][understood by reveal.js]]) with
+    ~code_attribs~, e.g., add line numbers and highlight lines 1 and 5:
+    ~#+ATTR_REVEAL: :code_attribs data-line-numbers="1,5"
+
 
 #+MACRO: klipse-languages (eval (message "%s" (mapconcat #'identity org-re-reveal-klipse-languages ", ")))
 ** Editable and Executable Source Code
