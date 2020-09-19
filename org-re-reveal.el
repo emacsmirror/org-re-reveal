@@ -1933,8 +1933,6 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
                                'org-html-htmlize-region-for-paste)
                               #'org-re-reveal--buffer-substring-html-escape))
                      (org-html-format-code src-block info))))
-           (frag (org-export-read-attribute :attr_reveal src-block :frag))
-           (findex (org-export-read-attribute :attr_reveal src-block :frag_idx))
            (code-attribs (or (org-export-read-attribute
                               :attr_reveal src-block :code_attribs) ""))
            (label (let ((lbl (org-element-property :name src-block)))
@@ -1945,47 +1943,54 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
            (klipsify (and (member lang (mapcar #'car klipse-setup))
                           (plist-get info :reveal-klipsify-src)
                           (not (org-export-read-attribute
-                                :attr_reveal src-block :no-klipsify)))))
-      (if (not lang)
-          (format "<pre %s%s>\n%s</pre>"
-                  (or (org-re-reveal--frag-class frag info) " class=\"example\"")
+                                :attr_reveal src-block
+                                :no-klipsify)))))
+      (let* ((attr-html (org-export-read-attribute :attr_html src-block))
+             (attr-string (if attr-html
+                              (concat
+                               " " (org-html--make-attribute-string attr-html))
+                            "")))
+        (if (not lang)
+            (format "<pre%s%s>\n%s</pre>"
+                    (if attr-html
+                        attr-string
+                      " class=\"example\"")
                   label
                   code)
-        (if klipsify
-            (let* ((triple (assoc lang klipse-setup))
-                   (selectorclass (nth 2 triple)))
-              (concat
-               "<pre><code class=\"" selectorclass "\" " code-attribs ">\n"
-               (if (string= lang "html")
-                   (replace-regexp-in-string
-                    "'" "&#39;"
-                    (replace-regexp-in-string
-                     "<" "&lt;"
+          (if klipsify
+              (let* ((triple (assoc lang klipse-setup))
+                     (selectorclass (nth 2 triple)))
+                (concat
+                 "<pre><code class=\"" selectorclass "\" " code-attribs ">\n"
+                 (if (string= lang "html")
                      (replace-regexp-in-string
-                      ">" "&gt;"
+                      "'" "&#39;"
                       (replace-regexp-in-string
-                       "&" "&amp;"
-                       (cl-letf (((symbol-function
-                                   'org-html-htmlize-region-for-paste)
-                                  #'buffer-substring))
-                         (org-html-format-code src-block info))))))
-                 (replace-regexp-in-string "'" "&#39;" code))
-               "</code></pre>\n"))
-          (format
-           "<div class=\"org-src-container\">\n%s%s\n</div>"
-           (if (not caption) ""
-             (format "<label class=\"org-src-name\">%s</label>"
-                     (org-export-data caption info)))
-           (if use-highlight
-               (format "\n<pre%s%s><code class=\"%s %s\" %s>%s</code></pre>"
-                       (or (org-re-reveal--frag-class frag info) "")
-                       (org-re-reveal--frag-index findex)
-                       label lang code-attribs code)
-             (format "\n<pre %s%s%s>%s</pre>"
-                     (or (org-re-reveal--frag-class frag info)
+                       "<" "&lt;"
+                       (replace-regexp-in-string
+                        ">" "&gt;"
+                        (replace-regexp-in-string
+                         "&" "&amp;"
+                         (cl-letf (((symbol-function
+                                     'org-html-htmlize-region-for-paste)
+                                    #'buffer-substring))
+                           (org-html-format-code src-block info))))))
+                   (replace-regexp-in-string "'" "&#39;" code))
+                 "</code></pre>\n"))
+            (format
+             "<div class=\"org-src-container\">\n%s%s\n</div>"
+             (if (not caption) ""
+               (format "<label class=\"org-src-name\">%s</label>"
+                       (org-export-data caption info)))
+             (if use-highlight
+                 (format "\n<pre%s><code class=\"%s %s\" %s>%s</code></pre>"
+                         attr-string
+                         label lang code-attribs code)
+               (format "\n<pre%s%s>%s</pre>"
+                       (if attr-html
+                           attr-string
                          (format " class=\"src src-%s\"" lang))
-                     (org-re-reveal--frag-index findex)
-                     label code))))))))
+                       label code)))))))))
 
 (defun org-re-reveal--auto-title-slide-template (info)
   "Generate the automatic title slide template with INFO."
