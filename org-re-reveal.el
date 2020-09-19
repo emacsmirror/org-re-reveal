@@ -1924,19 +1924,25 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
              (attr-string (if attr-html
                               (concat
                                " " (org-html--make-attribute-string attr-html))
-                            "")))
+                            ""))
+             (pre-class (if (or klipsify use-highlight)
+                            ;; With klipsify and highlight.js, lang is
+                            ;; part of code tag.  Do not repeat on pre tag.
+                            ""
+                          (if lang
+                              (format " class=\"src src-%s\"" lang)
+                            " class=\"example\"")))
+             (pre-tag (format "<pre%s%s>"
+                              (if attr-html attr-string pre-class)
+                              label)))
         (if (not lang)
-            (format "<pre%s%s>\n%s</pre>"
-                    (if attr-html
-                        attr-string
-                      " class=\"example\"")
-                  label
-                  code)
+            (format "%s\n%s</pre>" pre-tag code)
           (if klipsify
               (let* ((triple (assoc lang klipse-setup))
                      (selectorclass (nth 2 triple)))
                 (concat
-                 "<pre><code class=\"" selectorclass "\" " code-attribs ">\n"
+                 (format "%s<code class=\"%s\" %s>\n"
+                         pre-tag selectorclass code-attribs)
                  (if (string= lang "html")
                      (replace-regexp-in-string
                       "'" "&#39;"
@@ -1958,14 +1964,9 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
                (format "<label class=\"org-src-name\">%s</label>"
                        (org-export-data caption info)))
              (if use-highlight
-                 (format "\n<pre%s><code class=\"%s %s\" %s>%s</code></pre>"
-                         attr-string
-                         label lang code-attribs code)
-               (format "\n<pre%s%s>%s</pre>"
-                       (if attr-html
-                           attr-string
-                         (format " class=\"src src-%s\"" lang))
-                       label code)))))))))
+                 (format "\n%s<code class=\"%s\" %s>%s</code></pre>"
+                         pre-tag lang code-attribs code)
+               (format "\n%s%s</pre>" pre-tag code)))))))))
 
 (defun org-re-reveal--auto-title-slide-template (info)
   "Generate the automatic title slide template with INFO."
