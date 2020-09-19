@@ -126,25 +126,26 @@
               "https://gitlab.com/oer/org-re-reveal")))
 
 (mapc #'org-re-reveal-tests-create-normal-test
-      '("extra-scripts"
+      '("blockquote"
+        "extra-scripts"
         "highlightjs"
         "internal-links"
         "klipsify"
         "klipsify-python"
+        "merge-classes"
         "multiplex"
         "noslide"
         "options"
         "pdf-notes"
         "reveal-toc"
         "revealjs4"
+        "src-blocks-hl"
+        "src-blocks-no-hl"
         "slide-numbers"
         "slide-numbers-reveal-toc"
         "slide-numbers-toc"
         "split"
-        "title-slide"
-        "blockquote"
-        "merge-classes"
-        ))
+        "title-slide"))
 
 ;; (provide 'org-re-reveal-tests)
 ;;; org-re-reveal-tests.el ends here

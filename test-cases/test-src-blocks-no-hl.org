@@ -1,0 +1,66 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2020 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+#+Title: Source blocks without highlightjs
+#+Author: Jens Lechtenbörger
+
+* Source blocks without language
+** No fragments, default class ~example~
+  #+begin_src
+Some text
+without language
+  #+end_src
+
+** No fragments, use of ~attr_html~
+   (See HTML code for ~someClass~)
+   #+attr_html: :class someClass
+   #+begin_src
+Some text
+without language
+   #+end_src
+
+** Multiple source blocks with given order
+   #+attr_html: :class someClass
+   #+attr_reveal: :frag t :frag_idx 2
+   #+begin_src
+Some text
+   #+end_src
+   #+attr_html: :class otherClass
+   #+attr_reveal: :frag t :frag_idx 1
+   #+begin_src
+without language
+   #+end_src
+
+* Source blocks with language
+** Python code without fragments, with ID and caption
+#+NAME: python-factorial
+#+CAPTION: Factorial in Python
+#+BEGIN_SRC python
+def factorial(n):
+    if n < 2:
+        return 1
+    else:
+        return n * factorial(n - 1)
+
+print(factorial(10))
+#+END_SRC
+
+** Multiple source blocks with given order
+#+ATTR_HTML: :class someClass
+#+ATTR_REVEAL: :frag t :frag_idx 2 :code_attribs
+#+BEGIN_SRC python
+def factorial(n):
+    if n < 2:
+        return 1
+    else:
+        return n * factorial(n - 1)
+#+END_SRC
+#+ATTR_HTML: :class otherClass
+#+ATTR_REVEAL: :frag t :frag_idx 1
+#+BEGIN_SRC python
+print(factorial(10))
+#+END_SRC
