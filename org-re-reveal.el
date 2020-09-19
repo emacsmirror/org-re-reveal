@@ -747,7 +747,8 @@ That file embeds JS scripts and pictures."
 (defcustom org-re-reveal-highlight-css 'zenburn
   "Highlight.js CSS style.
 Styles distributed with reveal.js are monokai and zenburn.
-Alternatively, use any file path or URL."
+Alternatively, use any file path or URL.  The file path may contain the
+placeholder \"%r\", to be replaced with the root directory of reveal.js."
   :group 'org-export-re-reveal
   :type '(choice (const monokai)
                  (const zenburn)
