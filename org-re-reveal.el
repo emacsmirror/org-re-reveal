@@ -897,31 +897,6 @@ See there: https://github.com/hakimel/reveal.js/issues/2276")
 Otherwise, return empty string."
   (if (and (stringp val) (> (length val) 0)) (format fmt val) ""))
 
-(defun org-re-reveal--frag-style (frag info)
-  "Return fragment string according to FRAG and the default fragment style.
-FRAG is the fragment style set on element, INFO is a plist
-holding contextual information."
-  (cond
-   ((string= frag t)
-    (let ((default-frag-style (plist-get info :reveal-default-frag-style)))
-      (if default-frag-style (format "fragment %s" default-frag-style)
-        "fragment")))
-   (t (format "fragment %s" frag))))
-
-(defun org-re-reveal--frag-class (frag info)
-  "Return proper HTML string description of fragment style.
-FRAG is the fragment style set on element, INFO is a plist
-holding contextual information."
-  (and frag
-       (format " class=\"%s\"" (org-re-reveal--frag-style frag info))))
-
-(defun org-re-reveal--frag-index (index)
-  "Return attribute string for fragment INDEX.
-Return empty string if INDEX is nil."
-  (if index
-      (format " data-fragment-index=\"%s\"" index)
-    ""))
-
 (defun org-re-reveal-special-block (special-block contents info)
   "Transcode a SPECIAL-BLOCK element from Org to Reveal.
 CONTENTS holds the contents of the block.  INFO is a plist
