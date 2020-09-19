@@ -12,6 +12,8 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+
+** [3.2.1] - 2020-09-19
 *** Fixed
     - Allow fragment indices and HTML attributes on quote blocks, see
       [[https://gitlab.com/oer/org-re-reveal/-/merge_requests/30][MR !30]]
@@ -20,6 +22,8 @@ Older changes are summarized in subsequent sections.
       Previously classes for elements added via ~:attr_html~ were added
       to a separate html class-attribute, which isn’t supported.
       See [[https://gitlab.com/oer/org-re-reveal/-/merge_requests/31][MR !31]]
+    - Apply new handling of fragments also for source code blocks, closes
+      [[https://gitlab.com/oer/org-re-reveal/-/issues/51][issue #51]]
 
 ** [3.2.0] - 2020-09-01
 *** Added
