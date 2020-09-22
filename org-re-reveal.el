@@ -2267,7 +2267,8 @@ is the property list for the given project.  PUB-DIR is the
 publishing directory.  Optional BACKEND may specify a derived export
 backend.
 Return output file name."
-  (let ((org-re-reveal-client-multiplex nil))
+  (let ((org-re-reveal-client-multiplex nil)
+        (org-html-container-element "div"))
     (org-publish-org-to
      (or backend 're-reveal) filename
      (concat "." org-html-extension) plist pub-dir)))
