@@ -13,6 +13,12 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.2.2] - 2020-09-22
+*** Fixed
+    - Also set ~org-html-container-element~ to "div" upon publication
+      in ~org-re-reveal-publish-to-reveal~
+      (and not only upon export in ~org-re-reveal-export-to-html~)
+
 ** [3.2.1] - 2020-09-19
 *** Fixed
     - Allow fragment indices and HTML attributes on quote blocks, see
