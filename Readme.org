@@ -873,7 +873,7 @@ Whether anyone wants to use those package in isolation, is up to them.
     inside an HTML ~code~ element, to which you can assign attributes
     ([[https://revealjs.com/code/][understood by reveal.js]]) with
     ~code_attribs~, e.g., add line numbers and highlight lines 1 and 5:
-    ~#+ATTR_REVEAL: :code_attribs data-line-numbers="1,5"
+    ~#+ATTR_REVEAL: :code_attribs data-line-numbers="1,5"~
 
 
 #+MACRO: klipse-languages (eval (message "%s" (mapconcat #'identity org-re-reveal-klipse-languages ", ")))
