@@ -18,7 +18,7 @@ pages:
   stage: deploy
   script:
     - emacs --batch -L /root/.emacs.d/elpa/emacs-reveal/org-mode/lisp --load org-re-reveal.el --load test-cases/publish.el
-artifacts:
+  artifacts:
     paths:
       - public
   only:
