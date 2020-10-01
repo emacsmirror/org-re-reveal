@@ -19,3 +19,6 @@
 # archive files
 *.tar
 *.tar.gz
+
+# local test files
+local-test-cases
