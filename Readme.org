@@ -287,6 +287,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    For examples, please refer to the heading part of this document
    and to [[https://gitlab.com/oer/org-re-reveal/tree/master/test-cases][test-cases in the GitLab repository]].
 
+#+REVEAL: split
    Options and keywords that do not have a variable documenting their
    effects are explained in this document.  Search in reveal.js
    presentations is invoked with ~C-S-f~ (which means “Control” and
@@ -532,7 +533,11 @@ Whether anyone wants to use those package in isolation, is up to them.
    ~REVEAL_DEFAULT_SLIDE_BACKGROUND_REPEAT~, ~REVEAL_DEFAULT_SLIDE_BACKGROUND_SIZE~, and
    ~REVEAL_DEFAULT_SLIDE_BACKGROUND_TRANSITION~ can be used to specify
    default values for options explained subsequently for individual
-   slides.  Additional keywords ~REVEAL_TITLE_SLIDE_BACKGROUND~,
+   slides.
+
+#+REVEAL: split
+
+   Additional keywords ~REVEAL_TITLE_SLIDE_BACKGROUND~,
    ~REVEAL_TITLE_SLIDE_BACKGROUND_POSITION~,
    ~REVEAL_TITLE_SLIDE_BACKGROUND_REPEAT~,
    ~REVEAL_TITLE_SLIDE_BACKGROUND_SIZE~,
