@@ -1,0 +1,25 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2019-2020 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+# Set up the title slide.
+# Note the %n at the end to inject speaker notes.
+#+REVEAL_TITLE_SLIDE: <h1>%t</h1><h2>%s</h2><h3>%A %a</h3><p>View online: <a href="%u">%u</a></p>%n
+
+# Define contents of speaker notes on title slide.
+#+REVEAL_TITLE_SLIDE_NOTES: test-notes.org
+
+# Configure individual pieces of information.
+#+Title: Different title slide
+#+Subtitle: With subtitle and speaker notes
+#+Author: Jens Lechtenbörger
+#+REVEAL_ACADEMIC_TITLE: Dr.
+#+REVEAL_TALK_URL: https://oer.gitlab.io/org-re-reveal/test-cases/test-title-slide-notes.html
+#+REVEAL_TALK_QR_CODE: does not exist
+
+* Just a slide
+  - Nothing special here
+  - The custom title slide with speaker notes is all there is

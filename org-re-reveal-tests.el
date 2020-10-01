@@ -145,7 +145,8 @@
         "slide-numbers-reveal-toc"
         "slide-numbers-toc"
         "split"
-        "title-slide"))
+        "title-slide"
+        "title-slide-notes"))
 
 ;; (provide 'org-re-reveal-tests)
 ;;; org-re-reveal-tests.el ends here
