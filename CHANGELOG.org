@@ -13,6 +13,13 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.3.0] - 2020-10-01
+*** Added
+    - Variable ~org-re-reveal-title-slide-notes~ to support speaker
+      notes on title slide
+    - Variable ~org-re-reveal-notes-format-string~ to make previously
+      hard-coded string customizable
+
 ** [3.2.2] - 2020-09-22
 *** Fixed
     - Also set ~org-html-container-element~ to "div" upon publication
