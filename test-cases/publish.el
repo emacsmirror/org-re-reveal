@@ -16,19 +16,10 @@
 ;;
 ;; Use this file from its parent directory with the following shell
 ;; command:
-;; emacs --batch --load test-cases/publish.el
+;; emacs --batch -L /root/.emacs.d/elpa/emacs-reveal/org-mode/lisp --load org-re-reveal.el --load test-cases/publish.el
 
 ;;; Code:
 (package-initialize)
-
-;; Add Docker paths for org, org-re-reveal, and oer-reveal.
-(add-to-list 'load-path
-	     "/root/.emacs.d/elpa/emacs-reveal/org-mode/lisp")
-(add-to-list 'load-path
-	     "/root/.emacs.d/elpa/emacs-reveal/org-re-reveal")
-(add-to-list 'load-path
-	     "/root/.emacs.d/elpa/emacs-reveal/oer-reveal")
-(require 'org-re-reveal)
 
 (defun publish-readme-to-reveal (plist filename pub-dir)
   "Publish readme with correct path to reveal.js.
@@ -36,7 +27,10 @@ Pass PLIST, FILENAME, and PUB-DIR to `org-re-reveal-publish-to-reveal'."
   (let ((org-re-reveal-root "test-cases/reveal.js"))
     (oer-reveal-publish-to-reveal plist filename pub-dir)))
 
-(require 'oer-reveal)
+;; Add Docker path for oer-reveal, load it
+(add-to-list 'load-path "/root/.emacs.d/elpa/emacs-reveal/oer-reveal")
+(require 'oer-reveal-publish)
+
 (let ((oer-reveal-plugins '("reveal.js-jump-plugin"))
       (org-re-reveal-history t)
       (org-re-reveal-script-files oer-reveal-script-files)
@@ -51,7 +45,7 @@ Pass PLIST, FILENAME, and PUB-DIR to `org-re-reveal-publish-to-reveal'."
 	(list "org-presentations"
 	      :base-directory "test-cases"
 	      :base-extension "org"
-              :exclude "index"
+              :exclude "config-.*"
 	      :publishing-function 'org-re-reveal-publish-to-reveal
 	      :publishing-directory "./public/test-cases")
         (list "multiplex-client"
