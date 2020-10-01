@@ -1863,7 +1863,9 @@ Extract and set `attr_html' to plain-list tag attributes."
 (defun org-re-reveal-format-spec (info)
   "Return format specification with INFO.
 Formatting extends `org-html-format-spec' such that
-%-sequences for `org-re-reveal-title-slide' are available."
+%-sequences for `org-re-reveal-title-slide' are available.
+Speaker notes on the title slide with \"%n\" make use of
+`org-re-reveal-notes-format-string'."
   (let* ((notes (org-re-reveal--read-file-as-string
                  (plist-get info :reveal-title-slide-notes)))
          (html-notes (when notes
