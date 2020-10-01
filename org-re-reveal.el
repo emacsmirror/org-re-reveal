@@ -1857,10 +1857,10 @@ Formatting extends `org-html-format-spec' such that
                     (org-export-data
                      (plist-get info :reveal-talk-url) info))))))
 
-(defun org-re-reveal--build-pre-postamble (type info)
-  "Depending on TYPE, return preamble or postamble for INFO as string, or nil."
-  (let ((section (plist-get info (intern (format ":reveal-%s" type))))
-        (spec (org-re-reveal-format-spec info)))
+(defun org-re-reveal--build-pre-postamble (type info spec)
+  "Depending on TYPE, return preamble or postamble or nil.
+Use plist INFO and format specification SPEC."
+  (let ((section (plist-get info (intern (format ":reveal-%s" type)))))
     (when section
       (let ((section-contents
              (if (functionp (intern section)) (funcall (intern section) info)
@@ -1968,10 +1968,9 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
                          pre-tag lang code-attribs code)
                (format "\n%s%s</pre>" pre-tag code)))))))))
 
-(defun org-re-reveal--auto-title-slide-template (info)
-  "Generate the automatic title slide template with INFO."
-  (let* ((spec (org-re-reveal-format-spec info))
-         (title (org-export-data (plist-get info :title) info))
+(defun org-re-reveal--auto-title-slide-template (info spec)
+  "Generate the automatic title slide template with INFO and SPEC."
+  (let* ((title (org-export-data (plist-get info :title) info))
          (author (cdr (assq ?a spec)))
          (email (cdr (assq ?e spec)))
          (date (cdr (assq ?d spec))))
@@ -2013,86 +2012,87 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
   "Return complete document string after HTML conversion.
 CONTENTS is the transcoded contents string.
 INFO is a plist holding export options."
-  (org-re-reveal--check-single-file info)
-  (org-re-reveal--setup-paths info)
-  (concat
-   (format "<!DOCTYPE html>\n<html%s>\n<head>\n"
-           (org-re-reveal--if-format " lang=\"%s\"" (plist-get info :language)))
-   "<meta charset=\"utf-8\"/>\n"
-   (org-re-reveal--if-format "<title>%s</title>\n"
-                             (org-export-data (plist-get info :title) info))
-   (org-re-reveal--if-format "<meta name=\"author\" content=\"%s\"/>\n"
-                             (org-element-interpret-data (plist-get info :author)))
-   (org-re-reveal--if-format "<meta name=\"description\" content=\"%s\"/>\n"
-                             (plist-get info :description))
-   (org-re-reveal--if-format "<meta name=\"keywords\" content=\"%s\"/>\n"
-                             (plist-get info :keywords))
-   (org-re-reveal-stylesheets info)
-   (org-re-reveal--build-pre-postamble 'head-preamble info)
-   (org-re-reveal-mathjax-scripts info)
-   (org-element-normalize-string (plist-get info :html-head))
-   (org-element-normalize-string (plist-get info :html-head-extra))
-   "</head>\n<body"
-   (org-re-reveal--if-format " %s" org-re-reveal-body-attrs)
-   ">\n"
-   (org-re-reveal--build-pre-postamble 'preamble info)
-   "<div class=\"reveal\">
+  (let ((spec (org-re-reveal-format-spec info)))
+    (org-re-reveal--check-single-file info)
+    (org-re-reveal--setup-paths info)
+    (concat
+     (format "<!DOCTYPE html>\n<html%s>\n<head>\n"
+             (org-re-reveal--if-format " lang=\"%s\"" (plist-get info :language)))
+     "<meta charset=\"utf-8\"/>\n"
+     (org-re-reveal--if-format "<title>%s</title>\n"
+                               (org-export-data (plist-get info :title) info))
+     (org-re-reveal--if-format "<meta name=\"author\" content=\"%s\"/>\n"
+                               (org-element-interpret-data (plist-get info :author)))
+     (org-re-reveal--if-format "<meta name=\"description\" content=\"%s\"/>\n"
+                               (plist-get info :description))
+     (org-re-reveal--if-format "<meta name=\"keywords\" content=\"%s\"/>\n"
+                               (plist-get info :keywords))
+     (org-re-reveal-stylesheets info)
+     (org-re-reveal--build-pre-postamble 'head-preamble info spec)
+     (org-re-reveal-mathjax-scripts info)
+     (org-element-normalize-string (plist-get info :html-head))
+     (org-element-normalize-string (plist-get info :html-head-extra))
+     "</head>\n<body"
+     (org-re-reveal--if-format " %s" org-re-reveal-body-attrs)
+     ">\n"
+     (org-re-reveal--build-pre-postamble 'preamble info spec)
+     "<div class=\"reveal\">
 <div class=\"slides\">\n"
-   ;; Title slides
-   (let ((title-slide (plist-get info :reveal-title-slide)))
-     (when (and (or (eq 'auto title-slide)
-                    (and (stringp title-slide) (< 0 (length title-slide))))
-                (or (not (plist-get info :reveal-subtree))
-                    (plist-get info :reveal-subtree-with-title-slide)))
-       (let ((title-slide-background (plist-get info :reveal-title-slide-background))
-             (title-slide-background-size (plist-get info :reveal-title-slide-background-size))
-             (title-slide-background-position (plist-get info :reveal-title-slide-background-position))
-             (title-slide-background-repeat (plist-get info :reveal-title-slide-background-repeat))
-             (title-slide-background-transition (plist-get info :reveal-title-slide-background-transition))
-             (title-slide-state (plist-get info :reveal-title-slide-state))
-             (title-slide-timing (plist-get info :reveal-title-slide-timing))
-             (title-slide-with-header (plist-get info :reveal-slide-global-header))
-             (title-slide-with-footer (plist-get info :reveal-slide-global-footer)))
-         (concat "<section id=\"sec-title-slide\""
-                 (when title-slide-background
-                   (concat " data-background=\"" title-slide-background "\""))
-                 (when title-slide-background-size
-                   (concat " data-background-size=\"" title-slide-background-size "\""))
-                 (when title-slide-background-position
-                   (concat " data-background-position=\"" title-slide-background-position "\""))
-                 (when title-slide-background-repeat
-                   (concat " data-background-repeat=\"" title-slide-background-repeat "\""))
-                 (when title-slide-background-transition
-                   (concat " data-background-transition=\"" title-slide-background-transition "\""))
-                 (when title-slide-state
-                   (concat " data-state=\"" title-slide-state "\""))
-                 (when title-slide-timing
-                   (concat " data-timing=\"" title-slide-timing "\""))
-                 ">\n"
-                 (when title-slide-with-header
-                   (let ((header (plist-get info :reveal-slide-header)))
-                     (when header (format org-re-reveal-slide-header-html header))))
-                 (cond ((eq title-slide nil) nil)
-                       ((stringp title-slide)
-                        (let* ((file-contents
-                                (org-re-reveal--read-file-as-string title-slide))
-                               (title-string (or file-contents title-slide)))
-                          (format-spec title-string
-                                       (org-re-reveal-format-spec info))))
-                       ((eq title-slide 'auto) (org-re-reveal--auto-title-slide-template info)))
-                 "\n"
-                 (when title-slide-with-footer
-                   (let ((footer (plist-get info :reveal-slide-footer)))
-                     (when footer (format org-re-reveal-slide-footer-html footer))))
-                 "</section>\n"))))
-   contents
-   "</div>
+     ;; Title slides
+     (let ((title-slide (plist-get info :reveal-title-slide)))
+       (when (and (or (eq 'auto title-slide)
+                      (and (stringp title-slide) (< 0 (length title-slide))))
+                  (or (not (plist-get info :reveal-subtree))
+                      (plist-get info :reveal-subtree-with-title-slide)))
+         (let ((title-slide-background (plist-get info :reveal-title-slide-background))
+               (title-slide-background-size (plist-get info :reveal-title-slide-background-size))
+               (title-slide-background-position (plist-get info :reveal-title-slide-background-position))
+               (title-slide-background-repeat (plist-get info :reveal-title-slide-background-repeat))
+               (title-slide-background-transition (plist-get info :reveal-title-slide-background-transition))
+               (title-slide-state (plist-get info :reveal-title-slide-state))
+               (title-slide-timing (plist-get info :reveal-title-slide-timing))
+               (title-slide-with-header (plist-get info :reveal-slide-global-header))
+               (title-slide-with-footer (plist-get info :reveal-slide-global-footer)))
+           (concat "<section id=\"sec-title-slide\""
+                   (when title-slide-background
+                     (concat " data-background=\"" title-slide-background "\""))
+                   (when title-slide-background-size
+                     (concat " data-background-size=\"" title-slide-background-size "\""))
+                   (when title-slide-background-position
+                     (concat " data-background-position=\"" title-slide-background-position "\""))
+                   (when title-slide-background-repeat
+                     (concat " data-background-repeat=\"" title-slide-background-repeat "\""))
+                   (when title-slide-background-transition
+                     (concat " data-background-transition=\"" title-slide-background-transition "\""))
+                   (when title-slide-state
+                     (concat " data-state=\"" title-slide-state "\""))
+                   (when title-slide-timing
+                     (concat " data-timing=\"" title-slide-timing "\""))
+                   ">\n"
+                   (when title-slide-with-header
+                     (let ((header (plist-get info :reveal-slide-header)))
+                       (when header (format org-re-reveal-slide-header-html header))))
+                   (cond ((eq title-slide nil) nil)
+                         ((stringp title-slide)
+                          (let* ((file-contents
+                                  (org-re-reveal--read-file-as-string title-slide))
+                                 (title-string (or file-contents title-slide)))
+                            (format-spec title-string spec)))
+                         ((eq title-slide 'auto)
+                          (org-re-reveal--auto-title-slide-template info spec)))
+                   "\n"
+                   (when title-slide-with-footer
+                     (let ((footer (plist-get info :reveal-slide-footer)))
+                       (when footer (format org-re-reveal-slide-footer-html footer))))
+                   "</section>\n"))))
+     contents
+     "</div>
 </div>\n"
-   (org-re-reveal--build-pre-postamble 'postamble info)
-   (org-re-reveal-scripts info)
-   (org-re-reveal--klipsify-script info)
-   "</body>
-</html>\n"))
+     (org-re-reveal--build-pre-postamble 'postamble info spec)
+     (org-re-reveal-scripts info)
+     (org-re-reveal--klipsify-script info)
+     "</body>
+</html>\n")))
 
 (defun org-re-reveal-filter-parse-tree (tree backend info)
   "Do filtering before parsing TREE.
