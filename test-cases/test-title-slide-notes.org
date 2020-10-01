@@ -10,7 +10,7 @@
 #+REVEAL_TITLE_SLIDE: <h1>%t</h1><h2>%s</h2><h3>%A %a</h3><p>View online: <a href="%u">%u</a></p>%n
 
 # Define contents of speaker notes on title slide.
-#+REVEAL_TITLE_SLIDE_NOTES: test-notes.org
+#+REVEAL_TITLE_SLIDE_NOTES: config-title-notes.org
 
 # Configure individual pieces of information.
 #+Title: Different title slide
