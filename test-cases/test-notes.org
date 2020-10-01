@@ -6,7 +6,7 @@ Notes on title slide
 - You might use this to remember aspects of an introductory story
 - Do not forget
   - to talk about /this/
-  - and that with [[https://example.org][sample URL]]
+  - and that with [[https://example.org/][sample URL]]
 - (You can also use this for usage notes on reveal.js presentations,
   e.g., with the
   [[https://github.com/Sonaryr/reveal.js-coursemod][coursemod plugin]])
