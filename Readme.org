@@ -271,6 +271,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND_POSITION~     | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND_REPEAT~       | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND_TRANSITION~   | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TITLE_SLIDE_NOTES~                   | ~org-re-reveal-title-slide-notes~        |
 | ~nil~                             | ~REVEAL_TOC_SLIDE_STATE~                     | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TOC_SLIDE_CLASS~                     | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TOC_SLIDE_TITLE~                     | ~org-re-reveal-toc-slide-title~          |
@@ -307,6 +308,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    ~org-re-reveal-multiplex-client-ext~,
    ~org-re-reveal-no-htmlize-src~,
    ~org-re-reveal-note-key-char~,
+   ~org-re-reveal-notes-format-string~,
    ~org-re-reveal-plugin-config~
 
 ** Set the location of reveal.js
@@ -509,6 +511,9 @@ Whether anyone wants to use those package in isolation, is up to them.
     [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-title-slide.org][test-title-slide.org]]
     for an example including ~REVEAL_ACADEMIC_TITLE~,
     ~REVEAL_TALK_URL~, ~REVEAL_TALK_QR_CODE~
+    and
+    [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-title-slide-notes.org][test-title-slide-notes.org]]
+    for a title slide including speaker notes.
 
     Alternatively, you can write the title slide's HTML code
     (with escape sequences) into a separate file and
