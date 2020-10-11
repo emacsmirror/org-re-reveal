@@ -805,19 +805,51 @@ Whether anyone wants to use those package in isolation, is up to them.
    =html_headline_class= to the headline.
 
 
+** Activate Plugins
+
+   Set option =REVEAL_PLUGINS= or variable =org-re-reveal-plugins= to a
+   lisp list to activate additional reveal.js functionality.
+
+   Variable =org-re-reveal-plugins= allows the selection of available plugins.
+
+   The following example selects /markdown/, /highlight/, and /search/.
+#+BEGIN_SRC org
+,#+REVEAL_PLUGINS: (markdown highlight search)
+#+END_SRC
+
+*** Plugin configuration
+    :PROPERTIES:
+    :CUSTOM_ID: plugin-config
+    :END:
+    Starting with version 3 of org-re-reveal, which supports reveal.js
+    4, you can customize ~org-re-reveal-plugin-config~ to enable
+    additional plugins.  E.g., if you copy the directory of the
+    [[https://github.com/rajgoel/reveal.js-plugins/tree/master/chalkboard][Chalkboard plugin]],
+    to the plugin directory of reveal.js, you might want to add
+    ~(chalkboard "RevealChalkboard" "plugin/chalkboard/plugin.js")~ to
+    ~org-re-reveal-plugin-config~, e.g., with that line in your ~.emacs~:
+#+BEGIN_SRC org
+(add-to-list 'org-re-reveal-plugin-config '(chalkboard "RevealChalkboard" "plugin/chalkboard/plugin.js"))
+#+END_SRC
+
+    Then, activate the plugin in your presentation:
+#+BEGIN_SRC org
+,#+REVEAL_PLUGINS: (chalkboard highlight search)
+#+END_SRC
+
 ** Third-Party Plugins
    Reveal.js is also extensible through third-party plugins, which can
    be loaded with org-re-reveal. Several plugins are included and
    configured with [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]].
 
-   The paths to javascript loading code
-   need to be customized in the variable
-   ~org-re-reveal-external-plugins~. This variable can be an
-   associative list or a filename. If it is an associative list the first
-   element of each Assoc cell is a symbol -- the name of the plugin --
-   and the second is a string that will be expanded by the ~format~
-   function when the plugin is loaded. So, this second element should
-   have the form:
+   In addition to [[#plugin-config][plugin configuration]] described
+   above, you can customize javascript loading code for plugins with
+   variable ~org-re-reveal-external-plugins~.  This variable can be an
+   associative list or a filename.  If it is an associative list, the
+   first element of each Assoc cell is a symbol -- the name of the
+   plugin -- and the second is a string that will be expanded by the
+   ~format~ function when the plugin is loaded.  So, this second
+   element should have the form:
 
    ~" {src: \"%srelative/path/toplugin/from/reveal/root.js\"}"~
 
@@ -1035,18 +1067,6 @@ Whether anyone wants to use those package in isolation, is up to them.
 
 #+BEGIN_SRC org
 ,#+REVEAL_EXTRA_CSS: url-to-custom-stylesheet.css
-#+END_SRC
-
-** Select Built-In Scripts
-
-   Set option =REVEAL_PLUGINS= or variable =org-re-reveal-plugins= to a
-   lisp list to activate additional reveal.js functionality.
-
-   Variable =org-re-reveal-plugins= allows the selection of available plugins.
-
-   The following example selects /markdown/, /highlight/, and /search/.
-#+BEGIN_SRC org
-,#+REVEAL_PLUGINS: (markdown highlight search)
 #+END_SRC
 
 ** Extra JavaScript Libraries
