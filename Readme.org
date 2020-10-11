@@ -824,7 +824,7 @@ Whether anyone wants to use those package in isolation, is up to them.
     Starting with version 3 of org-re-reveal, which supports reveal.js
     4, you can customize ~org-re-reveal-plugin-config~ to enable
     additional plugins.  E.g., if you copy the directory of the
-    [[https://github.com/rajgoel/reveal.js-plugins/tree/master/chalkboard][Chalkboard plugin]],
+    [[https://github.com/rajgoel/reveal.js-plugins/tree/master/chalkboard][Chalkboard plugin]]
     to the plugin directory of reveal.js, you might want to add
     ~(chalkboard "RevealChalkboard" "plugin/chalkboard/plugin.js")~ to
     ~org-re-reveal-plugin-config~, e.g., with that line in your ~.emacs~:
