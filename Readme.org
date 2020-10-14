@@ -222,6 +222,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~reveal_subtree_with_title_slide~ | ~nil~                                        | ~org-re-reveal-subtree-with-title-slide~ |
 | ~reveal_width~                    | ~nil~                                        | ~org-re-reveal-width~                    |
 | ~nil~                             | ~REVEAL_ACADEMIC_TITLE~                      | ~nil~                                    |
+| ~nil~                             | ~REVEAL_ADD_PLUGIN~                          | ~nil~                                    |
 | ~nil~                             | ~REVEAL_CODEMIRROR_CONFIG~                   | ~org-re-reveal-klipse-codemirror~        |
 | ~nil~                             | ~REVEAL_DEFAULT_FRAG_STYLE~                  | ~org-re-reveal-default-frag-style~       |
 | ~nil~                             | ~REVEAL_DEFAULT_SLIDE_BACKGROUND~            | ~nil~                                    |
@@ -817,15 +818,32 @@ Whether anyone wants to use those package in isolation, is up to them.
 ,#+REVEAL_PLUGINS: (markdown highlight search)
 #+END_SRC
 
+*** External plugins
+    :PROPERTIES:
+    :CUSTOM_ID: external-plugins
+    :END:
+    Starting with version 3.4.0 of org-re-reveal and reveal.js version
+    4, you can use keyword ~REVEAL_ADD_PLUGIN~ to enable external
+    plugins (which you need to install yourself).  E.g., copy the
+    directory of the
+    [[https://github.com/rajgoel/reveal.js-plugins/tree/master/chalkboard][Chalkboard plugin]]
+    to the plugin directory of reveal.js; then activate the
+    plugin as follows, where ~chalkboard~ is an internal name,
+    ~RevealChalkboard~ is the JavaScript name of the plugin, and
+    ~plugin/chalkboard/plugin.js~ is the path with code for the
+    plugin:
+#+BEGIN_SRC org
+,#+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard plugin/chalkboard/plugin.js
+#+END_SRC
+
 *** Plugin configuration
     :PROPERTIES:
     :CUSTOM_ID: plugin-config
     :END:
     Starting with version 3 of org-re-reveal, which supports reveal.js
     4, you can customize ~org-re-reveal-plugin-config~ to enable
-    additional plugins.  E.g., if you copy the directory of the
-    [[https://github.com/rajgoel/reveal.js-plugins/tree/master/chalkboard][Chalkboard plugin]]
-    to the plugin directory of reveal.js, you might want to add
+    additional plugins.  As an alternative to external plugin
+    configuration shown on the previous slide, you can also add
     ~(chalkboard "RevealChalkboard" "plugin/chalkboard/plugin.js")~ to
     ~org-re-reveal-plugin-config~, e.g., with that line in your ~.emacs~:
 #+BEGIN_SRC org
@@ -838,12 +856,12 @@ Whether anyone wants to use those package in isolation, is up to them.
 #+END_SRC
 
 ** Third-Party Plugins
-   Reveal.js is also extensible through third-party plugins, which can
-   be loaded with org-re-reveal. Several plugins are included and
+   Plugins were initialized differently before version 4 of reveal.js.
+   Several plugins are included and
    configured with [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]].
 
    In addition to [[#plugin-config][plugin configuration]] described
-   above, you can customize javascript loading code for plugins with
+   above, you can customize JavaScript loading code for plugins with
    variable ~org-re-reveal-external-plugins~.  This variable can be an
    associative list or a filename.  If it is an associative list, the
    first element of each Assoc cell is a symbol -- the name of the
