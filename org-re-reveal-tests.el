@@ -137,6 +137,7 @@
         "noslide"
         "options"
         "pdf-notes"
+        "plugins"
         "reveal-toc"
         "revealjs4"
         "src-blocks-hl"

@@ -124,6 +124,7 @@
       (:reveal-subtree-with-title-slide nil "reveal_subtree_with_title_slide" org-re-reveal-subtree-with-title-slide t)
       (:reveal-width nil "reveal_width" org-re-reveal-width t)
       (:reveal-academic-title "REVEAL_ACADEMIC_TITLE" nil nil t)
+      (:reveal-add-plugin "REVEAL_ADD_PLUGIN" nil nil newline)
       (:reveal-codemirror-config "REVEAL_CODEMIRROR_CONFIG" nil org-re-reveal-klipse-codemirror newline)
       (:reveal-default-frag-style "REVEAL_DEFAULT_FRAG_STYLE" nil org-re-reveal-default-frag-style t)
       (:reveal-default-slide-background "REVEAL_DEFAULT_SLIDE_BACKGROUND" nil nil t)
@@ -1258,6 +1259,30 @@ based on `org-re-reveal-external-plugins'."
 (defvar org-re-reveal-client-multiplex nil
   "Used to cause generation of client html file for multiplex.")
 
+(defun org-re-reveal--add-plugins (info)
+  "Retrieve configuration for plugins with reveal.js 4 and later with INFO.
+Parse keywords \"REVEAL_ADD_PLUGIN\" and return list of triples."
+  (let ((additional (split-string
+                     (or (plist-get info :reveal-add-plugin) "") "\n" t " ")))
+    (mapcar (lambda (line)
+              (split-string line " " t " "))
+            additional)))
+
+(defun org-re-reveal--plugin-config (plugin info)
+  "Retrieve configuration for PLUGIN with reveal.js 4 and later with INFO.
+This retrieves the triple for PLUGIN from `org-re-reveal-plugin-config'
+or after keyword \"REVEAL_ADD_PLUGIN\"."
+  (assoc plugin (append org-re-reveal-plugin-config (org-re-reveal--add-plugins info))))
+
+(defun org-re-reveal--enabled-plugins (info)
+  "Return enabled plugins with INFO.
+Plugins can be enabled with keywords \"REVEAL_PLUGINS\" and
+\"REVEAL_ADD_PLUGIN\"."
+  (append
+   (org-re-reveal--parse-listoption info :reveal-plugins)
+   (mapcar (lambda (triple) (nth 0 triple))
+           (org-re-reveal--add-plugins info))))
+
 (defun org-re-reveal-scripts--libraries (info)
   "Internal function to generate script tags with INFO.
 This includes reveal.js libraries in `:reveal-script-files' under
@@ -1270,19 +1295,17 @@ This includes reveal.js libraries in `:reveal-script-files' under
          (reveal-version (plist-get info :reveal-guessed-revealjs-version))
          (in-single-file (plist-get info :reveal-single-file))
          ;; Plugin config for reveal.js 4.x
-         (enabled-builtin-plugins
+         (enabled-plugins
           (when (and (not in-single-file)
                      (version< "3.9" reveal-version))
             ;; Multiplex is no builtin in 4.x.
-            (cl-remove 'multiplex (org-re-reveal--parse-listoption
-                                   info :reveal-plugins))))
+            (cl-remove 'multiplex (org-re-reveal--enabled-plugins info))))
          (plugin-libs
           (mapcar
            (lambda (plugin)
              (concat root-path
-                     (nth 2 (assoc plugin
-                                   org-re-reveal-plugin-config))))
-           enabled-builtin-plugins))
+                     (nth 2 (org-re-reveal--plugin-config plugin info))))
+           enabled-plugins))
          (extra-scripts (org-re-reveal--parse-listoption
                          info :reveal-extra-scripts))
          ;; Treat extra scripts not starting with <script> as filenames.
@@ -1421,9 +1444,8 @@ transitionSpeed: '%s',\n")
 
 (defun org-re-reveal-scripts--multiplex (info)
   "Internal function for `org-re-reveal-scripts' with INFO."
-  (let ((enabled-builtin-plugins
-         (org-re-reveal--parse-listoption info :reveal-plugins)))
-    (when (memq 'multiplex enabled-builtin-plugins)
+  (let ((enabled-plugins (org-re-reveal--enabled-plugins info)))
+    (when (memq 'multiplex enabled-plugins)
       (format
        "multiplex: {
     secret: %s, // null if client
@@ -1441,8 +1463,7 @@ transitionSpeed: '%s',\n")
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
          (in-single-file (plist-get info :reveal-single-file))
          (reveal-version (plist-get info :reveal-guessed-revealjs-version))
-         (enabled-builtin-plugins (org-re-reveal--parse-listoption
-                                   info :reveal-plugins)))
+         (enabled-plugins (org-re-reveal--enabled-plugins info)))
     ;; optional JS library heading
     (if in-single-file ""
       (concat
@@ -1452,8 +1473,8 @@ transitionSpeed: '%s',\n")
 plugins: [ %s ],\n"
                  (mapconcat
                   (lambda (plugin)
-                    (nth 1 (assoc plugin org-re-reveal-plugin-config)))
-                  enabled-builtin-plugins
+                    (nth 1 (org-re-reveal--plugin-config plugin info)))
+                  enabled-plugins
                   ", ")))
        "\n// Optional libraries used to extend reveal.js
 dependencies: [\n"
@@ -1483,9 +1504,9 @@ dependencies: [\n"
               (builtin-codes
                (if (version< reveal-version "4")
                    (mapcar (lambda (p) (plist-get builtins-v3 p))
-                           enabled-builtin-plugins)
+                           enabled-plugins)
                  ;; Multiplex plugin is a dependency with version 4.x
-                 (when (memq 'multiplex enabled-builtin-plugins)
+                 (when (memq 'multiplex enabled-plugins)
                    (list builtin-multiplex))))
               (external-plugins
                (org-re-reveal--external-plugin-init info root-path))
@@ -1908,7 +1929,7 @@ holding contextual information."
 (defun org-re-reveal--using-highlight.js (info)
   "Check with INFO whether highlight.js plugin is enabled."
   (let ((reveal-plugins
-         (org-re-reveal--parse-listoption info :reveal-plugins)))
+         (org-re-reveal--enabled-plugins info)))
     (memq 'highlight reveal-plugins)))
 
 (defun org-re-reveal--buffer-substring-html-escape (start end)
