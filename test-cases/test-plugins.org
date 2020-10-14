@@ -1,0 +1,23 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2020 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+# Enable built-in plugins.
+#+REVEAL_PLUGINS: (notes search zoom)
+
+# Enable external plugins for reveal.js 4.
+#+REVEAL_VERSION: 4
+#+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard plugin/chalkboard/plugin.js
+#+REVEAL_ADD_PLUGIN: menu RevealMenu plugin/menu/menu.js
+
+#+Title: Activate plugins
+#+Author: Jens Lechtenbörger
+
+* An ordinary slide
+  - The header of the source file activates three built-in and two
+    external plugins
+    - (The external plugins need to be installed separately)
+  - This addresses issue [[https://gitlab.com/oer/org-re-reveal/-/issues/54][#54]]
