@@ -1140,7 +1140,7 @@ otherwise, a `<link>' label is generated."
 (defun org-re-reveal--klipsify-script (info)
   "Return script element for klipse when indicated by INFO."
   (if (plist-get info :reveal-klipsify-src)
-      (format "<script src=\"%s\"></script>
+      (format "<script src=\"%s\" defer></script>
 <script>
 /* Recompute layout upon changes by klipse.  Code fragment from
    asciidoctor-revealjs-klipse by Timothy Pratley under GPLv3:
