@@ -13,6 +13,11 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.4.1] - 2020-10-18
+*** Fixed
+    - Add ~defer~ attribute in ~org-re-reveal--klipsify-script~ to
+      enable klipse only after page has been loaded
+
 ** [3.4.0] - 2020-10-14
 *** Added
     - Keyword ~REVEAL_ADD_PLUGIN~ to activate external plugins
