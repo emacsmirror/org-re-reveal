@@ -1,12 +1,16 @@
 # Local IspellDict: en
 #+STARTUP: showeverything
 # SPDX-License-Identifier: GPL-3.0-or-later
-# Copyright (C) 2019 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2019-2020 Jens Lechtenbörger
 
 #+TITLE: Sample presentations generated with org-re-reveal
 #+AUTHOR: Jens Lechtenbörger
 #+OPTIONS: html-style:nil
 #+OPTIONS: toc:nil
+
+# Note that this file is meant to be exported as ordinary HTML file,
+# not as reveal.js presentation (for which a leading heading should be
+# present).
 
 The software [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]
 simplifies the generation of [[https://revealjs.com/][reveal.js]] HTML
