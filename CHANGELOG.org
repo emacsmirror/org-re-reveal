@@ -13,6 +13,10 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.4.3] - 2020-11-14
+*** Fixed
+    - Issue #55
+
 ** [3.4.2] - 2020-10-18
 *** Fixed
     - Revert to version 3.4.0.  Defer only worked locally, not remotely.
