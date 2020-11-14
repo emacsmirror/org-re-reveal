@@ -240,6 +240,20 @@ browsing that file, subtree export to file."
 (defconst org-re-reveal-revealjs-4-file "dist/reveal.js")
 (defconst org-re-reveal-revealjs-3-file "js/reveal.js")
 (defconst org-re-reveal-revealjs-pre-3.8-file "lib/js/head.min.js")
+(defconst org-re-reveal-file-drive-uri-re "\\`file:///[a-zA-Z]:")
+
+(defun org-re-reveal--file-uri-to-path (string)
+  "Extract filesystem path from STRING, which may be a file URI.
+Return STRING unchanged if it is no file URI.
+Otherwise, extract absolute path, treating URIs with drive letters
+separately."
+  (if (string-prefix-p "file:///" string)
+      (if (string-match org-re-reveal-file-drive-uri-re string)
+          ;; Paths with drive letter start without slash.
+          (string-remove-prefix "file:///" string)
+        ;; Keep leading slash for normal directory names.
+        (string-remove-prefix "file://" string))
+    string))
 
 (defun org-re-reveal--guess-revealjs-version (info)
   "Guess version of reveal.js with INFO.
@@ -251,7 +265,9 @@ Otherwise, check for existence of files under `org-re-reveal-root' and
   `org-re-reveal-revealjs-pre-3.8-file' does not exist, assign \"3.8\";
 - otherwise, assign \"3\"."
   (let ((version (plist-get info :reveal-version))
-        (root-path (file-name-as-directory (plist-get info :reveal-root))))
+        (root-path
+         (file-name-as-directory
+          (org-re-reveal--file-uri-to-path (plist-get info :reveal-root)))))
     (plist-put info :reveal-guessed-revealjs-version
                (if version
 		   version
