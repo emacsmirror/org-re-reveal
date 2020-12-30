@@ -128,6 +128,8 @@
 (mapc #'org-re-reveal-tests-create-normal-test
       '("blockquote"
         "extra-scripts"
+        "footer"
+        "footer-global"
         "highlightjs"
         "internal-links"
         "klipsify"

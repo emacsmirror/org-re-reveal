@@ -1,0 +1,45 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2020 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+#+REVEAL_SLIDE_FOOTER: DEFAULT FOOTER (needs CSS for placement)
+
+#+Title: Slides with footers
+#+Author: Jens Lechtenbörger
+
+* A normal slide
+  - Nothing special here
+  - Should have default footer
+
+* Slide with own footer
+  :PROPERTIES:
+  :REVEAL_SLIDE_FOOTER: DIFFERENT FOOTER
+  :END:
+  - Note the non-default footer
+
+* Slide with split
+  - The start of some
+  - list
+  - to be continued after split
+
+#+REVEAL: split
+
+  - Continued list
+  - with more items
+
+* Slide with own footer
+  :PROPERTIES:
+  :REVEAL_SLIDE_FOOTER: Again DIFFERENT FOOTER
+  :END:
+  - Note the non-default footer
+
+#+REVEAL: split
+
+  - Continued list
+  - with more items
+  - and non-default footer (before and after split)
+
+** Subsection
+   - Again with default footer
