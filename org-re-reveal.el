@@ -1028,8 +1028,6 @@ holding contextual information."
              (hlevel (org-re-reveal--get-hlevel info))
              (header (plist-get info :reveal-slide-header))
              (header-div (if header (format org-re-reveal-slide-header-html header) ""))
-             (footer (plist-get info :reveal-slide-footer))
-             (footer-div (if footer (format org-re-reveal-slide-footer-html footer) ""))
              (first-sibling (org-export-first-sibling-p headline info))
              (attrs (org-re-reveal--section-attrs headline info))
              (extra-attrs (or (org-element-property :REVEAL_EXTRA_ATTR headline)
@@ -1042,8 +1040,6 @@ holding contextual information."
                    (if (or (/= level 1) (not first-sibling))
                        ;; Not the first heading. Close previous slide.
                        (concat
-                        ;; Slide footer if any.
-                        footer-div
                         ;; Close previous slide.
                         "</section>\n"
                         (if (<= level hlevel)
@@ -1065,13 +1061,10 @@ holding contextual information."
                    header-div
                    ;; The HTML content of the headline
                    (org-re-reveal--fix-html-headline headline contents info)
-                   (if (and (= level 1)
-                            (org-export-last-sibling-p headline info))
-                       ;; Last head 1. Close all slides.
-                       (concat
-                        ;; Slide footer if any
-                        footer-div
-                        "</section>\n</section>\n")))))
+                   (when (and (= level 1)
+                              (org-export-last-sibling-p headline info))
+                     ;; Last head 1. Close all slides.
+                     "</section>\n</section>\n"))))
         ret))))
 
 (defun org-re-reveal--read-list (thing)
@@ -1572,6 +1565,20 @@ Reveal.initialize({
    ;; end of <script> tag
    "});\n</script>\n"))
 
+(defun org-re-reveal--footer (info &optional object check-parent)
+  "Return footer given INFO.
+If optional OBJECT is non-nil use it to try to obtain a footer property
+from its parent headline.  If optional CHECK-PARENT is non-nil, only
+return a footer if OBJECT has a parent headline."
+  (let* ((parent (when object (org-export-get-parent-headline object)))
+	 (footer (or (and parent
+                          (org-element-property :REVEAL_SLIDE_FOOTER parent))
+		     (plist-get info :reveal-slide-footer))))
+    (if (and (or (not check-parent) parent)
+             footer)
+        (format org-re-reveal-slide-footer-html footer)
+      "")))
+
 (defun org-re-reveal-toc (depth info)
   "Build a slide of table of contents with DEPTH and INFO."
   (let ((toc (org-html-toc depth info)))
@@ -1607,8 +1614,7 @@ Reveal.initialize({
                    toc)
                 toc)
               (when toc-slide-with-footer
-                (let ((footer (plist-get info :reveal-slide-footer)))
-                  (when footer (format org-re-reveal-slide-footer-html footer))))
+                (org-re-reveal--footer info))
               "</section>\n"))))
 
 (defun org-re-reveal-inner-template (contents info)
@@ -1705,9 +1711,7 @@ May change custom variables as SIDE EFFECT.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (let* ((key (org-element-property :key keyword))
          (value (org-element-property :value keyword))
-         (footer (plist-get info :reveal-slide-footer))
-         (footer-div (if footer
-                         (format org-re-reveal-slide-footer-html footer) "")))
+         (footer-div (org-re-reveal--footer info keyword)))
     (cl-case (intern key)
       (REVEAL (org-re-reveal-parse-keyword-value value footer-div keyword info))
       (REVEAL_HTML value)
@@ -1933,14 +1937,11 @@ Use plist INFO and format specification SPEC."
         (when (org-string-nw-p section-contents)
           (org-element-normalize-string section-contents))))))
 
-
 (defun org-re-reveal-section (section contents info)
   "Transcode a SECTION element from Org to Reveal.
 CONTENTS holds the contents of the section.  INFO is a plist
 holding contextual information."
-  ;; Just return the contents. No "<div>" tags.
-  (ignore section info) ; Silence byte compiler
-  contents)
+  (concat contents (org-re-reveal--footer info section t)))
 
 (defun org-re-reveal--using-highlight.js (info)
   "Check with INFO whether highlight.js plugin is enabled."
@@ -2146,8 +2147,7 @@ INFO is a plist holding export options."
                           (org-re-reveal--auto-title-slide-template info spec)))
                    "\n"
                    (when title-slide-with-footer
-                     (let ((footer (plist-get info :reveal-slide-footer)))
-                       (when footer (format org-re-reveal-slide-footer-html footer))))
+                     (org-re-reveal--footer info))
                    "</section>\n"))))
      contents
      "</div>
