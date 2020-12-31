@@ -12,6 +12,8 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+
+** [3.5.0] - 2020-12-31
 *** Added
     - Define footers per slide with property ~REVEAL_SLIDE_FOOTER~
 *** Fixed
