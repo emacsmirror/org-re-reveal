@@ -1176,16 +1176,27 @@ Reveal.addEventListener( 'slidechanged', function( event ) {
                               highlight-css))
       highlight-css)))
 
+(defun org-re-reveal--theme-path (theme css-path)
+  "Return the path to the themes CSS file.
+If the theme already is a path (e.g. THEME is '/css/my-theme.css', detected by
+checking for the suffix '.css') then return THEME, else locate THEME within
+CSS-PATH for built in themes."
+  (if (string-suffix-p ".css" theme t)
+      theme
+    (let* ((css-path (file-name-as-directory css-path))
+           (theme-path (file-name-as-directory (concat css-path "theme")))
+           (theme-css (concat theme-path theme ".css")))
+      theme-css)))
+
 (defun org-re-reveal-stylesheets (info)
   "Return HTML code for reveal stylesheets using INFO and `org-re-reveal-root'."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
          (reveal-version (plist-get info :reveal-guessed-revealjs-version))
          (css-path (file-name-as-directory
                     (concat root-path (plist-get info :reveal-css-path))))
-         (theme-path (file-name-as-directory (concat css-path "theme")))
          (reveal-css (concat css-path "reveal.css"))
          (theme (plist-get info :reveal-theme))
-         (theme-css (concat theme-path theme ".css"))
+         (theme-css (org-re-reveal--theme-path theme css-path))
          (extra-css (plist-get info :reveal-extra-css))
          (in-single-file (plist-get info :reveal-single-file)))
     (concat

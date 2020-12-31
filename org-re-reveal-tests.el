@@ -127,6 +127,7 @@
 
 (mapc #'org-re-reveal-tests-create-normal-test
       '("blockquote"
+        "custom-theme"
         "extra-scripts"
         "footer"
         "footer-global"
@@ -151,6 +152,17 @@
         "split"
         "title-slide"
         "title-slide-notes"))
+
+(cort-deftest org-re-reveal/css-custom-css-path--detect-custom-css
+  '((:string= (org-re-reveal--theme-path "my-theme.css" "dir")   "my-theme.css")
+    (:string= (org-re-reveal--theme-path "my-theme.CSS" "dir")   "my-theme.CSS")
+    (:string= (org-re-reveal--theme-path "my-theme.css" "dir/")   "my-theme.css")
+    (:string= (org-re-reveal--theme-path "/uri/uri/my-theme.css" "dir")   "/uri/uri/my-theme.css")))
+
+(cort-deftest org-re-reveal/css-custom-css-path--detect-built-in-themes
+  '((:string= (org-re-reveal--theme-path "my-theme" "dir")   "dir/theme/my-theme.css")
+    (:string= (org-re-reveal--theme-path "my-themeCSS" "dir")   "dir/theme/my-themeCSS.css")
+    (:string= (org-re-reveal--theme-path "my-themecss" "dir")   "dir/theme/my-themecss.css")))
 
 ;; (provide 'org-re-reveal-tests)
 ;;; org-re-reveal-tests.el ends here

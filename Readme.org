@@ -494,6 +494,9 @@ Whether anyone wants to use those package in isolation, is up to them.
     Available themes can be found in "css/theme/" in the reveal.js
     directory and customized via ~org-re-reveal-theme~.
 
+    Custom themes can be selected by setting =REVEAL_THEME= to a string
+    ending with ~.css~. E.g. ~#+REVEAL_THEME: /my/theme.css~.
+
     Available transitions can be found in the
     [[https://revealjs.com/transitions/][documentation of reveal.js]]
     and customized via ~org-re-reveal-transition~.
