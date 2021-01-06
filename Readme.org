@@ -2,8 +2,8 @@
 #+Title: Introduction to org-re-reveal
 #+Author: Yujie Wen and others
 
-[[https://stable.melpa.org/#/org-re-reveal][file:https://stable.melpa.org/packages/org-re-reveal-badge.svg]]
-[[https://melpa.org/#/org-re-reveal][file:https://melpa.org/packages/org-re-reveal-badge.svg]]
+[[https://stable.melpa.org/#/org-re-reveal][https://stable.melpa.org/packages/org-re-reveal-badge.svg]]
+[[https://melpa.org/#/org-re-reveal][https://melpa.org/packages/org-re-reveal-badge.svg]]
 
 #+KEYWORDS: org mode, reveal.js, presentation, HTML, slide show, org-re-reveal, emacs-reveal, OER
 #+DESCRIPTION: Readme for org-re-reveal to generate HTML/reveal.js presentations from Org mode source files.
