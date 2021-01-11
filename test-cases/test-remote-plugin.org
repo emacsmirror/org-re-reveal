@@ -1,0 +1,22 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2021 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+#+Title: Remote plugin example
+#+Author: Jens Lechtenbörger
+
+#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
+#+REVEAL_VERSION: 4
+#+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard https://cdn.jsdelivr.net/gh/rajgoel/reveal.js-plugins/chalkboard/plugin.js
+
+* Comments
+  - This presentation embeds reveal.js and the
+    [[https://github.com/rajgoel/reveal.js-plugins/tree/master/chalkboard][chalkboard plugin]]
+    from remote locations.
+
+  - See [[https://gitlab.com/oer/org-re-reveal/-/issues/60][issue #60]].
+
+  - Press ~b~ or ~c~ as usual to work with the chalkboard.

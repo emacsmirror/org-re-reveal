@@ -1,7 +1,7 @@
 # Local IspellDict: en
 #+STARTUP: showeverything
 # SPDX-License-Identifier: GPL-3.0-or-later
-# SPDX-FileCopyrightText: 2019-2020 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2019-2021 Jens Lechtenbörger
 
 #+TITLE: Sample presentations generated with org-re-reveal
 #+AUTHOR: Jens Lechtenbörger
@@ -36,6 +36,7 @@ notably, “n” and “p” move to next and previous slides.
   - [[file:test-cases/test-multiplex_client.html][Multiplex client]]
   - [[file:test-cases/test-noslide.org][Add subheading to slide]]
   - [[file:test-cases/test-options.org][Use of extra options]]
+  - [[file:test-cases/test-remote-plugin.org][Embed chalkboard plugin remotely]]
   - [[file:test-cases/test-reveal-toc.org][Table of contents at chosen location]]
   - [[file:test-cases/test-src-blocks-hl.org][Source blocks with highlight.js]]
   - [[file:test-cases/test-src-blocks-no-hl.org][Source blocks without highlight.js]]

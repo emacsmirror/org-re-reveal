@@ -140,6 +140,7 @@
         "options"
         "pdf-notes"
         "plugins"
+        "remote-plugin"
         "reveal-toc"
         "revealjs4"
         "src-blocks-hl"
