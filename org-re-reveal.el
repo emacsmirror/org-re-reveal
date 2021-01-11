@@ -5,7 +5,7 @@
 ;;                         https://github.com/yjwen/org-reveal/commits/master
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
-;; SPDX-FileCopyrightText: 2017-2020 Jens Lechtenbörger
+;; SPDX-FileCopyrightText: 2017-2021 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
 ;; Version: 3.5.0
@@ -742,7 +742,10 @@ in the org buffer comments as follows:
 This is a list of triples.  Each triple consists of
 - the plugin name, listed in `org-re-reveal-plugins',
 - the JavaScript name for the plugin,
-- the name of the JavaScript file."
+- the name of the JavaScript file.
+
+Starting with version 3.6.0 or org-re-reveal, the name of the
+JavaScript file can also be a URL."
   :group 'org-export-oer-reveal
   :type '(repeat
           (list
@@ -1292,6 +1295,15 @@ Plugins can be enabled with keywords \"REVEAL_PLUGINS\" and
    (mapcar (lambda (triple) (nth 0 triple))
            (org-re-reveal--add-plugins info))))
 
+(defun org-re-reveal--plugin-path (plugin root-path info)
+  "Return location of PLUGIN given ROOT-PATH and INFO.
+If PATH is a remote URL, return it unchanged.
+Otherwise, concatenate ROOT-PATH with path of PLUGIN configuration in INFO."
+  (let ((path (nth 2 (org-re-reveal--plugin-config plugin info))))
+    (if (org-re-reveal--remote-file-p path)
+        path
+      (concat root-path path))))
+
 (defun org-re-reveal-scripts--libraries (info)
   "Internal function to generate script tags with INFO.
 This includes reveal.js libraries in `:reveal-script-files' under
@@ -1312,8 +1324,7 @@ This includes reveal.js libraries in `:reveal-script-files' under
          (plugin-libs
           (mapcar
            (lambda (plugin)
-             (concat root-path
-                     (nth 2 (org-re-reveal--plugin-config plugin info))))
+             (org-re-reveal--plugin-path plugin root-path info))
            enabled-plugins))
          (extra-scripts (org-re-reveal--parse-listoption
                          info :reveal-extra-scripts))
