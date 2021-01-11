@@ -13,6 +13,7 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.6.0] - 2021-01-11
 *** Added
     - File specifications for plugins can now be remote URLs in
       ~org-re-reveal-plugin-config~ and in ~REVEAL_ADD_PLUGIN~
