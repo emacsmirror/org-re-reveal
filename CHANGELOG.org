@@ -1,6 +1,6 @@
 # Local IspellDict: en
 # SPDX-License-Identifier: GPL-3.0-or-later
-# SPDX-FileCopyrightText: 2019-2020 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2019-2021 Jens Lechtenbörger
 
 * Changelog
 This changelog documents the evolution of org-re-reveal starting with
@@ -12,6 +12,10 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+
+*** Added
+    - File specifications for plugins can now be remote URLs in
+      ~org-re-reveal-plugin-config~ and in ~REVEAL_ADD_PLUGIN~
 
 ** [3.5.0] - 2020-12-31
 *** Added

@@ -841,7 +841,7 @@ Whether anyone wants to use those package in isolation, is up to them.
     plugin as follows, where ~chalkboard~ is an internal name,
     ~RevealChalkboard~ is the JavaScript name of the plugin, and
     ~plugin/chalkboard/plugin.js~ is the path with code for the
-    plugin:
+    plugin (a CDN URL works as well):
 #+BEGIN_SRC org
 ,#+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard plugin/chalkboard/plugin.js
 #+END_SRC
