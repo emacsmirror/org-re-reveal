@@ -32,6 +32,7 @@ notably, “n” and “p” move to next and previous slides.
   - [[file:test-cases/test-highlightjs.org][Syntax highlighting]]
   - [[file:test-cases/test-internal-links.org][Links between slides (CSS not included)]]
   - [[file:test-cases/test-klipsify.org][Code execution with klipse]]
+  - [[file:test-cases/test-custom-theme.org][Custom themes]]
   - [[file:test-cases/test-multiplex.org][Multiplex master]]
   - [[file:test-cases/test-multiplex_client.html][Multiplex client]]
   - [[file:test-cases/test-noslide.org][Add subheading to slide]]
