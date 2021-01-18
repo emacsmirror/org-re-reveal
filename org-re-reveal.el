@@ -380,7 +380,9 @@ slide's HTML code (containing the above escape sequences)."
 Note that most themes load fonts from remote servers, which (a)
 obviously limits offline use of presentations and (b) is not privacy
 friendly.  See URL `https://github.com/hakimel/reveal.js/issues/2491'
-and URL `https://github.com/google/fonts/issues/1495'."
+and URL `https://github.com/google/fonts/issues/1495'.
+In addition to built-in themes, you can use a path ending in \".css\"
+to specify a custom theme."
   :group 'org-export-re-reveal
   :type '(radio (const "beige")
                 (const "black")
@@ -394,7 +396,7 @@ and URL `https://github.com/google/fonts/issues/1495'."
                 (const "solarized")
                 (const "white")
                 (string :tag "Other theme"))
-  :package-version '(org-re-reveal . "2.8.1"))
+  :package-version '(org-re-reveal . "3.7.0"))
 
 (defcustom org-re-reveal-export-notes-to-pdf nil
   "Control `showNotes' option for PDF export.
