@@ -142,6 +142,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    you could also use reveal.js from a remote location (a CDN),
    avoiding a local installation; the reveal.js documentation does not
    mention this alternative, though.
+   ([[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-remote-plugin.org][Sample file]])
 
 ** Install org-re-reveal
 
