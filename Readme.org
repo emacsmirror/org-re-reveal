@@ -72,7 +72,7 @@ embedded figures considerably:
 | Package                                                         | Description                                                                                                                                        |
 |-----------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------|
 | [[https://github.com/yjwen/org-reveal][org-reveal]]             | Origin of org-re-reveal                                                                                                                            |
-| [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]         | Fork of org-reveal, initially to add audio fragments, now with [[https://gitlab.com/oer/org-re-reveal/blob/master/CHANGELOG.org][various changes]] |
+| [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]         | Fork of org-reveal, initially to add audio fragments, now with [[https://gitlab.com/oer/org-re-reveal/-/blob/master/CHANGELOG.org][various changes]] |
 | [[https://gitlab.com/oer/org-re-reveal-ref][org-re-reveal-ref]] | Addon to org-re-reveal for bibliography slide based on [[https://github.com/jkitchin/org-ref][org-ref]]                                            |
 | [[https://gitlab.com/oer/oer-reveal][oer-reveal]]               | Export backend derived from org-re-reveal; functionality for installation of reveal.js and plugins; simplification of licensing for OER            |
 | [[https://gitlab.com/oer/emacs-reveal/][emacs-reveal]]          | Bundling of org-re-reveal, org-re-reveal-ref, and oer-reveal                                                                                       |
@@ -516,11 +516,11 @@ Whether anyone wants to use those package in isolation, is up to them.
     to a string with HTML code.  Escape sequences are documented for
     variable ~org-re-reveal-title-slide~; they can be used to retrieve
     document information.  See
-    [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-title-slide.org][test-title-slide.org]]
+    [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-title-slide.org][test-title-slide.org]]
     for an example including ~REVEAL_ACADEMIC_TITLE~,
     ~REVEAL_TALK_URL~, ~REVEAL_TALK_QR_CODE~
     and
-    [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-title-slide-notes.org][test-title-slide-notes.org]]
+    [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-title-slide-notes.org][test-title-slide-notes.org]]
     for a title slide including speaker notes.
 
     Alternatively, you can write the title slide's HTML code
@@ -953,7 +953,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    in conflict.  In particular, scaling needs to be disabled with
    klipse.  See settings of this Readme and examples in the Tips
    section under [[Executable Source Blocks]] as well as that
-   [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-klipsify.org][test file]]
+   [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-klipsify.org][test file]]
    to get started.
 
    At present code editing is supported in: {{{klipse-languages}}}
@@ -1083,7 +1083,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    presentations will update in real time.
 
    Please see
-   [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-multiplex.org][this sample presentation for instructions]].
+   [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-multiplex.org][this sample presentation for instructions]].
    Briefly, you need to configure ~multiplex~ as plugin, with
    URL, ID and Secret of a socket.io server.  Then, generate master
    (with Secret) and client presentations and publish the client
@@ -1209,7 +1209,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    of contents at a position of your choice with keyword =REVEAL_TOC=
    (where the number after =headlines= defines the depth of headlines
    to include) in a section of its own (see this
-   [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-slide-numbers-reveal-toc.org][test file]]):
+   [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-slide-numbers-reveal-toc.org][test file]]):
 
 #+BEGIN_SRC org
 ,** Table of Contents
@@ -1271,7 +1271,7 @@ Its use is discouraged as it may break some presentations.
    for more details.
 
    Additional examples (e.g., Python and SQL) can be found in a
-   [[https://gitlab.com/oer/org-re-reveal/blob/master/test-cases/test-klipsify.org][test file]].
+   [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-klipsify.org][test file]].
 
 *** HTML Src Block
 #+BEGIN_SRC html
