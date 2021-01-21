@@ -268,6 +268,10 @@ Otherwise, check for existence of files under `org-re-reveal-root' and
         (root-path
          (file-name-as-directory
           (org-re-reveal--file-uri-to-path (plist-get info :reveal-root)))))
+    (when (and (org-re-reveal--remote-file-p root-path)
+               (not version))
+      (org-re-reveal--abort-with-message-box
+       "Remote URL for reveal.js does not work with version guessing.  Customize `org-re-reveal-revealjs-version'."))
     (plist-put info :reveal-guessed-revealjs-version
                (if version
 		   version
@@ -299,7 +303,8 @@ Otherwise, check for existence of files under `org-re-reveal-root' and
 (defcustom org-re-reveal-revealjs-version nil
   "Specify version of reveal.js.
 If nil, `org-re-reveal' tries to guess the version, which works if
-`org-re-reveal-root' is a local directory."
+`org-re-reveal-root' is a local directory.
+You can specify the version per file with keyword REVEAL_VERSION."
   :group 'org-export-re-reveal
   :type '(choice (const :tag "reveal.js 4.0 and later" "4")
                  (const :tag "reveal.js 3.8 and 3.9" "3.8")
