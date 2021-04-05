@@ -219,10 +219,10 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~reveal_progress~                 | ~nil~                                        | ~org-re-reveal-progress~                 |
 | ~reveal_rolling_links~            | ~nil~                                        | ~org-re-reveal-rolling-links~            |
 | ~reveal_single_file~              | ~nil~                                        | ~org-re-reveal-single-file~              |
-| ~reveal_global_footer~            | ~nil~                                        | ~org-re-reveal-global-footer~            |
-| ~reveal_global_header~            | ~nil~                                        | ~org-re-reveal-global-header~            |
+| ~reveal_slide_global_footer~      | ~nil~                                        | ~org-re-reveal-global-footer~            |
+| ~reveal_slide_global_header~      | ~nil~                                        | ~org-re-reveal-global-header~            |
 | ~reveal_slide_number~             | ~nil~                                        | ~org-re-reveal-slide-number~             |
-| ~reveal_toc_footer~               | ~nil~                                        | ~org-re-reveal-toc-footer~               |
+| ~reveal_slide_toc_footer~         | ~nil~                                        | ~org-re-reveal-toc-footer~               |
 | ~reveal_subtree_with_title_slide~ | ~nil~                                        | ~org-re-reveal-subtree-with-title-slide~ |
 | ~reveal_width~                    | ~nil~                                        | ~org-re-reveal-width~                    |
 | ~nil~                             | ~REVEAL_ACADEMIC_TITLE~                      | ~nil~                                    |
