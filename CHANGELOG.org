@@ -12,9 +12,15 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+
+** [3.8.0] - 2021-04-05
 *** Added
+    - Support ~totalTime~ option of reveal.js with
+      ~org-re-reveal-totaltime~ and ~REVEAL_TOTALTIME~.
     - Point users to customization by aborting in case of remote
       reveal.js location in combination with version guessing.
+*** Fixed
+    - Allow numbers in ~org-re-reveal--if-format~.
 
 ** [3.7.0] - 2021-01-18
 *** Added
