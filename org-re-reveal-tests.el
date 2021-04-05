@@ -150,6 +150,7 @@
         "slide-numbers-reveal-toc"
         "slide-numbers-toc"
         "split"
+        "timing"
         "title-slide"
         "title-slide-notes"))
 

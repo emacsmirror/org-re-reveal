@@ -1,0 +1,18 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2021 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000 reveal_totaltime:120
+#+REVEAL_THEME: black
+
+#+REVEAL_TITLE_SLIDE_TIMING: 20
+
+#+Title: A presentation with totalTime 120
+#+Subtitle: 20s for title slide
+#+Author: Jens Lechtenbörger
+
+* Just a slide
+  :PROPERTIES:
+  :reveal_extra_attr: data-timing="100"
+  :END:
+  - Slide with ~data-timing~ of 100
