@@ -116,7 +116,7 @@
 (defun org-re-reveal-tests-create-normal-test (name)
   "Create normal test for org-re-reveal with NAME."
   (eval
-   `(cort-deftest ,(make-symbol (format "org-re-reveal/export-%s" name))
+   `(cort-deftest ,(make-symbol (format "org-re-reveal/expect-%s" name))
       `((:org-re-reveal-tests-string=
          (org-re-reveal-tests-get-file-contents ,,(format "expect-%s.html" name))
          (org-re-reveal-tests-export-and-get-file-contents ,,name))))))
