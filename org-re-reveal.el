@@ -950,9 +950,12 @@ which leads to broken links that are not understood outside reveal.js.
 See there: https://github.com/hakimel/reveal.js/issues/2276")
 
 (defun org-re-reveal--if-format (fmt val)
-  "Apply `format' to FMT and VAL if VAL is a non-empty string.
+  "Apply `format' to FMT and VAL if VAL is a number or non-empty string.
 Otherwise, return empty string."
-  (if (and (stringp val) (> (length val) 0)) (format fmt val) ""))
+  (if (or (numberp val)
+          (and (stringp val) (> (length val) 0)))
+      (format fmt val)
+    ""))
 
 (defun org-re-reveal-special-block (special-block contents info)
   "Transcode a SPECIAL-BLOCK element from Org to Reveal.
