@@ -224,6 +224,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~reveal_slide_number~             | ~nil~                                        | ~org-re-reveal-slide-number~             |
 | ~reveal_slide_toc_footer~         | ~nil~                                        | ~org-re-reveal-toc-footer~               |
 | ~reveal_subtree_with_title_slide~ | ~nil~                                        | ~org-re-reveal-subtree-with-title-slide~ |
+| ~reveal_totaltime~                | ~nil~                                        | ~org-re-reveal-totaltime~                |
 | ~reveal_width~                    | ~nil~                                        | ~org-re-reveal-width~                    |
 | ~nil~                             | ~REVEAL_ACADEMIC_TITLE~                      | ~nil~                                    |
 | ~nil~                             | ~REVEAL_ADD_PLUGIN~                          | ~nil~                                    |
@@ -1024,14 +1025,20 @@ Whether anyone wants to use those package in isolation, is up to them.
    #+REVEAL_HTML: <video controls width="400" height="300" data-src="https://archive.org/download/LinusTorvaldsOnGittechTalk/LinusTorvaldsOnGittechTalk.ogv"></video>
 
 ** Speaker Notes
-   Reveal.js supports speaker notes, which are displayed in a separate
-   browser window. Pressing 's' on slide's windows opens a popup
-   window (or indicates if you need to enable this browser feature)
-   displaying the current slide with its speaker notes, a timer, and a preview
-   of upcoming contents.  To configure timing, see
-   ~org-re-reveal-defaulttiming~.
-   The following example shows how to define speaker notes for a slide
-   with an estimated talk time of 120s.
+   Reveal.js supports [[https://revealjs.com/speaker-view/][speaker notes]],
+   which are displayed in a separate browser window.  Press 's' to
+   open a popup window that displays the current slide with its
+   speaker notes, a timer, and a preview of upcoming contents.
+   (You need to enable popup windows in your browser.  If the popup
+   window appears but does not work properly, try this: close the
+   popup window, then press 's' again.)
+
+   To configure timing, see ~org-re-reveal-defaulttiming~ and
+   ~org-re-reveal-totaltime~.  The following example shows how to
+   define speaker notes for a slide with an estimated talk time of
+   120s.
+
+#+REVEAL: split
 
 #+BEGIN_SRC org
 ,* Heading 1
@@ -1041,7 +1048,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    Some contents.
 ,#+BEGIN_NOTES
   Enter speaker notes here.
-  - With bullet points
+  - With /markup/ and bullet points
     - If necessary
 ,#+END_NOTES
 #+END_SRC
