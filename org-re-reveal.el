@@ -122,6 +122,7 @@
       (:reveal-slide-number nil "reveal_slide_number" org-re-reveal-slide-number t)
       (:reveal-slide-toc-footer nil "reveal_toc_footer" org-re-reveal-toc-footer t)
       (:reveal-subtree-with-title-slide nil "reveal_subtree_with_title_slide" org-re-reveal-subtree-with-title-slide t)
+      (:reveal-totaltime nil "reveal_totaltime" org-re-reveal-totaltime t)
       (:reveal-width nil "reveal_width" org-re-reveal-width t)
       (:reveal-academic-title "REVEAL_ACADEMIC_TITLE" nil nil t)
       (:reveal-add-plugin "REVEAL_ADD_PLUGIN" nil nil newline)
@@ -564,10 +565,20 @@ See URL `https://revealjs.com/config/'."
   :type 'boolean)
 
 (defcustom org-re-reveal-defaulttiming nil
-  "If non-nil, use defaultTiming for speaker notes view.
-See URL `https://revealjs.com/config/'.
+  "If non-nil, specify defaultTiming for speaker notes view.
+See URL `https://revealjs.com/speaker-view/'.
 For indivual timing of specific slides, use \"REVEAL_TITLE_SLIDE_TIMING\" for
-the title slide, and assign data-timing attributes to other headlines/slides."
+the title slide, and assign data-timing attributes to other headlines/slides.
+Alternatively, use `org-re-reveal-totaltime'."
+  :group 'org-export-re-reveal
+  :type '(choice integer (const nil)))
+
+(defcustom org-re-reveal-totaltime nil
+  "If non-nil, specify totalTime for speaker notes view.
+See URL `https://revealjs.com/speaker-view/'.
+For indivual timing of specific slides, use \"REVEAL_TITLE_SLIDE_TIMING\" for
+the title slide, and assign data-timing attributes to other headlines/slides.
+If this variable is set, reveal.js ignores defaultTiming."
   :group 'org-export-re-reveal
   :type '(choice integer (const nil)))
 
@@ -1396,8 +1407,7 @@ mouseWheel: %s,
 fragmentInURL: %s,
 hashOneBasedIndex: %s,
 pdfSeparateFragments: %s,
-%s
-overview: %s,
+%s%soverview: %s,
 "
           (if (plist-get info :reveal-control) "true" "false")
           (if (plist-get info :reveal-progress) "true" "false")
@@ -1412,9 +1422,10 @@ overview: %s,
           (if (plist-get info :reveal-fragmentinurl) "true" "false")
           (if (plist-get info :reveal-hashonebasedindex) "true" "false")
           (if (plist-get info :reveal-pdfseparatefragments) "true" "false")
-          (let ((timing (plist-get info :reveal-defaulttiming)))
-            (if timing (format "defaultTiming: %s," timing)
-              ""))
+          (org-re-reveal--if-format "defaultTiming: %s,\n"
+                                    (plist-get info :reveal-defaulttiming))
+          (org-re-reveal--if-format "totalTime: %s,\n"
+                                    (plist-get info :reveal-totaltime))
           (if (plist-get info :reveal-overview) "true" "false")))
 
 (defun org-re-reveal--to-string (option)
