@@ -141,6 +141,7 @@
         "options"
         "pdf-notes"
         "plugins"
+        "postscript"
         "remote-plugin"
         "reveal-toc"
         "revealjs4"

@@ -1,0 +1,15 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2021 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+# A postscript to be inserted before the closing body tag.
+#+REVEAL_POSTSCRIPT: <p>Arbitrary HTML and JavaScript as postscript.</p><script>console.log("Empty script.")</script>
+
+#+Title: Add a postscript
+#+Author: Jens Lechtenbörger
+
+* Just a slide
+  - Nothing special here
