@@ -160,6 +160,7 @@
       (:reveal-multiplex-url "REVEAL_MULTIPLEX_URL" nil org-re-reveal-multiplex-url t)
       (:reveal-plugins "REVEAL_PLUGINS" nil org-re-reveal-plugins t)
       (:reveal-postamble "REVEAL_POSTAMBLE" nil org-re-reveal-postamble t)
+      (:reveal-postscript "REVEAL_POSTSCRIPT" nil org-re-reveal-postscript t)
       (:reveal-preamble "REVEAL_PREAMBLE" nil org-re-reveal-preamble t)
       (:reveal-root "REVEAL_ROOT" nil org-re-reveal-root t)
       (:reveal-slide-footer "REVEAL_SLIDE_FOOTER" nil org-re-reveal-slide-footer t)
@@ -650,6 +651,13 @@ For the current list of reveal.js options, see URL
   "Postamble contents."
   :group 'org-export-re-reveal
   :type '(choice (const nil) string))
+
+(defcustom org-re-reveal-postscript nil
+  "Postscript contents.
+Insert after reveal.js initialization before closing body tag."
+  :group 'org-export-re-reveal
+  :type '(choice (const nil) string)
+  :package-version '(org-re-reveal . "3.9.0"))
 
 (defcustom org-re-reveal-body-attrs nil
   "Attribute string to assign to body element.
@@ -1969,7 +1977,7 @@ Speaker notes on the title slide with \"%n\" make use of
                        (plist-get info :reveal-talk-url) info)))))))
 
 (defun org-re-reveal--build-pre-postamble (type info spec)
-  "Depending on TYPE, return preamble or postamble or nil.
+  "Depending on TYPE, return preamble, postamble, postscript, or nil.
 Use plist INFO and format specification SPEC."
   (let ((section (plist-get info (intern (format ":reveal-%s" type)))))
     (when section
@@ -2198,6 +2206,7 @@ INFO is a plist holding export options."
      (org-re-reveal--build-pre-postamble 'postamble info spec)
      (org-re-reveal-scripts info)
      (org-re-reveal--klipsify-script info)
+     (org-re-reveal--build-pre-postamble 'postscript info spec)
      "</body>
 </html>\n")))
 
