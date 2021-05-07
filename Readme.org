@@ -261,6 +261,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_MULTIPLEX_URL~                       | ~org-re-reveal-multiplex-url~            |
 | ~nil~                             | ~REVEAL_PLUGINS~                             | ~org-re-reveal-plugins~                  |
 | ~nil~                             | ~REVEAL_POSTAMBLE~                           | ~org-re-reveal-postamble~                |
+| ~nil~                             | ~REVEAL_POSTSCRIPT~                          | ~org-re-reveal-postscript~               |
 | ~nil~                             | ~REVEAL_PREAMBLE~                            | ~org-re-reveal-preamble~                 |
 | ~nil~                             | ~REVEAL_ROOT~                                | ~org-re-reveal-root~                     |
 | ~nil~                             | ~REVEAL_SLIDE_HEADER~                        | ~org-re-reveal-slide-header~             |
@@ -1003,6 +1004,11 @@ Whether anyone wants to use those package in isolation, is up to them.
    To add custom contents into HTML =<head>= parts, set contents to
    variable =org-re-reveal-head-preamble= or option
    =REVEAL_HEAD_PREAMBLE=.
+
+*** Postscript after reveal.js initialization
+    To add a script (or HTML code) at the end of the generated
+    document (just before the closing ~body~ tag), use
+    =REVEAL_POSTSCRIPT= or variable =org-re-reveal-postscript=.
 
 *** Generating Pre/Postamble by Emacs-Lisp Functions
 

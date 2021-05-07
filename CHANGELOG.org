@@ -13,6 +13,10 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+*** Added
+    - Keyword ~REVEAL_POSTSCRIPT~  with variable
+      ~org-re-reveal-postscript~, addresses issue #65
+
 ** [3.8.1] - 2021-04-05
 *** Fixed
     - Replace some nil options with t to allow new values, e.g, for
