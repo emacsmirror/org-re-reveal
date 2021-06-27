@@ -303,7 +303,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 
    Note that =#+REVEAL_EXTRA_OPTIONS: your_comma_separated_options=
    and =org-re-reveal-extra-options= allow to specify
-   arbitrary options of reveal.js.
+   arbitrary configuration options of reveal.js.
 
 #+REVEAL: split
    In addition, the following customizable variables are available
@@ -994,6 +994,10 @@ Whether anyone wants to use those package in isolation, is up to them.
    shown as slides, but will be exported into the body part of the
    generated HTML file, at just before and after the slide contents.
 
+   All pre- and postamble contents are treated as format strings, with
+   %-sequences of =org-re-reveal-title-slide=.  In particular, single
+   percent signs need to be escaped (two percent signs).
+
    Change preamble and postamble contents globally by setting variable
    =org-re-reveal-preamble= and =org-re-reveal-postamble=.
 
@@ -1001,9 +1005,10 @@ Whether anyone wants to use those package in isolation, is up to them.
    =REVEAL_PREAMBLE= and =REVEAL_POSTAMBLE=, as illustrated at the
    heading part of this document.
 
-   To add custom contents into HTML =<head>= parts, set contents to
-   variable =org-re-reveal-head-preamble= or option
-   =REVEAL_HEAD_PREAMBLE=.
+*** Preamble in =<head>= element
+    To add custom contents into the HTML =<head>= element, set
+    variable =org-re-reveal-head-preamble= or option
+    =REVEAL_HEAD_PREAMBLE=.
 
 *** Postscript after reveal.js initialization
     To add a script (or HTML code) at the end of the generated
