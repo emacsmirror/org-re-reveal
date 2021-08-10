@@ -1901,7 +1901,7 @@ requires a version of org-mode as of 2018-12-08 or newer."
 
 (defun org-re-reveal-link (link desc info)
   "Transcode a LINK object with DESC and INFO from Org to Reveal.
-The result is identical to ox-html expect for image links.
+The result is identical to ox-html except for image links.
 When `org-re-reveal-single-file' is t,
 the result is the Data URI of the referenced image."
   (let* ((want-embed-image (and (plist-get info :reveal-single-file)
