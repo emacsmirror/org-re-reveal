@@ -103,6 +103,7 @@
     '((:reveal-center nil "reveal_center" org-re-reveal-center t)
       (:reveal-control nil "reveal_control" org-re-reveal-control t)
       (:reveal-defaulttiming nil "reveal_defaulttiming" org-re-reveal-defaulttiming t)
+      (:reveal-embed-local-resources nil "reveal_embed_local_resources" org-re-reveal-embed-local-resources t)
       (:reveal-fragmentinurl nil "reveal_fragmentinurl" org-re-reveal-fragmentinurl t)
       (:reveal-generate-ids nil "reveal_generate_ids" org-re-reveal-generate-custom-ids t)
       (:reveal-hashonebasedindex nil "reveal_hashonebasedindex" org-re-reveal-hashonebasedindex t)
@@ -795,9 +796,20 @@ included here as well, BEFORE the plugins that depend on them."
 
 (defcustom org-re-reveal-single-file nil
   "Export presentation into one single HTML file.
-That file embeds JS scripts and pictures."
+That file embeds JS scripts and pictures.  Export aborts if necessary
+resources are not available locally.
+See also `org-re-reveal-embed-local-resources'."
   :group 'org-export-re-reveal
   :type 'boolean)
+
+(defcustom org-re-reveal-embed-local-resources nil
+  "Export local resources into HTML file of presentation.
+In contrast to `org-re-reveal-single-file', this option only embeds locally
+available resources.  Thus, it can also be used with a remote reveal.js
+installation."
+  :group 'org-export-re-reveal
+  :type 'boolean
+  :package-version '(org-re-reveal . "3.10.0"))
 
 (defcustom org-re-reveal-inter-presentation-links nil
   "If non nil, try to convert links between presentations."
@@ -1137,23 +1149,22 @@ That value for OPTION may be a list or a string representing a list."
 
 (defun org-re-reveal--css-label (in-single-file file-name style-id)
   "Generate HTML code to include CSS file FILE-NAME.
-If IN-SINGLE-FILE is t, the content of FILE-NAME is embedded;
-otherwise, a `<link>' label is generated."
+If IN-SINGLE-FILE is non-nil, embed contents of FILE-NAME with an
+error if SINGLE-FILE is `must' and FILE-NAME is not a readable file;
+otherwise, generate `<link>' label, with a non-nil STYLE-ID as
+`id' attribute."
   (when (and file-name (not (string= file-name "")))
-    (if in-single-file
-        ;; Single-file
-        (let ((local-file-name (org-re-reveal--file-url-to-path file-name)))
-          (if (file-readable-p local-file-name)
-              (concat "<style type=\"text/css\">\n"
-                      (org-re-reveal--read-file local-file-name)
-                      "\n</style>\n")
-            ;; But file is not readable.
-            (org-re-reveal--abort-with-message-box
-             "CSS file not readable for single-file embedding: %s" file-name)))
-      ;; Not in-single-file
-      (concat "<link rel=\"stylesheet\" href=\"" file-name "\""
-              (if style-id  (format " id=\"%s\"" style-id))
-              "/>\n"))))
+    (let ((local-file-name (org-re-reveal--file-url-to-path file-name)))
+      (cond ((and in-single-file (file-readable-p local-file-name))
+             (concat "<style type=\"text/css\">\n"
+                     (org-re-reveal--read-file local-file-name)
+                     "\n</style>\n"))
+            ((eq in-single-file 'must)
+             (org-re-reveal--abort-with-message-box
+              "CSS file not readable for single-file embedding: %s" file-name))
+            (t (concat "<link rel=\"stylesheet\" href=\"" file-name "\""
+                       (org-re-reveal--if-format " id=\"%s\"" style-id)
+                       "/>\n"))))))
 
 (defun org-re-reveal--klipsify-header (info)
   "Return code (CSS and JavaScript) to activate klipse when indicated by INFO."
@@ -1227,7 +1238,9 @@ CSS-PATH for built in themes."
          (theme (plist-get info :reveal-theme))
          (theme-css (org-re-reveal--theme-path theme css-path))
          (extra-css (plist-get info :reveal-extra-css))
-         (in-single-file (plist-get info :reveal-single-file)))
+         (in-single-file (if (plist-get info :reveal-single-file)
+                             'must
+                           (plist-get info :reveal-embed-local-resources))))
     (concat
      ;; Default embedded style sheets
      "<style type=\"text/css\">
@@ -1355,9 +1368,10 @@ This includes reveal.js libraries in `:reveal-script-files' under
                             script-files))
          (reveal-version (plist-get info :reveal-guessed-revealjs-version))
          (in-single-file (plist-get info :reveal-single-file))
+         (embed-local-resources (plist-get info :reveal-embed-local-resources))
          ;; Plugin config for reveal.js 4.x
          (enabled-plugins
-          (when (and (not in-single-file)
+          (when (and (not (or in-single-file embed-local-resources))
                      (version< "3.9" reveal-version))
             ;; Multiplex is no builtin in 4.x.
             (cl-remove 'multiplex (org-re-reveal--enabled-plugins info))))
@@ -1377,29 +1391,31 @@ This includes reveal.js libraries in `:reveal-script-files' under
           (cl-remove-if-not (lambda (s) (string-prefix-p "<script>" s))
                             extra-scripts)))
     (concat
-     (if in-single-file
-         (let* ((local-root-path (org-re-reveal--file-url-to-path root-path))
-                (local-libs (append (mapcar (lambda (file)
-                                              (concat local-root-path file))
-                                            script-files)
-                                    plugin-libs
-                                    extra-script-files))
-                (local-libs-exist-p (cl-every #'file-readable-p local-libs)))
-           (if local-libs-exist-p
-               ;; Embed contents of files.
-               (mapconcat (lambda (file)
-                            (format "<script>\n%s\n</script>\n"
-                                    (org-re-reveal--read-file file)))
-                          local-libs "")
-             (org-re-reveal--abort-with-message-box
-              "Subsequently listed libraries not readable for single-file embedding.  %s"
-              (mapconcat 'identity
-                         (cl-remove-if #'file-readable-p local-libs)
-                         ", "))))
-       ;; Embed script files with src.
-       (mapconcat (lambda (file)
-                    (concat "<script src=\"" file "\"></script>\n"))
-                  (append root-libs plugin-libs extra-script-files) ""))
+     (let* ((local-root-path (org-re-reveal--file-url-to-path root-path))
+            (local-libs (append (mapcar (lambda (file)
+                                          (concat local-root-path file))
+                                        script-files)
+                                plugin-libs
+                                extra-script-files))
+            (local-libs-exist-p (cl-every #'file-readable-p local-libs)))
+       (if (and in-single-file (not local-libs-exist-p))
+           (org-re-reveal--abort-with-message-box
+            "Subsequently listed libraries not readable for single-file embedding.  %s"
+            (mapconcat 'identity
+                       (cl-remove-if #'file-readable-p local-libs)
+                       ", "))
+         (if (or in-single-file embed-local-resources)
+             ;; Embed contents or link to files.
+             (mapconcat (lambda (file)
+                          (if (file-readable-p file)
+                              (format "<script>\n%s\n</script>\n"
+                                      (org-re-reveal--read-file file))
+                            (concat "<script src=\"" file "\"></script>\n")))
+                        local-libs "")
+           ;; Embed script files with src.
+           (mapconcat (lambda (file)
+                        (concat "<script src=\"" file "\"></script>\n"))
+                      (append root-libs plugin-libs extra-script-files) ""))))
      ;; Embed script tags.
      (mapconcat 'identity extra-script-elements "\n")
      (if extra-script-elements "\n" ""))))
@@ -1904,7 +1920,9 @@ requires a version of org-mode as of 2018-12-08 or newer."
 The result is identical to ox-html except for image links.
 When `org-re-reveal-single-file' is t,
 the result is the Data URI of the referenced image."
-  (let* ((want-embed-image (and (plist-get info :reveal-single-file)
+  (let* ((must-embed-image (plist-get info :reveal-single-file))
+         (want-embed-image (and (or must-embed-image
+                                    (plist-get info :reveal-embed-local-resources))
                                 (plist-get info :html-inline-images)
                                 (string= "file" (org-element-property :type link))
                                 (org-export-inline-image-p
@@ -1916,7 +1934,7 @@ the result is the Data URI of the referenced image."
                                (file-readable-p clean-path))))
     (if can-embed-image
         (org-re-reveal--format-image-data-uri link clean-path info)
-      (if want-embed-image
+      (if must-embed-image
           (org-re-reveal--abort-with-message-box
            "Image not readable for single-file embedding: %s" raw-path)
         (org-re-reveal--internal-link-class link info)
