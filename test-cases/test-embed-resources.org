@@ -1,0 +1,18 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2021 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000 reveal_embed_local_resources:t
+#+REVEAL_THEME: black
+
+#+REVEAL_EXTRA_CSS: ../local.css
+
+#+Title: Test embedding of local resources
+#+Author: Jens Lechtenbörger
+
+* Slide with figure
+
+- Some list
+- Followed by image
+
+[[../images/adult-education-3258944_640.jpg]]

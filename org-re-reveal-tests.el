@@ -128,6 +128,7 @@
 (mapc #'org-re-reveal-tests-create-normal-test
       '("blockquote"
         "custom-theme"
+        "embed-resources"
         "extra-scripts"
         "footer"
         "footer-global"
