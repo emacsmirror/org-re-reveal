@@ -5,14 +5,19 @@
 #+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000 reveal_embed_local_resources:t
 #+REVEAL_THEME: black
 
+# Note that the code of the following CSS file is embedded into the HTML file.
 #+REVEAL_EXTRA_CSS: ../local.css
 
 #+Title: Test embedding of local resources
 #+Author: Jens Lechtenbörger
 
-* Slide with figure
+* Slide with embedded figure
 
 - Some list
-- Followed by image
+- Followed by image embedded as data URI
 
 [[../images/adult-education-3258944_640.jpg]]
+
+* Slide with remote figure
+
+  [[https://gitlab.com/oer/figures/-/raw/master/3d-man/question-mark-1019922_1920.jpg]]
