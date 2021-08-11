@@ -27,6 +27,7 @@ notably, “n” and “p” move to next and previous slides.
 * [[file:Readme.org][Readme of org-re-reveal]]
 
 * Test cases
+  - [[file:test-cases/test-embed-resources.org][Embedding of local resources]]
   - [[file:test-cases/test-footer.org][Different footers (CSS not included)]]
   - [[file:test-cases/test-footer-global.org][Global footers with exceptions (CSS not included)]]
   - [[file:test-cases/test-highlightjs.org][Syntax highlighting]]
