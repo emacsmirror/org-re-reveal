@@ -205,6 +205,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~reveal_center~                   | ~nil~                                        | ~org-re-reveal-center~                   |
 | ~reveal_control~                  | ~nil~                                        | ~org-re-reveal-control~                  |
 | ~reveal_defaulttiming~            | ~nil~                                        | ~org-re-reveal-defaulttiming~            |
+| ~reveal_embed_local_resources~    | ~nil~                                        | ~org-re-reveal-embed-local-resources~    |
 | ~reveal_fragmentinurl~            | ~nil~                                        | ~org-re-reveal-fragmentinurl~            |
 | ~reveal_generate_ids~             | ~nil~                                        | ~org-re-reveal-generate-custom-ids~      |
 | ~reveal_hashonebasedindex~        | ~nil~                                        | ~org-re-reveal-hashonebasedindex~        |
@@ -1160,11 +1161,12 @@ Whether anyone wants to use those package in isolation, is up to them.
 
 ** Export into Single File
 
-   By setting option =reveal_single_file= to ~t~, images and basic
-   reveal.js scripts will be embedded into the exported HTML file, to make
-   a portable HTML. Please note that remote images will /not/ be included in the
-   single file, so presentations with remote images will still require an Internet
-   connection.
+   By setting option =reveal_single_file= (or variable
+   =org-re-reveal-single-file=) to ~t~, images and basic reveal.js
+   scripts are embedded into the exported HTML file, to create a
+   self-contained, portable HTML.  Please note that remote images will
+   /not/ be included in the single file, so presentations with remote
+   images will still require an Internet connection.
 
    Attention: This needs locally available reveal.js files (no CDN
    files)!  [[#revealjs-location][Instructions to set location of reveal.js.]].
@@ -1189,6 +1191,14 @@ Whether anyone wants to use those package in isolation, is up to them.
      images, you need to embed images in the form of data URIs
      yourself.
 
+#+REVEAL: split
+   Option ~reveal_embed_local_resources~ provides an alternative to
+   ~reveal_single_file~: Here, local resources are embedded if
+   possible.  Where the export with ~reveal_single_file~ would fail,
+   it continues with given (potentially remote) resources.
+
+   See [[https://gitlab.com/oer/org-re-reveal/-/issues/66][this issue]]
+   for a use case.
 
 ** Export Current Subtree
 
