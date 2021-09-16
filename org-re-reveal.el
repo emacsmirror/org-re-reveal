@@ -164,6 +164,7 @@
       (:reveal-postscript "REVEAL_POSTSCRIPT" nil org-re-reveal-postscript t)
       (:reveal-preamble "REVEAL_PREAMBLE" nil org-re-reveal-preamble t)
       (:reveal-root "REVEAL_ROOT" nil org-re-reveal-root t)
+      (:reveal-slide-container "REVEAL_SLIDE_CONTAINER" nil org-re-reveal-slide-container t)
       (:reveal-slide-footer "REVEAL_SLIDE_FOOTER" nil org-re-reveal-slide-footer t)
       (:reveal-slide-header "REVEAL_SLIDE_HEADER" nil org-re-reveal-slide-header t)
       (:reveal-speed "REVEAL_SPEED" nil org-re-reveal-transition-speed t)
@@ -694,6 +695,15 @@ Footer is defined by `org-re-reveal-slide-footer'."
 Footer is defined by `org-re-reveal-slide-footer'."
   :group 'org-export-re-reveal
   :type 'boolean)
+
+(defcustom org-re-reveal-slide-container "%s"
+  "Specify HTML container for slide contents.
+This must be a format string with a single \"%s\" sequence, e.g.,
+\"<div attr=value>%s</div>\".
+See issue URL `https://gitlab.com/oer/org-re-reveal/-/issues/69'."
+  :group 'org-export-re-reveal
+  :type 'string
+  :package-version '(org-re-reveal . "3.11.0"))
 
 (defcustom org-re-reveal-slide-footer nil
   "Specify HTML content used as Reveal.js slide footer."
@@ -2010,7 +2020,9 @@ Use plist INFO and format specification SPEC."
   "Transcode a SECTION element from Org to Reveal.
 CONTENTS holds the contents of the section.  INFO is a plist
 holding contextual information."
-  (concat contents (org-re-reveal--footer info section t)))
+  (let ((result (concat contents (org-re-reveal--footer info section t)))
+        (slide-container (plist-get info :reveal-slide-container)))
+    (format slide-container result)))
 
 (defun org-re-reveal--using-highlight.js (info)
   "Check with INFO whether highlight.js plugin is enabled."
