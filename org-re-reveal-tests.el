@@ -148,6 +148,7 @@
         "revealjs4"
         "src-blocks-hl"
         "src-blocks-no-hl"
+        "slide-container"
         "slide-numbers"
         "slide-numbers-reveal-toc"
         "slide-numbers-toc"
