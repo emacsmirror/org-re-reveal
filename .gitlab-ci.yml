@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2017-2021 Jens Lechtenbörger
 # SPDX-License-Identifier: CC0-1.0
 
-image: registry.gitlab.com/oer/emacs-reveal/emacs-reveal:8.28.0
+image: registry.gitlab.com/oer/emacs-reveal/emacs-reveal:8.29.0
 
 test:
   script:
