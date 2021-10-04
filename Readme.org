@@ -265,6 +265,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_POSTSCRIPT~                          | ~org-re-reveal-postscript~               |
 | ~nil~                             | ~REVEAL_PREAMBLE~                            | ~org-re-reveal-preamble~                 |
 | ~nil~                             | ~REVEAL_ROOT~                                | ~org-re-reveal-root~                     |
+| ~nil~                             | ~REVEAL_SLIDE_CONTAINER~                     | ~org-re-reveal-slide-container~          |
 | ~nil~                             | ~REVEAL_SLIDE_HEADER~                        | ~org-re-reveal-slide-header~             |
 | ~nil~                             | ~REVEAL_SLIDE_FOOTER~                        | ~org-re-reveal-slide-footer~             |
 | ~nil~                             | ~REVEAL_SPEED~                               | ~org-re-reveal-transition-speed~         |
@@ -672,6 +673,13 @@ Whether anyone wants to use those package in isolation, is up to them.
    ~reveal_global_header:t~ and ~reveal_global_footer:t~ among
    ~#+OPTIONS:~.  To show the footer on the toc slide but not on
    the title slide, use option ~reveal_toc_footer:t~.
+
+** Slide Container
+   Use =#+REVEAL_SLIDE_CONTAINER:= to define an HTML container element
+   for the *contents* (excluding headlines) of all slides.
+
+   See
+   [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-slide-container.org][this test case for an example]].
 
 ** Fragmented Contents
 
