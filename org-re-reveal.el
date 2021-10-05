@@ -717,10 +717,14 @@ Must constain exactly one %-sequence \"%s\"."
   :group 'org-export-re-reveal
   :type 'string)
 
-(defcustom org-re-reveal-toc-slide-title "Table of Contents"
-  "String to display as title of toc slide."
+(defcustom org-re-reveal-toc-slide-title nil
+  "If non-nil, string to display as title of toc slide.
+When nil or empty string, use a language-specific translation
+of \"Table of Contents\".
+Otherwise, use given string without translation."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type '(choice (const nil) string)
+  :package-version '(org-re-reveal . "3.12.0"))
 
 (defcustom org-re-reveal-notes-format-string
   "<aside class=\"notes\">\n%s\n</aside>\n"
@@ -1674,9 +1678,11 @@ return a footer if OBJECT has a parent headline."
            (toc (replace-regexp-in-string
                  "<a href=\"#"
                  (concat "<a href=\"#" org-re-reveal--href-fragment-prefix) toc))
-           (toc (replace-regexp-in-string
-                 (org-html--translate "Table of Contents" info)
-                 toc-slide-title toc)))
+           (toc (if (< 0 (length toc-slide-title))
+                    (replace-regexp-in-string
+                     (org-html--translate "Table of Contents" info)
+                     toc-slide-title toc)
+                  toc)))
       (concat "<section id=\"table-of-contents-section\""
               (when toc-slide-state
                 (format " data-state=\"%s\"" toc-slide-state))
