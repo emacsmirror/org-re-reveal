@@ -45,7 +45,7 @@ ELS          := org-re-reveal.el ox-re-reveal.el
 
 CORTELS      := $(TESTFILE) cort-test.el
 
-REVEALTEST   := blockquote embed-resources extra-scripts footer footer-global highlightjs internal-links klipsify klipsify-python merge-classes multiplex noslide options pdf-notes plugins postscript remote-plugin reveal-toc revealjs4 src-blocks-hl src-blocks-no-hl slide-container slide-numbers slide-numbers-toc slide-numbers-reveal-toc split timing title-slide title-slide-notes
+REVEALTEST   := blockquote embed-resources extra-scripts footer footer-global highlightjs internal-links klipsify klipsify-python merge-classes multiplex noslide options pdf-notes plugins postscript remote-plugin reveal-toc revealjs4 src-blocks-hl src-blocks-no-hl slide-container slide-numbers slide-numbers-toc slide-numbers-reveal-toc split timing title-slide title-slide-notes toc-de toc-default toc-user
 
 ##################################################
 

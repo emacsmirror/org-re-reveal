@@ -1,0 +1,12 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2021 Jens Lechtenbörger
+
+#+OPTIONS: toc:1 reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+#+Title: Usual TOC slide
+#+Author: Jens Lechtenbörger
+
+* First page
+* Second page

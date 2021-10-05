@@ -1,0 +1,17 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2021 Jens Lechtenbörger
+
+#+OPTIONS: toc:1 reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+#+LANGUAGE: de
+
+# With user-defined heading of TOC slide, language does not matter.
+#+REVEAL_TOC_SLIDE_TITLE: Agenda
+
+#+Title: Benutzerdefinierte Überschrift für TOC
+#+Author: Jens Lechtenbörger
+
+* Erste Seite
+* Zweite Seite

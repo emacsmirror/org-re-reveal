@@ -1,0 +1,15 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2021 Jens Lechtenbörger
+
+#+OPTIONS: toc:1 reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+# Language leads to translation of Heading on TOC slide.
+#+LANGUAGE: de
+
+#+Title: Deutsches Inhaltsverzeichnis
+#+Author: Jens Lechtenbörger
+
+* Erste Seite
+* Zweite Seite

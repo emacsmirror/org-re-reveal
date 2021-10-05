@@ -155,7 +155,10 @@
         "split"
         "timing"
         "title-slide"
-        "title-slide-notes"))
+        "title-slide-notes"
+        "toc-de"
+        "toc-default"
+        "toc-user"))
 
 (cort-deftest org-re-reveal/css-custom-css-path--detect-custom-css
   '((:string= (org-re-reveal--theme-path "my-theme.css" "dir")   "my-theme.css")
