@@ -13,6 +13,12 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.12.0] - 2021-10-05
+*** Changed
+    - Extend ~org-re-reveal-toc-slide-title~ and its handling to
+      enable default translation by Org mode if user does not
+      explicitly specify a value.
+
 ** [3.11.0] - 2021-10-04
 *** Added
     - Keyword ~REVEAL_SLIDE_CONTAINER~ with variable
