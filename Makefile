@@ -2,6 +2,7 @@
 
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
+# SPDX-FileCopyrightText: 2019-2021 Jens Lechtenbörger
 
 # This file is not part of GNU Emacs.
 
@@ -25,6 +26,8 @@
 all:
 
 # org-re-reveal requires ((emacs "24.4") (org "8.3") (htmlize "1.34"))
+# See this issue for questions on how to proceed:
+# https://gitlab.com/oer/org-re-reveal/-/issues/71
 
 TOP          := $(dir $(lastword $(MAKEFILE_LIST)))
 
@@ -39,6 +42,10 @@ ADDITON      := test-cases
 
 EMACS        ?= emacs
 BATCH        := $(EMACS) -Q --batch -L ./ $(DEPENDS:%=-L ./%/)
+
+# The following is meant to be used in the Docker image emacs-reveal.
+# This uses Org mode and htmlize bundled with emacs-reveal.
+DBATCH       := $(EMACS) -Q --batch -L /root/.emacs.d/elpa/emacs-reveal/org-mode/lisp -L /root/.emacs.d/elpa/htmlize-20210825.2150 -L /org-re-reveal
 
 TESTFILE     := org-re-reveal-tests.el
 ELS          := org-re-reveal.el ox-re-reveal.el
@@ -70,6 +77,14 @@ check: build
 
 diff:
 	echo $(REVEALTEST) | xargs -n1 -t -I% bash -c "cd test-cases; diff -u expect-%.html test-%.html"
+
+##############################
+#
+#  one-time test (with Docker image emacs-reveal)
+#
+
+docker-check:
+	docker run --rm -it -v ${CURDIR}:/org-re-reveal registry.gitlab.com/oer/emacs-reveal/emacs-reveal:8.29.0 $(DBATCH) -l $(TESTFILE) -f cort-test-run
 
 ##############################
 #
