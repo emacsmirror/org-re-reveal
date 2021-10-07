@@ -16,8 +16,8 @@
 
 # Copyright (C) 2013-2018 Yujie Wen and contributors to org-reveal, see:
 #                         https://github.com/yjwen/org-reveal/commits/master
-# Copyright (C) 2017-2021 Jens Lechtenbörger
 # Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
+# SPDX-FileCopyrightText: 2017-2021 Jens Lechtenbörger
 
 #+OPTIONS: reveal_center:t reveal_progress:t reveal_history:nil reveal_control:t
 #+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t num:nil
@@ -668,6 +668,8 @@ Whether anyone wants to use those package in isolation, is up to them.
    ~org-re-reveal-slide-footer-html~, which set ~class~ attributes
    to =slide-header= and =slide-footer=; thus, you can
    control their appearance in custom CSS file (see [[Extra Stylesheets]]).
+
+#+REVEAL: split
    By default, header/footer content will only display on content
    slides. To show them additionally on the title and toc slide use
    ~reveal_global_header:t~ and ~reveal_global_footer:t~ among
@@ -687,27 +689,26 @@ Whether anyone wants to use those package in isolation, is up to them.
     =ATTR_REVEAL= with property ":frag frag-style", as illustrated
     below.
 
-#+ATTR_REVEAL: :frag roll-in
+#+ATTR_REVEAL: :frag zoom-in
     Paragraphs can be fragmented.
 
-#+ATTR_REVEAL: :frag roll-in
+#+ATTR_REVEAL: :frag zoom-in
     - Lists can
     - be fragmented.
 
-#+ATTR_REVEAL: :frag roll-in
+#+ATTR_REVEAL: :frag zoom-in
     Pictures, tables and many other HTML elements can be fragmented.
 
 *** Fragment Styles
-    Available fragment styles are:
+    Available fragment styles include (see
+    [[https://revealjs.com/fragments/][reveal.js documentation]]):
 #+ATTR_REVEAL: :frag t
     * grow
     * shrink
-    * roll-in
     * fade-out
     * highlight-red
     * highlight-green
     * highlight-blue
-    * appear
 
     Setting ~:frag t~ will use reveal.js default fragment style, which
     can be overridden by local option ~#+REVEAL_DEFAULT_FRAG_STYLE~ or
@@ -747,24 +748,25 @@ Whether anyone wants to use those package in isolation, is up to them.
     An example:
 
 #+BEGIN_SRC org
-,#+ATTR_REVEAL: :frag (grow shrink roll-in fade-out none) :frag_idx (4 3 2 1 -)
+,#+ATTR_REVEAL: :frag (grow shrink zoom-in fade-out none) :frag_idx (4 3 2 1 -)
    * I will grow.
    * I will shrink.
-   * I rolled in.
+   * I zoomed in.
    * I will fade out.
    * I don't fragment.
 #+END_SRC
 
-#+ATTR_REVEAL: :frag (grow shrink roll-in fade-out none) :frag_idx (4 3 2 1 -)
+#+ATTR_REVEAL: :frag (grow shrink zoom-in fade-out none) :frag_idx (4 3 2 1 -)
    * I will grow.
    * I will shrink.
-   * I rolled in.
+   * I zoomed in.
    * I will fade out.
    * I don't fragment.
 #+REVEAL: split
    When there is ~:frag_idx~ specified, insufficient fragment style
    list will be extended by its last element. So a ~:frag (appear)~
-   assigns each item of a list the ~appear~ fragment style.
+   assigns each item of a list the ~appear~ fragment style (which is
+   not necessary with reveal.js 4.x any more but does not hurt).
 #+BEGIN_SRC org
 ,#+ATTR_REVEAL: :frag (appear)
    * I appear.
@@ -784,8 +786,9 @@ Whether anyone wants to use those package in isolation, is up to them.
     For example, when the audio-slideshow plugin is configured
     properly, the following plays ~1.ogg~ when the first list item
     appears, ~2.ogg~ for the second list item, and no audio for the
-    third.  (You need to add suitable audio files to the current
-    directory first.)
+    third.  (You need to add audio files to the current
+    directory first—as in the
+    [[https://oer.gitlab.io/emacs-reveal-howto/][emacs-reveal howto]].)
 
 #+BEGIN_SRC org
 ,#+ATTR_REVEAL: :frag (appear) :audio (1.ogg 2.ogg none)
@@ -884,6 +887,8 @@ Whether anyone wants to use those package in isolation, is up to them.
    Plugins were initialized differently before version 4 of reveal.js.
    Several plugins are included and
    configured with [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]].
+
+#+REVEAL: split
 
    In addition to [[#plugin-config][plugin configuration]] described
    above, you can customize JavaScript loading code for plugins with
@@ -1330,9 +1335,9 @@ I don't know perl!
 
   Courtesy to:
 
-#+ATTR_REVEAL: :frag roll-in
+#+ATTR_REVEAL: :frag zoom-in
   The powerful Org mode,
-#+ATTR_REVEAL: :frag roll-in
+#+ATTR_REVEAL: :frag zoom-in
   the impressive reveal.js
-#+ATTR_REVEAL: :frag roll-in
+#+ATTR_REVEAL: :frag zoom-in
   and the precise MathJax
