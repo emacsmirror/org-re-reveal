@@ -13,6 +13,7 @@ test:
     changes:
       - Makefile
       - "**/*.el"
+      - ".gitlab-ci.yml"
 
 pages:
   stage: deploy
