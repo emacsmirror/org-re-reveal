@@ -122,10 +122,10 @@ clean:
 #  depend files
 #
 
-# This is Org mode 9.4 including that fix:
-# https://lists.gnu.org/archive/html/emacs-orgmode/2020-09/msg00763.html
+# Use recent Org mode.
+# The URL needs to updated whenever the archive is no longer available.
 org-plus-contrib:
-	curl -L https://orgmode.org/elpa/org-plus-contrib-20200921.tar > $@.tar
+	curl -L https://orgmode.org/elpa/org-plus-contrib-20210920.tar > $@.tar
 	mkdir $@ && tar xf $@.tar -C $@ --strip-components 1
 	rm -rf $@.tar
 
