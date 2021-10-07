@@ -26,6 +26,7 @@ pages:
       - master
       - lechten
     changes:
+      - Makefile
       - "**/*.org"
       - "**/*.el"
       - ".gitlab-ci.yml"
