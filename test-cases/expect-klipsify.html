@@ -58,9 +58,9 @@ autoCloseBrackets: true
 <h1 class="title">Test klipsify</h1><h2 class="author">Jens Lechtenbörger</h2><p class="date">Created:{{date}}</p>
 </section>
 <section id="table-of-contents-section">
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
 <li><a href="#/slide-1">1. Different languages</a>
 <ul>
@@ -86,12 +86,12 @@ autoCloseBrackets: true
 
 <section>
 <section id="slide-1">
-<h2 id="1"><span class="section-number-2">1</span> Different languages</h2>
+<h2 id="1"><span class="section-number-2">1.</span> Different languages</h2>
 <div class="outline-text-2" id="text-1">
 </div>
 </section>
 <section id="slide-1-1">
-<h3 id="1-1"><span class="section-number-3">1.1</span> HTML and CSS</h3>
+<h3 id="1-1"><span class="section-number-3">1.1.</span> HTML and CSS</h3>
 <pre><code class="language-klipse-html" roll-in>
 &lt;style&gt;
 h1.demo-headline { color: blue; }
@@ -105,7 +105,7 @@ p.demo-para { color: green; }
 
 </section>
 <section id="slide-1-2">
-<h3 id="1-2"><span class="section-number-3">1.2</span> JavaScript</h3>
+<h3 id="1-2"><span class="section-number-3">1.2.</span> JavaScript</h3>
 <pre><code class="language-klipse-js" >
 console.log(<span style="font-style: italic;">"success"</span>);
 <span style="font-weight: bold;">var</span> <span style="font-weight: bold; font-style: italic;">x</span>=<span style="font-style: italic;">&#39;string using single quote&#39;</span>;
@@ -114,7 +114,7 @@ x
 
 </section>
 <section id="slide-1-3">
-<h3 id="1-3"><span class="section-number-3">1.3</span> Python</h3>
+<h3 id="1-3"><span class="section-number-3">1.3.</span> Python</h3>
 <pre><code class="language-klipse-python" >
 <span style="font-weight: bold;">def</span> <span style="font-weight: bold;">factorial</span>(n):
     <span style="font-weight: bold;">if</span> n &lt; 2:
@@ -127,7 +127,7 @@ x
 
 </section>
 <section id="slide-1-4">
-<h3 id="1-4"><span class="section-number-3">1.4</span> Clojure</h3>
+<h3 id="1-4"><span class="section-number-3">1.4.</span> Clojure</h3>
 <pre><code class="language-klipse" >
 (defn greet [person]
   (str "Hello " person))
@@ -138,12 +138,12 @@ x
 </section>
 <section>
 <section id="slide-2">
-<h2 id="2"><span class="section-number-2">2</span> SQL as example of state across slides</h2>
+<h2 id="2"><span class="section-number-2">2.</span> SQL as example of state across slides</h2>
 <div class="outline-text-2" id="text-2">
 </div>
 </section>
 <section id="slide-2-1">
-<h3 id="2-1"><span class="section-number-3">2.1</span> SQL, Populate Database</h3>
+<h3 id="2-1"><span class="section-number-3">2.1.</span> SQL, Populate Database</h3>
 <pre><code class="language-klipse-sql" >
 <span style="font-weight: bold;">CREATE</span> <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">Software</span> (<span style="font-weight: bold;">Name</span>, License, Rating);
 <span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> Software <span style="font-weight: bold;">VALUES</span>
@@ -154,14 +154,14 @@ x
 
 </section>
 <section id="slide-2-2">
-<h3 id="2-2"><span class="section-number-3">2.2</span> SQL, Query 1</h3>
+<h3 id="2-2"><span class="section-number-3">2.2.</span> SQL, Query 1</h3>
 <pre><code class="language-klipse-sql" >
 <span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span> Software;
 </code></pre>
 
 </section>
 <section id="slide-2-3">
-<h3 id="2-3"><span class="section-number-3">2.3</span> SQL, Query 2</h3>
+<h3 id="2-3"><span class="section-number-3">2.3.</span> SQL, Query 2</h3>
 <pre><code class="language-klipse-sql" >
 <span style="font-weight: bold;">SELECT</span> <span style="font-weight: bold;">Name</span> <span style="font-weight: bold;">FROM</span> Software <span style="font-weight: bold;">WHERE</span> Rating = 5;
 </code></pre>
@@ -171,7 +171,7 @@ x
 </section>
 <section>
 <section id="slide-3">
-<h2 id="3"><span class="section-number-2">3</span> An exception, no klipse here</h2>
+<h2 id="3"><span class="section-number-2">3.</span> An exception, no klipse here</h2>
 <div class="org-src-container">
 
 <pre class="src src-python"><span style="font-weight: bold;">def</span> <span style="font-weight: bold;">factorial</span>(n):
