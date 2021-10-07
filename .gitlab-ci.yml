@@ -5,7 +5,7 @@ image: registry.gitlab.com/oer/emacs-reveal/emacs-reveal:8.29.0
 
 test:
   script:
-    - make docker-check
+    - make dcheck
   only:
     refs:
       - master

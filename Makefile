@@ -83,6 +83,9 @@ diff:
 #  one-time test (with Docker image emacs-reveal)
 #
 
+dcheck: build
+	$(DBATCH) -l $(TESTFILE) -f cort-test-run
+
 docker-check:
 	docker run --rm -it -v ${CURDIR}:/org-re-reveal registry.gitlab.com/oer/emacs-reveal/emacs-reveal:8.29.0 $(DBATCH) -l $(TESTFILE) -f cort-test-run
 
