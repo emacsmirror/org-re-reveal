@@ -1828,7 +1828,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 			         (org-export-get-relative-level headline info)))
 		         (org-export-collect-headlines info depth))))
            (when toc-entries
-             (let ((toc (concat "<div id=\"text-table-of-contents\">"
+             (let ((toc (concat "<div id=\"text-table-of-contents\" role=\"doc-toc\">"
 			        (org-html--toc-text toc-entries)
 			        "</div>\n")))
                ;; Use link format of reveal.js.
