@@ -84,7 +84,7 @@ diff:
 #
 
 dcheck:
-	$(DBATCH) -l $(TESTFILE) -f cort-test-run
+	$(DBATCH) -L ./ -l $(TESTFILE) -f cort-test-run
 
 docker-check:
 	docker run --rm -it -v ${CURDIR}:/org-re-reveal registry.gitlab.com/oer/emacs-reveal/emacs-reveal:8.29.0 $(DBATCH) -l $(TESTFILE) -f cort-test-run
