@@ -83,7 +83,7 @@ diff:
 #  one-time test (with Docker image emacs-reveal)
 #
 
-dcheck: build
+dcheck:
 	$(DBATCH) -l $(TESTFILE) -f cort-test-run
 
 docker-check:
