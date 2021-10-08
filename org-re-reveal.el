@@ -1354,13 +1354,20 @@ or after keyword \"REVEAL_ADD_PLUGIN\"."
   (assoc plugin (append org-re-reveal-plugin-config (org-re-reveal--add-plugins info))))
 
 (defun org-re-reveal--enabled-plugins (info)
-  "Return enabled plugins with INFO.
-Plugins can be enabled with keywords \"REVEAL_PLUGINS\" and
-\"REVEAL_ADD_PLUGIN\"."
-  (append
-   (org-re-reveal--parse-listoption info :reveal-plugins)
-   (mapcar (lambda (triple) (nth 0 triple))
-           (org-re-reveal--add-plugins info))))
+  "Return enabled plugins based on INFO.
+Plugins can be enabled
+- with keyword \"REVEAL_PLUGINS\" (or variable `org-re-reveal-plugins') and
+- with keyword \"REVEAL_ADD_PLUGIN\" (only reveal.js version 4 and later).
+For reveal.js before version 4.0, no plugin is enabled with single file
+export."
+  (let ((in-single-file (plist-get info :reveal-single-file))
+        (reveal-version (plist-get info :reveal-guessed-revealjs-version)))
+    (when (or (not in-single-file)
+              (version< "3.9" reveal-version))
+      (append
+       (org-re-reveal--parse-listoption info :reveal-plugins)
+       (mapcar (lambda (triple) (nth 0 triple))
+               (org-re-reveal--add-plugins info))))))
 
 (defun org-re-reveal--plugin-path (plugin root-path info)
   "Return location of PLUGIN given ROOT-PATH and INFO.
@@ -1385,8 +1392,7 @@ This includes reveal.js libraries in `:reveal-script-files' under
          (embed-local-resources (plist-get info :reveal-embed-local-resources))
          ;; Plugin config for reveal.js 4.x
          (enabled-plugins
-          (when (and (not (or in-single-file embed-local-resources))
-                     (version< "3.9" reveal-version))
+          (when (version< "3.9" reveal-version)
             ;; Multiplex is no builtin in 4.x.
             (cl-remove 'multiplex (org-re-reveal--enabled-plugins info))))
          (plugin-libs
@@ -1555,7 +1561,7 @@ transitionSpeed: '%s',\n")
          (reveal-version (plist-get info :reveal-guessed-revealjs-version))
          (enabled-plugins (org-re-reveal--enabled-plugins info)))
     ;; optional JS library heading
-    (if in-single-file ""
+    (if (and (version< reveal-version "4") in-single-file) ""
       (concat
        (if (version< reveal-version "4")
            ""
