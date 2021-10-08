@@ -1177,9 +1177,10 @@ Whether anyone wants to use those package in isolation, is up to them.
    By setting option =reveal_single_file= (or variable
    =org-re-reveal-single-file=) to ~t~, images and basic reveal.js
    scripts are embedded into the exported HTML file, to create a
-   self-contained, portable HTML.  Please note that remote images will
-   /not/ be included in the single file, so presentations with remote
-   images will still require an Internet connection.
+   self-contained, portable HTML.  Please note that remote images
+   cannot be used with single-file export (maybe
+   ~reveal_embed_local_resources~ does what you want then, see below).
+   /not/ be included in the single file.
 
    Attention: This needs locally available reveal.js files (no CDN
    files)!  [[#revealjs-location][Instructions to set location of reveal.js.]].
@@ -1192,10 +1193,10 @@ Whether anyone wants to use those package in isolation, is up to them.
 
    *Limitations* of single file export
    * Some functions provided by reveal.js libraries will be
-     *disabled*, including PDF export, Markdown support, zooming,
-     speaker notes, and remote control.
-     * Code highlighting by highlight.js is also disabled, but *code
-       highlighting by Emacs is not affected.*
+     *disabled*, including PDF export.  With reveal.js 3.x, all
+     plugins are disabled, while with reveal.js 4.x, those in
+     ~org-re-reveal-plugin-config~ should still work.
+     * Code highlighting by Emacs works in any case.
    * Plugins are *not* enabled.
    * CSS needs to be *self-contained*.  Neither ~@import~ rules nor
      other forms of URLs work (images need to be embedded as
