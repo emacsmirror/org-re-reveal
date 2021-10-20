@@ -261,22 +261,26 @@ separately."
 
 (defun org-re-reveal--guess-revealjs-version (info)
   "Guess version of reveal.js with INFO.
-Assign guessed version of reveal.js to `:reveal-guessed-revealjs-version':
+Cache guessed version of reveal.js as `:reveal-guessed-revealjs-version':
 Use `org-re-reveal-revealjs-version' if it is non-nil.
 Otherwise, check for existence of files under `org-re-reveal-root' and
 - assign \"4\" if `org-re-reveal-revealjs-4-file' exists;
 - otherwise, if `org-re-reveal-revealjs-3-file' exists and
   `org-re-reveal-revealjs-pre-3.8-file' does not exist, assign \"3.8\";
-- otherwise, assign \"3\"."
-  (let ((version (plist-get info :reveal-version))
-        (root-path
-         (file-name-as-directory
-          (org-re-reveal--file-uri-to-path (plist-get info :reveal-root)))))
-    (when (and (org-re-reveal--remote-file-p root-path)
-               (not version))
-      (org-re-reveal--abort-with-message-box
-       "Remote URL for reveal.js does not work with version guessing.  Customize `org-re-reveal-revealjs-version'."))
-    (plist-put info :reveal-guessed-revealjs-version
+- otherwise, assign \"3\".
+Return guessed version string."
+  (let ((cached (plist-get info :reveal-guessed-revealjs-version)))
+    (if cached
+        cached
+      (let ((version (plist-get info :reveal-version))
+            (root-path
+             (file-name-as-directory
+              (org-re-reveal--file-uri-to-path (plist-get info :reveal-root)))))
+        (when (and (org-re-reveal--remote-file-p root-path)
+                   (not version))
+          (org-re-reveal--abort-with-message-box
+           "Remote URL for reveal.js does not work with version guessing.  Customize `org-re-reveal-revealjs-version'."))
+        (let ((guessed
                (if version
 		   version
 		 (if (file-exists-p
@@ -289,12 +293,14 @@ Otherwise, check for existence of files under `org-re-reveal-root' and
                               (concat root-path
                                       org-re-reveal-revealjs-pre-3.8-file))))
                        "3.8"
-                     "3"))))))
+                     "3")))))
+          (plist-put info :reveal-guessed-revealjs-version guessed)
+          guessed)))))
 
 (defun org-re-reveal--setup-paths (info)
   "Setup paths for reveal.js based in INFO."
   (org-re-reveal--guess-revealjs-version info)
-  (let ((revealjs-version (plist-get info :reveal-guessed-revealjs-version)))
+  (let ((revealjs-version (org-re-reveal--guess-revealjs-version info)))
     (cond ((string= revealjs-version "4")
 	   (plist-put info :reveal-script-files '("dist/reveal.js"))
 	   (plist-put info :reveal-css-path "dist"))
@@ -1221,7 +1227,7 @@ Reveal.addEventListener( 'slidechanged', function( event ) {
 (defun org-re-reveal--highlight-css-path (info)
   "Return location of CSS for highlight plugin with INFO."
   (let ((highlight-css (plist-get info :reveal-highlight-css))
-        (version (plist-get info :reveal-guessed-revealjs-version)))
+        (version (org-re-reveal--guess-revealjs-version info)))
     (if (symbolp highlight-css)
         (concat "%r/" (format "%s/%s.css"
                               (if (version< version "4")
@@ -1245,7 +1251,7 @@ CSS-PATH for built in themes."
 (defun org-re-reveal-stylesheets (info)
   "Return HTML code for reveal stylesheets using INFO and `org-re-reveal-root'."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
-         (reveal-version (plist-get info :reveal-guessed-revealjs-version))
+         (reveal-version (org-re-reveal--guess-revealjs-version info))
          (css-path (file-name-as-directory
                     (concat root-path (plist-get info :reveal-css-path))))
          (reveal-css (concat css-path "reveal.css"))
@@ -1361,7 +1367,7 @@ Plugins can be enabled
 For reveal.js before version 4.0, no plugin is enabled with single file
 export."
   (let ((in-single-file (plist-get info :reveal-single-file))
-        (reveal-version (plist-get info :reveal-guessed-revealjs-version)))
+        (reveal-version (org-re-reveal--guess-revealjs-version info)))
     (when (or (not in-single-file)
               (version< "3.9" reveal-version))
       (append
@@ -1387,7 +1393,7 @@ This includes reveal.js libraries in `:reveal-script-files' under
                         info :reveal-script-files))
          (root-libs (mapcar (lambda (file) (concat root-path file))
                             script-files))
-         (reveal-version (plist-get info :reveal-guessed-revealjs-version))
+         (reveal-version (org-re-reveal--guess-revealjs-version info))
          (in-single-file (plist-get info :reveal-single-file))
          (embed-local-resources (plist-get info :reveal-embed-local-resources))
          ;; Plugin config for reveal.js 4.x
@@ -1513,7 +1519,7 @@ Otherwise, raise error."
      (if (> max-scale 0) (format "maxScale: %.2f,\n" max-scale) ""))
 
    ;; themes and transitions
-   (let ((reveal-version (plist-get info :reveal-guessed-revealjs-version)))
+   (let ((reveal-version (org-re-reveal--guess-revealjs-version info)))
      (format (if (version< reveal-version "4")
                  "
 theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
@@ -1558,7 +1564,7 @@ transitionSpeed: '%s',\n")
   "Internal function for `org-re-reveal-scripts' with INFO."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
          (in-single-file (plist-get info :reveal-single-file))
-         (reveal-version (plist-get info :reveal-guessed-revealjs-version))
+         (reveal-version (org-re-reveal--guess-revealjs-version info))
          (enabled-plugins (org-re-reveal--enabled-plugins info)))
     ;; optional JS library heading
     (if (and (version< reveal-version "4") in-single-file) ""
