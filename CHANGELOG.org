@@ -13,6 +13,11 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.12.2] - 2021-10-20
+*** Fixed
+    - Make version guessing more reliable.  Addresses issue #75:
+      https://gitlab.com/oer/org-re-reveal/-/issues/75
+
 ** [3.12.1] - 2021-10-08
 *** Fixed
     - Embed built-in plugins with reveal.js 4.x, addresses issue #73
