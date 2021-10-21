@@ -1162,9 +1162,10 @@ That value for OPTION may be a list or a string representing a list."
    (if (string-equal system-type "windows-nt") "^file:///" "^file://")
    "" url))
 
-(defun org-re-reveal--abort-with-message-box (message &rest args)
-  "Call `message-box' with MESSAGE and ARGS, then raise error."
-  (message-box message args)
+(defun org-re-reveal--abort-with-message-box (msg &rest args)
+  "Call `message' and `message-box' with MSG and ARGS, then raise error."
+  (message msg args)
+  (message-box msg args)
   (error "Aborted"))
 
 (defun org-re-reveal--css-label (in-single-file file-name style-id)
