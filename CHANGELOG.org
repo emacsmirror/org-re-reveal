@@ -13,10 +13,13 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.12.3] - 2021-10-21
+*** Fixed
+    - Remove file URI prefixes for builtin plugins, addresses issue #74
+
 ** [3.12.2] - 2021-10-20
 *** Fixed
-    - Make version guessing more reliable.  Addresses issue #75:
-      https://gitlab.com/oer/org-re-reveal/-/issues/75
+    - Make version guessing more reliable, addresses issue #75
 
 ** [3.12.1] - 2021-10-08
 *** Fixed
