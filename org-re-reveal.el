@@ -1422,7 +1422,9 @@ This includes reveal.js libraries in `:reveal-script-files' under
             (local-libs (append (mapcar (lambda (file)
                                           (concat local-root-path file))
                                         script-files)
-                                plugin-libs
+                                (mapcar (lambda (file)
+					  (org-re-reveal--file-url-to-path file))
+					plugin-libs)
                                 extra-script-files))
             (local-libs-exist-p (cl-every #'file-readable-p local-libs)))
        (if (and in-single-file (not local-libs-exist-p))
