@@ -42,6 +42,16 @@ It provides an export back-end for HTML presentations with
 [[https://revealjs.com/][reveal.js]] from
 [[https://orgmode.org/][Org mode]] source files.
 
+Being a fork means that /org-re-reveal/ and /org-reveal/ are two
+independent projects from which you need to choose one.  I created
+/org-re-reveal/ during a period when /org-reveal/ was unmaintained,
+in particular to add support for the audio-slideshow plugin of
+[[https://github.com/rajgoel/reveal.js-plugins][reveal.js-plugins]].
+Nowadays, both projects have diverged considerably.  If someone could
+suggest how to merge the forks, please go ahead!
+
+#+REVEAL: split
+
 Note that this Readme is written in the lightweight markup language
 Org mode, for which browser support on GitLab is limited.  In
 particular, internal hyperlinks won’t work.  I suggest to either open
