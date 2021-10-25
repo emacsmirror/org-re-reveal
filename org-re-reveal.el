@@ -1951,7 +1951,9 @@ requires a version of org-mode as of 2018-12-08 or newer."
 The result is identical to ox-html except for image links.
 When `org-re-reveal-single-file' is t,
 the result is the Data URI of the referenced image."
-  (let* ((must-embed-image (plist-get info :reveal-single-file))
+  (let* ((must-embed-image (and (plist-get info :reveal-single-file)
+                                (org-export-inline-image-p
+                                 link (plist-get info :html-inline-image-rules))))
          (want-embed-image (and (or must-embed-image
                                     (plist-get info :reveal-embed-local-resources))
                                 (plist-get info :html-inline-images)
