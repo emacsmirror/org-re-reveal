@@ -13,6 +13,11 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.12.4] - 2021-10-25
+*** Fixed
+    - For single file export, test whether link is an inline image;
+      fixes issue #78
+
 ** [3.12.3] - 2021-10-21
 *** Fixed
     - Remove file URI prefixes for builtin plugins, addresses issue #74
