@@ -5,7 +5,7 @@
 ;;                         https://github.com/yjwen/org-reveal/commits/master
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
-;; SPDX-FileCopyrightText: 2017-2021 Jens Lechtenbörger
+;; SPDX-FileCopyrightText: 2017-2022 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
 ;; Version: 3.12.4
@@ -683,13 +683,16 @@ By default, no attributes are assigned."
   :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-slide-header nil
-  "HTML content used as Reveal.js slide header."
+  "Specify HTML content for slide header, or nil.
+If non-nil, embed inside `org-re-reveal-slide-header-html' to create header."
   :group 'org-export-re-reveal
   :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-slide-header-html
   "<div class=\"slide-header\">%s</div>\n"
-  "HTML format string to construct slide footer."
+  "HTML format string as container for slide header.
+This format string must contain a single \"%s\" sequence, which is replaced by
+`org-re-reveal-slide-header'."
   :group 'org-export-re-reveal
   :type 'string)
 
@@ -700,13 +703,13 @@ Header is defined by `org-re-reveal-slide-header'."
   :type 'boolean)
 
 (defcustom org-re-reveal-global-footer nil
-  "If non nil, display slide footer also on title and toc slide.
+  "If non-nil, display slide footer also on title and toc slide.
 Footer is defined by `org-re-reveal-slide-footer'."
   :group 'org-export-re-reveal
   :type 'boolean)
 
 (defcustom org-re-reveal-toc-footer nil
-  "If non nil, display slide footer also on toc slide.
+  "If non-nil, display slide footer also on toc slide.
 Footer is defined by `org-re-reveal-slide-footer'."
   :group 'org-export-re-reveal
   :type 'boolean)
@@ -721,14 +724,16 @@ See issue URL `https://gitlab.com/oer/org-re-reveal/-/issues/69'."
   :package-version '(org-re-reveal . "3.11.0"))
 
 (defcustom org-re-reveal-slide-footer nil
-  "Specify HTML content used as Reveal.js slide footer."
+  "Specify HTML content for slide footer, or nil.
+If non-nil, embed inside `org-re-reveal-slide-footer-html' to create footer."
   :group 'org-export-re-reveal
   :type '(choice (const nil) string))
 
 (defcustom org-re-reveal-slide-footer-html
   "<div class=\"slide-footer\">%s</div>\n"
-  "HTML format string to construct slide footer.
-Must constain exactly one %-sequence \"%s\"."
+  "HTML format string as container for slide footer.
+This format string must contain a single \"%s\" sequence, which is replaced by
+`org-re-reveal-slide-footer'."
   :group 'org-export-re-reveal
   :type 'string)
 
