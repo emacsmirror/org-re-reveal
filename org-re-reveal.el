@@ -1105,15 +1105,17 @@ holding contextual information."
                                (org-element-property :ID headline)))
              (hlevel (org-re-reveal--get-hlevel info))
              (header (plist-get info :reveal-slide-header))
-             (header-div (if header (format org-re-reveal-slide-header-html header) ""))
+             (header-div (org-re-reveal--if-format
+                          org-re-reveal-slide-header-html header))
              (first-sibling (org-export-first-sibling-p headline info))
              (attrs (org-re-reveal--section-attrs headline info))
              (extra-attrs (or (org-element-property :REVEAL_EXTRA_ATTR headline)
                               (plist-get info :reveal-extra-attr)))
-             (slide-section-tag (format "<section id=\"%s\"%s%s>\n"
-                                        (format "%s%s" org-re-reveal--slide-id-prefix preferred-id)
-                                        attrs
-                                        (if extra-attrs (format " %s" extra-attrs) "")))
+             (slide-section-tag
+              (format "<section id=\"%s\"%s%s>\n"
+                      (format "%s%s" org-re-reveal--slide-id-prefix preferred-id)
+                      attrs
+                      (org-re-reveal--if-format " %s" extra-attrs)))
              (ret (concat
                    (if (or (/= level 1) (not first-sibling))
                        ;; Not the first heading. Close previous slide.
