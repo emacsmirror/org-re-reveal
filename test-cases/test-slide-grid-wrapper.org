@@ -12,6 +12,7 @@
 #+REVEAL_HEAD_PREAMBLE: <style>
 #+REVEAL_HEAD_PREAMBLE: .slide-header { grid-area: header; }
 #+REVEAL_HEAD_PREAMBLE: .slide-footer { grid-area: footer; }
+#+REVEAL_HEAD_PREAMBLE: .slide-heading { grid-area: heading; }
 #+REVEAL_HEAD_PREAMBLE: .slide-contents { grid-area: content; }
 #+REVEAL_HEAD_PREAMBLE: .grid-wrapper { display: grid; grid-template-areas: "header" "heading" "content" "footer"; grid-template-rows: auto auto 1fr auto; }
 #+REVEAL_HEAD_PREAMBLE: </style>
