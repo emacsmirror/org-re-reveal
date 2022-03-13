@@ -31,4 +31,4 @@
     - Heading has class ~slide-heading~
     - Slide contents wrapped in ~div~ with class ~slide-contents~
     - Footer has class ~slide-footer~
-  - Also title slide and TOC are wrapped this way
+  - Also title slide and TOC are wrapped with ~div~ of class ~grid-wrapper~
