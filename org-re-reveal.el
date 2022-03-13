@@ -174,6 +174,7 @@
       (:reveal-preamble "REVEAL_PREAMBLE" nil org-re-reveal-preamble t)
       (:reveal-root "REVEAL_ROOT" nil org-re-reveal-root t)
       (:reveal-slide-container "REVEAL_SLIDE_CONTAINER" nil org-re-reveal-slide-container t)
+      (:reveal-slide-grid-div "REVEAL_SLIDE_GRID_DIV" nil org-re-reveal-slide-grid-div newline)
       (:reveal-slide-footer "REVEAL_SLIDE_FOOTER" nil org-re-reveal-slide-footer t)
       (:reveal-slide-header "REVEAL_SLIDE_HEADER" nil org-re-reveal-slide-header t)
       (:reveal-speed "REVEAL_SPEED" nil org-re-reveal-transition-speed t)
@@ -716,12 +717,24 @@ Footer is defined by `org-re-reveal-slide-footer'."
 
 (defcustom org-re-reveal-slide-container "%s"
   "Specify HTML container for slide contents.
+See `org-re-reveal-slide-grid-div' for a variant that wraps not only slide
+contents but also the headline (and header and footer if they exist).
 This must be a format string with a single \"%s\" sequence, e.g.,
 \"<div attr=value>%s</div>\".
 See issue URL `https://gitlab.com/oer/org-re-reveal/-/issues/69'."
   :group 'org-export-re-reveal
   :type 'string
   :package-version '(org-re-reveal . "3.11.0"))
+
+(defcustom org-re-reveal-slide-grid-div ""
+  "Specify HTML container for grid layouts.
+Maybe use \"<div class=\"grid-wrapper\">\n\" to wrap header, headline,
+slide contents, and footer in div element.  As closing div tags are
+hardcoded, this must be an opening div tag.
+See issue URL `https://gitlab.com/oer/org-re-reveal/-/issues/69'."
+  :group 'org-export-re-reveal
+  :type 'string
+  :package-version '(org-re-reveal . "3.13.0"))
 
 (defcustom org-re-reveal-slide-footer nil
   "Specify HTML content for slide footer, or nil.
@@ -1116,6 +1129,7 @@ holding contextual information."
                       (format "%s%s" org-re-reveal--slide-id-prefix preferred-id)
                       attrs
                       (org-re-reveal--if-format " %s" extra-attrs)))
+             (slide-grid-div (plist-get info :reveal-slide-grid-div))
              (ret (concat
                    (if (or (/= level 1) (not first-sibling))
                        ;; Not the first heading. Close previous slide.
@@ -1137,6 +1151,8 @@ holding contextual information."
                            (format "<section %s>\n" attrs))))
                    ;; Start a new slide.
                    slide-section-tag
+                   ;; Grid div if any.
+                   slide-grid-div
                    ;; Slide header if any.
                    header-div
                    ;; The HTML content of the headline
@@ -1691,6 +1707,15 @@ return a footer if OBJECT has a parent headline."
         (format org-re-reveal-slide-footer-html footer)
       "")))
 
+(defun org-re-reveal--wrap-div-grid (contents info)
+  "Wrap CONTENTS depending on INFO.
+Check `org-re-reveal-slide-grid-div'."
+  (let ((slide-grid-div (plist-get info :reveal-slide-grid-div)))
+    (concat slide-grid-div
+            contents
+            (when (< 0 (length slide-grid-div))
+              "</div>\n"))))
+
 (defun org-re-reveal-toc (depth info)
   "Build a slide of table of contents with DEPTH and INFO."
   (let ((toc (org-html-toc depth info)))
@@ -1718,17 +1743,20 @@ return a footer if OBJECT has a parent headline."
               (when toc-slide-state
                 (format " data-state=\"%s\"" toc-slide-state))
               ">\n"
-              (when toc-slide-with-header
-                (let ((header (plist-get info :reveal-slide-header)))
-                  (when header (format org-re-reveal-slide-header-html header))))
-              (if toc-slide-class
-                  (replace-regexp-in-string
-                   "<h\\([1-3]\\)>"
-                   (format "<h\\1 class=\"%s\">" toc-slide-class)
-                   toc)
-                toc)
-              (when toc-slide-with-footer
-                (org-re-reveal--footer info))
+              (org-re-reveal--wrap-div-grid
+               (concat
+                (when toc-slide-with-header
+                  (let ((header (plist-get info :reveal-slide-header)))
+                    (when header (format org-re-reveal-slide-header-html header))))
+                (if toc-slide-class
+                    (replace-regexp-in-string
+                     "<h\\([1-3]\\)>"
+                     (format "<h\\1 class=\"%s\">" toc-slide-class)
+                     toc)
+                  toc)
+                (when toc-slide-with-footer
+                  (org-re-reveal--footer info)))
+               info)
               "</section>\n"))))
 
 (defun org-re-reveal-inner-template (contents info)
@@ -2060,8 +2088,19 @@ Use plist INFO and format specification SPEC."
 CONTENTS holds the contents of the section.  INFO is a plist
 holding contextual information."
   (let ((result (concat contents (org-re-reveal--footer info section t)))
-        (slide-container (plist-get info :reveal-slide-container)))
-    (format slide-container result)))
+        (slide-container (plist-get info :reveal-slide-container))
+        (slide-grid-div (plist-get info :reveal-slide-grid-div))
+        (parent (org-export-get-parent-element section)))
+    (if parent
+      (concat (format slide-container result)
+              (if (and parent (< 0 (length slide-grid-div)))
+                  "</div>\n"
+                ""))
+      ;; The first section (without parent, before first headline)
+      ;; should not be important at all.  We keep it here for backward
+      ;; compatibility.  In test cases, this produces an empty line
+      ;; after the title slide.
+      result)))
 
 (defun org-re-reveal--using-highlight.js (info)
   "Check with INFO whether highlight.js plugin is enabled."
@@ -2254,20 +2293,23 @@ INFO is a plist holding export options."
                    (when title-slide-timing
                      (concat " data-timing=\"" title-slide-timing "\""))
                    ">\n"
-                   (when title-slide-with-header
-                     (let ((header (plist-get info :reveal-slide-header)))
-                       (when header (format org-re-reveal-slide-header-html header))))
-                   (cond ((eq title-slide nil) nil)
-                         ((stringp title-slide)
-                          (let* ((file-contents
-                                  (org-re-reveal--read-file-as-string title-slide))
-                                 (title-string (or file-contents title-slide)))
-                            (format-spec title-string spec)))
-                         ((eq title-slide 'auto)
-                          (org-re-reveal--auto-title-slide-template info spec)))
-                   "\n"
-                   (when title-slide-with-footer
-                     (org-re-reveal--footer info))
+                   (org-re-reveal--wrap-div-grid
+                    (concat
+                     (when title-slide-with-header
+                       (let ((header (plist-get info :reveal-slide-header)))
+                         (when header (format org-re-reveal-slide-header-html header))))
+                     (cond ((eq title-slide nil) nil)
+                           ((stringp title-slide)
+                            (let* ((file-contents
+                                    (org-re-reveal--read-file-as-string title-slide))
+                                   (title-string (or file-contents title-slide)))
+                              (format-spec title-string spec)))
+                           ((eq title-slide 'auto)
+                            (org-re-reveal--auto-title-slide-template info spec)))
+                     "\n"
+                     (when title-slide-with-footer
+                       (org-re-reveal--footer info)))
+                    info)
                    "</section>\n"))))
      contents
      "</div>
