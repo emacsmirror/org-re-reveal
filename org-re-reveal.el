@@ -8,7 +8,7 @@
 ;; SPDX-FileCopyrightText: 2017-2022 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 3.12.4
+;; Version: 3.12.5
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -2087,12 +2087,13 @@ Use plist INFO and format specification SPEC."
   "Transcode a SECTION element from Org to Reveal.
 CONTENTS holds the contents of the section.  INFO is a plist
 holding contextual information."
-  (let ((result (concat contents (org-re-reveal--footer info section t)))
+  (let ((footer (org-re-reveal--footer info section t))
         (slide-container (plist-get info :reveal-slide-container))
         (slide-grid-div (plist-get info :reveal-slide-grid-div))
         (parent (org-export-get-parent-element section)))
     (if parent
-      (concat (format slide-container result)
+      (concat (format slide-container (or contents ""))
+              footer
               (if (and parent (< 0 (length slide-grid-div)))
                   "</div>\n"
                 ""))
@@ -2100,7 +2101,7 @@ holding contextual information."
       ;; should not be important at all.  We keep it here for backward
       ;; compatibility.  In test cases, this produces an empty line
       ;; after the title slide.
-      result)))
+      (concat contents footer))))
 
 (defun org-re-reveal--using-highlight.js (info)
   "Check with INFO whether highlight.js plugin is enabled."
