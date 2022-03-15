@@ -1,10 +1,12 @@
 # Local IspellDict: en
 # SPDX-License-Identifier: GPL-3.0-or-later
-# SPDX-FileCopyrightText: 2021 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2021-2022 Jens Lechtenbörger
 
 #+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
 #+REVEAL_THEME: black
 #+REVEAL_SLIDE_CONTAINER: <div class="grid">%s</div>
+
+#+REVEAL_SLIDE_FOOTER: A footer
 
 #+Title: Slides wrapped in ~div~ element
 #+Author: Jens Lechtenbörger
@@ -12,3 +14,4 @@
 * A normal slide
   - Nothing special here
   - Slide contents wrapped in ~div~ element
+    - Footer follows afterwards
