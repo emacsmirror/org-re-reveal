@@ -1,6 +1,6 @@
 # Local IspellDict: en
 # SPDX-License-Identifier: GPL-3.0-or-later
-# SPDX-FileCopyrightText: 2019-2021 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2019-2022 Jens Lechtenbörger
 
 * Changelog
 This changelog documents the evolution of org-re-reveal starting with
@@ -12,6 +12,11 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+
+** [3.12.5] - 2022-03-15
+*** Fixed
+    - Do not place slide footer inside slide container, see re-opened
+      issue #69
 
 ** [3.12.4] - 2021-10-25
 *** Fixed
