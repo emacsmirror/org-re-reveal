@@ -2059,9 +2059,10 @@ Use plist INFO and format specification SPEC."
   "Transcode a SECTION element from Org to Reveal.
 CONTENTS holds the contents of the section.  INFO is a plist
 holding contextual information."
-  (let ((result (concat contents (org-re-reveal--footer info section t)))
+  (let ((footer (org-re-reveal--footer info section t))
         (slide-container (plist-get info :reveal-slide-container)))
-    (format slide-container result)))
+    (concat (format slide-container (or contents ""))
+            footer)))
 
 (defun org-re-reveal--using-highlight.js (info)
   "Check with INFO whether highlight.js plugin is enabled."
