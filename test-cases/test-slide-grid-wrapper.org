@@ -13,8 +13,9 @@
 #+REVEAL_HEAD_PREAMBLE: .slide-header { grid-area: header; }
 #+REVEAL_HEAD_PREAMBLE: .slide-footer { grid-area: footer; }
 #+REVEAL_HEAD_PREAMBLE: .slide-heading { grid-area: heading; }
+#+REVEAL_HEAD_PREAMBLE: .slide-subheading { grid-area: subheading; }
 #+REVEAL_HEAD_PREAMBLE: .slide-contents { grid-area: content; }
-#+REVEAL_HEAD_PREAMBLE: .grid-wrapper { display: grid; grid-template-areas: "header" "heading" "content" "footer"; grid-template-rows: auto auto 1fr auto; }
+#+REVEAL_HEAD_PREAMBLE: .grid-wrapper { display: grid; grid-template-areas: "header" "heading" "subheading" "content" "footer"; grid-template-rows: auto auto auto 1fr auto; }
 #+REVEAL_HEAD_PREAMBLE: </style>
 
 #+Title: Slides wrapped in ~div~ element
@@ -32,3 +33,14 @@
     - Slide contents wrapped in ~div~ with class ~slide-contents~
     - Footer has class ~slide-footer~
   - Also title slide and TOC are wrapped with ~div~ of class ~grid-wrapper~
+
+* A slide with subheading
+** This is the subheading
+   :PROPERTIES:
+   :UNNUMBERED: notoc
+   :NOSLIDE: t
+   :html_headline_class: slide-subheading
+   :END:
+
+   - Some contents
+   - ...
