@@ -1108,8 +1108,13 @@ holding contextual information."
   (unless (org-element-property :footnote-section-p headline)
     (if (or (org-export-low-level-p headline info)
             (org-element-property :NOSLIDE headline))
-        ;; This is a deep sub-tree: export it as in ox-html.
-        (org-html-headline headline contents info)
+        ;; This is a deep sub-tree or a subheading; do not create slide.
+        (if (< 0 (length (plist-get info :reveal-slide-grid-div)))
+            ;; For grid layouts, remove div element created by ox-html.
+            (org-re-reveal--fix-html-headline headline contents info)
+          ;; Just use ox-html.  This is kept here for backwards
+          ;; compatibility.  Not sure whether anyone relies on the div.
+          (org-html-headline headline contents info))
       ;; Standard headline.  Export it as a slide
       (let* ((level (org-export-get-relative-level headline info))
              (preferred-id (or (org-element-property :CUSTOM_ID headline)
