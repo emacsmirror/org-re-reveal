@@ -13,6 +13,11 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.13.0] - 2022-04-02
+*** Added
+    - Variable ~org-re-reveal-mobile-app~ with option
+      ~reveal_mobile_app~
+
 ** [3.12.5] - 2022-03-15
 *** Fixed
     - Do not place slide footer inside slide container, see re-opened
