@@ -121,6 +121,7 @@
       (:reveal-inter-presentation-links nil "reveal_inter_presentation_links" org-re-reveal-inter-presentation-links t)
       (:reveal-keyboard nil "reveal_keyboard" org-re-reveal-keyboard t)
       (:reveal-klipsify-src nil "reveal_klipsify_src" org-re-reveal-klipsify-src t)
+      (:reveal-mobile-app nil "reveal_mobile_app" org-re-reveal-mobile-app t)
       (:reveal-mousewheel nil "reveal_mousewheel" org-re-reveal-mousewheel t)
       (:reveal-overview nil "reveal_overview" org-re-reveal-overview t)
       (:reveal-pdfseparatefragments nil "reveal_pdfseparatefragments" org-re-reveal-pdfseparatefragments t)
@@ -557,6 +558,17 @@ See URL `https://revealjs.com/config/'."
 See URL `https://revealjs.com/config/'."
   :group 'org-export-re-reveal
   :type 'boolean)
+
+(defcustom org-re-reveal-mobile-app nil
+  "If t, add meta tags to indicate mobile web app capabilities.
+Specifically, add \"mobile-web-app-capable\" and
+\"apple-mobile-web-app-capable\".  Then, users can add presentations
+to their home screen to have them open without address bar.
+For backward compatibility, this option is nil.  With `oer-reveal', this
+is activated by default (and, thus, also with `emacs-reveal')."
+  :group 'org-export-re-reveal
+  :type 'boolean
+  :package-version '(org-re-reveal . "3.13.0"))
 
 (defcustom org-re-reveal-mousewheel nil
   "If t, enable mousewheel navigation.
@@ -2213,6 +2225,9 @@ INFO is a plist holding export options."
                                (plist-get info :description))
      (org-re-reveal--if-format "<meta name=\"keywords\" content=\"%s\"/>\n"
                                (plist-get info :keywords))
+     (if (plist-get info :reveal-mobile-app)
+         "<meta name=\"mobile-web-app-capable\" content=\"yes\">\n<meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\n"
+       "")
      (org-re-reveal-stylesheets info)
      (org-re-reveal--build-pre-postamble 'head-preamble info spec)
      (org-re-reveal-mathjax-scripts info)
