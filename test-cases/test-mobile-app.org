@@ -1,0 +1,18 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2022 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000 reveal_mobile_app:t
+#+REVEAL_THEME: black
+
+#+Title: Presentations with meta tags for mobile app
+#+Author: Jens Lechtenbörger
+
+* Just a slide
+  - Nothing really special here
+  - This presentation’s HTML header contains special meta tags
+    indicating mobile web app capabilities
+    - Reveal.js is restricted on mobile platforms without keyboard shortcuts
+    - Some OSs and browsers allow at least to open in fullscreen mode
+      if the presentation is added as icon the home screen and started
+      from there

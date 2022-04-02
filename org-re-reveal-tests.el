@@ -137,6 +137,7 @@
         "klipsify"
         "klipsify-python"
         "merge-classes"
+        "mobile-app"
         "multiplex"
         "noslide"
         "options"
