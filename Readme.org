@@ -226,6 +226,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~reveal_inter_presentation_links~ | ~nil~                                        | ~org-re-reveal-inter-presentation-links~ |
 | ~reveal_keyboard~                 | ~nil~                                        | ~org-re-reveal-keyboard~                 |
 | ~reveal_klipsify_src~             | ~nil~                                        | ~org-re-reveal-klipsify-src~             |
+| ~reveal_mobile_app~               | ~nil~                                        | ~org-re-reveal-mobile-app~               |
 | ~reveal_mousewheel~               | ~nil~                                        | ~org-re-reveal-mousewheel~               |
 | ~reveal_overview~                 | ~nil~                                        | ~org-re-reveal-overview~                 |
 | ~reveal_pdfseparatefragments~     | ~nil~                                        | ~org-re-reveal-pdfseparatefragments~     |
