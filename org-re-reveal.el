@@ -108,6 +108,7 @@
     ;; of keywords are treated, including nil, t, newline:
     ;; nil: Keep old value, discard new one
     ;; t: Use new value, discard old one
+    ;; space: Concatenate with space character
     ;; newline: Concatenate with newlines
     '((:reveal-center nil "reveal_center" org-re-reveal-center t)
       (:reveal-control nil "reveal_control" org-re-reveal-control t)
@@ -188,6 +189,7 @@
       (:reveal-title-slide-background-size "REVEAL_TITLE_SLIDE_BACKGROUND_SIZE" nil nil t)
       (:reveal-title-slide-background-transition "REVEAL_TITLE_SLIDE_BACKGROUND_TRANSITION" nil nil t)
       (:reveal-title-slide-notes "REVEAL_TITLE_SLIDE_NOTES" nil org-re-reveal-title-slide-notes t)
+      (:reveal-title-slide-extra-attr "REVEAL_TITLE_SLIDE_EXTRA_ATTR" nil nil space)
       (:reveal-title-slide-state "REVEAL_TITLE_SLIDE_STATE" nil nil t)
       (:reveal-title-slide-timing "REVEAL_TITLE_SLIDE_TIMING" nil nil t)
       (:reveal-toc-slide-class "REVEAL_TOC_SLIDE_CLASS" nil nil t)
@@ -1090,6 +1092,30 @@ have been appropriate..."
        (base64-encode-region 1 (point-max))
        (buffer-string)))))
 
+(defun org-re-reveal--maybe-encode-with-data-uri (path info)
+  "Encode image at PATH as data URI if INFO indicates single-file export."
+  (when (< 0 (length path))
+    (if (plist-get info :reveal-single-file)
+        (if (org-re-reveal--remote-file-p path)
+            (org-re-reveal--abort-with-message-box
+             "Single file export requires local background image, not %s." path)
+          (org-re-reveal--generate-data-uri path))
+      path)))
+
+(defun org-re-reveal--maybe-replace-background (attr info)
+  "Maybe replace background image in ATTR based on INFO.
+If ATTR specifies a background image, call
+`org-re-reveal--maybe-encode-with-data-uri' to potentially generate a data
+URI for single-file export."
+  (if (and (< 0 (length attr))
+           (string-match "^data-background\\(-image\\)?=" attr))
+      (let* ((parts (split-string attr "[=\"]" t))
+             (name (nth 0 parts))
+             (path (nth 1 parts))
+             (new-path (org-re-reveal--maybe-encode-with-data-uri path info)))
+        (format "%s=\"%s\"" name new-path))
+    attr))
+
 (defun org-re-reveal--section-attrs (headline info)
   "Compute attributes for section element of HEADLINE with INFO.
 Return empty string or one starting with a space character."
@@ -1136,8 +1162,10 @@ holding contextual information."
                           org-re-reveal-slide-header-html header))
              (first-sibling (org-export-first-sibling-p headline info))
              (attrs (org-re-reveal--section-attrs headline info))
-             (extra-attrs (or (org-element-property :REVEAL_EXTRA_ATTR headline)
-                              (plist-get info :reveal-extra-attr)))
+             (extra-attrs (org-re-reveal--maybe-replace-background
+                           (or (org-element-property :REVEAL_EXTRA_ATTR headline)
+                               (plist-get info :reveal-extra-attr))
+                           info))
              (slide-section-tag
               (format "<section id=\"%s\"%s%s>\n"
                       (format "%s%s" org-re-reveal--slide-id-prefix preferred-id)
@@ -2257,6 +2285,7 @@ INFO is a plist holding export options."
                (title-slide-background-position (plist-get info :reveal-title-slide-background-position))
                (title-slide-background-repeat (plist-get info :reveal-title-slide-background-repeat))
                (title-slide-background-transition (plist-get info :reveal-title-slide-background-transition))
+               (title-slide-extra-attr (plist-get info :reveal-title-slide-extra-attr))
                (title-slide-state (plist-get info :reveal-title-slide-state))
                (title-slide-timing (plist-get info :reveal-title-slide-timing))
                (title-slide-with-header (plist-get info :reveal-slide-global-header))
@@ -2272,6 +2301,9 @@ INFO is a plist holding export options."
                      (concat " data-background-repeat=\"" title-slide-background-repeat "\""))
                    (when title-slide-background-transition
                      (concat " data-background-transition=\"" title-slide-background-transition "\""))
+                   (when title-slide-extra-attr
+                     (concat " " (org-re-reveal--maybe-replace-background
+                                  title-slide-extra-attr info)))
                    (when title-slide-state
                      (concat " data-state=\"" title-slide-state "\""))
                    (when title-slide-timing
