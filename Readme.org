@@ -287,6 +287,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_THEME~                               | ~org-re-reveal-theme~                    |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE~                         | ~org-re-reveal-title-slide~              |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND~              | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TITLE_SLIDE_EXTRA_ATTR~              | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_STATE~                   | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_TIMING~                  | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND_SIZE~         | ~nil~                                    |
@@ -1184,6 +1185,9 @@ Whether anyone wants to use those package in isolation, is up to them.
   :reveal_extra_attr: data-background-video="https://static.slid.es/site/homepage/v1/homepage-video-editor.mp4" data-background-video-loop data-background-video-muted
   :END:
 #+END_SRC
+
+  Use keyword ~REVEAL_TITLE_SLIDE_EXTRA_ATTR~ to add extra attributes
+  to the title slide.
 
 ** Export into Single File
 
