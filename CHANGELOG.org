@@ -13,6 +13,13 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.14.0] - 2022-05-20
+*** Added
+    - Keyword ~REVEAL_TITLE_SLIDE_EXTRA_ATTR~
+*** Fixed
+    - Embed background images as data URIs with single-file export.
+      Addresses issue #82.
+
 ** [3.13.0] - 2022-04-02
 *** Added
     - Variable ~org-re-reveal-mobile-app~ with option
