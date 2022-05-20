@@ -1075,6 +1075,21 @@ have been appropriate..."
         (org-re-reveal--html-header-add-class nodiv class)
       nodiv)))
 
+(defun org-re-reveal--generate-data-uri (path)
+  "Generate data URI for image at PATH."
+  (let ((ext (downcase (file-name-extension path)))
+        (clean-path (org-re-reveal--file-url-to-path path)))
+    (concat
+     "data:image/"
+     ;; Image type
+     ext
+     ";base64,"
+     ;; Base64 content
+     (with-temp-buffer
+       (insert-file-contents-literally clean-path)
+       (base64-encode-region 1 (point-max))
+       (buffer-string)))))
+
 (defun org-re-reveal--section-attrs (headline info)
   "Compute attributes for section element of HEADLINE with INFO.
 Return empty string or one starting with a space character."
@@ -1889,25 +1904,17 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
       (concat "<svg " (buffer-substring-no-properties start end)))))
 
 (defun org-re-reveal--format-image-data-uri (link path info)
-  "Generate the data URI for the image referenced by LINK at PATH with INFO."
-  (let* ((ext (downcase (file-name-extension path))))
+  "Generate HTML code for embedded image referenced by LINK at PATH with INFO.
+For an svg image, return its svg element.  For other images, return an
+img element that embeds the image as data URI."
+  (let ((ext (downcase (file-name-extension path))))
     (if (string= ext "svg")
         (org-re-reveal-embedded-svg path)
       (org-html-close-tag
        "img"
        (org-html--make-attribute-string
         (org-combine-plists
-         (list :src
-               (concat
-                "data:image/"
-                ;; Image type
-                ext
-                ";base64,"
-                ;; Base64 content
-                (with-temp-buffer
-                  (insert-file-contents-literally path)
-                  (base64-encode-region 1 (point-max))
-                  (buffer-string))))
+         (list :src (org-re-reveal--generate-data-uri path))
          ;; Get attribute list from parent element
          ;; Copied from ox-html.el
          (let* ((parent (org-export-get-parent-element link))
