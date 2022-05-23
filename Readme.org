@@ -525,6 +525,11 @@ Whether anyone wants to use those package in isolation, is up to them.
    title, the author, the Email, the date and the time-stamp of the
    Org document, controlled by Org's [[https://orgmode.org/org.html#Export-settings][export settings]].
 
+   Variable ~org-re-reveal-title-slide~ determines the title slide.
+   The default ~auto~ leads to a minimal title slide (with title,
+   author, e-mail, date, and timestamp—if enabled by Org export
+   options).
+
    To avoid a title slide, set variable
    ~org-re-reveal-title-slide~ to ~nil~ or add the following header line:
    ~#+REVEAL_TITLE_SLIDE:~

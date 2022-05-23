@@ -360,7 +360,8 @@ else get value from custom variable `org-re-reveal-hlevel'."
 (defcustom org-re-reveal-title-slide 'auto
   "If nil or empty string, do not insert a title slide.
 Otherwise (`auto' or non-empty string), insert title slide.
-When `auto', generate automatic title slide.
+When `auto', generate minimal automatic title slide with
+`org-re-reveal--auto-title-slide-template'.
 When set to a string, use this string as format string for the title
 slide, where the following %-sequences are allowed:
 
@@ -2202,7 +2203,9 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
                (format "\n%s%s</pre>" pre-tag code)))))))))
 
 (defun org-re-reveal--auto-title-slide-template (info spec)
-  "Generate the automatic title slide template with INFO and SPEC."
+  "Generate an automatic title slide template with INFO and SPEC.
+Add title, author, e-mail, date, and timestamp (if enabled by
+org-export options)."
   (let* ((title (org-export-data (plist-get info :title) info))
          (author (cdr (assq ?a spec)))
          (email (cdr (assq ?e spec)))
