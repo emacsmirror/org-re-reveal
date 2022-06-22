@@ -13,6 +13,12 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.14.1] - 2022-06-22
+*** Fixed
+    - MR !35 includes a workaround for the data URI issue of reveal.js:
+      https://github.com/hakimel/reveal.js/issues/3213
+      Addresses issue #82 (again).
+
 ** [3.14.0] - 2022-05-20
 *** Added
     - Keyword ~REVEAL_TITLE_SLIDE_EXTRA_ATTR~
