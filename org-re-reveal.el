@@ -1090,7 +1090,7 @@ have been appropriate..."
      ;; Base64 content
      (with-temp-buffer
        (insert-file-contents-literally clean-path)
-       (base64-encode-region 1 (point-max))
+       (base64-encode-region 1 (point-max) 'no-line-break)
        (buffer-string)))))
 
 (defun org-re-reveal--maybe-encode-with-data-uri (path info)
