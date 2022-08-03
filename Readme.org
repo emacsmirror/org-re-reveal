@@ -246,6 +246,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_DEFAULT_FRAG_STYLE~                  | ~org-re-reveal-default-frag-style~       |
 | ~nil~                             | ~REVEAL_DEFAULT_SLIDE_BACKGROUND~            | ~nil~                                    |
 | ~nil~                             | ~REVEAL_DEFAULT_SLIDE_BACKGROUND_SIZE~       | ~nil~                                    |
+| ~nil~                             | ~REVEAL_DEFAULT_SLIDE_BACKGROUND_OPACITY~    | ~nil~                                    |
 | ~nil~                             | ~REVEAL_DEFAULT_SLIDE_BACKGROUND_POSITION~   | ~nil~                                    |
 | ~nil~                             | ~REVEAL_DEFAULT_SLIDE_BACKGROUND_REPEAT~     | ~nil~                                    |
 | ~nil~                             | ~REVEAL_DEFAULT_SLIDE_BACKGROUND_TRANSITION~ | ~nil~                                    |
@@ -291,11 +292,18 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_STATE~                   | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_TIMING~                  | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND_SIZE~         | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND_OPACITY~      | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND_POSITION~     | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND_REPEAT~       | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND_TRANSITION~   | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_NOTES~                   | ~org-re-reveal-title-slide-notes~        |
 | ~nil~                             | ~REVEAL_TOC_SLIDE_STATE~                     | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TOC_SLIDE_TIMING~                    | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TOC_SLIDE_BACKGROUND_SIZE~           | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TOC_SLIDE_BACKGROUND_OPACITY~        | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TOC_SLIDE_BACKGROUND_POSITION~       | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TOC_SLIDE_BACKGROUND_REPEAT~         | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TOC_SLIDE_BACKGROUND_TRANSITION~     | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TOC_SLIDE_CLASS~                     | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TOC_SLIDE_TITLE~                     | ~org-re-reveal-toc-slide-title~          |
 | ~nil~                             | ~REVEAL_TRANS~                               | ~org-re-reveal-transition~               |
@@ -560,20 +568,22 @@ Whether anyone wants to use those package in isolation, is up to them.
    [[https://revealjs.com/backgrounds/][background images and videos of reveal.js 4]]
    (and later), is provided with [[#slide-attributes][slide attributes]].
 
-   Keywords ~REVEAL_DEFAULT_SLIDE_BACKGROUND~, ~REVEAL_DEFAULT_SLIDE_BACKGROUND_POSITION~,
-   ~REVEAL_DEFAULT_SLIDE_BACKGROUND_REPEAT~, ~REVEAL_DEFAULT_SLIDE_BACKGROUND_SIZE~, and
+   Keywords ~REVEAL_DEFAULT_SLIDE_BACKGROUND~,
+   ~REVEAL_DEFAULT_SLIDE_BACKGROUND_OPACITY~,
+   ~REVEAL_DEFAULT_SLIDE_BACKGROUND_POSITION~
+   ~REVEAL_DEFAULT_SLIDE_BACKGROUND_REPEAT~,
+   ~REVEAL_DEFAULT_SLIDE_BACKGROUND_SIZE~, and
    ~REVEAL_DEFAULT_SLIDE_BACKGROUND_TRANSITION~ can be used to specify
    default values for options explained subsequently for individual
    slides.
 
 #+REVEAL: split
 
-   Additional keywords ~REVEAL_TITLE_SLIDE_BACKGROUND~,
-   ~REVEAL_TITLE_SLIDE_BACKGROUND_POSITION~,
-   ~REVEAL_TITLE_SLIDE_BACKGROUND_REPEAT~,
-   ~REVEAL_TITLE_SLIDE_BACKGROUND_SIZE~,
-   ~REVEAL_TITLE_SLIDE_BACKGROUND_TRANSITION~ set those options for
-   the title slide.
+   Additional keywords ~REVEAL_TITLE_SLIDE_BACKGROUND~ and
+   ~REVEAL_TOC_SLIDE_BACKGROUND~ as well we variants for
+   position, size, etc. set those options for the title slide and the
+   TOC slide (e.g., ~REVEAL_TITLE_SLIDE_BACKGROUND_POSITION~ or
+   ~REVEAL_TOC_SLIDE_BACKGROUND_SIZE~).
 
 *** Colored Background
    :PROPERTIES:
@@ -640,6 +650,13 @@ Whether anyone wants to use those package in isolation, is up to them.
     * =REVEAL_TITLE_SLIDE_BACKGROUND=: A URL to the background image.
     * =REVEAL_TITLE_SLIDE_BACKGROUND_SIZE=: HTML size specification, e.g. ~200px~.
     * =REVEAL_TITLE_SLIDE_BACKGROUND_REPEAT=: set to ~repeat~ to repeat the image.
+
+    For backgrounds on the TOC slide, replace ~TITLE~ with ~TOC~ in
+    the above keywords.
+
+*** Inherited backgrounds
+    Customize ~org-use-property-inheritance~ to inherit the background
+    for child headlines from a parent.
 
 ** Slide Size
 
