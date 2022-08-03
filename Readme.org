@@ -1371,6 +1371,18 @@ x
 #+BEGIN_SRC perl
 I don't know perl!
 #+END_SRC
+
+** Multiple columns
+If you need multiple columns (in multi-column slide layouts),
+[[https://gitlab.com/oer/org-re-reveal/-/issues/88][that issue]]
+demonstrates how to use grid layouts with ~div~ wrappers.
+
+Alternatively, with
+[[https://gitlab.com/oer/emacs-reveal][emacs-reveal]],
+a special environment is available for left and right columns, see its
+[[https://gitlab.com/oer/emacs-reveal-howto/-/blob/master/howto.org][howto]]
+for an example.
+
 * Thanks
 
   Courtesy to:
