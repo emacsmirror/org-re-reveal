@@ -141,6 +141,7 @@
       (:reveal-codemirror-config "REVEAL_CODEMIRROR_CONFIG" nil org-re-reveal-klipse-codemirror newline)
       (:reveal-default-frag-style "REVEAL_DEFAULT_FRAG_STYLE" nil org-re-reveal-default-frag-style t)
       (:reveal-default-slide-background "REVEAL_DEFAULT_SLIDE_BACKGROUND" nil nil t)
+      (:reveal-default-slide-background-opacity "REVEAL_DEFAULT_SLIDE_BACKGROUND_OPACITY" nil nil t)
       (:reveal-default-slide-background-position "REVEAL_DEFAULT_SLIDE_BACKGROUND_POSITION" nil nil t)
       (:reveal-default-slide-background-repeat "REVEAL_DEFAULT_SLIDE_BACKGROUND_REPEAT" nil nil t)
       (:reveal-default-slide-background-size "REVEAL_DEFAULT_SLIDE_BACKGROUND_SIZE" nil nil t)
@@ -184,6 +185,7 @@
       (:reveal-theme "REVEAL_THEME" nil org-re-reveal-theme t)
       (:reveal-title-slide "REVEAL_TITLE_SLIDE" nil org-re-reveal-title-slide newline)
       (:reveal-title-slide-background "REVEAL_TITLE_SLIDE_BACKGROUND" nil nil t)
+      (:reveal-title-slide-background-opacity "REVEAL_TITLE_SLIDE_BACKGROUND_OPACITY" nil nil t)
       (:reveal-title-slide-background-position "REVEAL_TITLE_SLIDE_BACKGROUND_POSITION" nil nil t)
       (:reveal-title-slide-background-repeat "REVEAL_TITLE_SLIDE_BACKGROUND_REPEAT" nil nil t)
       (:reveal-title-slide-background-size "REVEAL_TITLE_SLIDE_BACKGROUND_SIZE" nil nil t)
@@ -195,6 +197,15 @@
       (:reveal-toc-slide-class "REVEAL_TOC_SLIDE_CLASS" nil nil t)
       (:reveal-toc-slide-state "REVEAL_TOC_SLIDE_STATE" nil nil t)
       (:reveal-toc-slide-title "REVEAL_TOC_SLIDE_TITLE" nil org-re-reveal-toc-slide-title t)
+      (:reveal-toc-slide-background "REVEAL_TOC_SLIDE_BACKGROUND" nil nil t)
+      (:reveal-toc-slide-background-opacity "REVEAL_TOC_SLIDE_BACKGROUND_OPACITY" nil nil t)
+      (:reveal-toc-slide-background-position "REVEAL_TOC_SLIDE_BACKGROUND_POSITION" nil nil t)
+      (:reveal-toc-slide-background-repeat "REVEAL_TOC_SLIDE_BACKGROUND_REPEAT" nil nil t)
+      (:reveal-toc-slide-background-size "REVEAL_TOC_SLIDE_BACKGROUND_SIZE" nil nil t)
+      (:reveal-toc-slide-background-transition "REVEAL_TOC_SLIDE_BACKGROUND_TRANSITION" nil nil t)
+      (:reveal-toc-slide-extra-attr "REVEAL_TOC_SLIDE_EXTRA_ATTR" nil nil space)
+      (:reveal-toc-slide-state "REVEAL_TOC_SLIDE_STATE" nil nil t)
+      (:reveal-toc-slide-timing "REVEAL_TOC_SLIDE_TIMING" nil nil t)
       (:reveal-trans "REVEAL_TRANS" nil org-re-reveal-transition t)
       (:reveal-version "REVEAL_VERSION" nil org-re-reveal-revealjs-version t))
 
@@ -1125,18 +1136,25 @@ Return empty string or one starting with a space character."
          (default-slide-background-position (plist-get info :reveal-default-slide-background-position))
          (default-slide-background-repeat (plist-get info :reveal-default-slide-background-repeat))
          (default-slide-background-transition (plist-get info :reveal-default-slide-background-transition))
+         (default-slide-background-opacity (plist-get info :reveal-default-slide-background-opacity))
+         (slide-background (org-export-get-node-property :REVEAL_BACKGROUND headline org-use-property-inheritance))
          (attrs (org-html--make-attribute-string
-                 `(:data-transition ,(org-element-property :REVEAL_DATA_TRANSITION headline)
-                                    :data-state ,(org-element-property :REVEAL_DATA_STATE headline)
-                                    :data-background ,(or (org-element-property :REVEAL_BACKGROUND headline)
-                                                          default-slide-background)
-                                    :data-background-size ,(or (org-element-property :REVEAL_BACKGROUND_SIZE headline)
+                 `(:data-transition ,(org-export-get-node-property :REVEAL_DATA_TRANSITION headline)
+                                    :data-state ,(org-export-get-node-property :REVEAL_DATA_STATE headline)
+                                    ;; Allow empty slide background to override default one.
+                                    :data-background ,(if slide-background
+                                                          (when (< 0 (length slide-background))
+                                                            slide-background)
+                                                        default-slide-background)
+                                    :data-background-size ,(or (org-export-get-node-property :REVEAL_BACKGROUND_SIZE headline org-use-property-inheritance)
                                                                default-slide-background-size)
-                                    :data-background-position ,(or (org-element-property :REVEAL_BACKGROUND_POSITION headline)
+                                    :data-background-position ,(or (org-export-get-node-property :REVEAL_BACKGROUND_POSITION headline org-use-property-inheritance)
                                                                    default-slide-background-position)
-                                    :data-background-repeat ,(or (org-element-property :REVEAL_BACKGROUND_REPEAT headline)
+                                    :data-background-repeat ,(or (org-export-get-node-property :REVEAL_BACKGROUND_REPEAT headline org-use-property-inheritance)
                                                                  default-slide-background-repeat)
-                                    :data-background-transition ,(or (org-element-property :REVEAL_BACKGROUND_TRANS headline)
+                                    :data-background-opacity ,(or (org-export-get-node-property :REVEAL_BACKGROUND_OPACITY headline org-use-property-inheritance)
+                                                                 default-slide-background-opacity)
+                                    :data-background-transition ,(or (org-export-get-node-property :REVEAL_BACKGROUND_TRANS headline org-use-property-inheritance)
                                                                      default-slide-background-transition)))))
     (if (> (length attrs) 0) (format " %s" attrs) "")))
 
@@ -1747,6 +1765,63 @@ return a footer if OBJECT has a parent headline."
         (format org-re-reveal-slide-footer-html footer)
       "")))
 
+(defun org-re-reveal--slide-common-attrs (type info)
+  "Return string for attributes of slide with TYPE from INFO.
+TYPE specifies \"toc\" or \"title\"."
+  (let ((background
+         (plist-get info (intern
+                          (concat ":reveal-" type
+                                  "-slide-background"))))
+        (background-size
+         (plist-get info (intern
+                          (concat ":reveal-" type
+                                  "-slide-background-size"))))
+        (background-position
+         (plist-get info (intern
+                          (concat ":reveal-" type
+                                  "-slide-background-position"))))
+        (background-repeat
+         (plist-get info (intern
+                          (concat ":reveal-" type
+                                  "-slide-background-repeat"))))
+        (background-opacity
+         (plist-get info (intern
+                          (concat ":reveal-" type
+                                  "-slide-background-opacity"))))
+        (background-transition
+         (plist-get info (intern
+                          (concat ":reveal-" type
+                                  "-slide-background-transition"))))
+        (extra-attr
+         (org-re-reveal--maybe-replace-background
+          (plist-get info (intern
+                           (concat ":reveal-" type "-slide-extra-attr")))
+          info))
+        (state
+         (plist-get info (intern
+                          (concat ":reveal-" type "-slide-state"))))
+        (timing
+         (plist-get info (intern
+                          (concat ":reveal-" type "-slide-timing")))))
+    (concat
+     (when (< 0 (length background))
+       (concat " data-background=\"" background "\""))
+     (when (< 0 (length background-size))
+       (concat " data-background-size=\"" background-size "\""))
+     (when (< 0 (length background-position))
+       (concat " data-background-position=\"" background-position "\""))
+     (when (< 0 (length background-repeat))
+       (concat " data-background-repeat=\"" background-repeat "\""))
+     (when (< 0 (length background-opacity))
+       (concat " data-background-opacity=\"" background-opacity "\""))
+     (when (< 0 (length background-transition))
+       (concat " data-background-transition=\"" background-transition "\""))
+     (when (< 0 (length extra-attr))
+       (concat " " (org-re-reveal--maybe-replace-background
+                    extra-attr info)))
+     (when (< 0 (length state)) (concat " data-state=\"" state "\""))
+     (when (< 0 (length timing)) (concat " data-timing=\"" timing "\"")))))
+
 (defun org-re-reveal-toc (depth info)
   "Build a slide of table of contents with DEPTH and INFO."
   (let ((toc (org-html-toc depth info)))
@@ -1759,7 +1834,7 @@ return a footer if OBJECT has a parent headline."
            (toc-slide-with-footer (or
                                    (plist-get info :reveal-slide-global-footer)
                                    (plist-get info :reveal-slide-toc-footer)))
-           (toc-slide-state (plist-get info :reveal-toc-slide-state))
+           (toc-slide-attrs (org-re-reveal--slide-common-attrs "toc" info))
            (toc-slide-class (plist-get info :reveal-toc-slide-class))
            (toc-slide-title (plist-get info :reveal-toc-slide-title))
            (toc (replace-regexp-in-string
@@ -1771,8 +1846,7 @@ return a footer if OBJECT has a parent headline."
                      toc-slide-title toc)
                   toc)))
       (concat "<section id=\"table-of-contents-section\""
-              (when toc-slide-state
-                (format " data-state=\"%s\"" toc-slide-state))
+              (or toc-slide-attrs "")
               ">\n"
               (when toc-slide-with-header
                 (let ((header (plist-get info :reveal-slide-header)))
@@ -2283,34 +2357,11 @@ INFO is a plist holding export options."
                       (and (stringp title-slide) (< 0 (length title-slide))))
                   (or (not (plist-get info :reveal-subtree))
                       (plist-get info :reveal-subtree-with-title-slide)))
-         (let ((title-slide-background (plist-get info :reveal-title-slide-background))
-               (title-slide-background-size (plist-get info :reveal-title-slide-background-size))
-               (title-slide-background-position (plist-get info :reveal-title-slide-background-position))
-               (title-slide-background-repeat (plist-get info :reveal-title-slide-background-repeat))
-               (title-slide-background-transition (plist-get info :reveal-title-slide-background-transition))
-               (title-slide-extra-attr (plist-get info :reveal-title-slide-extra-attr))
-               (title-slide-state (plist-get info :reveal-title-slide-state))
-               (title-slide-timing (plist-get info :reveal-title-slide-timing))
+         (let ((slide-attrs (org-re-reveal--slide-common-attrs "title" info))
                (title-slide-with-header (plist-get info :reveal-slide-global-header))
                (title-slide-with-footer (plist-get info :reveal-slide-global-footer)))
            (concat "<section id=\"sec-title-slide\""
-                   (when title-slide-background
-                     (concat " data-background=\"" title-slide-background "\""))
-                   (when title-slide-background-size
-                     (concat " data-background-size=\"" title-slide-background-size "\""))
-                   (when title-slide-background-position
-                     (concat " data-background-position=\"" title-slide-background-position "\""))
-                   (when title-slide-background-repeat
-                     (concat " data-background-repeat=\"" title-slide-background-repeat "\""))
-                   (when title-slide-background-transition
-                     (concat " data-background-transition=\"" title-slide-background-transition "\""))
-                   (when title-slide-extra-attr
-                     (concat " " (org-re-reveal--maybe-replace-background
-                                  title-slide-extra-attr info)))
-                   (when title-slide-state
-                     (concat " data-state=\"" title-slide-state "\""))
-                   (when title-slide-timing
-                     (concat " data-timing=\"" title-slide-timing "\""))
+                   (or slide-attrs "")
                    ">\n"
                    (when title-slide-with-header
                      (let ((header (plist-get info :reveal-slide-header)))
