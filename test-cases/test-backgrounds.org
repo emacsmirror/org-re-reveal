@@ -1,0 +1,31 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2022 Jens Lechtenbörger
+
+#+OPTIONS: reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+# Note that the default background does not apply to generated slides.
+#+REVEAL_DEFAULT_SLIDE_BACKGROUND: ./images/adult-education-3258944_640.jpg
+
+# Separate keywords exist for title slide and toc slide.  Specify toc:
+#+REVEAL_TOC_SLIDE_BACKGROUND: ./images/adult-education-3258944_640.jpg
+
+#+Title: Slides with backgrounds (no background on title slide)
+#+Author: Jens Lechtenbörger
+
+* First slide, default background
+Some text
+
+* Second slide, different background
+  :PROPERTIES:
+  :reveal_background: linear-gradient(to left, #910830, #521623)
+  :END:
+
+More text
+
+** On background inheritance
+The previous slide uses a property for the background.  To have that
+inherited here, customize ~org-use-property-inheritance~.
+
+* Another slide, again default background

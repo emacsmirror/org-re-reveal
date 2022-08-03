@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Slides with backgrounds (no background on title slide)</title>
+<meta name="author" content="Jens Lechtenbörger"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/black.css" id="theme"/>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide">
+<h1 class="title">Slides with backgrounds (no background on title slide)</h1><h2 class="author">Jens Lechtenbörger</h2><p class="date">Created:{{date}}</p>
+</section>
+<section id="table-of-contents-section" data-background="./images/adult-education-3258944_640.jpg">
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#/slide-1">1. First slide, default background</a></li>
+<li><a href="#/slide-2">2. Second slide, different background</a></li>
+<li><a href="#/slide-3">3. Slide with video</a></li>
+</ul>
+</div>
+</div>
+</section>
+
+<section>
+<section id="slide-1" data-background="./images/adult-education-3258944_640.jpg">
+<h2 id="1"><span class="section-number-2">1.</span> First slide, default background</h2>
+<p>
+Some text
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-2" data-background="linear-gradient(to left, #910830, #521623)">
+<h2 id="2"><span class="section-number-2">2.</span> Second slide, different background</h2>
+<p>
+More text
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-3" data-background-video="https://static.slid.es/site/homepage/v1/homepage-video-editor.mp4" data-background-video-loop data-background-video-muted>
+<h2 id="3"><span class="section-number-2">3.</span> Slide with video</h2>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/markdown/markdown.js"></script>
+<script src="./reveal.js/plugin/notes/notes.js"></script>
+<script src="./reveal.js/plugin/search/search.js"></script>
+<script src="./reveal.js/plugin/zoom/zoom.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+overview: true,
+width: 1400,
+height: 1000,
+
+transition: 'convex',
+transitionSpeed: 'default',
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealMarkdown, RevealNotes, RevealSearch, RevealZoom ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+</body>
+</html>

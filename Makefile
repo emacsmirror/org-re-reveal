@@ -52,7 +52,7 @@ ELS          := org-re-reveal.el ox-re-reveal.el
 
 CORTELS      := $(TESTFILE) cort-test.el
 
-REVEALTEST   := blockquote embed-resources extra-scripts footer footer-global highlightjs internal-links klipsify klipsify-python merge-classes mobile-app multiplex noslide options pdf-notes plugins postscript remote-plugin reveal-toc revealjs4 src-blocks-hl src-blocks-no-hl slide-container slide-numbers slide-numbers-toc slide-numbers-reveal-toc split timing title-slide title-slide-notes toc-de toc-default toc-user
+REVEALTEST   := backgrounds backgrounds-revealjs4 blockquote embed-resources extra-scripts footer footer-global highlightjs internal-links klipsify klipsify-python merge-classes mobile-app multiplex noslide options pdf-notes plugins postscript remote-plugin reveal-toc revealjs4 src-blocks-hl src-blocks-no-hl slide-container slide-numbers slide-numbers-toc slide-numbers-reveal-toc split timing title-slide title-slide-notes toc-de toc-default toc-user
 
 ##################################################
 
@@ -140,8 +140,8 @@ clean:
 #  depend files
 #
 
-# Use recent Org mode.
-# The URL needs to updated whenever the archive is no longer available.
+# Use (somewhat) recent Org mode.
+# The URL needs to be updated whenever the archive is no longer available.
 org-plus-contrib:
 	curl -L https://orgmode.org/elpa/org-plus-contrib-20210920.tar > $@.tar
 	mkdir $@ && tar xf $@.tar -C $@ --strip-components 1

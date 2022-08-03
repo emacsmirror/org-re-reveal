@@ -126,7 +126,9 @@
               "https://gitlab.com/oer/org-re-reveal")))
 
 (mapc #'org-re-reveal-tests-create-normal-test
-      '("blockquote"
+      '("backgrounds"
+        "backgrounds-revealjs4"
+        "blockquote"
         "custom-theme"
         "embed-resources"
         "extra-scripts"

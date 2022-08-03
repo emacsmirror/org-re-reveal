@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Slides with backgrounds (no background on title slide)</title>
+<meta name="author" content="Jens Lechtenbörger"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/css/theme/black.css" id="theme"/>
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide">
+<h1 class="title">Slides with backgrounds (no background on title slide)</h1><h2 class="author">Jens Lechtenbörger</h2><p class="date">Created:{{date}}</p>
+</section>
+<section id="table-of-contents-section" data-background="./images/adult-education-3258944_640.jpg">
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#/slide-1">1. First slide, default background</a></li>
+<li><a href="#/slide-2">2. Second slide, different background</a>
+<ul>
+<li><a href="#/slide-2-1">2.1. On background inheritance</a></li>
+</ul>
+</li>
+<li><a href="#/slide-3">3. Another slide, again default background</a></li>
+</ul>
+</div>
+</div>
+</section>
+
+<section>
+<section id="slide-1" data-background="./images/adult-education-3258944_640.jpg">
+<h2 id="1"><span class="section-number-2">1.</span> First slide, default background</h2>
+<p>
+Some text
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-2" data-background="linear-gradient(to left, #910830, #521623)">
+<h2 id="2"><span class="section-number-2">2.</span> Second slide, different background</h2>
+<p>
+More text
+</p>
+
+</section>
+<section id="slide-2-1" data-background="./images/adult-education-3258944_640.jpg">
+<h3 id="2-1"><span class="section-number-3">2.1.</span> On background inheritance</h3>
+<p>
+The previous slide uses a property for the background.  To have that
+inherited here, customize <code>org-use-property-inheritance</code>.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-3" data-background="./images/adult-education-3258944_640.jpg">
+<h2 id="3"><span class="section-number-2">3.</span> Another slide, again default background</h2>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/lib/js/head.min.js"></script>
+<script src="./reveal.js/js/reveal.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+overview: true,
+width: 1400,
+height: 1000,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'convex', // see README of reveal.js for options
+transitionSpeed: 'default',
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+ { src: './reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }]
+
+});
+</script>
+</body>
+</html>
