@@ -490,6 +490,25 @@ Whether anyone wants to use those package in isolation, is up to them.
    :END:
 #+END_SRC
 
+** Images
+
+   Add images as usual to Org documents (see above HLevel
+   visualizations), with attributes (e.g., for resizing) as shown in
+   the Org manual.
+
+   For SVG images, resizing seems to be more complicated.  See
+   [[https://gitlab.com/oer/org-re-reveal/-/issues/86][that issue]]
+   for some options.
+
+   That issue also points to image macros with emacs-reveal (defined
+   ca. line 130 in
+   [[https://gitlab.com/oer/oer-reveal/-/raw/master/org/config.org][this file]],
+   using meta-data for captions and license information, particularly
+   suitable for OER).
+   Note that those macros make use of special height specifications
+   (to prevent overflowing images when the screen’s resolution is
+   larger than the slide height with reveal.js).
+
 ** Force Split
 
    If one heading has too many things to fit into one slide, you can
