@@ -1041,16 +1041,30 @@ Whether anyone wants to use those package in isolation, is up to them.
 
    *IMPORTANT*: Displaying equations requires an internet connection
    to load JavaScript or a local MathJax installation.
-   For the latter, set option =REVEAL_MATHJAX_URL= to
-   the URL pointing to the local MathJax location.
 
    If you use MathJax from a remote location, your privacy policy
    should explain this.
 
+   As explained next, two options exist to activate MathJax.
+
+*** Use MathJax
+    Two alternatives exist.
+
+    1. Reveal.js added the ~math~ plugin in version 4.  Add that to
+       ~org-re-reveal-plugins~.
+    2. If org-re-reveal detects LaTeX math code and the ~math~ plugin
+       is not used, a ~script~ element loads the MathJax library.  Set
+       option =REVEAL_MATHJAX_URL= to a remote or local MathJax
+       location (if you are not happy with the default value of
+       ~org-re-reveal-mathjax-url~).
+
 *** Configuration of MathJax
-    To
+    The [[https://revealjs.com/math/][Reveal.js documentation]]
+    explains how to configure MathJax with the ~math~ plugin.
+
+    If you do not use the ~math~ plugin, you may
     [[http://docs.mathjax.org/en/latest/options/output/chtml.html][configure MathJax]],
-    use =REVEAL_HEAD_PREAMBLE= (that keyword and related ones
+    with =REVEAL_HEAD_PREAMBLE= (that keyword and related ones
     are documented on subsequent slides).
 
     #+BEGIN_SRC org
