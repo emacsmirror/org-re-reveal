@@ -667,7 +667,7 @@ See URL `https://revealjs.com/config/'."
 (defcustom org-re-reveal-extra-options nil
   "Extra options to be passed to Reveal.initialize().
 Useful to specify options without keyword in org-re-reveal, e.g.,
-\"controlsTutorial: false, controlsLayout: 'edges'\".
+\"controlsTutorial: false, controlsLayout: \\='edges\\='\".
 Individual options are separated by comma.
 For the current list of reveal.js options, see URL
 `https://github.com/hakimel/reveal.js/#configuration.'"
