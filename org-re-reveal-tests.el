@@ -2,7 +2,7 @@
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
-;; Copyright (C) 2020      Jens Lechtenbörger
+;; SPDX-FileCopyrightText: 2020-2022 Jens Lechtenbörger
 
 ;; This file is not part of GNU Emacs.
 
@@ -138,6 +138,7 @@
         "internal-links"
         "klipsify"
         "klipsify-python"
+        "math"
         "merge-classes"
         "mobile-app"
         "multiplex"

@@ -1,0 +1,18 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2022 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+# Add math plugin to default ones.
+#+REVEAL_PLUGINS: (math markdown notes search zoom)
+
+# Enable reveal.js 4.
+#+REVEAL_VERSION: 4
+
+#+Title: Math plugin of reveal.js
+#+Author: Jens Lechtenbörger
+
+* A slide with formula
+${n! \over k!(n-k)!} = {n \choose k}$
