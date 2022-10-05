@@ -217,7 +217,9 @@
       (link . org-re-reveal-link)
       (latex-environment . org-re-reveal-latex-environment)
       (latex-fragment . (lambda (frag contents info)
-                          (setq info (plist-put info :reveal-mathjax t))
+                          (unless (member 'math
+                                          (org-re-reveal--enabled-plugins info))
+                            (setq info (plist-put info :reveal-mathjax t)))
                           (org-html-latex-fragment frag contents info)))
       (plain-list . org-re-reveal-plain-list)
       (section . org-re-reveal-section)
@@ -676,9 +678,13 @@ For the current list of reveal.js options, see URL
 
 (defcustom org-re-reveal-mathjax-url
   "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-  "Default MathJax URL."
+  "Default MathJax URL.
+Set to empty string to avoid loading of MathJax even if LaTeX formulas are used.
+This variable is ignored if the math plugin of reveal.js is activated via
+`org-re-reveal-plugins'."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type 'string
+  :package-version '(org-re-reveal . "3.16.0"))
 
 (defcustom org-re-reveal-preamble nil
   "Preamble contents."
@@ -1397,9 +1403,11 @@ CSS-PATH for built in themes."
                root-path)))))
 
 (defun org-re-reveal-mathjax-scripts (info)
-  "Return HTML code for declaring MathJax scripts for INFO."
-  (if (plist-get info :reveal-mathjax)
-      ;; MathJax enabled.
+  "Return HTML code for declaring MathJax scripts for INFO.
+Only do this if MathJax is enabled and `org-re-reveal-mathjax-url' is
+not the empty string."
+  (if (and (plist-get info :reveal-mathjax)
+           (< 0 (length (plist-get info :reveal-mathjax-url))))
       (format "<script type=\"text/javascript\" src=\"%s\"></script>\n"
               (plist-get info :reveal-mathjax-url))))
 
@@ -2115,8 +2123,13 @@ the result is the Data URI of the referenced image."
 (defun org-re-reveal-latex-environment (latex-env contents info)
   "Transcode a LaTeX environment from Org to Reveal.
 LATEX-ENV is the Org element.  CONTENTS is the contents of the environment.
-INFO is a plist holding contextual information."
-  (setq info (plist-put info :reveal-mathjax t))
+INFO is a plist holding contextual information.
+Before version 3.16.0, org-re-reveal enabled MathJax for LaTeX environments
+by adding a script element to load the library.
+Since version 3.16.0, the script element is not added if the math plugin
+of reveal.js is activated."
+  (unless (member 'math (org-re-reveal--enabled-plugins info))
+    (setq info (plist-put info :reveal-mathjax t)))
   (let ((attrs (org-export-read-attribute :attr_html latex-env)))
     (format "<div%s>\n%s\n</div>\n"
             (if attrs (concat " " (org-html--make-attribute-string attrs)) "")
