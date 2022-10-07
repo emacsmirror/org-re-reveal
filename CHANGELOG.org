@@ -13,6 +13,11 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.16.1] - 2022-10-07
+*** Fixed
+    - Also test whether ~math~ plugin added with ~REVEAL_ADD_PLUGIN~.
+      Related to issue emacs-reveal#34.
+
 ** [3.16.0] - 2022-10-05
 *** Changed
     - Do not generate MathJax ~script~ element if
