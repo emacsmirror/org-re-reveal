@@ -1,7 +1,7 @@
 # Local IspellDict: en
 #+STARTUP: showeverything
-# SPDX-License-Identifier: GPL-3.0-or-later
-# SPDX-FileCopyrightText: 2019-2021 Jens Lechtenbörger
+#+SPDX-License-Identifier: GPL-3.0-or-later
+#+SPDX-FileCopyrightText: 2019-2021 Jens Lechtenbörger
 
 #+TITLE: Sample presentations generated with org-re-reveal
 #+AUTHOR: Jens Lechtenbörger
