@@ -216,11 +216,7 @@
       (keyword . org-re-reveal-keyword)
       (link . org-re-reveal-link)
       (latex-environment . org-re-reveal-latex-environment)
-      (latex-fragment . (lambda (frag contents info)
-                          (unless (member 'math
-                                          (org-re-reveal--enabled-plugins info))
-                            (setq info (plist-put info :reveal-mathjax t)))
-                          (org-html-latex-fragment frag contents info)))
+      (latex-fragment . org-re-reveal-latex-fragment)
       (plain-list . org-re-reveal-plain-list)
       (section . org-re-reveal-section)
       (src-block . org-re-reveal-src-block)
@@ -2120,6 +2116,11 @@ the result is the Data URI of the referenced image."
         (org-re-reveal--maybe-replace-in-link (org-html-link link desc info)
                                               allow-inter-link)))))
 
+(defun org-re-reveal--math-enabled-p (info)
+  "Return non-nil if the math plugin is enabled with INFO."
+  (or (member 'math (org-re-reveal--enabled-plugins info))
+      (member "math" (org-re-reveal--enabled-plugins info))))
+
 (defun org-re-reveal-latex-environment (latex-env contents info)
   "Transcode a LaTeX environment from Org to Reveal.
 LATEX-ENV is the Org element.  CONTENTS is the contents of the environment.
@@ -2128,12 +2129,20 @@ Before version 3.16.0, org-re-reveal enabled MathJax for LaTeX environments
 by adding a script element to load the library.
 Since version 3.16.0, the script element is not added if the math plugin
 of reveal.js is activated."
-  (unless (member 'math (org-re-reveal--enabled-plugins info))
+  (unless (org-re-reveal--math-enabled-p info)
     (setq info (plist-put info :reveal-mathjax t)))
   (let ((attrs (org-export-read-attribute :attr_html latex-env)))
     (format "<div%s>\n%s\n</div>\n"
             (if attrs (concat " " (org-html--make-attribute-string attrs)) "")
             (org-html-latex-environment latex-env contents info))))
+
+(defun org-re-reveal-latex-fragment (frag contents info)
+  "Transcode a LaTeX fragment from Org to Reveal.
+FRAG is the Org element.  CONTENTS is the contents of the fragment.
+INFO is a plist holding contextual information."
+  (unless (org-re-reveal--math-enabled-p info)
+    (setq info (plist-put info :reveal-mathjax t)))
+  (org-html-latex-fragment frag contents info))
 
 (defun org-re-reveal-plain-list (plain-list contents info)
   "Transcode a PLAIN-LIST element from Org to Reveal.
