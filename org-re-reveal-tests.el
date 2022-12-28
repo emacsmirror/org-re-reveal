@@ -146,6 +146,7 @@
         "options"
         "pdf-notes"
         "plugins"
+        "plugin-css"
         "postscript"
         "remote-plugin"
         "reveal-toc"

@@ -1,0 +1,28 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2020,2022 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+# Enable built-in plugins.
+#+REVEAL_PLUGINS: (notes search zoom)
+
+# Enable external plugins for reveal.js 4.
+#+REVEAL_VERSION: 4
+#+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard plugin/chalkboard/plugin.js plugin/chalkboard/style.css https://cdn.jsdelivr.net/npm/reveal.js-plugins/menu/font-awesome/css/fontawesome.css
+#+REVEAL_ADD_PLUGIN: customcontrol RevealCustomControls plugin/customcontrols/plugin.js plugin/customcontrols/style.css
+#+REVEAL_ADD_PLUGIN: menu RevealMenu plugin/menu/menu.js
+
+#+Title: Activate plugins with CSS
+#+Author: Jens Lechtenbörger
+
+* An ordinary slide
+  - The header of the source file activates three built-in and three
+    external plugins
+    - (The external plugin needs to be installed separately)
+  - In this test file, keywords ~REVEAL_ADD_PLUGIN~ add not only
+    JavaScript libraries but also local and remote CSS resources
+    - This is just a test case, not a working presentation
+    - In particular, see https://github.com/rajgoel/reveal.js-plugins/issues/158
+    - Besides, I never used RevealMenu...
