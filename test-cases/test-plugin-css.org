@@ -10,6 +10,9 @@
 
 # Enable external plugins for reveal.js 4.
 #+REVEAL_VERSION: 4
+
+# With REVEAL_ADD_PLUGIN, the first three components are required.
+# Afterwards, (local or remote) CSS resources may be specified:
 #+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard plugin/chalkboard/plugin.js plugin/chalkboard/style.css https://cdn.jsdelivr.net/npm/reveal.js-plugins/menu/font-awesome/css/fontawesome.css
 #+REVEAL_ADD_PLUGIN: customcontrol RevealCustomControls plugin/customcontrols/plugin.js plugin/customcontrols/style.css
 #+REVEAL_ADD_PLUGIN: menu RevealMenu plugin/menu/menu.js
