@@ -1195,8 +1195,9 @@ Whether anyone wants to use those package in isolation, is up to them.
 
 ** Extra Stylesheets
 
-   Set =REVEAL_EXTRA_CSS= to a stylesheet file path in order to load extra custom
-   styles after loading a theme.
+   Add stylesheet file path (or remote URL) with =REVEAL_EXTRA_CSS= in
+   order to load extra custom styles after loading a theme.
+   This keyword can be used multiple times.
 
 #+BEGIN_SRC org
 ,#+REVEAL_EXTRA_CSS: url-to-custom-stylesheet.css

@@ -467,7 +467,7 @@ HTML file."
           (const nil)))
 
 (defcustom org-re-reveal-extra-css ""
-  "URL to extra css file."
+  "Newline separated names (or remote URLs) for extra CSS files."
   :group 'org-export-re-reveal
   :type 'string)
 
