@@ -828,10 +828,11 @@ in the org buffer comments as follows:
     (search "RevealSearch" "plugin/search/search.js")
     (zoom "RevealZoom" "plugin/zoom/zoom.js"))
   "Initialization for reveal.js 4.x plugins.
-This is a list of triples.  Each triple consists of
+This is a list of lists.  Each list consists of
 - the plugin name, listed in `org-re-reveal-plugins',
 - the JavaScript name for the plugin,
-- the name of the JavaScript file.
+- the name of the JavaScript file,
+- zero or more names of CSS files.
 
 Starting with version 3.6.0 or org-re-reveal, the name of the
 JavaScript file can also be a URL."
@@ -840,7 +841,8 @@ JavaScript file can also be a URL."
           (list
            (symbol :tag "Plugin name")
            (string :tag "JavaScript plugin name")
-           (string :tag "JavaScript file name")))
+           (string :tag "JavaScript file name")
+           (repeat (string :tag "CSS file name"))))
   :package-version '(org-re-reveal . "3.0.0"))
 
 (defcustom org-re-reveal-external-plugins nil
@@ -1441,7 +1443,7 @@ based on `org-re-reveal-external-plugins'."
 
 (defun org-re-reveal--add-plugins (info)
   "Retrieve configuration for plugins with reveal.js 4 and later with INFO.
-Parse keywords \"REVEAL_ADD_PLUGIN\" and return list of triples."
+Parse keywords \"REVEAL_ADD_PLUGIN\" and return list of items."
   (let ((additional (split-string
                      (or (plist-get info :reveal-add-plugin) "") "\n" t " ")))
     (mapcar (lambda (line)
@@ -1450,7 +1452,7 @@ Parse keywords \"REVEAL_ADD_PLUGIN\" and return list of triples."
 
 (defun org-re-reveal--plugin-config (plugin info)
   "Retrieve configuration for PLUGIN with reveal.js 4 and later with INFO.
-This retrieves the triple for PLUGIN from `org-re-reveal-plugin-config'
+This retrieves the configuration for PLUGIN from `org-re-reveal-plugin-config'
 or after keyword \"REVEAL_ADD_PLUGIN\"."
   (assoc plugin (append org-re-reveal-plugin-config (org-re-reveal--add-plugins info))))
 
@@ -1467,7 +1469,7 @@ export."
               (version< "3.9" reveal-version))
       (append
        (org-re-reveal--parse-listoption info :reveal-plugins)
-       (mapcar (lambda (triple) (nth 0 triple))
+       (mapcar (lambda (config) (nth 0 config))
                (org-re-reveal--add-plugins info))))))
 
 (defun org-re-reveal--reveal-path (path root-path)
