@@ -1353,6 +1353,11 @@ CSS-PATH for built in themes."
          (theme (plist-get info :reveal-theme))
          (theme-css (org-re-reveal--theme-path theme css-path))
          (extra-css (plist-get info :reveal-extra-css))
+         (enabled-plugins (org-re-reveal--enabled-plugins info))
+         (plugin-css (mapcan
+                      (lambda (plugin)
+                        (nthcdr 3 (org-re-reveal--plugin-config plugin info)))
+                      enabled-plugins))
          (in-single-file (if (plist-get info :reveal-single-file)
                              'must
                            (plist-get info :reveal-embed-local-resources))))
@@ -1367,10 +1372,15 @@ CSS-PATH for built in themes."
                                 in-single-file (car elem) (cdr elem)))
                 (append (list (cons reveal-css nil)
                               (cons theme-css "theme"))
-                        (mapcar (lambda (a) (cons a nil))
+                        (mapcar (lambda (path) (cons path nil))
                                 (cl-delete-duplicates
                                  (split-string extra-css "\n" t)
-                                 :test #'equal)))
+                                 :test #'equal))
+                        (mapcar (lambda (path)
+                                  (cons (org-re-reveal--reveal-path
+                                         path root-path)
+                                        nil))
+                                plugin-css))
                 "\n")
 
      ;; Include CSS for highlight.js if necessary
