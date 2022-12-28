@@ -1470,14 +1470,20 @@ export."
        (mapcar (lambda (triple) (nth 0 triple))
                (org-re-reveal--add-plugins info))))))
 
+(defun org-re-reveal--reveal-path (path root-path)
+  "Return location of PATH given ROOT-PATH.
+If PATH is a remote URL, return it unchanged.
+Otherwise, concatenate ROOT-PATH and PATH."
+  (if (org-re-reveal--remote-file-p path)
+      path
+    (concat root-path path)))
+
 (defun org-re-reveal--plugin-path (plugin root-path info)
   "Return location of PLUGIN given ROOT-PATH and INFO.
-If PATH is a remote URL, return it unchanged.
+If path is a remote URL, return it unchanged.
 Otherwise, concatenate ROOT-PATH with path of PLUGIN configuration in INFO."
   (let ((path (nth 2 (org-re-reveal--plugin-config plugin info))))
-    (if (org-re-reveal--remote-file-p path)
-        path
-      (concat root-path path))))
+    (org-re-reveal--reveal-path path root-path)))
 
 (defun org-re-reveal-scripts--libraries (info)
   "Internal function to generate script tags with INFO.
