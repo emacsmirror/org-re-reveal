@@ -918,6 +918,10 @@ Whether anyone wants to use those package in isolation, is up to them.
 #+BEGIN_SRC org
 ,#+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard plugin/chalkboard/plugin.js
 #+END_SRC
+    See also
+    [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-plugin-css.org][this
+    test file for CSS with plugins]]
+
 
 *** Plugin configuration
     :PROPERTIES:
