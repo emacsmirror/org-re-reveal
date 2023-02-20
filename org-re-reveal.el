@@ -5,7 +5,7 @@
 ;;                         https://github.com/yjwen/org-reveal/commits/master
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
-;; SPDX-FileCopyrightText: 2017-2022 Jens Lechtenbörger
+;; SPDX-FileCopyrightText: 2017-2023 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
 ;; Version: 3.17.0
@@ -1426,8 +1426,18 @@ Otherwise, return nil."
              (file-readable-p filename)
              (not (file-directory-p filename)))
     (with-temp-buffer
-      (insert-file-contents-literally filename)
-      (buffer-string))))
+      ;; With Emacs 30.0.50, Org mode cannot deal with undecoded file contents
+      ;; any more, see:
+      ;; https://lists.gnu.org/archive/html/emacs-orgmode/2023-02/msg00501.html
+      ;; Thus, do not use insert-file-contents-literally any more.
+      ;; Instead, use its code to inhibit further processing and call
+      ;; insert-file-contents.
+      (let ((format-alist nil)
+	    (after-insert-file-functions nil)
+            (inhibit-file-name-handlers
+             '(jka-compr-handler image-file-handler epa-file-handler)))
+        (insert-file-contents filename)
+        (buffer-string)))))
 
 (defun org-re-reveal--external-plugins-maybe-from-file (info)
   "Create list of plugin dependencies from INFO.
