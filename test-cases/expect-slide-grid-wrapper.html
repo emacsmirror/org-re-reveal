@@ -21,27 +21,75 @@
         document.getElementsByTagName( 'head' )[0].appendChild( link );
     }
 </script>
+<style>
+.slide-header { grid-area: header; }
+.slide-footer { grid-area: footer; }
+.slide-heading { grid-area: heading; }
+.slide-subheading { grid-area: subheading; }
+.slide-contents { grid-area: content; }
+.grid-wrapper { display: grid; grid-template-areas: "header" "heading" "subheading" "content" "footer"; grid-template-rows: auto auto auto 1fr auto; }
+</style>
 </head>
 <body>
 <div class="reveal">
 <div class="slides">
 <section id="sec-title-slide">
+<div class="grid-wrapper">
 <h1 class="title">Slides wrapped in <code>div</code> element</h1><h2 class="author">Jens Lechtenbörger</h2><p class="date">Created:{{date}}</p>
+</div>
+</section>
+<section id="table-of-contents-section">
+<div class="grid-wrapper">
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#/slide-1">1. A normal slide</a></li>
+<li><a href="#/slide-2">2. A slide with subheading</a></li>
+</ul>
+</div>
+</div>
+</div>
 </section>
 
 <section>
 <section id="slide-1">
-<h2 id="1"><span class="section-number-2">1.</span> A normal slide</h2>
-<div class="grid"><ul>
-<li>Nothing special here</li>
-<li>Slide contents wrapped in <code>div</code> element
+<div class="grid-wrapper">
+<div class="slide-header">Header of slide</div>
+<h2 id="1" class="slide-heading"><span class="section-number-2">1.</span> A normal slide</h2>
+<div class="slide-contents"><ul>
+<li>Slide (header, heading, contents, footer) wrapped in
+<code>div</code> element with class <code>grid-wrapper</code>
 <ul>
-<li>Footer follows afterwards</li>
+<li>Header has class <code>slide-header</code></li>
+<li>Heading has class <code>slide-heading</code></li>
+<li>Slide contents wrapped in <code>div</code> with class <code>slide-contents</code></li>
+<li>Footer has class <code>slide-footer</code></li>
 
 </ul></li>
+<li>Also title slide and TOC are wrapped with <code>div</code> of class <code>grid-wrapper</code></li>
 
 </ul>
-</div><div class="slide-footer">A footer</div>
+</div><div class="slide-footer">Footer of slide</div>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-2">
+<div class="grid-wrapper">
+<div class="slide-header">Header of slide</div>
+<h2 id="2"><span class="section-number-2">2.</span> A slide with subheading</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<h3 id="org*******" class="slide-subheading">This is the subheading</h3>
+<div class="slide-contents"><ul>
+<li>Some contents</li>
+<li>&#x2026;</li>
+
+</ul>
+</div><div class="slide-footer">Footer of slide</div>
+</div>
 </section>
 </section>
 </div>

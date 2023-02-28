@@ -1,0 +1,46 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2022 Jens Lechtenbörger
+
+#+OPTIONS: toc:1 reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+#+REVEAL_SLIDE_GRID_DIV: <div class="grid-wrapper">
+#+REVEAL_SLIDE_GRID_DIV:
+#+REVEAL_SLIDE_CONTAINER: <div class="slide-contents">%s</div>
+#+REVEAL_SLIDE_HEADER: Header of slide
+#+REVEAL_SLIDE_FOOTER: Footer of slide
+#+REVEAL_HEAD_PREAMBLE: <style>
+#+REVEAL_HEAD_PREAMBLE: .slide-header { grid-area: header; }
+#+REVEAL_HEAD_PREAMBLE: .slide-footer { grid-area: footer; }
+#+REVEAL_HEAD_PREAMBLE: .slide-heading { grid-area: heading; }
+#+REVEAL_HEAD_PREAMBLE: .slide-subheading { grid-area: subheading; }
+#+REVEAL_HEAD_PREAMBLE: .slide-contents { grid-area: content; }
+#+REVEAL_HEAD_PREAMBLE: .grid-wrapper { display: grid; grid-template-areas: "header" "heading" "subheading" "content" "footer"; grid-template-rows: auto auto auto 1fr auto; }
+#+REVEAL_HEAD_PREAMBLE: </style>
+
+#+Title: Slides wrapped in ~div~ element
+#+Author: Jens Lechtenbörger
+
+* A normal slide
+  :PROPERTIES:
+  :html_headline_class: slide-heading
+  :END:
+
+  - Slide (header, heading, contents, footer) wrapped in
+    ~div~ element with class ~grid-wrapper~
+    - Header has class ~slide-header~
+    - Heading has class ~slide-heading~
+    - Slide contents wrapped in ~div~ with class ~slide-contents~
+    - Footer has class ~slide-footer~
+  - Also title slide and TOC are wrapped with ~div~ of class ~grid-wrapper~
+
+* A slide with subheading
+** This is the subheading
+   :PROPERTIES:
+   :UNNUMBERED: notoc
+   :NOSLIDE: t
+   :html_headline_class: slide-subheading
+   :END:
+
+   - Some contents
+   - ...

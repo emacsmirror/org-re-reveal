@@ -154,6 +154,7 @@
         "src-blocks-hl"
         "src-blocks-no-hl"
         "slide-container"
+        "slide-grid-wrapper"
         "slide-numbers"
         "slide-numbers-reveal-toc"
         "slide-numbers-toc"

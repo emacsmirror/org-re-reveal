@@ -2,7 +2,7 @@
 
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
-# SPDX-FileCopyrightText: 2019-2022 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2019-2023 Jens Lechtenbörger
 
 # This file is not part of GNU Emacs.
 
@@ -52,7 +52,7 @@ ELS          := org-re-reveal.el ox-re-reveal.el
 
 CORTELS      := $(TESTFILE) cort-test.el
 
-REVEALTEST   := backgrounds backgrounds-revealjs4 blockquote embed-resources extra-scripts footer footer-global highlightjs internal-links klipsify klipsify-python math merge-classes mobile-app multiplex noslide options pdf-notes plugins plugin-css postscript remote-plugin reveal-toc revealjs4 src-blocks-hl src-blocks-no-hl slide-container slide-numbers slide-numbers-toc slide-numbers-reveal-toc split timing title-slide title-slide-notes toc-de toc-default toc-user
+REVEALTEST   := backgrounds backgrounds-revealjs4 blockquote embed-resources extra-scripts footer footer-global highlightjs internal-links klipsify klipsify-python math merge-classes mobile-app multiplex noslide options pdf-notes plugins plugin-css postscript remote-plugin reveal-toc revealjs4 src-blocks-hl src-blocks-no-hl slide-container slide-grid-wrapper slide-numbers slide-numbers-toc slide-numbers-reveal-toc split timing title-slide title-slide-notes toc-de toc-default toc-user
 
 ##################################################
 
