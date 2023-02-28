@@ -1059,7 +1059,7 @@ Otherwise, return empty string."
 CONTENTS holds the contents of the block.  INFO is a plist
 holding contextual information.
 
-If the block type is 'NOTES' (case-insensitive), transcode the block
+If the block type is \"NOTES\" (case-insensitive), transcode the block
 into a Reveal.js slide note.  Otherwise, export the block as by the HTML
 exporter."
   (let ((block-type (org-element-property :type special-block)))
@@ -1117,6 +1117,8 @@ have been appropriate..."
      ";base64,"
      ;; Base64 content
      (with-temp-buffer
+       ;; Use insert-file-contents-literally here as base64-encode-region
+       ;; requires bytes, not text.
        (insert-file-contents-literally clean-path)
        (base64-encode-region 1 (point-max) 'no-line-break)
        (buffer-string)))))
@@ -1266,7 +1268,11 @@ That value for OPTION may be a list or a string representing a list."
   (org-re-reveal--read-list (plist-get info option)))
 
 (defun org-re-reveal--read-file (file)
-  "Return the content of FILE."
+  "Return the content of FILE.
+
+Note that this function uses `insert-file-contents-literally', which
+may lead to encoding problems."
+  (declare (obsolete 'org-re-reveal--read-file-as-string "3.18.1"))
   (with-temp-buffer
     (insert-file-contents-literally file)
     (buffer-string)))
@@ -1293,7 +1299,7 @@ otherwise, generate `<link>' label, with a non-nil STYLE-ID as
     (let ((local-file-name (org-re-reveal--file-url-to-path file-name)))
       (cond ((and in-single-file (file-readable-p local-file-name))
              (concat "<style type=\"text/css\">\n"
-                     (org-re-reveal--read-file local-file-name)
+                     (org-re-reveal--read-file-as-string local-file-name t)
                      "\n</style>\n"))
             ((eq in-single-file 'must)
              (org-re-reveal--abort-with-message-box
@@ -1440,32 +1446,39 @@ not the empty string."
       (format "<script type=\"text/javascript\" src=\"%s\"></script>\n"
               (plist-get info :reveal-mathjax-url))))
 
-(defun org-re-reveal--read-file-as-string (filename)
+(defun org-re-reveal--read-file-as-string (filename &optional raise-error)
   "If FILENAME exists as file, return its contents as string.
-Otherwise, return nil."
-  (when (and (stringp filename)
-             (file-readable-p filename)
-             (not (file-directory-p filename)))
-    (with-temp-buffer
-      ;; With Emacs 30.0.50, Org mode cannot deal with undecoded file contents
-      ;; any more, see:
-      ;; https://lists.gnu.org/archive/html/emacs-orgmode/2023-02/msg00501.html
-      ;; Thus, do not use insert-file-contents-literally any more.
-      ;; Instead, use its code to inhibit further processing and call
-      ;; insert-file-contents.
-      (let ((format-alist nil)
-	    (after-insert-file-functions nil)
-            (inhibit-file-name-handlers
-             '(jka-compr-handler image-file-handler epa-file-handler)))
-        (insert-file-contents filename)
-        (buffer-string)))))
+Otherwise, return nil unless FILENAME and RAISE-ERROR are non-nil, which
+raises an error.
+
+Note that this function does not use `insert-file-contents-literally'
+any longer."
+  (if (and (stringp filename)
+           (file-readable-p filename)
+           (not (file-directory-p filename)))
+      (with-temp-buffer
+        ;; With Emacs 30.0.50, Org mode cannot deal with undecoded file
+        ;; contents any more, see:
+        ;; https://lists.gnu.org/archive/html/emacs-orgmode/2023-02/msg00501.html
+        ;; Thus, do not use `insert-file-contents-literally' any more.
+        ;; Instead, use its code to inhibit further processing and call
+        ;; `insert-file-contents'.
+        (let ((format-alist nil)
+	      (after-insert-file-functions nil)
+              (inhibit-file-name-handlers
+               '(jka-compr-handler image-file-handler epa-file-handler)))
+          (insert-file-contents filename)
+          (buffer-string)))
+    (when (and filename raise-error)
+      (error "File not found --read-file-as-string: %s" filename))))
 
 (defun org-re-reveal--external-plugins-maybe-from-file (info)
   "Create list of plugin dependencies from INFO.
 In INFO, `:reveal-external-plugins' can be a list or a filename.
 If it is a filename, split lines to produce a list."
   (let* ((external-plugins (plist-get info :reveal-external-plugins))
-         (file-contents (org-re-reveal--read-file-as-string external-plugins)))
+         (file-contents
+          (org-re-reveal--read-file-as-string external-plugins t)))
     (if file-contents
         (mapcar (lambda (line) (cons 'dummy line))
                 (split-string (string-trim file-contents) "\n"))
@@ -1581,7 +1594,8 @@ This includes reveal.js libraries in `:reveal-script-files' under
              (mapconcat (lambda (file)
                           (if (file-readable-p file)
                               (format "<script>\n%s\n</script>\n"
-                                      (org-re-reveal--read-file file))
+                                      (org-re-reveal--read-file-as-string
+                                       file t))
                             (concat "<script src=\"" file "\"></script>\n")))
                         local-libs "")
            ;; Embed script files with src.
@@ -2066,7 +2080,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 (defun org-re-reveal-embedded-svg (path)
   "Embed the SVG content at PATH into Reveal HTML."
   (with-temp-buffer
-    (insert-file-contents-literally path)
+    (insert-file-contents path)
     (let ((start (re-search-forward "<[ \t\n]*svg[ \t\n]"))
           (end (re-search-forward "<[ \t\n]*/svg[ \t\n]*>")))
       (concat "<svg " (buffer-substring-no-properties start end)))))
