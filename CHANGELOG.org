@@ -13,6 +13,13 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.18.1] - 2023-02-28
+*** Fixed
+    - Avoid ~insert-file-contents-literally~ to close issue #90.
+    - No change in functionality
+    - *Internal* function ~org-re-reveal--read-file~ (which uses
+      ~insert-file-contents-literally~) is now obsolete.
+
 ** [3.18.0] - 2023-02-28
 *** Added
     - Variable ~org-re-reveal-slide-grid-div~.  Addresses issue#69.
