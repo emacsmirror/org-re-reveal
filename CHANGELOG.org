@@ -1,6 +1,6 @@
 # Local IspellDict: en
 # SPDX-License-Identifier: GPL-3.0-or-later
-# SPDX-FileCopyrightText: 2019-2022 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2019-2023 Jens Lechtenbörger
 
 * Changelog
 This changelog documents the evolution of org-re-reveal starting with
@@ -12,6 +12,10 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+
+** [3.18.0] - 2023-02-28
+*** Added
+    - Variable ~org-re-reveal-slide-grid-div~.  Addresses issue#69.
 
 ** [3.17.0] - 2022-12-28
 *** Added
