@@ -1478,7 +1478,7 @@ In INFO, `:reveal-external-plugins' can be a list or a filename.
 If it is a filename, split lines to produce a list."
   (let* ((external-plugins (plist-get info :reveal-external-plugins))
          (file-contents
-          (org-re-reveal--read-file-as-string external-plugins t)))
+          (org-re-reveal--read-file-as-string external-plugins)))
     (if file-contents
         (mapcar (lambda (line) (cons 'dummy line))
                 (split-string (string-trim file-contents) "\n"))
