@@ -1264,7 +1264,6 @@ Whether anyone wants to use those package in isolation, is up to them.
    self-contained, portable HTML.  Please note that remote images
    cannot be used with single-file export (maybe
    ~reveal_embed_local_resources~ does what you want then, see below).
-   /not/ be included in the single file.
 
    Attention: This needs locally available reveal.js files (no CDN
    files)!  [[#revealjs-location][Instructions to set location of reveal.js.]].
