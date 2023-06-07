@@ -13,6 +13,10 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.18.3] - 2023-07-06
+*** Fixed
+    - Leave data URIs unchanged in single-file export, fixes issue #91.
+
 ** [3.18.2] - 2023-02-28
 *** Fixed
     - Avoid errors of 3.18.1 when building plugin config.
