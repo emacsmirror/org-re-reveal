@@ -1107,21 +1107,24 @@ have been appropriate..."
       nodiv)))
 
 (defun org-re-reveal--generate-data-uri (path)
-  "Generate data URI for image at PATH."
-  (let ((ext (downcase (file-name-extension path)))
-        (clean-path (org-re-reveal--file-url-to-path path)))
-    (concat
-     "data:image/"
-     ;; Image type
-     ext
-     ";base64,"
-     ;; Base64 content
-     (with-temp-buffer
-       ;; Use insert-file-contents-literally here as base64-encode-region
-       ;; requires bytes, not text.
-       (insert-file-contents-literally clean-path)
-       (base64-encode-region 1 (point-max) 'no-line-break)
-       (buffer-string)))))
+  "Generate data URI for image at PATH.
+Return PATH unchanged if it starts with \"data:image/\"."
+  (if (string-prefix-p "data:image/" path)
+      path
+    (let ((ext (downcase (file-name-extension path)))
+          (clean-path (org-re-reveal--file-url-to-path path)))
+      (concat
+       "data:image/"
+       ;; Image type
+       ext
+       ";base64,"
+       ;; Base64 content
+       (with-temp-buffer
+         ;; Use insert-file-contents-literally here as base64-encode-region
+         ;; requires bytes, not text.
+         (insert-file-contents-literally clean-path)
+         (base64-encode-region 1 (point-max) 'no-line-break)
+         (buffer-string))))))
 
 (defun org-re-reveal--maybe-encode-with-data-uri (path info)
   "Encode image at PATH as data URI if INFO indicates single-file export."
