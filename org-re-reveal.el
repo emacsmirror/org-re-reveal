@@ -2615,10 +2615,10 @@ attr_html plist."
                          "Use one audio file per item!  %s has %d, need %d"
                          frag-audio (length frag-audio) itemno))
             (if frag-audio
-                (cl-mapcar 'org-re-reveal--update-attr-html
-                           items frag-list style-list frag-index frag-audio)
-              (cl-mapcar 'org-re-reveal--update-attr-html
-                         items frag-list style-list frag-index)))
+                (cl-mapc 'org-re-reveal--update-attr-html
+                         items frag-list style-list frag-index frag-audio)
+              (cl-mapc 'org-re-reveal--update-attr-html
+                       items frag-list style-list frag-index)))
         (org-re-reveal--update-attr-html
          elem frag default-style frag-index frag-audio))
       elem)))
