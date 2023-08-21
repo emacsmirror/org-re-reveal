@@ -1071,7 +1071,7 @@ exporter."
   "Add VALUE as \"class\" attribute in HTML header element ELEM.
 Do nothing if \"class\" attribute is already present."
   (let ((match (string-match "\\`<h[1-9][^>]+>" elem)))
-    (unless match (error "Element no headline: %s" elem))
+    (unless match (error "[org-re-reveal] Element no headline: %s" elem))
     (let ((tag (match-string 0 elem)))
       (if (string-match "class" tag)
           elem
@@ -1263,7 +1263,7 @@ Otherwise, raise an error."
       (let ((lthing (read thing)))
         (if (listp lthing)
             lthing
-          (error "Expected a list, but got: %s" thing))))))
+          (error "[org-re-reveal] Expected a list, but got: %s" thing))))))
 
 (defun org-re-reveal--parse-listoption (info option)
   "Parse and return OPTION in INFO.
@@ -1290,7 +1290,7 @@ may lead to encoding problems."
   "Call `message' and `message-box' with MSG and ARGS, then raise error."
   (message msg args)
   (message-box msg args)
-  (error "Aborted"))
+  (error "[org-re-reveal] Aborted"))
 
 (defun org-re-reveal--css-label (in-single-file file-name style-id)
   "Generate HTML code to include CSS file FILE-NAME.
@@ -1479,7 +1479,7 @@ any longer."
           (insert-file-contents filename)
           (buffer-string)))
     (when (and filename raise-error)
-      (error "File not found --read-file-as-string: %s" filename))))
+      (error "[org-re-reveal] File not found --read-file-as-string: %s" filename))))
 
 (defun org-re-reveal--external-plugins-maybe-from-file (info)
   "Create list of plugin dependencies from INFO.
@@ -1659,7 +1659,7 @@ Otherwise, raise error."
   (cond ((and (integerp option) (> option 0)) (format "%d" option))
         ((stringp option) (format "\"%s\"" option))
         ((eq option nil) nil)
-        (t (error "Option »%s« must be string, positive integer, or nil; not %s"
+        (t (error "[org-re-reveal] Option »%s« must be string, positive integer, or nil; not %s"
                   option (type-of option)))))
 
 (defun org-re-reveal-scripts--main-configures (info)
