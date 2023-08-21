@@ -1373,6 +1373,12 @@ CSS-PATH for built in themes."
            (theme-css (concat theme-path theme ".css")))
       theme-css)))
 
+(unless (fboundp 'mapcan)
+  (defun mapcan (func sequence)
+    "Apply FUNC to each element of SEQUENCE.
+Concatenate the results by altering them (using `nconc')."
+  (apply #'nconc (mapcar func sequence))))
+
 (defun org-re-reveal-stylesheets (info)
   "Return HTML code for reveal stylesheets using INFO and `org-re-reveal-root'."
   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
