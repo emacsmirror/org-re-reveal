@@ -1067,14 +1067,24 @@ that needs to be implemented elsewhere, e.g. in emacs-reveal."
                  (const :tag "KSP (SpeechT5, Indian female)" KSP))
   :package-version '(org-re-reveal . "3.19.0"))
 
+(defvar org-re-reveal-pub-dir nil
+  "Record publishing directory.")
+
 (defcustom org-re-reveal-tts-dir
-  (file-name-as-directory
-   (concat (file-name-as-directory "public")
-           "tts"))
-  "Target directory for TTS files."
+  (file-name-as-directory "tts")
+  "Target directory for text files as basis for TTS.
+When publishing projects, this directory is a child of the
+publishing directory."
   :group 'org-export-re-reveal
   :type 'directory
-  :package-version '(org-re-reveal . "3.19.0"))
+  :package-version '(org-re-reveal . "3.19.1"))
+
+(defun org-re-reveal--tts-dir (info)
+  "Return directory under which to create text files from INFO."
+  (let ((tts-dir (plist-get info :reveal-tts-dir)))
+    (if org-re-reveal-pub-dir
+        (concat org-re-reveal-pub-dir tts-dir)
+      tts-dir)))
 
 (defcustom org-re-reveal-tts-name-prefix "presentation"
   "Prefix to use for names related to TTS.
@@ -1223,7 +1233,7 @@ If TTS is configured, also create text file and add it to index."
         (let* ((hnumstr (number-to-string (plist-get info :reveal-tts-hnum)))
                (vnumstr (number-to-string (plist-get info :reveal-tts-vnum)))
                (frag (plist-get info :reveal-tts-frag))
-               (tts-dir (plist-get info :reveal-tts-dir))
+               (tts-dir (org-re-reveal--tts-dir info))
                (audio-name
                 (or (org-export-read-attribute :attr_reveal block :audio-name)
                     (concat prefix hnumstr "." vnumstr
@@ -2441,7 +2451,7 @@ Speaker notes on the title slide with \"%n\" make use of
                                 (hash (md5 text))
                                 (gap (plist-get info :reveal-tts-sentence-gap))
                                 (prefix (plist-get info :reveal-tts-name-prefix))
-                                (dir (plist-get info :reveal-tts-dir)))
+                                (dir (org-re-reveal--tts-dir info)))
                            (org-re-reveal--add-to-tts-index
                             voice gap (concat prefix "0.0") hash info)
                            (org-re-reveal--create-tts-text hash text dir)))
@@ -2814,7 +2824,7 @@ attr_html plist."
 
 (defun org-re-reveal--tts-index-name (info)
   "Construct name of index file from INFO."
-  (let ((tts-dir (plist-get info :reveal-tts-dir))
+  (let ((tts-dir (org-re-reveal--tts-dir info))
         (prefix (plist-get info :reveal-tts-name-prefix)))
     (concat tts-dir prefix ".tts")))
 
@@ -2834,16 +2844,18 @@ If the file exists already, do nothing."
     (unless (file-exists-p filename)
       (append-to-file text nil filename))))
 
-(defun org-re-reveal-prepare-tts ()
-  "Create tts directory, remove outdated index file."
-  (let* ((info (org-export-get-environment 're-reveal))
-         (with-tts (plist-get info :reveal-with-tts))
-         (dir (plist-get info :reveal-tts-dir))
-         (index (org-re-reveal--tts-index-name info)))
-    (when with-tts
-      (make-directory dir t)
-      (when (file-exists-p index)
-        (delete-file index)))))
+(defun org-re-reveal-prepare-tts (backend)
+  "For BACKEND re-reveal, create tts directory, remove outdated index file."
+  (when (org-export-derived-backend-p backend 're-reveal)
+    (let* ((info (org-export-get-environment 're-reveal))
+           (with-tts (plist-get info :reveal-with-tts))
+           (dir (org-re-reveal--tts-dir info))
+           (index (org-re-reveal--tts-index-name info)))
+      (when with-tts
+        (when (not (file-directory-p dir))
+          (make-directory dir t))
+        (when (file-exists-p index)
+          (delete-file index))))))
 
 (defun org-re-reveal-export-to-html
     (&optional async subtreep visible-only body-only ext-plist backend)
@@ -2858,8 +2870,6 @@ Optional BACKEND must be `re-reveal' or a backend derived from it."
          (file (org-export-output-file-name extension subtreep))
          (clientfile (org-export-output-file-name client-ext subtreep))
          (org-html-container-element "div"))
-
-    (org-re-reveal-prepare-tts)
 
     (setq org-re-reveal-client-multiplex nil)
     (org-export-to-file backend file
@@ -2906,8 +2916,8 @@ publishing directory.  Optional BACKEND may specify a derived export
 backend.
 Return output file name."
   (let ((org-re-reveal-client-multiplex nil)
+        (org-re-reveal-pub-dir pub-dir)
         (org-html-container-element "div"))
-    (org-re-reveal-prepare-tts)
     (org-publish-org-to
      (or backend 're-reveal) filename
      (concat "." org-html-extension) plist pub-dir)))
@@ -2941,6 +2951,9 @@ Return output file name."
                (if (version< org-version "9.2")
                    (list org-re-reveal-note-key-char "#+BEGIN_NOTES\n\?\n#+END_NOTES")
                  (cons org-re-reveal-note-key-char "notes"))))
+
+;; Make sure that TTS directory exists.
+(add-hook 'org-export-before-parsing-hook #'org-re-reveal-prepare-tts)
 
 ;;; Extract version string.
 ;;;###autoload
