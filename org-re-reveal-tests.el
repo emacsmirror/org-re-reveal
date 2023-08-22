@@ -2,7 +2,7 @@
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
-;; SPDX-FileCopyrightText: 2020-2022 Jens Lechtenbörger
+;; SPDX-FileCopyrightText: 2020-2023 Jens Lechtenbörger
 
 ;; This file is not part of GNU Emacs.
 
@@ -143,6 +143,7 @@
         "mobile-app"
         "multiplex"
         "noslide"
+        "notes-for-tts"
         "options"
         "pdf-notes"
         "plugins"

@@ -1,0 +1,13 @@
+# Local IspellDict: en
+#+SPDX-FileCopyrightText: 2023 Jens Lechtenbörger
+#+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Personally, the author of this software does not like learning from
+videos as they exhibit limited navigation capabilities (no skim
+reading, limited search, no document structure, no hyperlinks).  His
+students like videos, though.
+
+Maintaining high-quality video and audio over years is a considerable
+challenge.  To overcome this challenge, revealjs presentations
+can be run in a video mode where slides come with audio explanations
+and advance automatically.  This presentation serves as example.

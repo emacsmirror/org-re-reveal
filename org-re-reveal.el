@@ -79,11 +79,13 @@
 
 ;;; Code:
 
+(require 'ox-ascii)
 (require 'ox-html)
 (require 'cl-lib)   ; cl-mapcar and autoloads for:
                     ; cl-loop, cl-letf, cl-assert, cl-case, cl-every,
                     ; cl-delete-duplicates, cl-remove-if
 (require 'subr-x)   ; string-trim
+(require 'iso-cvt)
 (require 'url-parse)
 (require 'url-util)
 
@@ -136,6 +138,7 @@
       (:reveal-subtree-with-title-slide nil "reveal_subtree_with_title_slide" org-re-reveal-subtree-with-title-slide t)
       (:reveal-totaltime nil "reveal_totaltime" org-re-reveal-totaltime t)
       (:reveal-width nil "reveal_width" org-re-reveal-width t)
+      (:reveal-with-tts nil "reveal_with_tts" org-re-reveal-with-tts t)
       (:reveal-academic-title "REVEAL_ACADEMIC_TITLE" nil nil t)
       (:reveal-add-plugin "REVEAL_ADD_PLUGIN" nil nil newline)
       (:reveal-codemirror-config "REVEAL_CODEMIRROR_CONFIG" nil org-re-reveal-klipse-codemirror newline)
@@ -208,6 +211,9 @@
       (:reveal-toc-slide-state "REVEAL_TOC_SLIDE_STATE" nil nil t)
       (:reveal-toc-slide-timing "REVEAL_TOC_SLIDE_TIMING" nil nil t)
       (:reveal-trans "REVEAL_TRANS" nil org-re-reveal-transition t)
+      (:reveal-tts-dir "REVEAL_TTS_DIR" nil org-re-reveal-tts-dir t)
+      (:reveal-tts-name-prefix "REVEAL_TTS_NAME_PREFIX" nil org-re-reveal-tts-name-prefix t)
+      (:reveal-tts-sentence-gap "REVEAL_TTS_SENTENCE_GAP" nil org-re-reveal-tts-sentence-gap t)
       (:reveal-version "REVEAL_VERSION" nil org-re-reveal-revealjs-version t))
 
     :translate-alist
@@ -1046,6 +1052,62 @@ The default uses a slash between hash sign and slide ID,
 which leads to broken links that are not understood outside reveal.js.
 See there: https://github.com/hakimel/reveal.js/issues/2276")
 
+(defcustom org-re-reveal-with-tts nil
+  "If non-nil, specify voice and create text files for TTS generation.
+Please see the test case test-notes-for-tts.org for an example.
+Note that org-re-reveal only produces text files for a text-to-speech process
+that needs to be implemented elsewhere, e.g. in emacs-reveal."
+  :group 'org-export-re-reveal
+  :type '(choice (const :tag "No TTS" nil)
+                 (const :tag "Speechbrain (US female)" speechbrain)
+                 (const :tag "CLB (SpeechT5, US female)" CLB)
+                 (const :tag "SLT (SpeechT5, US female)" SLT)
+                 (const :tag "BDL (SpeechT5, US male)" BDL)
+                 (const :tag "RMS (SpeechT5, US male)" RMS)
+                 (const :tag "KSP (SpeechT5, Indian female)" KSP))
+  :package-version '(org-re-reveal . "3.19.0"))
+
+(defcustom org-re-reveal-tts-dir
+  (file-name-as-directory
+   (concat (file-name-as-directory "public")
+           "tts"))
+  "Target directory for TTS files."
+  :group 'org-export-re-reveal
+  :type 'directory
+  :package-version '(org-re-reveal . "3.19.0"))
+
+(defcustom org-re-reveal-tts-name-prefix "presentation"
+  "Prefix to use for names related to TTS.
+This string is used in `org-re-reveal--tts-index-name' and should be passed
+to the process creating audio files as well as to the audio slideshow plugin.
+Different prefixes are necessary for projects/courses with multiple
+presentations."
+  :group 'org-export-re-reveal
+  :type 'string
+  :package-version '(org-re-reveal . "3.19.0"))
+
+(defcustom org-re-reveal-tts-sentence-gap 1.0
+  "Gap/silence to add between sentences."
+  :group 'org-export-re-reveal
+  :type 'number
+  :package-version '(org-re-reveal . "3.19.0"))
+
+(defcustom org-re-reveal-tts-normalize-table
+  '(("[ \t][ \t]+" " ")
+    ("’" "'"))
+    "Normalization table containing 2-element lists.
+For TTS processing, normalize text by replacing several whitespaces with one
+and avoiding some UTF symbols.
+
+TODO What about current limitations of TTS?  Where should preprocessing be
+applied?  Here or in the TTS implementation?
+- Deal with abbreviations.  CPU, CPUs, TTS, ...
+  In contrast, RAM sounds right.
+- Numbers are not read."
+  :group 'org-export-re-reveal
+  :type '(repeat (list string string))
+  :package-version '(org-re-reveal . "3.19.0"))
+
 (defun org-re-reveal--if-format (fmt val)
   "Apply `format' to FMT and VAL if VAL is a number or non-empty string.
 Otherwise, return empty string."
@@ -1053,6 +1115,123 @@ Otherwise, return empty string."
           (and (stringp val) (> (length val) 0)))
       (format fmt val)
     ""))
+
+(defun org-re-reveal--sentences-in-lines (text)
+  "Return string for TEXT where each sentence starts on a new line.
+Replace each newline (which, assuming wrapped texts, may or may not end
+sentences or paragraphs) with two space characters (which should not hurt).
+Then, insert a newline after each sentence (determined by `forward-sentence').
+Also perform replacements based on `org-re-reveal-tts-normalize-table'."
+  (with-temp-buffer
+    (insert text)
+    ;; Function count-sentences may not be defined in older Emacsen.
+    ;; As this function is only used for a safety check (which may
+    ;; generate a warning), this seems acceptable here.
+    (let ((sc (and (fboundp 'count-sentences)
+                   (count-sentences (point-min) (point-max)))))
+      (goto-char (point-min))
+      (while (re-search-forward "[ ]*\n[ ]*" nil t)
+        (replace-match "  "))
+      (unless (eq sc (and (fboundp 'count-sentences)
+                          (count-sentences (point-min) (point-max))))
+        (display-warning
+         'org-export-re-reveal
+         (format "Unexpected sentence counts (%d vs %d):\n%s\n%s"
+                 sc (count-sentences (point-min) (point-max))
+                 text (buffer-string))))
+      (goto-char (point-min))
+      (let* ((prev (point))
+             (next (forward-sentence)))
+        (while (and (not (null next))
+                    (not (= prev next)))
+          ;; End sentence with newline, remove spaces at bol.
+          (insert "\n")
+          (when (re-search-forward "[ ]+" nil t)
+            (replace-match ""))
+          (setq prev (point)
+                next (ignore-errors (forward-sentence))))))
+    (iso-translate-conventions (point-min) (point-max)
+                               org-re-reveal-tts-normalize-table)
+    (buffer-string)))
+
+(defun org-re-reveal--notes-to-tts-text (block)
+  "Return notes BLOCK as (mostly) ASCII text:
+- Remove bold, code, italics, underline, verbatim.
+- Replace hyperlinks with their texts.
+- Create one sentence per line."
+  (cl-letf (((symbol-function 'org-ascii-bold)
+             (lambda (_ contents _) (format "%s" contents)))
+            ((symbol-function 'org-ascii-italic)
+             (lambda (_ contents _) (format "%s" contents)))
+            ((symbol-function 'org-ascii-underline)
+             (lambda (_ contents _) (format "%s" contents)))
+            ((symbol-function 'org-ascii-link)
+             (lambda (_ contents _) (format "%s" contents))))
+    (let* ((org-ascii-links-to-notes nil) ; Avoid footnotes section.
+           (org-ascii-verbatim-format "%s") ; Avoid quotation marks for code.
+           ;; We suppose that sentence-end-double-space is true and also end
+           ;; sentences at colons:
+           (sentence-end
+            (concat
+	     "\\("
+             "[.?!…‽:][]\"'”’)}»›]*"
+             "\\($\\|[ \u00a0]$\\|\t\\|[ \u00a0][ \u00a0]\\)"
+             "\\|[" sentence-end-without-space "]+"
+	     "\\)"
+             "[ \u00a0\t\n]*"))
+           (text (org-export-string-as
+                  (org-element-interpret-data block) 'ascii t)))
+      (when (string-match "[^.?!…‽:]\n\n" text)
+        (display-warning
+         'org-export-re-reveal
+         (concat "For TTS, full sentences should be used.  Following text contains at least one paragraph without end character:\n"
+                 text)
+         :warning))
+      (org-re-reveal--sentences-in-lines text))))
+
+(defun org-re-reveal--notes-to-tts (block contents info)
+  "Transcode a notes BLOCK from Org to Reveal.
+CONTENTS holds the contents of the block.  INFO is a plist
+holding contextual information.
+If TTS is configured, also create text file and add it to index."
+  (let ((voice (plist-get info :reveal-with-tts)))
+    (when voice
+      (let* ((prefix (plist-get info :reveal-tts-name-prefix))
+             (gap (plist-get info :reveal-tts-sentence-gap))
+             (hnum (plist-get info :reveal-tts-hnum))
+             (vnum (plist-get info :reveal-tts-vnum))
+             (frag (plist-get info :reveal-tts-frag))
+             (pnumbers (plist-get info :reveal-tts-prev-numbers))
+             (headline (org-export-get-parent-headline block))
+             (numbers (org-export-get-headline-number headline info))
+             (text (org-re-reveal--notes-to-tts-text block))
+             (hash (md5 text)))
+        (if (equal pnumbers numbers)
+            ;; Same numbers, so new fragment on slide.
+            (if frag
+                (plist-put info :reveal-tts-frag (+ 1 frag))
+              (plist-put info :reveal-tts-frag 0))
+          ;; Different numbers, on new slide.
+          (plist-put info :reveal-tts-prev-numbers numbers)
+          (plist-put info :reveal-tts-frag -1)
+          (if (eq hnum (car numbers))
+              ;; Same horizontal index.  Thus, increment vertical index.
+              (plist-put info :reveal-tts-vnum (+ 1 vnum))
+            ;; Reset vertical number to 0 for new section.
+            (plist-put info :reveal-tts-hnum (car numbers))
+            (plist-put info :reveal-tts-vnum 0)))
+        (let* ((hnumstr (number-to-string (plist-get info :reveal-tts-hnum)))
+               (vnumstr (number-to-string (plist-get info :reveal-tts-vnum)))
+               (frag (plist-get info :reveal-tts-frag))
+               (tts-dir (plist-get info :reveal-tts-dir))
+               (audio-name
+                (or (org-export-read-attribute :attr_reveal block :audio-name)
+                    (concat prefix hnumstr "." vnumstr
+                            (when (and frag (< -1 frag))
+                              (concat "." (number-to-string frag)))))))
+          (org-re-reveal--add-to-tts-index voice gap audio-name hash info)
+          (org-re-reveal--create-tts-text hash text tts-dir)))))
+    (format org-re-reveal-notes-format-string contents))
 
 (defun org-re-reveal-special-block (special-block contents info)
   "Transcode a SPECIAL-BLOCK element from Org to Reveal.
@@ -1064,7 +1243,7 @@ into a Reveal.js slide note.  Otherwise, export the block as by the HTML
 exporter."
   (let ((block-type (org-element-property :type special-block)))
     (if (string= (downcase block-type) "notes")
-        (format org-re-reveal-notes-format-string contents)
+        (org-re-reveal--notes-to-tts special-block contents info)
       (org-html-special-block special-block contents info))))
 
 (defun org-re-reveal--html-header-add-class (elem value)
@@ -2255,7 +2434,17 @@ Speaker notes on the title slide with \"%n\" make use of
 `org-re-reveal-notes-format-string'."
   (let* ((notes (org-re-reveal--read-file-as-string
                  (plist-get info :reveal-title-slide-notes)))
+         (voice (plist-get info :reveal-with-tts))
          (html-notes (when notes
+                       (when voice
+                         (let* ((text (org-re-reveal--notes-to-tts-text notes))
+                                (hash (md5 text))
+                                (gap (plist-get info :reveal-tts-sentence-gap))
+                                (prefix (plist-get info :reveal-tts-name-prefix))
+                                (dir (plist-get info :reveal-tts-dir)))
+                           (org-re-reveal--add-to-tts-index
+                            voice gap (concat prefix "0.0") hash info)
+                           (org-re-reveal--create-tts-text hash text dir)))
                        (org-export-string-as notes 're-reveal t))))
     (append (org-html-format-spec info)
             `((?A . ,(org-export-data
@@ -2623,6 +2812,39 @@ attr_html plist."
          elem frag default-style frag-index frag-audio))
       elem)))
 
+(defun org-re-reveal--tts-index-name (info)
+  "Construct name of index file from INFO."
+  (let ((tts-dir (plist-get info :reveal-tts-dir))
+        (prefix (plist-get info :reveal-tts-name-prefix)))
+    (concat tts-dir prefix ".tts")))
+
+(defun org-re-reveal--add-to-tts-index (voice gap name hash info)
+  "Add NAME with HASH of text for TTS to index file with INFO.
+If the index file does not exist, create it, writing VOICE and GAP as
+first line."
+  (let ((index (org-re-reveal--tts-index-name info)))
+    (unless (file-exists-p index)
+      (append-to-file (format "%s %s\n" voice gap) nil index))
+    (append-to-file (format "%s %s\n" name hash) nil index)))
+
+(defun org-re-reveal--create-tts-text (hash text dir)
+  "Create file under name HASH in DIR with TEXT for TTS.
+If the file exists already, do nothing."
+  (let ((filename (concat dir hash)))
+    (unless (file-exists-p filename)
+      (append-to-file text nil filename))))
+
+(defun org-re-reveal-prepare-tts ()
+  "Create tts directory, remove outdated index file."
+  (let* ((info (org-export-get-environment 're-reveal))
+         (with-tts (plist-get info :reveal-with-tts))
+         (dir (plist-get info :reveal-tts-dir))
+         (index (org-re-reveal--tts-index-name info)))
+    (when with-tts
+      (make-directory dir t)
+      (when (file-exists-p index)
+        (delete-file index)))))
+
 (defun org-re-reveal-export-to-html
     (&optional async subtreep visible-only body-only ext-plist backend)
   "Export current buffer to a reveal.js HTML file.
@@ -2636,6 +2858,8 @@ Optional BACKEND must be `re-reveal' or a backend derived from it."
          (file (org-export-output-file-name extension subtreep))
          (clientfile (org-export-output-file-name client-ext subtreep))
          (org-html-container-element "div"))
+
+    (org-re-reveal-prepare-tts)
 
     (setq org-re-reveal-client-multiplex nil)
     (org-export-to-file backend file
@@ -2683,6 +2907,7 @@ backend.
 Return output file name."
   (let ((org-re-reveal-client-multiplex nil)
         (org-html-container-element "div"))
+    (org-re-reveal-prepare-tts)
     (org-publish-org-to
      (or backend 're-reveal) filename
      (concat "." org-html-extension) plist pub-dir)))
