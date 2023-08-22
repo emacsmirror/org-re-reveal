@@ -12,6 +12,8 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+
+** [3.19.0] - 2023-08-22
 *** Added
     - TTS support with [[file:test-cases/test-notes-for-tts.org][test case]]
       - Only the extraction of notes into text files is part of
