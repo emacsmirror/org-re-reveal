@@ -21,7 +21,7 @@
 #+REVEAL_TITLE_SLIDE: <h1>%t</h1><h2>%s</h2><h3>%A %a</h3>%n
 
 # Add notes for the title slide.
-#+REVEAL_TITLE_SLIDE_NOTES: test-notes-for-tts-title-notes.org
+#+REVEAL_TITLE_SLIDE_NOTES: config-title-notes-for-tts.org
 
 # The following requires emacs-reveal: https://gitlab.com/oer/emacs-reveal/
 # Use default names for audio with autoplay, advance 1500ms after end
