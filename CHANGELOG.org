@@ -12,6 +12,13 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+*** Added
+    - TTS support with [[file:test-cases/test-notes-for-tts.org][test case]]
+      - Only the extraction of notes into text files is part of
+        org-re-reveal.  TTS itself is supported by a Docker image with
+        emacs-reveal (9.18.0).
+*** Fixed
+    - Add ~mapcan~ for compatibility with older Emacsen.
 
 ** [3.18.3] - 2023-07-06
 *** Fixed

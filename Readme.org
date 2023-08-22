@@ -240,6 +240,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~reveal_subtree_with_title_slide~ | ~nil~                                        | ~org-re-reveal-subtree-with-title-slide~ |
 | ~reveal_totaltime~                | ~nil~                                        | ~org-re-reveal-totaltime~                |
 | ~reveal_width~                    | ~nil~                                        | ~org-re-reveal-width~                    |
+| ~reveal_with_tts~                 | ~nil~                                        | ~org-re-reveal-with-tts~                 |
 | ~nil~                             | ~REVEAL_ACADEMIC_TITLE~                      | ~nil~                                    |
 | ~nil~                             | ~REVEAL_ADD_PLUGIN~                          | ~nil~                                    |
 | ~nil~                             | ~REVEAL_CODEMIRROR_CONFIG~                   | ~org-re-reveal-klipse-codemirror~        |
@@ -308,6 +309,9 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_TOC_SLIDE_CLASS~                     | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TOC_SLIDE_TITLE~                     | ~org-re-reveal-toc-slide-title~          |
 | ~nil~                             | ~REVEAL_TRANS~                               | ~org-re-reveal-transition~               |
+| ~nil~                             | ~REVEAL_TTS_DIR~                             | ~org-re-reveal-tts-dir~                  |
+| ~nil~                             | ~REVEAL_TTS_NAME_PREFIX~                     | ~org-re-reveal-tts-name-prefix~          |
+| ~nil~                             | ~REVEAL_TTS_SENTENCE_GAP~                    | ~org-re-reveal-tts-sentence-gap~         |
 | ~nil~                             | ~REVEAL_VERSION~                             | ~org-re-reveal-revealjs-version~         |
 
 #+REVEAL: split
@@ -342,7 +346,8 @@ Whether anyone wants to use those package in isolation, is up to them.
    ~org-re-reveal-no-htmlize-src~,
    ~org-re-reveal-note-key-char~,
    ~org-re-reveal-notes-format-string~,
-   ~org-re-reveal-plugin-config~
+   ~org-re-reveal-plugin-config~,
+   ~org-re-reveal-tts-normalize-table~
 
 ** Set the location of reveal.js
    :PROPERTIES:
@@ -1188,6 +1193,23 @@ Whether anyone wants to use those package in isolation, is up to them.
     [[https://revealjs.com/pdf-export/]]), customize
     ~org-re-reveal-export-notes-to-pdf~ or use the keyword
     ~REVEAL_EXPORT_NOTES_TO_PDF~ with the string ~separate-page~.
+
+*** Text-To-Speech (TTS) for Speaker Notes
+    Version 3.19.0 of org-re-reveal introduces support for TTS, which
+    is complemented by functionality in emacs-reveal.
+
+    Briefly, org-re-reveal can export notes from presentations to text
+    files, from which audio files can be generated (e.g., with
+    emacs-reveal).  The
+    [[https://github.com/rajgoel/reveal.js-plugins/tree/master/audio-slideshow][audio-slideshow plugin]]
+    can then play generated audio.  The result is a video mode for
+    presentations, without the hassle of audio recording/cutting (and
+    with the usual usability advantages of reveal.js presentations
+    over videos).
+
+    See variable ~org-re-reveal-with-tts~, whose doc string points to
+    [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-notes-for-tts.org][this sample presentation]],
+    which documents various aspects of the TTS process.
 
 ** Multiplexing
    Reveal.js supports multiplexing, which allows your audience to view
