@@ -13,6 +13,10 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.19.2] - 2023-08-24
+*** Fixed
+    - Add guess for number of UNNUMBERED slide under TTS
+
 ** [3.19.1] - 2023-08-22
 *** Changed
     - Fix creation of TTS directory, as documented under the changed
