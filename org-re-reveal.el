@@ -1199,6 +1199,23 @@ Also perform replacements based on `org-re-reveal-tts-normalize-table'."
          :warning))
       (org-re-reveal--sentences-in-lines text))))
 
+(defun org-re-reveal--get-headline-number (headline pnumbers info)
+  "Get number of HEADLINE based on PNUMBERS and INFO.
+If users use UNNUMBERED, we guess here and warn.
+This does not work for fragments!"
+  (let ((numbers (org-export-get-headline-number headline info))
+        (level (org-export-get-relative-level headline info)))
+    (if numbers
+        numbers
+      (let ((result (if (= 1 level)
+                          (list (+ 1 (car pnumbers)) 0)
+                        (list (car pnumbers) (+ 1 (cadr pnumbers))))))
+        (display-warning
+         'org-export-re-reveal
+         (format "No numbers for headline after %s found.  Do you use UNNUMBERED?  Guessed numbers: %s"
+                 pnumbers result))
+        result))))
+
 (defun org-re-reveal--notes-to-tts (block contents info)
   "Transcode a notes BLOCK from Org to Reveal.
 CONTENTS holds the contents of the block.  INFO is a plist
@@ -1213,7 +1230,7 @@ If TTS is configured, also create text file and add it to index."
              (frag (plist-get info :reveal-tts-frag))
              (pnumbers (plist-get info :reveal-tts-prev-numbers))
              (headline (org-export-get-parent-headline block))
-             (numbers (org-export-get-headline-number headline info))
+             (numbers (org-re-reveal--get-headline-number headline pnumbers info))
              (text (org-re-reveal--notes-to-tts-text block))
              (hash (md5 text)))
         (if (equal pnumbers numbers)
