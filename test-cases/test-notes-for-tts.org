@@ -51,6 +51,14 @@ Note that you need emacs-reveal to generate and play audio.
 This slide uses org properties to specify a break of ten seconds
 before advancing to the next slide after audio stops.  This offers
 some reading time for the bullet points.
+
+Alternatively, the SSML element ~break~ can be used to insert breaks
+anywhere.  The source code of the notes specifies a break of
+three seconds after this sentence.
+<break time="3s" />
+Speech then continues with this sentence after those three seconds.
+Note that ~break~ elements are removed from the speaker notes in the
+presentation as they are meant for software and might confuse readers.
 #+end_notes
 
 * Slide with notes and fragments
