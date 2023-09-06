@@ -1103,11 +1103,24 @@ presentations."
   :package-version '(org-re-reveal . "3.19.0"))
 
 (defcustom org-re-reveal-tts-normalize-table
-  '(("[ \t][ \t]+" " ")
-    ("’" "'"))
-    "Normalization table containing 2-element lists.
-For TTS processing, normalize text by replacing several whitespaces with one
-and avoiding some UTF symbols.
+  '(("[ \t][ \t]+" " ") ; Replace horizontal whitespace.
+    ("[ \t]+\n" "\n")   ; Remove trailing whitespace.
+    ("’" "'")           ; Replace curly apostrophe.
+    ;; If a space precedes a break element, replace with newline:
+    ("[ ]+\\(<break time=[^>]+>\\)" "\n\\1")
+    ;; If something else precedes a break element, keep it:
+    ("\\([^\n]\\)\\(<break time=[^>]+>\\)" "\\1\n\\2")
+    ;; Similarly for (non-) space following break elements:
+    ("\\(<break time=[^>]+>\\)[ ]+" "\\1\n")
+    ("\\(<break time=[^>]+>\\)\\([^\n]\\)" "\\1\n\\2"))
+    "Normalization table understood by `iso-translate-conventions'.
+Such a table contains a list of 2-element lists.  Both elements are regular
+expressions, where occurrences of the first one are replaced by the second
+one.
+Currently:
+- Replace several whitespaces with one.
+- Avoiding some UTF symbols.
+- Make sure that SSML break elements appear on lines of their own.
 
 TODO What about current limitations of TTS?  Where should preprocessing be
 applied?  Here or in the TTS implementation?
@@ -1116,7 +1129,7 @@ applied?  Here or in the TTS implementation?
 - Numbers are not read."
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
-  :package-version '(org-re-reveal . "3.19.0"))
+  :package-version '(org-re-reveal . "3.20.0"))
 
 (defun org-re-reveal--if-format (fmt val)
   "Apply `format' to FMT and VAL if VAL is a number or non-empty string.
@@ -1134,32 +1147,20 @@ Then, insert a newline after each sentence (determined by `forward-sentence').
 Also perform replacements based on `org-re-reveal-tts-normalize-table'."
   (with-temp-buffer
     (insert text)
-    ;; Function count-sentences may not be defined in older Emacsen.
-    ;; As this function is only used for a safety check (which may
-    ;; generate a warning), this seems acceptable here.
-    (let ((sc (and (fboundp 'count-sentences)
-                   (count-sentences (point-min) (point-max)))))
-      (goto-char (point-min))
-      (while (re-search-forward "[ ]*\n[ ]*" nil t)
-        (replace-match "  "))
-      (unless (eq sc (and (fboundp 'count-sentences)
-                          (count-sentences (point-min) (point-max))))
-        (display-warning
-         'org-export-re-reveal
-         (format "Unexpected sentence counts (%d vs %d):\n%s\n%s"
-                 sc (count-sentences (point-min) (point-max))
-                 text (buffer-string))))
-      (goto-char (point-min))
-      (let* ((prev (point))
-             (next (forward-sentence)))
-        (while (and (not (null next))
-                    (not (= prev next)))
-          ;; End sentence with newline, remove spaces at bol.
-          (insert "\n")
-          (when (re-search-forward "[ ]+" nil t)
-            (replace-match ""))
-          (setq prev (point)
-                next (ignore-errors (forward-sentence))))))
+    (goto-char (point-min))
+    (while (re-search-forward "[ ]*\n[ ]*" nil t)
+      (replace-match "  "))
+    (goto-char (point-min))
+    (let* ((prev (point))
+           (next (forward-sentence)))
+      (while (and (not (null next))
+                  (not (= prev next)))
+        ;; End sentence with newline, remove whitespace at bol.
+        (insert "\n")
+        (when (re-search-forward "[ \t\n]+" nil t)
+          (replace-match ""))
+        (setq prev (point)
+              next (ignore-errors (forward-sentence)))))
     (iso-translate-conventions (point-min) (point-max)
                                org-re-reveal-tts-normalize-table)
     (buffer-string)))
