@@ -1218,6 +1218,17 @@ This does not work for fragments!"
                  pnumbers result))
         result))))
 
+(defun org-re-reveal--notes-to-html (contents)
+  "Transcode notes CONTENTS to HTML.
+Create HTML notes according to `org-re-reveal-notes-format-string' and
+strip potential SSML elements (added for TTS purposes but not meant for
+the audience)."
+  (if (stringp contents)
+      (replace-regexp-in-string
+       "&lt;break time=[^/]+/&gt;" ""
+       (format org-re-reveal-notes-format-string contents))
+    ""))
+
 (defun org-re-reveal--notes-to-tts (block contents info)
   "Transcode a notes BLOCK from Org to Reveal.
 CONTENTS holds the contents of the block.  INFO is a plist
@@ -1260,7 +1271,7 @@ If TTS is configured, also create text file and add it to index."
                               (concat "." (number-to-string frag)))))))
           (org-re-reveal--add-to-tts-index voice gap audio-name hash info)
           (org-re-reveal--create-tts-text hash text tts-dir)))))
-    (format org-re-reveal-notes-format-string contents))
+  (org-re-reveal--notes-to-html contents))
 
 (defun org-re-reveal-special-block (special-block contents info)
   "Transcode a SPECIAL-BLOCK element from Org to Reveal.
@@ -2480,8 +2491,7 @@ Speaker notes on the title slide with \"%n\" make use of
                       (plist-get info :reveal-academic-title) info))
               (?m . ,(org-export-data
                       (plist-get info :reveal-miscinfo) info))
-              (?n . ,(org-re-reveal--if-format
-                      org-re-reveal-notes-format-string html-notes))
+              (?n . ,(org-re-reveal--notes-to-html html-notes))
               (?q . ,(url-encode-url
                       (org-export-data
                        (plist-get info :reveal-talk-qr-code) info)))
