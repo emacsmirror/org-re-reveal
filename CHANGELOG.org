@@ -13,9 +13,15 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.20.0] - 2023-09-06
+*** Added
+    - Support SSML ~break~ elements within notes.  Such elements are
+      supposed to be translated into pauses by the TTS implementation,
+      giving time to read or think to the audience.
+
 ** [3.19.2] - 2023-08-24
 *** Fixed
-    - Add guess for number of UNNUMBERED slide under TTS
+    - Add guess for number of UNNUMBERED slide under TTS.
 
 ** [3.19.1] - 2023-08-22
 *** Changed
