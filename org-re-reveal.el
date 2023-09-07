@@ -1057,8 +1057,11 @@ See there: https://github.com/hakimel/reveal.js/issues/2276")
 (defcustom org-re-reveal-with-tts nil
   "If non-nil, specify voice and create text files for TTS generation.
 Please see the test case test-notes-for-tts.org for an example.
+
 Note that org-re-reveal only produces text files for a text-to-speech process
-that needs to be implemented elsewhere, e.g. in emacs-reveal."
+that needs to be implemented elsewhere, e.g., in emacs-reveal.
+See URL `https://oer.gitlab.io/emacs-reveal-howto/tts-howto.html' for a
+demo presentation."
   :group 'org-export-re-reveal
   :type '(choice (const :tag "No TTS" nil)
                  (const :tag "Speechbrain (US female)" speechbrain)

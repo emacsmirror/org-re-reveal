@@ -312,6 +312,8 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_TTS_DIR~                             | ~org-re-reveal-tts-dir~                  |
 | ~nil~                             | ~REVEAL_TTS_NAME_PREFIX~                     | ~org-re-reveal-tts-name-prefix~          |
 | ~nil~                             | ~REVEAL_TTS_SENTENCE_GAP~                    | ~org-re-reveal-tts-sentence-gap~         |
+| ~nil~                             | ~REVEAL_TTS_START_SLIDE_GAP~                 | ~org-re-reveal-tts-start-slide-gap~      |
+| ~nil~                             | ~REVEAL_TTS_END_SLIDE_GAP~                   | ~org-re-reveal-tts-end-slide-gap~        |
 | ~nil~                             | ~REVEAL_VERSION~                             | ~org-re-reveal-revealjs-version~         |
 
 #+REVEAL: split
@@ -1202,14 +1204,16 @@ Whether anyone wants to use those package in isolation, is up to them.
     files, from which audio files can be generated (e.g., with
     emacs-reveal).  The
     [[https://github.com/rajgoel/reveal.js-plugins/tree/master/audio-slideshow][audio-slideshow plugin]]
-    can then play generated audio.  The result is a video mode for
+    can then play generated audio.  The result can serve as video mode for
     presentations, without the hassle of audio recording/cutting (and
     with the usual usability advantages of reveal.js presentations
     over videos).
 
     See variable ~org-re-reveal-with-tts~, whose doc string points to
-    [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-notes-for-tts.org][this sample presentation]],
-    which documents various aspects of the TTS process.
+    [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-notes-for-tts.org][this sample presentation]]
+    and this [[https://oer.gitlab.io/emacs-reveal-howto/tts-howto.html][TTS howto]]
+    for emacs-reveal, both of which document various aspects of the
+    TTS process.
 
 ** Multiplexing
    Reveal.js supports multiplexing, which allows your audience to view
