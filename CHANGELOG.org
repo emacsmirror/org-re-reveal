@@ -13,6 +13,13 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.21.0] - 2023-09-07
+*** Added
+    - Keywords ~REVEAL_TTS_START_SLIDE_GAP~ and
+      ~REVEAL_TTS_END_SLIDE_GAP~ with variables
+      ~org-re-reveal-tts-start-slide-gap~ and
+      ~org-re-reveal-tts-end-slide-gap~.
+
 ** [3.20.0] - 2023-09-06
 *** Added
     - Support SSML ~break~ elements within notes.  Such elements are
