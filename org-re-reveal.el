@@ -214,6 +214,8 @@
       (:reveal-tts-dir "REVEAL_TTS_DIR" nil org-re-reveal-tts-dir t)
       (:reveal-tts-name-prefix "REVEAL_TTS_NAME_PREFIX" nil org-re-reveal-tts-name-prefix t)
       (:reveal-tts-sentence-gap "REVEAL_TTS_SENTENCE_GAP" nil org-re-reveal-tts-sentence-gap t)
+      (:reveal-tts-start-slide-gap "REVEAL_TTS_START_SLIDE_GAP" nil org-re-reveal-tts-start-slide-gap t)
+      (:reveal-tts-end-slide-gap "REVEAL_TTS_END_SLIDE_GAP" nil org-re-reveal-tts-end-slide-gap t)
       (:reveal-version "REVEAL_VERSION" nil org-re-reveal-revealjs-version t))
 
     :translate-alist
@@ -1101,6 +1103,18 @@ presentations."
   :group 'org-export-re-reveal
   :type 'number
   :package-version '(org-re-reveal . "3.19.0"))
+
+(defcustom org-re-reveal-tts-start-slide-gap 2.0
+  "Gap/silence at beginning of slide."
+  :group 'org-export-re-reveal
+  :type 'number
+  :package-version '(org-re-reveal . "3.21.0"))
+
+(defcustom org-re-reveal-tts-end-slide-gap 1.0
+  "Gap/silence at end of slide."
+  :group 'org-export-re-reveal
+  :type 'number
+  :package-version '(org-re-reveal . "3.21.0"))
 
 (defcustom org-re-reveal-tts-normalize-table
   '(("[ \t][ \t]+" " ") ; Replace horizontal whitespace.
@@ -2859,11 +2873,14 @@ attr_html plist."
 
 (defun org-re-reveal--add-to-tts-index (voice gap name hash info)
   "Add NAME with HASH of text for TTS to index file with INFO.
-If the index file does not exist, create it, writing VOICE and GAP as
-first line."
-  (let ((index (org-re-reveal--tts-index-name info)))
+If the index file does not exist, create it, writing VOICE, GAP, as
+well as the start and the end slide gaps as first line."
+  (let ((index (org-re-reveal--tts-index-name info))
+        (start-gap (plist-get info :reveal-tts-start-slide-gap))
+        (end-gap (plist-get info :reveal-tts-end-slide-gap)))
     (unless (file-exists-p index)
-      (append-to-file (format "%s %s\n" voice gap) nil index))
+      (append-to-file
+       (format "%s %s %s %s\n" voice gap start-gap end-gap) nil index))
     (append-to-file (format "%s %s\n" name hash) nil index)))
 
 (defun org-re-reveal--create-tts-text (hash text dir)
