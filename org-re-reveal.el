@@ -130,6 +130,7 @@
       (:reveal-pdfseparatefragments nil "reveal_pdfseparatefragments" org-re-reveal-pdfseparatefragments t)
       (:reveal-progress nil "reveal_progress" org-re-reveal-progress t)
       (:reveal-rolling-links nil "reveal_rolling_links" org-re-reveal-rolling-links t)
+      (:reveal-show-notes nil "reveal_show_notes" org-re-reveal-show-notes t)
       (:reveal-single-file nil "reveal_single_file" org-re-reveal-single-file t)
       (:reveal-slide-global-footer nil "reveal_global_footer" org-re-reveal-global-footer t)
       (:reveal-slide-global-header nil "reveal_global_header" org-re-reveal-global-header t)
@@ -457,6 +458,14 @@ to specify a custom theme."
                 (const "white")
                 (string :tag "Other theme"))
   :package-version '(org-re-reveal . "3.7.0"))
+
+(defcustom org-re-reveal-show-notes nil
+  "Control `showNotes' option for presentations.
+This variable is meant to show notes when viewing presentations.
+It is combined with `org-re-reveal-export-notes-to-pdf' for PDF export."
+  :group 'org-export-re-reveal
+  :type 'boolean
+  :package-version '(org-re-reveal . "3.23.0"))
 
 (defcustom org-re-reveal-export-notes-to-pdf nil
   "Control `showNotes' option for PDF export.
@@ -1950,14 +1959,19 @@ transitionSpeed: '%s',\n")
            (plist-get info :reveal-trans)
            (plist-get info :reveal-speed)))
 
-   ;; notes in PDF export
-   (let ((export-notes (plist-get info :reveal-export-notes-to-pdf)))
+   ;; notes in PDF export and in presentation
+   (let ((export-notes (plist-get info :reveal-export-notes-to-pdf))
+         (show-notes (plist-get info :reveal-show-notes)))
     (if export-notes
-        (format "showNotes: window.location.search.match( /print-pdf/gi ) ? %s : false,\n"
+        (format "showNotes: window.location.search.match( /print-pdf/gi ) ? %s : %s,\n"
                 (if (booleanp export-notes)
                     "true"
-                  (format "'%s'" export-notes)))
-      ""))
+                  (format "'%s'" export-notes))
+                (if show-notes
+                    "true"
+                  "false"))
+      (when show-notes
+        "showNotes: true,\n")))
 
    ;; extra options
    (let ((options (plist-get info :reveal-extra-options)))

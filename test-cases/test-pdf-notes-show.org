@@ -1,0 +1,23 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2019, 2023 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000 reveal_show_notes:t
+#+REVEAL_THEME: black
+#+REVEAL_EXPORT_NOTES_TO_PDF: separate-page
+
+#+Title: Showing and exporting notes to PDF
+#+Author: Jens Lechtenbörger
+
+* A slide with notes
+  - Export this to PDF (with ~?print-pdf~ after ~.html~, see
+    [[https://revealjs.com/pdf-export/]])
+  - Notes should be visible on separate page
+#+begin_notes
+You should see these notes directly when viewing the presentation
+and also on a separate page in PDF export.
+#+end_notes
+
+* A normal slide
+  - Another slide
+  - No notes, nothing special

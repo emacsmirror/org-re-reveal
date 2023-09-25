@@ -52,7 +52,7 @@ ELS          := org-re-reveal.el ox-re-reveal.el
 
 CORTELS      := $(TESTFILE) cort-test.el
 
-REVEALTEST   := backgrounds backgrounds-revealjs4 blockquote embed-resources extra-scripts footer footer-global highlightjs internal-links klipsify klipsify-python math merge-classes mobile-app multiplex noslide notes-for-tts options pdf-notes plugins plugin-css postscript remote-plugin reveal-toc revealjs4 src-blocks-hl src-blocks-no-hl slide-container slide-grid-wrapper slide-numbers slide-numbers-toc slide-numbers-reveal-toc split tdm tdm-policy timing title-slide title-slide-notes toc-de toc-default toc-user
+REVEALTEST   := backgrounds backgrounds-revealjs4 blockquote embed-resources extra-scripts footer footer-global highlightjs internal-links klipsify klipsify-python math merge-classes mobile-app multiplex noslide notes-for-tts options pdf-notes pdf-notes-show plugins plugin-css postscript remote-plugin reveal-toc revealjs4 show-notes src-blocks-hl src-blocks-no-hl slide-container slide-grid-wrapper slide-numbers slide-numbers-toc slide-numbers-reveal-toc split tdm tdm-policy timing title-slide title-slide-notes toc-de toc-default toc-user
 
 ##################################################
 

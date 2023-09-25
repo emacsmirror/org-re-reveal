@@ -1,0 +1,20 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2023 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000 reveal_show_notes:t
+#+REVEAL_THEME: black
+
+#+Title: Showing notes
+#+Author: Jens Lechtenbörger
+
+* A slide with notes
+  - This slides comes with notes
+#+begin_notes
+You should see these notes when viewing the presentation (without the
+notes plugin).
+#+end_notes
+
+* A normal slide
+  - Another slide
+  - No notes, nothing special
