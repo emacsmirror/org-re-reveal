@@ -186,6 +186,7 @@
       (:reveal-speed "REVEAL_SPEED" nil org-re-reveal-transition-speed t)
       (:reveal-talk-qr-code "REVEAL_TALK_QR_CODE" nil nil t)
       (:reveal-talk-url "REVEAL_TALK_URL" nil nil t)
+      (:reveal-tdm-reservation "REVEAL_TDM_RESERVATION" nil org-re-reveal-tdm-reservation t)
       (:reveal-theme "REVEAL_THEME" nil org-re-reveal-theme t)
       (:reveal-title-slide "REVEAL_TITLE_SLIDE" nil org-re-reveal-title-slide newline)
       (:reveal-title-slide-background "REVEAL_TITLE_SLIDE_BACKGROUND" nil nil t)
@@ -361,6 +362,19 @@ If you set this to a CDN location, make sure that
   :group 'org-export-re-reveal
   :type 'string
   :package-version '(org-re-reveal . "3.0.3"))
+
+(defcustom org-re-reveal-tdm-reservation nil
+  "If non-nil, implement TDM Reservation Protocol (TDMRep).
+This protocol enables European rightsholders to restrict the use of their
+contents for text and data mining (TDM) purposes in a machine readable way,
+see URL `https://www.w3.org/2022/tdmrep/'.
+This variable can be nil, t, or a string.
+If non-nil, add a \"tdm-reservation\" meta element.
+In addition, if it is a string starting with \"http\", use it as URL
+for a \"tdm-policy\" meta element."
+  :group 'org-export-re-reveal
+  :type '(choice (const nil) string)
+  :package-version '(org-re-reveal . "3.22.0"))
 
 (defcustom org-re-reveal-hlevel 1
   "Specify minimum level of headings for grouping into vertical slides."
@@ -2684,7 +2698,8 @@ org-export options)."
   "Return complete document string after HTML conversion.
 CONTENTS is the transcoded contents string.
 INFO is a plist holding export options."
-  (let ((spec (org-re-reveal-format-spec info)))
+  (let ((spec (org-re-reveal-format-spec info))
+        (tdm (plist-get info :reveal-tdm-reservation)))
     (org-re-reveal--check-single-file info)
     (org-re-reveal--setup-paths info)
     (concat
@@ -2701,6 +2716,12 @@ INFO is a plist holding export options."
                                (plist-get info :keywords))
      (if (plist-get info :reveal-mobile-app)
          "<meta name=\"mobile-web-app-capable\" content=\"yes\">\n<meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\n"
+       "")
+     (if tdm
+         (concat "<meta name=\"tdm-reservation\" content=\"1\">\n"
+                 (when (and (stringp tdm)
+                            (string-prefix-p "http" tdm))
+                   (format "<meta name=\"tdm-policy\" content=\"%s\">\n" tdm)))
        "")
      (org-re-reveal-stylesheets info)
      (org-re-reveal--build-pre-postamble 'head-preamble info spec)
