@@ -13,6 +13,10 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.23.0] - 2023-09-25
+*** Added
+    - Option ~reveal_show_notes~ with variable ~org-re-reveal-show-notes~.
+
 ** [3.22.0] - 2023-09-25
 *** Added
     - Keyword ~REVEAL_TDM_RESERVATION~ with variable
