@@ -72,7 +72,8 @@ plugins as submodules, combined with suitable Emacs configuration.
 A [[https://gitlab.com/oer/emacs-reveal-howto][Howto for the generation of reveal.js presentations (slides with audio) with emacs-reveal]]
 exists as well.
 
-I use /emacs-reveal/ to generate Open Educational Resources (OER), and
+I use /emacs-reveal/ to generate Open Educational Resources (OER).
+In particular,
 macros coming with /emacs-reveal/ simplify license attribution for
 embedded figures considerably:
 [[https://oer.gitlab.io/OS/][OER presentations for a course on operating systems]]
@@ -204,6 +205,20 @@ Whether anyone wants to use those package in isolation, is up to them.
     (require 'org-re-reveal)
     #+END_SRC
 
+** Licensing
+   I suggest that you think about “good” licensing terms for the
+   presentations that you create for and with org-re-reveal (the
+   source files as well as generated ones).  I recommend that
+   you publish them under free and open licenses as
+   [[https://en.wikipedia.org/wiki/Open_educational_resources][Open Educational Resources (OER)]].
+   This process is simplified with oer-reveal and emacs-reveal.
+
+   Besides, ~org-re-reveal-tdm-reservation~ offers support for the
+   [[https://www.w3.org/2022/tdmrep/][TDM Reservation Protocol (TDMRep)]],
+   which enables European rightsholders to restrict the use of their
+   contents for text and data mining (TDM) purposes in a machine
+   readable way.
+
 * Configuration
 
 ** Options and Plug-ins
@@ -287,6 +302,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_SPEED~                               | ~org-re-reveal-transition-speed~         |
 | ~nil~                             | ~REVEAL_TALK_QR_CODE~                        | ~nil~                                    |
 | ~nil~                             | ~REVEAL_TALK_URL~                            | ~nil~                                    |
+| ~nil~                             | ~REVEAL_TDM_RESERVATION~                     | ~org-re-reveal-tdm-reservation~          |
 | ~nil~                             | ~REVEAL_THEME~                               | ~org-re-reveal-theme~                    |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE~                         | ~org-re-reveal-title-slide~              |
 | ~nil~                             | ~REVEAL_TITLE_SLIDE_BACKGROUND~              | ~nil~                                    |
