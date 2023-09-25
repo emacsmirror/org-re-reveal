@@ -247,6 +247,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~reveal_pdfseparatefragments~     | ~nil~                                        | ~org-re-reveal-pdfseparatefragments~     |
 | ~reveal_progress~                 | ~nil~                                        | ~org-re-reveal-progress~                 |
 | ~reveal_rolling_links~            | ~nil~                                        | ~org-re-reveal-rolling-links~            |
+| ~reveal_show_notes~               | ~nil~                                        | ~org-re-reveal-show-notes~               |
 | ~reveal_single_file~              | ~nil~                                        | ~org-re-reveal-single-file~              |
 | ~reveal_slide_global_footer~      | ~nil~                                        | ~org-re-reveal-global-footer~            |
 | ~reveal_slide_global_header~      | ~nil~                                        | ~org-re-reveal-global-header~            |
@@ -1191,6 +1192,12 @@ Whether anyone wants to use those package in isolation, is up to them.
    windows and press ’s’ again; notes should be working then.
    If this does not work, you may need to put the presentation HTML
    file into the reveal.js root directory and reopen it in the browser.
+
+#+REVEAL: split
+   Besides, reveal.js has a configuration option ~showNotes~, which
+   allows to show the notes during the presentation.
+   Customize ~org-re-reveal-show-notes~ or use the option
+   ~reveal_show_notes~ to enable this option.
 
 *** Easy-Template for Speaker Notes
 
