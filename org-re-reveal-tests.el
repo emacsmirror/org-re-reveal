@@ -160,6 +160,8 @@
         "slide-numbers-reveal-toc"
         "slide-numbers-toc"
         "split"
+        "tdm"
+        "tdm-policy"
         "timing"
         "title-slide"
         "title-slide-notes"

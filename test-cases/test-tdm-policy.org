@@ -1,0 +1,17 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2023 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+#+REVEAL_TDM_RESERVATION: https://oer.gitlab.io/tdm-policy.json
+
+#+Title: Reserving Text and Data Mining (TDM) with policy
+#+Author: Jens Lechtenbörger
+
+* Just a slide
+  - Nothing really special here
+  - The generated presentation contains two meta elements specified by the
+    [[https://www.w3.org/2022/tdmrep/][TDM Reservation Protocol (TDMRep)]]:
+    1. ~tdm-reservation~
+    2. ~tdm-policy~

@@ -1,0 +1,16 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2023 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+#+REVEAL_TDM_RESERVATION: t
+
+#+Title: Reserving Text and Data Mining (TDM) usage
+#+Author: Jens Lechtenbörger
+
+* Just a slide
+  - Nothing really special here
+  - The generated presentation contains a ~tdm-reservation~ meta element
+  - See [[https://www.w3.org/2022/tdmrep/][TDM Reservation Protocol (TDMRep)]]
+    for details
