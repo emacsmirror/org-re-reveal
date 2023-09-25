@@ -1139,7 +1139,7 @@ Currently:
 - Avoiding some UTF symbols.
 - Make sure that SSML break elements appear on lines of their own.
 
-TODO What about current limitations of TTS?  Where should preprocessing be
+TODO: What about current limitations of TTS?  Where should preprocessing be
 applied?  Here or in the TTS implementation?
 - Deal with abbreviations.  CPU, CPUs, TTS, ...
   In contrast, RAM sounds right.
