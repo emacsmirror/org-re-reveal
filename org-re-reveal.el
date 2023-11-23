@@ -3020,6 +3020,10 @@ Return output file name."
   (if (or (not org-re-reveal-client-multiplex-filter)
           (string-match org-re-reveal-client-multiplex-filter filename))
       (let ((org-re-reveal-client-multiplex t)
+            (org-re-reveal-pub-dir pub-dir)
+            (org-html-container-element "div")
+            ;; TODO Disable TTS code paths?  Probably multiplex
+            ;; presentations do not use TTS anyways?
             (client-ext (concat org-re-reveal-multiplex-client-ext
                                 "." org-html-extension)))
         (org-publish-org-to
