@@ -218,7 +218,8 @@
       (:reveal-tts-sentence-gap "REVEAL_TTS_SENTENCE_GAP" nil org-re-reveal-tts-sentence-gap t)
       (:reveal-tts-start-slide-gap "REVEAL_TTS_START_SLIDE_GAP" nil org-re-reveal-tts-start-slide-gap t)
       (:reveal-tts-end-slide-gap "REVEAL_TTS_END_SLIDE_GAP" nil org-re-reveal-tts-end-slide-gap t)
-      (:reveal-version "REVEAL_VERSION" nil org-re-reveal-revealjs-version t))
+      (:reveal-version "REVEAL_VERSION" nil org-re-reveal-revealjs-version t)
+      (:reveal-viewport "REVEAL_VIEWPORT" nil org-re-reveal-viewport t))
 
     :translate-alist
     '((headline . org-re-reveal-headline)
@@ -613,6 +614,19 @@ is activated by default (and, thus, also with `emacs-reveal')."
   :group 'org-export-re-reveal
   :type 'boolean
   :package-version '(org-re-reveal . "3.13.0"))
+
+(defcustom org-re-reveal-viewport nil
+  "If non-nil, add string as viewport meta tag.
+The given choice makes the presentation user-scalable (e.g.,
+pinch-to-zoom on mobile devices).
+For backward compatibility, this option is nil.  With `oer-reveal', this
+is activated by default (and, thus, also with `emacs-reveal')."
+  :group 'org-export-re-reveal
+  :type '(choice
+          (const :tag "Do not add viewport tag" nil)
+          (const :tag "Make presentation user-scalable" "width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=10.0, user-scalable=yes")
+          (string :tag "Custom configuration"))
+  :package-version '(org-re-reveal . "3.24.0"))
 
 (defcustom org-re-reveal-mousewheel nil
   "If t, enable mousewheel navigation.
@@ -2728,6 +2742,8 @@ INFO is a plist holding export options."
                                (plist-get info :description))
      (org-re-reveal--if-format "<meta name=\"keywords\" content=\"%s\"/>\n"
                                (plist-get info :keywords))
+     (org-re-reveal--if-format "<meta name=\"viewport\" content=\"%s\"/>\n"
+                               (plist-get info :reveal-viewport))
      (if (plist-get info :reveal-mobile-app)
          "<meta name=\"mobile-web-app-capable\" content=\"yes\">\n<meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\n"
        "")

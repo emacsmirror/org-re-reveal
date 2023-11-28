@@ -332,6 +332,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_TTS_START_SLIDE_GAP~                 | ~org-re-reveal-tts-start-slide-gap~      |
 | ~nil~                             | ~REVEAL_TTS_END_SLIDE_GAP~                   | ~org-re-reveal-tts-end-slide-gap~        |
 | ~nil~                             | ~REVEAL_VERSION~                             | ~org-re-reveal-revealjs-version~         |
+| ~nil~                             | ~REVEAL_VIEWPORT~                            | ~org-re-reveal-viewport~                 |
 
 #+REVEAL: split
    For documentation of variables, see their doc strings.  E.g.,
