@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2017-2021 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2017-2021, 2023 Jens Lechtenbörger
 # SPDX-License-Identifier: CC0-1.0
 
 image: registry.gitlab.com/oer/emacs-reveal/emacs-reveal:8.29.0
@@ -8,7 +8,7 @@ test:
     - make dcheck
   only:
     refs:
-      - master
+      - main
       - merge_requests
     changes:
       - Makefile
@@ -24,7 +24,7 @@ pages:
       - public
   only:
     refs:
-      - master
+      - main
       - lechten
     changes:
       - Makefile
