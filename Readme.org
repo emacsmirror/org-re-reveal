@@ -719,7 +719,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 
 ** Slide Numbering
 
-   By default, the slide number is showed at the lower-right corner of each slide.
+   By default, the slide number is shown at the lower-right corner of each slide.
 
    To disable slide numbering, please add ~reveal_slide_number:nil~ to the
    ~#+OPTIONS:~ line.
