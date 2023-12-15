@@ -728,7 +728,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    formats. To choose one format, please set ~reveal_slide_number~ to
    its proper string. For example, ~reveal_slide_number:h/v~.
 
-   Supported format strings can be found in the [[https://github.com/hakimel/reveal.js/#slide-number][reveal.js manual]].
+   Supported format strings can be found in the [[https://revealjs.com/slide-numbers/][reveal.js manual]].
 
 
 ** Slide Header/Footer
