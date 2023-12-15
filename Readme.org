@@ -402,7 +402,10 @@ Whether anyone wants to use those package in isolation, is up to them.
 
    You can also set =REVEAL_ROOT= to a URL (a CDN) to use
    reveal.js from the web instead of downloading a local copy.  The
-   reveal.js documentation does not mention this alternative, though.
+   reveal.js documentation does not mention this alternative, though,
+   and your privacy policy should inform your audience that they
+   download files from that CDN (quite likely with their IP address
+   and browser characteristics being tracked)...
 
 *** URL form for file location
 
