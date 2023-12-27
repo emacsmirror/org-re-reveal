@@ -13,13 +13,20 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.24.1] - 2023-12-27
+*** Fixed
+    - Allow ~num:nil~ with TTS and user-specified audio names, but
+      raise user-error without audio names.  Improve doc string for
+      ~org-re-reveal-with-tts~.  Addresses issue #93.
+    - Turn some occurrences of ~error~ into ~user-error~.
+
 ** [3.24.0] - 2023-11-28
 *** Added
     - Keyword ~REVEAL_VIEWPORT~ with variable ~org-re-reveal-viewport~.
 
 ** [3.23.1] - 2023-11-23
 *** Fixed
-    - Also use ~div~ elements for multiplex client presentations
+    - Also use ~div~ elements for multiplex client presentations.
 
 ** [3.23.0] - 2023-09-25
 *** Added
