@@ -1591,7 +1591,7 @@ may lead to encoding problems."
   "Call `message' and `message-box' with MSG and ARGS, then raise error."
   (message msg args)
   (message-box msg args)
-  (error "[org-re-reveal] Aborted"))
+  (user-error "[org-re-reveal] Aborted"))
 
 (defun org-re-reveal--css-label (in-single-file file-name style-id)
   "Generate HTML code to include CSS file FILE-NAME.
@@ -1780,7 +1780,7 @@ any longer."
           (insert-file-contents filename)
           (buffer-string)))
     (when (and filename raise-error)
-      (error "[org-re-reveal] File not found --read-file-as-string: %s" filename))))
+      (user-error "[org-re-reveal] File not found --read-file-as-string: %s" filename))))
 
 (defun org-re-reveal--external-plugins-maybe-from-file (info)
   "Create list of plugin dependencies from INFO.
@@ -1960,7 +1960,7 @@ Otherwise, raise error."
   (cond ((and (integerp option) (> option 0)) (format "%d" option))
         ((stringp option) (format "\"%s\"" option))
         ((eq option nil) nil)
-        (t (error "[org-re-reveal] Option »%s« must be string, positive integer, or nil; not %s"
+        (t (user-error "[org-re-reveal] Option »%s« must be string, positive integer, or nil; not %s"
                   option (type-of option)))))
 
 (defun org-re-reveal-scripts--main-configures (info)
