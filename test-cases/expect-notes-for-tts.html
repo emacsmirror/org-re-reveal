@@ -51,7 +51,7 @@ and advance automatically.  This presentation serves as example.
 <ul>
 <li>Text-To-Speech (TTS) should read notes
 <ul>
-<li>Controlled by option <code>reveal-with-tts</code></li>
+<li>Controlled by option <code>reveal_with_tts</code></li>
 <li>Audio is played with the
 <a href="https://github.com/rajgoel/reveal.js-plugins/tree/master/audio-slideshow">audio slideshow plugin</a>
 for Reveal.js</li>
@@ -65,7 +65,12 @@ for Reveal.js</li>
 </ul></li>
 <li>Note that org-re-reveal just generates text files as input for TTS
 <ul>
-<li>To generate and play audio, use <a href="https://gitlab.com/oer/emacs-reveal/">emacs-reveal</a></li>
+<li>To generate and play audio, use <a href="https://gitlab.com/oer/emacs-reveal/">emacs-reveal</a>
+<ul>
+<li>See the <a href="https://oer.gitlab.io/emacs-reveal-howto/tts-howto.html">TTS Howto</a>
+for a sample presentation (<a href="https://gitlab.com/oer/emacs-reveal-howto/-/blob/main/tts-howto.org?plain=1">source code</a>)</li>
+
+</ul></li>
 
 </ul></li>
 
@@ -219,8 +224,44 @@ My deepest level of nesting is used for this empty slide.
 </aside>
 
 </section>
-<section id="slide-3-2">
-<h3 id="3-2"><span class="section-number-3">3.2.</span> Another slide</h3>
+<section id="slide-org*******">
+<h3 id="org*******">Slide without number</h3>
+<ul>
+<li>Slide without section number</li>
+
+</ul>
+<aside class="notes">
+<p>
+This is a test case for a slide without section number.  Here, a
+message box is shown during export; maybe a correct audio file name is
+guessed.  With fragments, this will definitely not work.
+Use <code>:audio-name</code> if in doubt.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-4">
+<h2 id="4"><span class="section-number-2">4.</span> Top-level slide with number</h2>
+<ul>
+<li>Slide with section number after previous unnumbered one</li>
+
+</ul>
+<aside class="notes">
+<p>
+This is a test case for continued section numbers.
+While the number for the audio file is correct here, a continuation on
+the same level of nesting does not work (section numbers by Org would
+be off-by-one per unnumbered slide).
+</p>
+
+</aside>
+
+</section>
+<section id="slide-4-1">
+<h3 id="4-1"><span class="section-number-3">4.1.</span> Another slide</h3>
 <ul>
 <li>Here, the notes specify the names for the text and audio file as
 <code>another-slide-audio</code>

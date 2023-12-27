@@ -5,7 +5,9 @@
 #+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
 #+REVEAL_THEME: black
 
-# Activate TTS with SpeechT5 and speaker CLB.
+# Activate TTS with SpeechT5 and speaker CLB.  To be used with
+# enabled section numbers (variable org-export-with-section-numbers),
+# see doc string of org-re-reveal-with-tts.
 #+OPTIONS: reveal_with_tts:CLB
 
 # The following serves as prefix for files names of generated audio files.
@@ -36,7 +38,7 @@
   :reveal_extra_attr: data-audio-advance="10000"
   :END:
 - Text-To-Speech (TTS) should read notes
-  - Controlled by option ~reveal-with-tts~
+  - Controlled by option ~reveal_with_tts~
   - Audio is played with the
     [[https://github.com/rajgoel/reveal.js-plugins/tree/master/audio-slideshow][audio slideshow plugin]]
     for Reveal.js
@@ -45,6 +47,8 @@
   - Reveal.js “fragments” (animations) are still possible
 - Note that org-re-reveal just generates text files as input for TTS
   - To generate and play audio, use [[https://gitlab.com/oer/emacs-reveal/][emacs-reveal]]
+    - See the [[https://oer.gitlab.io/emacs-reveal-howto/tts-howto.html][TTS Howto]]
+      for a sample presentation ([[https://gitlab.com/oer/emacs-reveal-howto/-/blob/main/tts-howto.org?plain=1][source code]])
 #+begin_notes
 This slide lists some general thoughts on tea tea ess.
 Note that you need emacs-reveal to generate and play audio.
@@ -122,6 +126,27 @@ fragments.
 *** Third level of nesting
 #+begin_notes
 My deepest level of nesting is used for this empty slide.
+#+end_notes
+
+** Slide without number
+   :PROPERTIES:
+   :UNNUMBERED: t
+   :END:
+- Slide without section number
+#+begin_notes
+This is a test case for a slide without section number.  Here, a
+message box is shown during export; maybe a correct audio file name is
+guessed.  With fragments, this will definitely not work.
+Use ~:audio-name~ if in doubt.
+#+end_notes
+
+* Top-level slide with number
+- Slide with section number after previous unnumbered one
+#+begin_notes
+This is a test case for continued section numbers.
+While the number for the audio file is correct here, a continuation on
+the same level of nesting does not work (section numbers by Org would
+be off-by-one per unnumbered slide).
 #+end_notes
 
 ** Another slide
