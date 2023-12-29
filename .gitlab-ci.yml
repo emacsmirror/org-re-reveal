@@ -12,6 +12,7 @@ test:
       - merge_requests
     changes:
       - Makefile
+      - test-cases/*
       - "**/*.el"
       - ".gitlab-ci.yml"
 
