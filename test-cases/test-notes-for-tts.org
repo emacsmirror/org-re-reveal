@@ -25,10 +25,18 @@
 # Add notes for the title slide.
 #+REVEAL_TITLE_SLIDE_NOTES: config-title-notes-for-tts.org
 
-# The following requires emacs-reveal: https://gitlab.com/oer/emacs-reveal/
-# Use default names for audio with autoplay, advance 1500ms after end
-# of audio:
-#+OER_REVEAL_AUDIO_SLIDESHOW_CONFIG: audio: { advance: 1500, autoplay: true, defaultDuration: 1, defaultAudios: true, defaultAudioRate: window.location.search.match( /audio-speed/gi )? parseFloat((new URL(window.location.href)).searchParams.get('audio-speed')) : 1.0, playerOpacity: 0.8, playerStyle: 'position: fixed; bottom: 9.5vh; left: 0%; width: 30%; height:30px; z-index: 33;', prefix: 'audio/presentation' }
+# Activate slideshow plugin.  This requires locally available plugin
+# files under ./reveal.js/plugin...
+#+REVEAL_ADD_PLUGIN: audio-slideshow RevealAudioSlideshow plugin/audio-slideshow/plugin.js
+
+# Configure audio slideshow plugin for autoplay with defaultAudios.
+#+REVEAL_EXTRA_OPTIONS: audio: { advance: 1500, autoplay: true, defaultDuration: 1, defaultAudios: true, defaultAudioRate: window.location.search.match( /audio-speed/gi )? parseFloat((new URL(window.location.href)).searchParams.get('audio-speed')) : 1.0, playerOpacity: 0.8, playerStyle: 'position: fixed; bottom: 9.5vh; left: 0%; width: 30%; height:30px; z-index: 33;', prefix: 'audio/presentation', suffix: '.ogg' }
+
+# With emacs-reveal, the audio slideshow plugin is enabled by default.
+# Instead of the previous two commands you might use that single one,
+# which differs from the default configuration of oer-reveal to use autoplay
+# with default audio names.
+# #+OER_REVEAL_AUDIO_SLIDESHOW_CONFIG: audio: { advance: 1500, autoplay: true, defaultDuration: 1, defaultAudios: true, defaultAudioRate: window.location.search.match( /audio-speed/gi )? parseFloat((new URL(window.location.href)).searchParams.get('audio-speed')) : 1.0, playerOpacity: 0.8, playerStyle: 'position: fixed; bottom: 9.5vh; left: 0%; width: 30%; height:30px; z-index: 33;', prefix: 'audio/presentation', suffix: '.ogg' }
 
 #+Title: Presentation with notes for TTS
 #+Author: Jens Lechtenbörger
