@@ -142,8 +142,12 @@ Whether anyone wants to use those package in isolation, is up to them.
          ~Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at file:///... (Reason: CORS request not http)~
          - [[https://kb.mozillazine.org/Security.fileuri.strict_origin_policy][Workaround]]
        - Maybe use option ~--allow-file-access-from-files~ with chromium
+     - Maybe serve presentations with [[#local-web-server][local web server]]
 
 ** Local presentations with web server
+   :PROPERTIES:
+   :CUSTOM_ID: local-web-server
+   :END:
    - As alternative to overriding [[#cors-settings][CORS settings]],
      start a web server for generated presentations on ~localhost~,
      e.g.:
@@ -170,7 +174,8 @@ Whether anyone wants to use those package in isolation, is up to them.
 
    Install reveal.js as described in its
    [[https://revealjs.com/installation/][installation instructions]]
-   (the “Basic Setup” is sufficient to use org-re-reveal).
+   (the “Basic Setup” is sufficient to use org-re-reveal, but see
+   [[#cors-settings]]).
 
    As described under [[#revealjs-location][Set the location of reveal.js]]
    you could also use reveal.js from a remote location (a CDN),
