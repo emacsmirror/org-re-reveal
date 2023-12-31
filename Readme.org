@@ -131,6 +131,27 @@ Whether anyone wants to use those package in isolation, is up to them.
     With org-re-reveal, you can create beautiful presentations with 3D
     effects from simple but powerful Org contents.
 
+** Local presentations and CORS security
+   :PROPERTIES:
+   :CUSTOM_ID: cors-settings
+   :END:
+   - Generated presentations can be opened and viewed in browsers
+     (without the need for a web server)
+     - Some features may be prohibited based on [[https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp][cross-origin request security settings]]
+       - E.g., with audio, the browser console of Firefox may show:
+         ~Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at file:///... (Reason: CORS request not http)~
+         - [[https://kb.mozillazine.org/Security.fileuri.strict_origin_policy][Workaround]]
+       - Maybe use option ~--allow-file-access-from-files~ with chromium
+
+** Local presentations with web server
+   - As alternative to overriding [[#cors-settings][CORS settings]],
+     start a web server for generated presentations on ~localhost~,
+     e.g.:
+     - MELPA package
+       [[https://melpa.org/#/simple-httpd][simple-httpd]] with
+       ~M-x httpd-serve-directory~ or
+     - [[https://revealjs.com/installation/#full-setup][full setup of reveal.js]]
+
 * Requirements and Installation
 
   - Reveal.js
