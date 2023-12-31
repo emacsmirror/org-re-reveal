@@ -1279,7 +1279,14 @@ This does not work for fragments!"
   (let ((numbers (org-export-get-headline-number headline info))
         (level (org-export-get-relative-level headline info)))
     (if numbers
-        numbers
+        (let ((title-slide (plist-get info :reveal-title-slide)))
+          (if (and title-slide
+                   (or (not (stringp title-slide))
+                       (< 0 (length title-slide))))
+              numbers
+            ;; Without title slide, reduce section number by 1
+            ;; for 0-based indexing of reveal.js.
+            (cons (- (car numbers) 1) (cdr numbers))))
       (if pnumbers
           (let ((result (if (= 1 level)
                             (list (+ 1 (car pnumbers)) 0)
