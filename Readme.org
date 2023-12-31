@@ -162,7 +162,7 @@ Whether anyone wants to use those package in isolation, is up to them.
   - GNU Emacs, version 24.4 or later
   - Org mode
   - Org-re-reveal
-  - Htmlize or highlight.js
+  - Htmlize.el or highlight.js (plugin of reveal.js)
     - For source code highlighting, which is explained below
       - Depending on your version of Org mode, htmlize.el may be
         necessary even if you want to use highlight.js
