@@ -5,7 +5,7 @@
 ;;                         https://github.com/yjwen/org-reveal/commits/master
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
-;; SPDX-FileCopyrightText: 2017-2023 Jens Lechtenbörger
+;; SPDX-FileCopyrightText: 2017-2024 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
 ;; Version: 3.24.2
@@ -1308,17 +1308,24 @@ This does not work for fragments!"
         (let* ((hnum (plist-get info :reveal-tts-hnum))
                (vnum (plist-get info :reveal-tts-vnum))
                (frag (plist-get info :reveal-tts-frag))
+               (split-p (plist-get info :reveal-tts-split-p))
                (pnumbers (plist-get info :reveal-tts-prev-numbers))
                (headline (org-export-get-parent-headline block))
                (numbers (org-re-reveal--get-headline-number headline pnumbers info)))
           (if (equal pnumbers numbers)
-              ;; Same numbers, so new fragment on slide.
-              (if frag
-                  (plist-put info :reveal-tts-frag (+ 1 frag))
-                (plist-put info :reveal-tts-frag 0))
+              ;; Same numbers, so either split or new fragment on slide.
+              (if (not split-p)
+                  ;; Increment fragment counter if no split.
+                  (if frag
+                      (plist-put info :reveal-tts-frag (+ 1 frag))
+                    (plist-put info :reveal-tts-frag 0))
+                ;; Reset split-p and increment vertical index.
+                (plist-put info :reveal-tts-split-p nil)
+                (plist-put info :reveal-tts-vnum (+ 1 vnum)))
             ;; Different numbers, on new slide.
             (plist-put info :reveal-tts-prev-numbers numbers)
             (plist-put info :reveal-tts-frag -1)
+            (plist-put info :reveal-tts-split-p nil)
             (if (eq hnum (car numbers))
                 ;; Same horizontal index.  Thus, increment vertical index.
                 (plist-put info :reveal-tts-vnum (+ 1 vnum))
@@ -2289,8 +2296,12 @@ The possibly empty FOOTER is inserted at the end of the slide."
          (real-attrs (if (< 0 (length split-attrs))
                          split-attrs
                        (org-re-reveal--section-attrs headline info))))
-    (format "%s</section>\n<section%s>"
-            footer real-attrs)))
+    (when (plist-get info :reveal-with-tts)
+      ;; A split acts like a new slide.
+      ;; Thus, remember split and reset fragment counter for TTS.
+      (plist-put info :reveal-tts-split-p t)
+      (plist-put info :reveal-tts-frag -1))
+    (format "%s</section>\n<section%s>" footer real-attrs)))
 
 ;; Copied from org-html-format-list-item. Overwrite HTML class
 ;; attribute when there is attr_html attributes.
