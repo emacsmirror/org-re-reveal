@@ -2,7 +2,7 @@
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
-;; SPDX-FileCopyrightText: 2020-2023 Jens Lechtenbörger
+;; SPDX-FileCopyrightText: 2020-2024 Jens Lechtenbörger
 
 ;; This file is not part of GNU Emacs.
 
@@ -170,6 +170,7 @@
         "toc-de"
         "toc-default"
         "toc-user"
+        "tts-split-fragment"
         "viewport"))
 
 (cort-deftest org-re-reveal/css-custom-css-path--detect-custom-css
