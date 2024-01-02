@@ -1298,13 +1298,13 @@ Whether anyone wants to use those package in isolation, is up to them.
 ** Multiplexing
    Reveal.js supports multiplexing, which allows your audience to view
    the slides of the presentation you are controlling on their own phone, tablet
-   or laptop. As the master presentation navigates the slides, all client
+   or laptop.  As the main presentation navigates the slides, all client
    presentations will update in real time.
 
    Please see
    [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-multiplex.org][this sample presentation for instructions]].
    Briefly, you need to configure ~multiplex~ as plugin, with
-   URL, ID and Secret of a socket.io server.  Then, generate master
+   URL, ID and Secret of a socket.io server.  Then, generate main
    (with Secret) and client presentations and publish the client
    presentation for your audience.  Customize
    ~org-re-reveal-multiplex-client-ext~ to influence the name of the

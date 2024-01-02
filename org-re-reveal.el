@@ -515,7 +515,7 @@ To enable multiplex, see `org-re-reveal-plugins'."
   :type 'string)
 
 (defcustom org-re-reveal-multiplex-secret ""
-  "The secret to use for the master presentation.
+  "The secret to use for the main presentation.
 E.g., per README of reveal.js 3.8.0, generate id and secrete by visiting
 URL `https://reveal-js-multiplex-ccjbegmaii.now.sh/'.
 To enable multiplex, see `org-re-reveal-plugins'."
@@ -540,7 +540,7 @@ To enable multiplex, see `org-re-reveal-plugins'."
 
 (defcustom org-re-reveal-multiplex-client-ext "_client"
   "Extension to insert in names of multiplex client presentations.
-The name of the multiplex master presentation is derived from
+The name of the multiplex main presentation is derived from
 `org-html-extension'.  For client presentations, the value of this
 variable is inserted before the HTML extension."
   :group 'org-export-re-reveal
