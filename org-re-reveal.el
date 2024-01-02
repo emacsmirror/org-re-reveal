@@ -408,7 +408,9 @@ slide, where the following %-sequences are allowed:
   %q for the name of a file to a QR code (set with #+REVEAL_TALK_QR_CODE).
   %u for the URL of the presentation (set with #+REVEAL_TALK_URL).
   %m for misc information (set with #+REVEAL_MISCINFO).
-  %n for notes on the title slide (see `org-re-reveal-title-slide-notes').
+  %n for notes on the title slide (see `org-re-reveal-title-slide-notes');
+     obsolete since org-re-reveal 3.25.0; a notes block before the first
+     headline defines notes on the title slide now.
   %% for a literal %.
 
 Alternatively, the string can also be the name of a file with the title
@@ -848,6 +850,7 @@ for `org-re-reveal-title-slide'."
   :group 'org-export-re-reveal
   :type '(choice (const nil) file)
   :package-version '(org-re-reveal . "3.3.0"))
+(make-obsolete-variable 'org-re-reveal-title-slide-notes "insert a notes block before the first headline instead." "3.25.0")
 
 (defcustom org-re-reveal-default-frag-style nil
   "Default fragment style."
