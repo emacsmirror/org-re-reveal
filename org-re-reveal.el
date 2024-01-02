@@ -850,7 +850,10 @@ for `org-re-reveal-title-slide'."
   :group 'org-export-re-reveal
   :type '(choice (const nil) file)
   :package-version '(org-re-reveal . "3.3.0"))
-(make-obsolete-variable 'org-re-reveal-title-slide-notes "insert a notes block before the first headline instead." "3.25.0")
+(make-obsolete-variable
+ 'org-re-reveal-title-slide-notes
+ "insert a notes block before the first headline instead."
+ "3.25.0")
 
 (defcustom org-re-reveal-default-frag-style nil
   "Default fragment style."
