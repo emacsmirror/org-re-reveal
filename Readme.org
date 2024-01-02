@@ -155,6 +155,12 @@ Whether anyone wants to use those package in isolation, is up to them.
        [[https://melpa.org/#/simple-httpd][simple-httpd]] with
        ~M-x httpd-serve-directory~ or
      - [[https://revealjs.com/installation/#full-setup][full setup of reveal.js]]
+   - Suggestion
+     - Embed resources (e.g., reveal.js, CSS, plugins) with relative
+       paths into presentation (instead of absolute ~file~ paths)
+     - Then, presentation works not only locally but also on public
+       web server
+       - E.g., with free and open license as OER at [[https://oer.gitlab.io/]]
 
 * Requirements and Installation
 
@@ -406,9 +412,10 @@ Whether anyone wants to use those package in isolation, is up to them.
 
    The location of reveal.js is the path to the top directory of the
    reveal.js installation, the directory which contains file
-   ~README.md~, but *not* the one that contains the file reveal.js.
+   ~README.md~, but *not* the one that contains the file ~reveal.js~.
 
-   The default location is =./reveal.js=, relative to the Org file.
+   The default location is =./reveal.js=, relative to the generated
+   HTML presentation.
 
    Customize =org-re-reveal-root= to change the location
    globally, or use keyword =#+REVEAL_ROOT= in an individual Org file.
@@ -418,14 +425,28 @@ Whether anyone wants to use those package in isolation, is up to them.
 #+END_SRC
 
 #+REVEAL: split
-   *IMPORTANT*: If you use absolute paths to reveal.js as illustrated
-   above, they should be in URL form,
-   ~file:///path_to_reveal.js~.
+   *IMPORTANT*: Absolute paths as illustrated above hinder transfer of
+   files between machines and servers; in addition, they violate the
+   [[#cors-settings][same-origin security policy]].  Use of relative
+   paths (the default) is recommended.
 
-   #+BEGIN_SRC org
-   ,#+REVEAL_ROOT: file:///d:/reveal.js
-   #+END_SRC
+   In general, a presentation may embed lots of resources (JavaScript,
+   CSS, images), and Org mode distinguishes the *publication* of
+   projects (with multiple files) from the *export* of an individual
+   Org source file.  The publication process usually creates a
+   self-contained directory with all necessary resources, including
+   the exported presentation(s).  Such directories can then be served
+   from any web server.
 
+   See [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/publish.el?ref_type=heads][publish.el]],
+   which defines a publication process that exports this Readme and
+   selected test cases (executed in that
+   [[https://gitlab.com/oer/org-re-reveal/-/blob/main/.gitlab-ci.yml?ref_type=heads][CI/CD
+   pipeline on GitLab]], using functionality of oer-reveal), with the
+   result being served as
+   [[https://oer.gitlab.io/org-re-reveal/][GitLab Pages]].
+
+#+REVEAL: split
    You can also set =REVEAL_ROOT= to a URL (a CDN) to use
    reveal.js from the web instead of downloading a local copy.  The
    reveal.js documentation does not mention this alternative, though,
