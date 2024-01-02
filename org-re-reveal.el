@@ -1342,6 +1342,20 @@ This does not work for fragments!"
                           (concat "." (number-to-string frag)))))))
       audio-name)))
 
+(defun org-re-reveal--write-tts-files (block voice info &optional audio-name)
+  "Write TTS files for notes BLOCK with VOICE and INFO.
+Add a line to the index file, and create a text file for the notes.
+Function `org-re-reveal--tts-audio-name' determines the name of the text
+file unless optional AUDIO-NAME is present."
+  (let* ((gap (plist-get info :reveal-tts-sentence-gap))
+         (text (org-re-reveal--notes-to-tts-text block))
+         (hash (md5 text))
+         (tts-dir (org-re-reveal--tts-dir info))
+         (audio-name
+          (or audio-name (org-re-reveal--tts-audio-name block info))))
+    (org-re-reveal--add-to-tts-index voice gap audio-name hash info)
+    (org-re-reveal--create-tts-text hash text tts-dir)))
+
 (defun org-re-reveal--notes-to-html (contents)
   "Transcode notes CONTENTS to HTML.
 Create HTML notes according to `org-re-reveal-notes-format-string' and
@@ -2580,16 +2594,11 @@ Speaker notes on the title slide with \"%n\" make use of
   (let* ((notes (org-re-reveal--read-file-as-string
                  (plist-get info :reveal-title-slide-notes)))
          (voice (plist-get info :reveal-with-tts))
+         (prefix (plist-get info :reveal-tts-name-prefix))
          (html-notes (when notes
                        (when voice
-                         (let* ((text (org-re-reveal--notes-to-tts-text notes))
-                                (hash (md5 text))
-                                (gap (plist-get info :reveal-tts-sentence-gap))
-                                (prefix (plist-get info :reveal-tts-name-prefix))
-                                (dir (org-re-reveal--tts-dir info)))
-                           (org-re-reveal--add-to-tts-index
-                            voice gap (concat prefix "0.0") hash info)
-                           (org-re-reveal--create-tts-text hash text dir)))
+                         (org-re-reveal--write-tts-files
+                          notes voice info (concat prefix "0.0")))
                        (org-export-string-as notes 're-reveal t))))
     (append (org-html-format-spec info)
             `((?A . ,(org-export-data
