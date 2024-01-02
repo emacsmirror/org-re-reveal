@@ -1289,6 +1289,10 @@ Whether anyone wants to use those package in isolation, is up to them.
     for emacs-reveal, both of which document various aspects of the
     TTS process.
 
+    If you do not want to use emacs-reveal (or its Docker images),
+    [[https://gitlab.com/oer/org-re-reveal/-/issues/92#note_1710604946][the script in that comment]]
+    may help you getting started.
+
 ** Multiplexing
    Reveal.js supports multiplexing, which allows your audience to view
    the slides of the presentation you are controlling on their own phone, tablet
