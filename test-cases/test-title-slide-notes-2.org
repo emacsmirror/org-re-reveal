@@ -1,0 +1,27 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2024 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+# The following two options are not necessary here.  With them, TTS
+# files are created for the notes.  If they are removed, notes are
+# still part of the presentation.
+#+OPTIONS: reveal_with_tts:CLB
+#+REVEAL_TTS_NAME_PREFIX: title-notes
+
+#+Title: Title slide with notes
+#+Author: Jens Lechtenbörger
+
+#+begin_notes
+These are notes for the title slide.
+A %n escape sequence (necessary up to org-re-reveal 3.24.0) is not
+needed any more.
+#+end_notes
+
+* Just a slide
+  - Nothing special here
+#+begin_notes
+Also this slide has notes.  All notes are exported for TTS processing.
+#+end_notes

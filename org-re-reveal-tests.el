@@ -167,6 +167,7 @@
         "timing"
         "title-slide"
         "title-slide-notes"
+        "title-slide-notes-2"
         "toc-de"
         "toc-default"
         "toc-user"
