@@ -1346,8 +1346,9 @@ This does not work for fragments!"
                             (when (and frag (< -1 frag))
                               (concat "." (number-to-string frag)))))))
           ;; No headline; thus, notes for title slide.
-          (let ((prefix (plist-get info :reveal-tts-name-prefix)))
-            (concat prefix "0.0")))
+          (or audio-name
+              (let ((prefix (plist-get info :reveal-tts-name-prefix)))
+                (concat prefix "0.0"))))
       audio-name)))
 
 (defun org-re-reveal--write-tts-files (block voice info &optional audio-name)
