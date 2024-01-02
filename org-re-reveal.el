@@ -1300,46 +1300,51 @@ This does not work for fragments!"
 (defun org-re-reveal--tts-audio-name (block info)
   "Create audio name for BLOCK with INFO."
   (let ((sec-num (plist-get info :section-numbers))
+        (headline (org-export-get-parent-headline block))
         (audio-name
          (org-export-read-attribute :attr_reveal block :audio-name)))
     (when (and (not sec-num) (not audio-name))
       (org-re-reveal--abort-with-message-box "[org-re-reveal] You must use attribute :audio-name on TTS notes if you disable section numbers!"))
     (if sec-num
-        (let* ((hnum (plist-get info :reveal-tts-hnum))
-               (vnum (plist-get info :reveal-tts-vnum))
-               (frag (plist-get info :reveal-tts-frag))
-               (split-p (plist-get info :reveal-tts-split-p))
-               (pnumbers (plist-get info :reveal-tts-prev-numbers))
-               (headline (org-export-get-parent-headline block))
-               (numbers (org-re-reveal--get-headline-number headline pnumbers info)))
-          (if (equal pnumbers numbers)
-              ;; Same numbers, so either split or new fragment on slide.
-              (if (not split-p)
-                  ;; Increment fragment counter if no split.
-                  (if frag
-                      (plist-put info :reveal-tts-frag (+ 1 frag))
-                    (plist-put info :reveal-tts-frag 0))
-                ;; Reset split-p and increment vertical index.
+        (if headline
+            (let* ((hnum (plist-get info :reveal-tts-hnum))
+                   (vnum (plist-get info :reveal-tts-vnum))
+                   (frag (plist-get info :reveal-tts-frag))
+                   (split-p (plist-get info :reveal-tts-split-p))
+                   (pnumbers (plist-get info :reveal-tts-prev-numbers))
+                   (numbers (org-re-reveal--get-headline-number
+                             headline pnumbers info)))
+              (if (equal pnumbers numbers)
+                  ;; Same numbers, so either split or new fragment on slide.
+                  (if (not split-p)
+                      ;; Increment fragment counter if no split.
+                      (if frag
+                          (plist-put info :reveal-tts-frag (+ 1 frag))
+                        (plist-put info :reveal-tts-frag 0))
+                    ;; Reset split-p and increment vertical index.
+                    (plist-put info :reveal-tts-split-p nil)
+                    (plist-put info :reveal-tts-vnum (+ 1 vnum)))
+                ;; Different numbers, on new slide.
+                (plist-put info :reveal-tts-prev-numbers numbers)
+                (plist-put info :reveal-tts-frag -1)
                 (plist-put info :reveal-tts-split-p nil)
-                (plist-put info :reveal-tts-vnum (+ 1 vnum)))
-            ;; Different numbers, on new slide.
-            (plist-put info :reveal-tts-prev-numbers numbers)
-            (plist-put info :reveal-tts-frag -1)
-            (plist-put info :reveal-tts-split-p nil)
-            (if (eq hnum (car numbers))
-                ;; Same horizontal index.  Thus, increment vertical index.
-                (plist-put info :reveal-tts-vnum (+ 1 vnum))
-              ;; Reset vertical number to 0 for new section.
-              (plist-put info :reveal-tts-hnum (car numbers))
-              (plist-put info :reveal-tts-vnum 0)))
-          (let ((prefix (plist-get info :reveal-tts-name-prefix))
-                (hnumstr (number-to-string (plist-get info :reveal-tts-hnum)))
-                (vnumstr (number-to-string (plist-get info :reveal-tts-vnum)))
-                (frag (plist-get info :reveal-tts-frag)))
-            (or audio-name
-                (concat prefix hnumstr "." vnumstr
-                        (when (and frag (< -1 frag))
-                          (concat "." (number-to-string frag)))))))
+                (if (eq hnum (car numbers))
+                    ;; Same horizontal index.  Thus, increment vertical index.
+                    (plist-put info :reveal-tts-vnum (+ 1 vnum))
+                  ;; Reset vertical number to 0 for new section.
+                  (plist-put info :reveal-tts-hnum (car numbers))
+                  (plist-put info :reveal-tts-vnum 0)))
+              (let ((prefix (plist-get info :reveal-tts-name-prefix))
+                    (hnumstr (number-to-string (plist-get info :reveal-tts-hnum)))
+                    (vnumstr (number-to-string (plist-get info :reveal-tts-vnum)))
+                    (frag (plist-get info :reveal-tts-frag)))
+                (or audio-name
+                    (concat prefix hnumstr "." vnumstr
+                            (when (and frag (< -1 frag))
+                              (concat "." (number-to-string frag)))))))
+          ;; No headline; thus, notes for title slide.
+          (let ((prefix (plist-get info :reveal-tts-name-prefix)))
+            (concat prefix "0.0")))
       audio-name)))
 
 (defun org-re-reveal--write-tts-files (block voice info &optional audio-name)
@@ -1372,16 +1377,15 @@ the audience)."
 CONTENTS holds the contents of the block.  INFO is a plist
 holding contextual information.
 If TTS is configured, also create text file and add it to index."
-  (let ((voice (plist-get info :reveal-with-tts)))
+  (let ((voice (plist-get info :reveal-with-tts))
+        (headline (org-export-get-parent-headline block)))
     (when voice
-      (let* ((gap (plist-get info :reveal-tts-sentence-gap))
-             (text (org-re-reveal--notes-to-tts-text block))
-             (hash (md5 text))
-             (tts-dir (org-re-reveal--tts-dir info))
-             (audio-name (org-re-reveal--tts-audio-name block info)))
-        (org-re-reveal--add-to-tts-index voice gap audio-name hash info)
-        (org-re-reveal--create-tts-text hash text tts-dir))))
-  (org-re-reveal--notes-to-html contents))
+      (org-re-reveal--write-tts-files block voice info))
+    (if headline
+        (org-re-reveal--notes-to-html contents)
+      ;; Notes for title slide.  Store for later retrieval.
+      (plist-put info :title-notes (org-re-reveal--notes-to-html contents))
+      "")))
 
 (defun org-re-reveal-special-block (special-block contents info)
   "Transcode a SPECIAL-BLOCK element from Org to Reveal.
@@ -2777,6 +2781,10 @@ org-export options)."
       (org-re-reveal--abort-with-message-box
        "Single file export requires local reveal.js resources (no CDN).  See Readme.org and customize `org-re-reveal-root' or set \"REVEAL_ROOT\"."))))
 
+(defun org-re-reveal--maybe-title-notes (info)
+  "Return notes for title slide from INFO."
+  (plist-get info :title-notes))
+
 (defun org-re-reveal-template (contents info)
   "Return complete document string after HTML conversion.
 CONTENTS is the transcoded contents string.
@@ -2848,6 +2856,7 @@ INFO is a plist holding export options."
                      (when title-slide-with-footer
                        (org-re-reveal--footer info)))
                     info)
+                   (org-re-reveal--maybe-title-notes info)
                    "</section>\n"))))
      contents
      "</div>
