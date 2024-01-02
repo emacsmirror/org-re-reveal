@@ -12,7 +12,7 @@
 # Authors: Yujie Wen <yjwen.ty@gmail.com> and contributors to
 #          org-reveal and org-re-reveal, see there:
 #          https://github.com/yjwen/org-reveal/commits/master
-#          https://gitlab.com/oer/org-re-reveal/commits/master
+#          https://gitlab.com/oer/org-re-reveal/commits/main
 
 # Copyright (C) 2013-2018 Yujie Wen and contributors to org-reveal, see:
 #                         https://github.com/yjwen/org-reveal/commits/master
@@ -55,7 +55,7 @@ suggest how to merge the forks, please go ahead!
 Note that this Readme is written in the lightweight markup language
 Org mode, for which browser support on GitLab is limited.  In
 particular, internal hyperlinks won’t work.  I suggest to either open
-[[https://gitlab.com/oer/org-re-reveal/-/blob/master/Readme.org][the
+[[https://gitlab.com/oer/org-re-reveal/-/blob/main/Readme.org][the
 Org source file of this Readme]]
 in Emacs or to view the generated
 [[https://oer.gitlab.io/org-re-reveal/Readme.html][Readme for
@@ -84,7 +84,7 @@ embedded figures considerably:
 |---------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [[https://github.com/yjwen/org-reveal][org-reveal]]                       | Origin of org-re-reveal                                                                                                                              |
 | Package ox-reveal on MELPA                                                | Another name for org-reveal                                                                                                                          |
-| [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]                   | Fork of org-reveal, initially to add audio fragments, now with [[https://gitlab.com/oer/org-re-reveal/-/blob/master/CHANGELOG.org][various changes]] |
+| [[https://gitlab.com/oer/org-re-reveal][org-re-reveal]]                   | Fork of org-reveal, initially to add audio fragments, now with [[https://gitlab.com/oer/org-re-reveal/-/blob/main/CHANGELOG.org][various changes]] |
 | [[https://gitlab.com/oer/org-re-reveal-ref][org-re-reveal-ref]]           | Addon to org-re-reveal for bibliography slide based on [[https://github.com/jkitchin/org-ref][org-ref]]                                              |
 | [[https://gitlab.com/oer/org-re-reveal-citeproc][org-re-reveal-citeproc]] | Alternative to org-re-reveal-ref for bibliography slide based on syntax of Org mode 9.5                                                              |
 | [[https://gitlab.com/oer/oer-reveal][oer-reveal]]                         | Export backend derived from org-re-reveal; functionality for installation of reveal.js and plugins; simplification of licensing for OER              |
@@ -97,7 +97,7 @@ to make as much of /emacs-reveal/ available on MELPA as possible.
 Whether anyone wants to use those package in isolation, is up to them.
 
 ** Changelog
-   See file [[https://gitlab.com/oer/org-re-reveal/tree/master/CHANGELOG.org][CHANGELOG]]
+   See file [[https://gitlab.com/oer/org-re-reveal/tree/main/CHANGELOG.org][CHANGELOG]]
    for changes of /org-re-reveal/ compared to /org-reveal/ and onward
 
    Note that /org-re-reveal/ 3.0.0 supports backwards-incompatible
@@ -187,7 +187,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    you could also use reveal.js from a remote location (a CDN),
    avoiding a local installation; the reveal.js documentation does not
    mention this alternative, though.
-   ([[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-remote-plugin.org][Sample file]])
+   ([[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-remote-plugin.org][Sample file]])
 
 ** Install org-re-reveal
 
@@ -219,7 +219,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 *** Install org-re-reveal from GitLab
 
     You can download org-re-reveal as archive from GitLab
-    ([[https://gitlab.com/oer/org-re-reveal/-/archive/master/org-re-reveal-master.zip][zip archive]]
+    ([[https://gitlab.com/oer/org-re-reveal/-/archive/main/org-re-reveal-main.zip][zip archive]]
     and several ~tar~ variants; note the download icon on the
     [[https://gitlab.com/oer/org-re-reveal][project page]]).  (The
     disadvantage is that you need to keep track of new versions yourself.)
@@ -373,7 +373,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    ~M-x customize-group~, then ~org-export-re-reveal~.
 
    For examples, please refer to the heading part of this document
-   and to [[https://gitlab.com/oer/org-re-reveal/tree/master/test-cases][test-cases in the GitLab repository]].
+   and to [[https://gitlab.com/oer/org-re-reveal/tree/main/test-cases][test-cases in the GitLab repository]].
 
 #+REVEAL: split
    Options and keywords that do not have a variable documenting their
@@ -578,7 +578,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 
    That issue also points to image macros with emacs-reveal (defined
    ca. line 130 in
-   [[https://gitlab.com/oer/oer-reveal/-/raw/master/org/config.org][this file]],
+   [[https://gitlab.com/oer/oer-reveal/-/raw/main/org/config.org][this file]],
    using meta-data for captions and license information, particularly
    suitable for OER).
    Note that those macros make use of special height specifications
@@ -643,13 +643,13 @@ Whether anyone wants to use those package in isolation, is up to them.
     to a string with HTML code.  Escape sequences are documented for
     variable ~org-re-reveal-title-slide~; they can be used to retrieve
     document information.  See
-    [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-title-slide.org][test-title-slide.org]]
+    [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-title-slide.org][test-title-slide.org]]
     for an example including ~REVEAL_ACADEMIC_TITLE~,
     ~REVEAL_TALK_URL~, ~REVEAL_TALK_QR_CODE~
     and
-    [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-title-slide-notes.org][test-title-slide-notes.org]]
+    [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-title-slide-notes.org][test-title-slide-notes.org]]
     for a title slide including speaker notes (obsolete since version
-    3.25.0; see [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-title-slide-notes-2.org][test-title-slide-notes-2.org]]
+    3.25.0; see [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-title-slide-notes-2.org][test-title-slide-notes-2.org]]
     for the simpler alternative of using a notes block).
 
     Alternatively, you can write the title slide's HTML code
@@ -819,8 +819,8 @@ Whether anyone wants to use those package in isolation, is up to them.
    element for entire slides (including headline, contents, header,
    footer).
 
-   See [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-slide-container.org][this slide container test case]]
-   and [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-slide-grid-wrapper.org][that slide grid test case]].
+   See [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-slide-container.org][this slide container test case]]
+   and [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-slide-grid-wrapper.org][that slide grid test case]].
 
 ** Fragmented Contents
 
@@ -993,7 +993,7 @@ Whether anyone wants to use those package in isolation, is up to them.
     4, you can use keyword ~REVEAL_ADD_PLUGIN~ to enable external
     plugins (which you need to install yourself).  E.g., copy the
     directory of the
-    [[https://github.com/rajgoel/reveal.js-plugins/tree/master/chalkboard][Chalkboard plugin]]
+    [[https://github.com/rajgoel/reveal.js-plugins/tree/main/chalkboard][Chalkboard plugin]]
     to the plugin directory of reveal.js; then activate the
     plugin as follows, where ~chalkboard~ is an internal name,
     ~RevealChalkboard~ is the JavaScript name of the plugin, and
@@ -1003,7 +1003,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 ,#+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard plugin/chalkboard/plugin.js
 #+END_SRC
     See also
-    [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-plugin-css.org][this
+    [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-plugin-css.org][this
     test file for CSS with plugins]]
 
 
@@ -1113,7 +1113,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    in conflict.  In particular, scaling needs to be disabled with
    klipse.  See settings of this Readme and examples in the Tips
    section under [[Executable Source Blocks]] as well as that
-   [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-klipsify.org][test file]]
+   [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-klipsify.org][test file]]
    to get started.
 
    At present code editing is supported in: {{{klipse-languages}}}
@@ -1279,14 +1279,14 @@ Whether anyone wants to use those package in isolation, is up to them.
     Briefly, org-re-reveal can export notes from presentations to text
     files, from which audio files can be generated (e.g., with
     emacs-reveal).  The
-    [[https://github.com/rajgoel/reveal.js-plugins/tree/master/audio-slideshow][audio-slideshow plugin]]
+    [[https://github.com/rajgoel/reveal.js-plugins/tree/main/audio-slideshow][audio-slideshow plugin]]
     can then play generated audio.  The result can serve as video mode for
     presentations, without the hassle of audio recording/cutting (and
     with the usual usability advantages of reveal.js presentations
     over videos).
 
     See variable ~org-re-reveal-with-tts~, whose doc string points to
-    [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-notes-for-tts.org][this sample presentation]]
+    [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-notes-for-tts.org][this sample presentation]]
     and this [[https://oer.gitlab.io/emacs-reveal-howto/tts-howto.html][TTS howto]]
     for emacs-reveal, both of which document various aspects of the
     TTS process.
@@ -1302,7 +1302,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    presentations will update in real time.
 
    Please see
-   [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-multiplex.org][this sample presentation for instructions]].
+   [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-multiplex.org][this sample presentation for instructions]].
    Briefly, you need to configure ~multiplex~ as plugin, with
    URL, ID and Secret of a socket.io server.  Then, generate master
    (with Secret) and client presentations and publish the client
@@ -1441,7 +1441,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    of contents at a position of your choice with keyword =REVEAL_TOC=
    (where the number after =headlines= defines the depth of headlines
    to include) in a section of its own (see this
-   [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-slide-numbers-reveal-toc.org][test file]]):
+   [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-slide-numbers-reveal-toc.org][test file]]):
 
 #+BEGIN_SRC org
 ,** Table of Contents
@@ -1503,7 +1503,7 @@ Its use is discouraged as it may break some presentations.
    for more details.
 
    Additional examples (e.g., Python and SQL) can be found in a
-   [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-klipsify.org][test file]].
+   [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-klipsify.org][test file]].
 
 *** HTML Src Block
 #+BEGIN_SRC html
@@ -1530,7 +1530,7 @@ demonstrates how to use grid layouts with ~div~ wrappers.
 Alternatively, with
 [[https://gitlab.com/oer/emacs-reveal][emacs-reveal]],
 a special environment is available for left and right columns, see its
-[[https://gitlab.com/oer/emacs-reveal-howto/-/blob/master/howto.org][howto]]
+[[https://gitlab.com/oer/emacs-reveal-howto/-/blob/main/howto.org][howto]]
 for an example.
 
 * Thanks
