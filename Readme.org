@@ -648,7 +648,9 @@ Whether anyone wants to use those package in isolation, is up to them.
     ~REVEAL_TALK_URL~, ~REVEAL_TALK_QR_CODE~
     and
     [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-title-slide-notes.org][test-title-slide-notes.org]]
-    for a title slide including speaker notes.
+    for a title slide including speaker notes (obsolete since version
+    3.25.0; see [[https://gitlab.com/oer/org-re-reveal/-/blob/master/test-cases/test-title-slide-notes-2.org][test-title-slide-notes-2.org]]
+    for the simpler alternative of using a notes block).
 
     Alternatively, you can write the title slide's HTML code
     (with escape sequences) into a separate file and
