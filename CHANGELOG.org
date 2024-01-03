@@ -12,6 +12,8 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+
+** [3.25.1] - 2024-01-03
 *** Fixed
     - Respect audio-name also on notes for title slide; related to
       issue #97.
