@@ -524,9 +524,10 @@ To enable multiplex, see `org-re-reveal-plugins'."
   :type 'string)
 
 (defcustom org-re-reveal-multiplex-js-url ""
-  "If non-empty, remote directory containing \"master.js\" and \"client.js\"
-This string must end with a slash and might be a CDN URL, see issue
-URL `https://gitlab.com/oer/org-re-reveal/-/issues/98'."
+  "If non-empty, remote directory containing \"client.js\" and \"master.js\".
+If you customize this variable, the string *must* end with a slash (so
+that \"client.js\" and \"master.js\" can be appended) and might be a
+CDN URL, see issue URL `https://gitlab.com/oer/org-re-reveal/-/issues/98'."
   :group 'org-export-re-reveal
   :type 'string
   :package-version '(org-re-reveal . "3.26.0"))
