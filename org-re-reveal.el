@@ -172,6 +172,7 @@
       (:reveal-min-scale "REVEAL_MIN_SCALE" nil org-re-reveal-min-scale t)
       (:reveal-miscinfo "REVEAL_MISCINFO" nil nil t)
       (:reveal-multiplex-id "REVEAL_MULTIPLEX_ID" nil org-re-reveal-multiplex-id t)
+      (:reveal-multiplex-js-url "REVEAL_MULTIPLEX_JS_URL" nil org-re-reveal-multiplex-js-url t)
       (:reveal-multiplex-secret "REVEAL_MULTIPLEX_SECRET" nil org-re-reveal-multiplex-secret t)
       (:reveal-multiplex-socketio-url "REVEAL_MULTIPLEX_SOCKETIO_URL" nil org-re-reveal-multiplex-socketio-url t)
       (:reveal-multiplex-url "REVEAL_MULTIPLEX_URL" nil org-re-reveal-multiplex-url t)
@@ -521,6 +522,14 @@ URL `https://reveal-js-multiplex-ccjbegmaii.now.sh/'.
 To enable multiplex, see `org-re-reveal-plugins'."
   :group 'org-export-re-reveal
   :type 'string)
+
+(defcustom org-re-reveal-multiplex-js-url ""
+  "If non-empty, remote directory containing \"master.js\" and \"client.js\"
+This string must end with a slash and might be a CDN URL, see issue
+URL `https://gitlab.com/oer/org-re-reveal/-/issues/98'."
+  :group 'org-export-re-reveal
+  :type 'string
+  :package-version '(org-re-reveal . "3.26.0"))
 
 (defcustom org-re-reveal-multiplex-url
   "https://reveal-js-multiplex-ccjbegmaii.now.sh"
@@ -2096,15 +2105,21 @@ plugins: [ %s ],\n"
 dependencies: [\n"
        ;; JS libraries
        (let* ((highlight-url (plist-get info :reveal-highlight-url))
-              (builtin-multiplex (format " { src: '%s', async: true },\n%s"
-                                         (plist-get info :reveal-multiplex-socketio-url)
-                                         ;; following ensures that either client.js or master.js is included depending on defvar org-re-reveal-client-multiplex value state
-                                         (if (not org-re-reveal-client-multiplex)
-                                             (progn
-                                               (if (not (string= "" (plist-get info :reveal-multiplex-secret)))
-                                                   (setq org-re-reveal-client-multiplex t))
-                                               (format " { src: '%splugin/multiplex/master.js', async: true }" root-path))
-                                           (format " { src: '%splugin/multiplex/client.js', async: true }" root-path))))
+              (multiplex-js-url (plist-get info :reveal-multiplex-js-url))
+              (mplex-url (if (string= "" multiplex-js-url)
+                             (format "%splugin/multiplex/" root-path)
+                           multiplex-js-url))
+              (socketio-url (plist-get info :reveal-multiplex-socketio-url))
+              (builtin-multiplex
+               (format " { src: '%s', async: true },\n { src: '%s', async: true }"
+                       socketio-url
+                       ;; following ensures that either client.js or master.js is included depending on defvar org-re-reveal-client-multiplex value state
+                       (if (not org-re-reveal-client-multiplex)
+                           (progn
+                             (unless (string= "" (plist-get info :reveal-multiplex-secret))
+                               (setq org-re-reveal-client-multiplex t))
+                             (concat mplex-url "master.js"))
+                         (concat mplex-url "client.js"))))
               (builtins-v3
                `(classList ,(format " { src: '%slib/js/classList.js', condition: function() { return !document.body.classList; } }" root-path)
                            markdown ,(format " { src: '%splugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },

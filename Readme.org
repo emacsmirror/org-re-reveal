@@ -320,6 +320,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_MIN_SCALE~                           | ~org-re-reveal-min-scale~                |
 | ~nil~                             | ~REVEAL_MISCINFO~                            | ~nil~                                    |
 | ~nil~                             | ~REVEAL_MULTIPLEX_ID~                        | ~org-re-reveal-multiplex-id~             |
+| ~nil~                             | ~REVEAL_MULTIPLEX_JS_URL~                    | ~org-re-reveal-multiplex-js-url~         |
 | ~nil~                             | ~REVEAL_MULTIPLEX_SECRET~                    | ~org-re-reveal-multiplex-secret~         |
 | ~nil~                             | ~REVEAL_MULTIPLEX_SOCKETIO_URL~              | ~org-re-reveal-multiplex-socketio-url~   |
 | ~nil~                             | ~REVEAL_MULTIPLEX_URL~                       | ~org-re-reveal-multiplex-url~            |
@@ -1296,7 +1297,8 @@ Whether anyone wants to use those package in isolation, is up to them.
     may help you getting started.
 
 ** Multiplexing
-   Reveal.js supports multiplexing, which allows your audience to view
+   Reveal.js supports [[https://github.com/reveal/multiplex][multiplexing]],
+   which allows your audience to view
    the slides of the presentation you are controlling on their own phone, tablet
    or laptop.  As the main presentation navigates the slides, all client
    presentations will update in real time.
@@ -1308,7 +1310,8 @@ Whether anyone wants to use those package in isolation, is up to them.
    (with Secret) and client presentations and publish the client
    presentation for your audience.  Customize
    ~org-re-reveal-multiplex-client-ext~ to influence the name of the
-   client presentation.
+   client presentation.  Maybe customize ~org-re-reveal-multiplex-js-url~
+   ([[https://gitlab.com/oer/org-re-reveal/-/issues/98][see this issue]]).
 
 ** Extra Stylesheets
 
