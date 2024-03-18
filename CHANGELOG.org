@@ -12,6 +12,8 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+
+** [3.26.0] - 2024-03-18
 *** Added
     - Keyword ~REVEAL_MULTIPLEX_JS_URL~ with variable
       ~org-re-reveal-multiplex-js-url~; addresses issue #98.
