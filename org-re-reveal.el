@@ -3230,6 +3230,16 @@ Return output file name."
 ;; Make sure that TTS directory exists.
 (add-hook 'org-export-before-parsing-hook #'org-re-reveal-prepare-tts)
 
+;; Remove break elements for LaTeX export.
+(defun org-re-reveal-latex-filter-notes (text backend info)
+  "Ensure TTS \"break\" elements are removed for LaTeX export."
+  (when (org-export-derived-backend-p backend 'latex)
+    (replace-regexp-in-string
+     "[<]break time=[^/]+/>" "" text)))
+
+(add-to-list 'org-export-filter-special-block-functions
+             'org-re-reveal-latex-filter-notes)
+
 ;;; Extract version string.
 ;;;###autoload
 (defun org-re-reveal-version ()
