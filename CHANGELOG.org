@@ -13,6 +13,15 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.27.0] - 2024-03-25
+*** Added
+    - Variables ~org-re-reveal-tts-warn-regexp~ and
+      ~org-re-reveal-tts-no-warn-regexp~ to warn about likely
+      TTS issues
+    - Attribute ~unnumbered-is-safe~ for notes blocks to avoid warnings
+*** Changed
+    - Extend ~org-re-reveal-tts-normalize-table~
+
 ** [3.26.0] - 2024-03-18
 *** Added
     - Keyword ~REVEAL_MULTIPLEX_JS_URL~ with variable
