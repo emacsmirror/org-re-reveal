@@ -13,6 +13,10 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.27.1] - 2024-03-25
+*** Fixed
+    - Remove break elements for LaTeX export
+
 ** [3.27.0] - 2024-03-25
 *** Added
     - Variables ~org-re-reveal-tts-warn-regexp~ and
