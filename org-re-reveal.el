@@ -1218,6 +1218,26 @@ applied?  Here or in the TTS implementation?
   :type '(repeat (list string string))
   :package-version '(org-re-reveal . "3.20.0"))
 
+(defcustom org-re-reveal-tts-warn-regexp "\\([0-9]\\|[A-Z][A-Z]\\)"
+  "Regular expression matching text that is unsuitable for TTS.
+Such text leads to a warning and will likely result in audio where parts
+are missing or pronounced incorrectly.  E.g., the currently used models
+are unable to pronounce numbers and have problems with most abbreviations.
+The check is performed after normalization with
+`org-re-reveal-tts-normalize-table'."
+  :group 'org-export-re-reveal
+  :type 'regexp
+  :package-version '(org-re-reveal . "3.27.0"))
+
+(defcustom org-re-reveal-tts-no-warn-regexp "\\(<break time\\|RAM\\|ROM\\)"
+  "Regular expression as exception for `org-re-reveal-tts-warn-regexp'.
+Do not produce a warning if this regular expression matches although
+there should be a warning according to `org-re-reveal-tts-warn-regexp'."
+  :group 'org-export-re-reveal
+  :type 'regexp
+  :package-version '(org-re-reveal . "3.27.0"))
+
+
 (defun org-re-reveal--if-format (fmt val)
   "Apply `format' to FMT and VAL if VAL is a number or non-empty string.
 Otherwise, return empty string."
@@ -1288,10 +1308,12 @@ Also perform replacements based on `org-re-reveal-tts-normalize-table'."
          :warning))
       (org-re-reveal--sentences-in-lines text))))
 
-(defun org-re-reveal--get-headline-number (headline pnumbers info)
+(defun org-re-reveal--get-headline-number
+    (headline pnumbers info &optional dont-warn)
   "Get number of HEADLINE based on PNUMBERS and INFO.
 If users use UNNUMBERED, we guess here and warn.
-This does not work for fragments!"
+This does not work for fragments!
+Do not warn if optional DONT-WARN is non-nil."
   (let ((numbers (org-export-get-headline-number headline info))
         (level (org-export-get-relative-level headline info)))
     (if numbers
@@ -1307,9 +1329,10 @@ This does not work for fragments!"
           (let ((result (if (= 1 level)
                             (list (+ 1 (car pnumbers)) 0)
                           (list (car pnumbers) (+ 1 (cadr pnumbers))))))
-            (message-box
+            (unless dont-warn
+              (message-box
              "[org-re-reveal] No numbers for headline after %s found.  Do you use UNNUMBERED?  Guessed numbers: %s  (Numbers for subsequent slides on the same level of nesting and for fragments are likely wrong.)"
-             pnumbers result)
+             pnumbers result))
             result)
         (error "[org-re-reveal] This should not happen.  Unable to guess number for headline: %s" headline)))))
 
@@ -1318,7 +1341,9 @@ This does not work for fragments!"
   (let ((sec-num (plist-get info :section-numbers))
         (headline (org-export-get-parent-headline block))
         (audio-name
-         (org-export-read-attribute :attr_reveal block :audio-name)))
+         (org-export-read-attribute :attr_reveal block :audio-name))
+        (dont-warn
+         (org-export-read-attribute :attr_reveal block :unnumbered-is-safe)))
     (when (and (not sec-num) (not audio-name))
       (org-re-reveal--abort-with-message-box "[org-re-reveal] You must use attribute :audio-name on TTS notes if you disable section numbers!"))
     (if sec-num
@@ -1329,7 +1354,7 @@ This does not work for fragments!"
                    (split-p (plist-get info :reveal-tts-split-p))
                    (pnumbers (plist-get info :reveal-tts-prev-numbers))
                    (numbers (org-re-reveal--get-headline-number
-                             headline pnumbers info)))
+                             headline pnumbers info dont-warn)))
               (if (equal pnumbers numbers)
                   ;; Same numbers, so either split or new fragment on slide.
                   (if (not split-p)
@@ -1364,6 +1389,21 @@ This does not work for fragments!"
                 (concat prefix "0.0"))))
       audio-name)))
 
+(defun org-re-reveal--warn-if-tts-issue (text)
+  "Warn if TTS is likely to fail somewhere on TEXT.
+Use `org-re-reveal-tts-warn-regexp' and
+`org-re-reveal-tts-no-warn-regexp'."
+  (let ((lines (split-string text "\n"))
+        (case-fold-search nil))
+    (dolist (line lines nil)
+      (when (string-match org-re-reveal-tts-warn-regexp line)
+        (unless (string-match org-re-reveal-tts-no-warn-regexp line)
+          (display-warning
+           'org-export-re-reveal
+           (format "%s matches `org-re-reveal-tts-warn-regexp': %s"
+                   (match-string 1 line) line)
+           :warning))))))
+
 (defun org-re-reveal--write-tts-files (block voice info &optional audio-name)
   "Write TTS files for notes BLOCK with VOICE and INFO.
 Add a line to the index file, and create a text file for the notes.
@@ -1375,6 +1415,7 @@ file unless optional AUDIO-NAME is present."
          (tts-dir (org-re-reveal--tts-dir info))
          (audio-name
           (or audio-name (org-re-reveal--tts-audio-name block info))))
+    (org-re-reveal--warn-if-tts-issue text)
     (org-re-reveal--add-to-tts-index voice gap audio-name hash info)
     (org-re-reveal--create-tts-text hash text tts-dir)))
 
