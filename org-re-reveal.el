@@ -1199,21 +1199,64 @@ presentations."
     ("\\([^\n]\\)\\(<break time=[^>]+>\\)" "\\1\n\\2")
     ;; Similarly for (non-) space following break elements:
     ("\\(<break time=[^>]+>\\)[ ]+" "\\1\n")
-    ("\\(<break time=[^>]+>\\)\\([^\n]\\)" "\\1\n\\2"))
+    ("\\(<break time=[^>]+>\\)\\([^\n]\\)" "\\1\n\\2")
+    ;; Replace colon with dot
+    (":" ".")
+    ;; Replace some numbers; use word-boundary matching here
+    ;; (which also matches 1-bit etc.).
+    ("\\b0\\b" "zero")
+    ("\\b1\\b" "one")
+    ("\\b2\\b" "two")
+    ("\\b3\\b" "three")
+    ("\\b4\\b" "four")
+    ("\\b5\\b" "five")
+    ("\\b6\\b" "six")
+    ("\\b7\\b" "seven")
+    ("\\b8\\b" "eight")
+    ("\\b9\\b" "nine")
+    ("\\b10\\b" "ten")
+    ("\\b11\\b" "eleven")
+    ("\\b12\\b" "twelve")
+    ("\\b16\\b" "sixteen")
+    ("\\b32\\b" "thirtytwo")
+    ("\\b64\\b" "sixtyfour")
+    ("Nand2Tetris" "Nand to Tetris")
+    ;; Replace selected abbreviations.
+    ("\\bTTS\\b" "tea tea ess")
+    ("\\bALU\\b" "ay al you")
+    ("\\bCPU\\b" "see pea you")
+    ("\\bCPUs\\b" "see pea use")
+    ("\\bHDL\\b" "age dee el")
+    ("\\bIT\\b" "eye tea")
+    ("\\bOS\\b" "operation system")
+    ("\\bOSs\\b" "operation systems")
+    ("e[.]g[.]" "for example")
+    ("i[.]e[.]" "that is")
+    ;;Hyphenated words do not work well
+    ("equal-sized" "equal sized")
+    ("general-purpose" "general purpose")
+    ("[mM]eta-[cC]ognitive" "metacognitive")
+    ("[rR]ead-[oO]nly" "reed only")
+    ("[rR]andom-[aA]ccess" "random access")
+    ("-specific" " specific")
+    ;; Pronounciation helpers
+    ("\\by\\b" "why")
+    ("\\bbe read" "be rad")
+    )
     "Normalization table understood by `iso-translate-conventions'.
 Such a table contains a list of 2-element lists.  Both elements are regular
 expressions, where occurrences of the first one are replaced by the second
 one.
 Currently:
 - Replace several whitespaces with one.
-- Avoiding some UTF symbols.
+- Avoid some UTF symbols.
 - Make sure that SSML break elements appear on lines of their own.
-
-TODO: What about current limitations of TTS?  Where should preprocessing be
-applied?  Here or in the TTS implementation?
-- Deal with abbreviations.  CPU, CPUs, TTS, ...
-  In contrast, RAM sounds right.
-- Numbers are not read."
+- Replace colon with dot.
+- Replace digits and some numbers.
+- Replace some abbreviations.
+- Replace some hyphqenations.
+- Selected pronounciation helpers for speaker CLB.
+"
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
   :package-version '(org-re-reveal . "3.20.0"))
