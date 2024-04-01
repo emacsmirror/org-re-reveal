@@ -1292,7 +1292,7 @@ The check is performed after normalization with
   :type 'regexp
   :package-version '(org-re-reveal . "3.27.0"))
 
-(defcustom org-re-reveal-tts-no-warn-regexp "\\(<break time\\|RAM\\|ROM\\)"
+(defcustom org-re-reveal-tts-no-warn-regexp "\\(<break time\\|RAM\\|ROM\\|TODO\\)"
   "Regular expression as exception for `org-re-reveal-tts-warn-regexp'.
 Do not produce a warning if this regular expression matches although
 there should be a warning according to `org-re-reveal-tts-warn-regexp'."
