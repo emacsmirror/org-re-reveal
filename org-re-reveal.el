@@ -1362,7 +1362,7 @@ Also perform replacements based on `org-re-reveal-tts-normalize-table'."
              "[ \u00a0\t\n]*"))
            (text (org-export-string-as
                   (org-element-interpret-data block) 'ascii t)))
-      (when (string-match "[^.?!…‽:>]\n\n" text)
+      (when (string-match "[^.?!…‽:>)]\n\n" text)
         ;; Negated set includes > to avoid warnings about SSML elements.
         (display-warning
          'org-export-re-reveal
