@@ -1250,6 +1250,7 @@ presentations."
     ("multi-" "multi ")
     ("[rR]ead-[oO]nly" "reed only")
     ("[rR]andom-[aA]ccess" "random access")
+    ("-bit\\b" " bit")
     ("-specific" " specific")
     ;; Pronounciation helpers
     ("\\bx\\b" "ex")
@@ -1281,7 +1282,7 @@ Currently:
   :type '(repeat (list string string))
   :package-version '(org-re-reveal . "3.20.0"))
 
-(defcustom org-re-reveal-tts-warn-regexp "\\([0-9]\\|[A-Z][A-Z]\\)"
+(defcustom org-re-reveal-tts-warn-regexp "\\([-0-9]\\|[A-Z][A-Z]\\)"
   "Regular expression matching text that is unsuitable for TTS.
 Such text leads to a warning and will likely result in audio where parts
 are missing or pronounced incorrectly.  E.g., the currently used models
@@ -1292,7 +1293,7 @@ The check is performed after normalization with
   :type 'regexp
   :package-version '(org-re-reveal . "3.27.0"))
 
-(defcustom org-re-reveal-tts-no-warn-regexp "\\(<break time\\|RAM\\|ROM\\|TODO\\)"
+(defcustom org-re-reveal-tts-no-warn-regexp "\\(<break time\\|so-called\\|RAM\\|ROM\\|TODO\\)"
   "Regular expression as exception for `org-re-reveal-tts-warn-regexp'.
 Do not produce a warning if this regular expression matches although
 there should be a warning according to `org-re-reveal-tts-warn-regexp'."
