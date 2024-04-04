@@ -3252,7 +3252,7 @@ Return output file name."
 (add-hook 'org-export-before-parsing-hook #'org-re-reveal-prepare-tts)
 
 ;; Remove break elements for LaTeX export.
-(defun org-re-reveal-latex-filter-notes (text backend info)
+(defun org-re-reveal-latex-filter-notes (text backend _)
   "Ensure TTS \"break\" elements are removed for LaTeX export."
   (when (org-export-derived-backend-p backend 'latex)
     (replace-regexp-in-string
