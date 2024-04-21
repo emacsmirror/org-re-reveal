@@ -1370,7 +1370,12 @@ Also perform replacements based on `org-re-reveal-tts-normalize-table'."
          (concat "For TTS, full sentences should be used.  Following text contains at least one paragraph without end character:\n"
                  text)
          :warning))
-      (org-re-reveal--sentences-in-lines text))))
+      (if (< 0 (length (string-trim text)))
+          (org-re-reveal--sentences-in-lines text)
+        (display-warning
+         'org-export-re-reveal
+         "Found empty notes.  Please check.")
+        ""))))
 
 (defun org-re-reveal--get-headline-number
     (headline pnumbers info &optional dont-warn)
