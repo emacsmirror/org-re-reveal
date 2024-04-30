@@ -2813,7 +2813,8 @@ INFO is a plist holding contextual information.  CONTENTS is unused."
                               #'org-re-reveal--buffer-substring-html-escape))
                      (org-html-format-code src-block info))))
            (code-attribs (or (org-export-read-attribute
-                              :attr_reveal src-block :code_attribs) ""))
+                              :attr_reveal src-block :code_attribs)
+                             ""))
            (label (let ((lbl (org-element-property :name src-block)))
                     (if (not lbl) ""
                       (format " id=\"%s\"" lbl))))
