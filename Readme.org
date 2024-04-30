@@ -1099,6 +1099,13 @@ Whether anyone wants to use those package in isolation, is up to them.
     ~code_attribs~, e.g., add line numbers and highlight lines 1 and 5:
     ~#+ATTR_REVEAL: :code_attribs data-line-numbers="1,5"~
 
+    To assign attributes to the surrounding ~pre~ element, use
+    ~#+ATTR_HTML~, e.g.: ~#+ATTR_HTML: :data-id id1~
+
+    See also
+    [[https://gitlab.com/oer/org-re-reveal/-/issues/101][issue #101]]
+    for auto-animated code blocks.
+
 
 #+MACRO: klipse-languages (eval (message "%s" (mapconcat #'identity org-re-reveal-klipse-languages ", ")))
 ** Editable and Executable Source Code
