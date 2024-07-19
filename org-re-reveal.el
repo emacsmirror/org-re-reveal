@@ -1293,6 +1293,8 @@ presentations."
     ("Q4" "queue four")
     ;; Replace selected abbreviations.
     ("Nand2Tetris" "Nand to Tetris")
+    ("reveal.js" "reveal jay ess")
+    ("\\bSSML\\b" "ess ess em el")
     ("\\bTTS\\b" "tea tea ess")
     ("\\bALU\\b" "ay al you")
     ("\\bB\\b" "bytes")
