@@ -8,7 +8,7 @@
 ;; SPDX-FileCopyrightText: 2017-2024 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 3.29.0
+;; Version: 3.29.1
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -1472,7 +1472,7 @@ Selected replacements:
 "
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
-  :package-version '(org-re-reveal . "3.29.0"))
+  :package-version '(org-re-reveal . "3.29.1"))
 
 (defcustom org-re-reveal-tts-warn-regexp "\\([-0-9]\\|[A-Z][A-Z]\\)"
   "Regular expression matching text that is unsuitable for TTS.
