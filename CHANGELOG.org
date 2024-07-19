@@ -12,6 +12,12 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+** [3.29.0] - 2024-07-19
+*** Changed
+    - TTS improvements
+      - Extend org-re-reveal-tts-normalize-table and
+        org-re-reveal-tts-no-warn-regexp
+
 ** [3.28.2] - 2024-04-21
 *** Fixed
     - With TTS, do not fail on empty notes, but warn
