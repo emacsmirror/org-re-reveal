@@ -134,6 +134,7 @@
         "extra-scripts"
         "footer"
         "footer-global"
+        "footnotes"
         "highlightjs"
         "internal-links"
         "klipsify"

@@ -1,0 +1,39 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2024 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+#+REVEAL_HEAD_PREAMBLE: <style type="text/css">
+#+REVEAL_HEAD_PREAMBLE: .footpara { display: inline; }
+#+REVEAL_HEAD_PREAMBLE: .footdef { text-align: left; }
+#+REVEAL_HEAD_PREAMBLE: </style>
+
+#+Title: Adding Footnotes
+#+Author: Jens Lechtenbörger
+
+* Just a slide
+- Nothing really special here[fn:1]
+
+** A deeper nesting
+- Again some footnote[fn:2]
+
+* Footnotes
+# The slide for this footnote section is created with
+# function org-html-footnote-section, which in turn relies on
+# customizable variable org-html-footnotes-section.
+#
+# The heading must be titled "Footnotes" as above, but the exported
+# text is defined by org-html-footnotes-section, which embeds
+# a translation of "Footnotes" by default.
+
+[fn:1] Except for a footnote
+[fn:2] Footnote on a deeper level of nesting
+[fn:3] Footnote on a subsequent slide
+
+* More slides
+- With text
+
+** Subheading
+- Also with text[fn:3]
