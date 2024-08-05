@@ -1,7 +1,7 @@
 ;;; org-re-reveal.el --- Org export to reveal.js presentations  -*- lexical-binding: t; -*-
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
-;; Copyright (C) 2013-2018 Yujie Wen and contributors to org-reveal, see:
+;; Copyright (C) 2013-2019 Yujie Wen and contributors to org-reveal, see:
 ;;                         https://github.com/yjwen/org-reveal/commits/master
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
@@ -2628,14 +2628,18 @@ holding export options."
 (defun org-re-reveal-parse-keyword-value (value footer keyword info)
   "According to VALUE of KEYWORD and INFO, return HTML tags to split slides.
 Currently, only the keyword \"split\" is implemented, and VALUE must
-start with \"split\".  Any following text is inserted literally into
-the section tag.
+start with \"split\" or \"split:t\".  Any following text is inserted literally
+into the section tag.
 The possibly empty FOOTER is inserted at the end of the slide."
   (cl-assert (string-prefix-p "split" value) nil
              (format "Unknown REVEAL keyword.  Expected \"split\", got: %s"
                      value))
   (let* ((headline (org-export-get-parent-headline keyword))
          (split-attrs (substring value 5)) ; Everything after "split"
+         (with-headline-p (string-prefix-p ":t" split-attrs))
+         (split-attrs (if (string-prefix-p ":t" split-attrs)
+                          (substring split-attrs 2) ; Everything after "split:t"
+                        split-attrs))
          (real-attrs (if (< 0 (length split-attrs))
                          split-attrs
                        (org-re-reveal--section-attrs headline info))))
@@ -2644,7 +2648,27 @@ The possibly empty FOOTER is inserted at the end of the slide."
       ;; Thus, remember split and reset fragment counter for TTS.
       (plist-put info :reveal-tts-split-p t)
       (plist-put info :reveal-tts-frag -1))
-    (format "%s</section>\n<section%s>" footer real-attrs)))
+    (concat
+     (format "%s</section>\n<section%s>" footer real-attrs)
+     (when with-headline-p
+       ;; Based on code from ox-reveal, in turn based on ox-html
+       (let* ((title (org-export-data
+		      (org-element-property :title headline)
+		      info))
+	      (level (+ (org-export-get-relative-level headline info)
+		        (1- (plist-get info :html-toplevel-hlevel))))
+	      (numberedp (org-export-numbered-headline-p headline info))
+	      (numbers (org-export-get-headline-number headline info)))
+	 (format "\n<h%d>%s</h%d>"
+		 level
+		 (concat
+		  (and numberedp
+		       (format
+		        "<span class=\"section-number-%d\">%s</span> "
+		        level
+		        (concat (mapconcat #'number-to-string numbers ".") ".")))
+		  title)
+		 level))))))
 
 ;; Copied from org-html-format-list-item. Overwrite HTML class
 ;; attribute when there is attr_html attributes.
