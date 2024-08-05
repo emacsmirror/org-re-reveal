@@ -589,7 +589,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 ** Force Split
 
    If one heading has too many things to fit into one slide, you can
-   split the contents into multiple vertical slides manually, by inserting
+   split the contents into multiple vertical slides manually, by inserting:
 
 #+BEGIN_SRC org
 ,#+REVEAL: split
@@ -597,13 +597,16 @@ Whether anyone wants to use those package in isolation, is up to them.
 
 #+REVEAL: split data-background="#555555"
 
-   Now a new slide begins after the ~#+REVEAL~ keyword.
+   Now, a new slide begins after the ~#+REVEAL~ keyword.
 
    By default, any background attributes of a slide should remain in
    effect for the split parts.  In addition, you can
    add HTML attributes after ~#+REVEAL: split~, e.g., this slide
    uses ~#+REVEAL: split data-background="#555555"~ to set a
    background color.
+
+   Finally, ~#+REVEAL: split:t~ repeats the previous heading on the
+   new slide.
 
 ** Select Theme and Transition
 
