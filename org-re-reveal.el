@@ -1838,70 +1838,71 @@ Return empty string or one starting with a space character."
   "Transcode a HEADLINE element from Org to HTML.
 CONTENTS holds the contents of the headline.  INFO is a plist
 holding contextual information."
-  (unless (org-element-property :footnote-section-p headline)
-    (if (or (org-export-low-level-p headline info)
-            (org-element-property :NOSLIDE headline))
-        ;; This is a deep sub-tree or a subheading; do not create slide.
-        (if (< 0 (length (plist-get info :reveal-slide-grid-div)))
-            ;; For grid layouts, remove div element created by ox-html.
-            (org-re-reveal--fix-html-headline headline contents info)
-          ;; Just use ox-html.  This is kept here for backwards
-          ;; compatibility.  Not sure whether anyone relies on the div.
-          (org-html-headline headline contents info))
-      ;; Standard headline.  Export it as a slide
-      (let* ((level (org-export-get-relative-level headline info))
-             (preferred-id (or (org-element-property :CUSTOM_ID headline)
-                               (and (fboundp 'org-export-get-reference)
-                                    (org-export-get-reference headline info))
-                               (org-element-property :ID headline)))
-             (hlevel (org-re-reveal--get-hlevel info))
-             (header (plist-get info :reveal-slide-header))
-             (header-div (org-re-reveal--if-format
-                          org-re-reveal-slide-header-html header))
-             (first-sibling (org-export-first-sibling-p headline info))
-             (attrs (org-re-reveal--section-attrs headline info))
-             (extra-attrs (org-re-reveal--maybe-replace-background
-                           (or (org-element-property :REVEAL_EXTRA_ATTR headline)
-                               (plist-get info :reveal-extra-attr))
-                           info))
-             (slide-section-tag
-              (format "<section id=\"%s\"%s%s>\n"
-                      (format "%s%s" org-re-reveal--slide-id-prefix preferred-id)
-                      attrs
-                      (org-re-reveal--if-format " %s" extra-attrs)))
-             (slide-grid-div (plist-get info :reveal-slide-grid-div))
-             (ret (concat
-                   (if (or (/= level 1) (not first-sibling))
-                       ;; Not the first heading. Close previous slide.
-                       (concat
-                        ;; Close previous slide.
-                        "</section>\n"
-                        (if (<= level hlevel)
-                            ;; Close previous vertical slide group.
-                            "</section>\n")))
-                   (if (<= level hlevel)
-                       ;; Add an extra "<section>" to group following slides
-                       ;; into vertical slide group. Transition override
-                       ;; attributes are attached at this level, too.
-                       (let ((attrs
-                              (org-html--make-attribute-string
-                               `(:data-transition ,(org-element-property :REVEAL_DATA_TRANSITION headline)))))
-                         (if (string= attrs "")
-                             "<section>\n"
-                           (format "<section %s>\n" attrs))))
-                   ;; Start a new slide.
-                   slide-section-tag
-                   ;; Grid div if any.
-                   slide-grid-div
-                   ;; Slide header if any.
-                   header-div
-                   ;; The HTML content of the headline
-                   (org-re-reveal--fix-html-headline headline contents info)
-                   (when (and (= level 1)
-                              (org-export-last-sibling-p headline info))
-                     ;; Last head 1. Close all slides.
-                     "</section>\n</section>\n"))))
-        ret))))
+  (if (or (org-export-low-level-p headline info)
+          (org-element-property :NOSLIDE headline))
+      ;; This is a deep sub-tree or a subheading; do not create slide.
+      (if (< 0 (length (plist-get info :reveal-slide-grid-div)))
+          ;; For grid layouts, remove div element created by ox-html.
+          (org-re-reveal--fix-html-headline headline contents info)
+        ;; Just use ox-html.  This is kept here for backwards
+        ;; compatibility.  Not sure whether anyone relies on the div.
+        (org-html-headline headline contents info))
+    ;; Standard headline.  Export it as a slide
+    (let* ((level (org-export-get-relative-level headline info))
+           (preferred-id (or (org-element-property :CUSTOM_ID headline)
+                             (and (fboundp 'org-export-get-reference)
+                                  (org-export-get-reference headline info))
+                             (org-element-property :ID headline)))
+           (hlevel (org-re-reveal--get-hlevel info))
+           (header (plist-get info :reveal-slide-header))
+           (header-div (org-re-reveal--if-format
+                        org-re-reveal-slide-header-html header))
+           (first-sibling (org-export-first-sibling-p headline info))
+           (attrs (org-re-reveal--section-attrs headline info))
+           (extra-attrs (org-re-reveal--maybe-replace-background
+                         (or (org-element-property :REVEAL_EXTRA_ATTR headline)
+                             (plist-get info :reveal-extra-attr))
+                         info))
+           (slide-section-tag
+            (format "<section id=\"%s\"%s%s>\n"
+                    (format "%s%s" org-re-reveal--slide-id-prefix preferred-id)
+                    attrs
+                    (org-re-reveal--if-format " %s" extra-attrs)))
+           (slide-grid-div (plist-get info :reveal-slide-grid-div))
+           (ret (concat
+                 (if (or (/= level 1) (not first-sibling))
+                     ;; Not the first heading. Close previous slide.
+                     (concat
+                      ;; Close previous slide.
+                      "</section>\n"
+                      (if (<= level hlevel)
+                          ;; Close previous vertical slide group.
+                          "</section>\n")))
+                 (if (<= level hlevel)
+                     ;; Add an extra "<section>" to group following slides
+                     ;; into vertical slide group. Transition override
+                     ;; attributes are attached at this level, too.
+                     (let ((attrs
+                            (org-html--make-attribute-string
+                             `(:data-transition ,(org-element-property :REVEAL_DATA_TRANSITION headline)))))
+                       (if (string= attrs "")
+                           "<section>\n"
+                         (format "<section %s>\n" attrs))))
+                 ;; Start a new slide.
+                 slide-section-tag
+                 ;; Grid div if any.
+                 slide-grid-div
+                 ;; Slide header if any.
+                 header-div
+                 ;; The HTML content of the headline
+                 (if (org-element-property :footnote-section-p headline)
+                     (org-html-footnote-section info)
+                   (org-re-reveal--fix-html-headline headline contents info))
+                 (when (and (= level 1)
+                            (org-export-last-sibling-p headline info))
+                   ;; Last head 1. Close all slides.
+                   "</section>\n</section>\n"))))
+      ret)))
 
 (defun org-re-reveal--read-list (thing)
   "Return THING if it is a list.
