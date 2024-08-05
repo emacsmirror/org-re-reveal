@@ -41,3 +41,18 @@ Same background as previous slide.
 
 * Nothing special
 Default background again.
+
+* A heading
+Text before split
+
+#+REVEAL: split:t
+Here, the previous heading “A heading” appears.
+
+See [[https://gitlab.com/oer/org-re-reveal/-/issues/105][issue #105]].
+
+** A subheading
+Some text before split
+
+#+REVEAL: split:t
+
+The previous heading “A subheading” appears here as well.
