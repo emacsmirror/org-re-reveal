@@ -12,6 +12,10 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+*** Added
+    - Support slide with footnotes.  Addresses issue #99.
+      See [[file:test-cases/test-footnotes.org][test case]]
+
 ** [3.30.0] - 2024-08-05
 *** Added
     - Keyword ~split~ now exists as variant ~split:t;
