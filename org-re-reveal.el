@@ -1466,10 +1466,10 @@ Selected replacements:
 - Replace some math symbols.
 - Replace digits, some numbers, some years.
 - Replace some abbreviations.
-- Replace some hyphenations.  By default, a rule replaces a hyphen between characters
-  with a space.  When this does not sound well, a special rule is necessary.
-- Selected pronounciation helpers for speaker CLB.
-"
+- Replace some hyphenations.  By default, a rule replaces a hyphen between
+  characters with a space.  When this does not sound well, a special rule
+  is necessary.
+- Selected pronounciation helpers for speaker CLB."
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
   :package-version '(org-re-reveal . "3.29.1"))
@@ -1503,7 +1503,7 @@ Otherwise, return empty string."
     ""))
 
 (defun org-re-reveal--sentences-in-lines (text)
-  "Return string for TEXT where each sentence starts on a new line.
+  "Return string for TEXT, where each sentence starts on a new line.
 Replace each newline (which, assuming wrapped texts, may or may not end
 sentences or paragraphs) with two space characters (which should not hurt).
 Then, insert a newline after each sentence (determined by `forward-sentence').
@@ -3475,7 +3475,7 @@ Return output file name."
 
 ;; Remove break elements for LaTeX export.
 (defun org-re-reveal-latex-filter-notes (text backend _)
-  "Ensure TTS \"break\" elements are removed for LaTeX export."
+  "Remove TTS \"break\" elements from TEXT for LaTeX BACKEND."
   (when (org-export-derived-backend-p backend 'latex)
     (replace-regexp-in-string
      "[<]break time=[^/]+/>" "" text)))
