@@ -12,13 +12,16 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+** [3.31.0] - 2024-08-07
 *** Added
-    - Support slide with footnotes.  Addresses issue #99.
-      See [[file:test-cases/test-footnotes.org][test case]]
+    - Support footnotes, new customizable variable
+      ~org-re-reveal-footnotes-div~.  Addresses issue #99.
+      - [[file:test-cases/test-footnotes.org][Test case for slide collecting all footnotes]].
+      - [[file:test-cases/test-footnotes-local.org][Test case for footnotes on same slide]].
 
 ** [3.30.0] - 2024-08-05
 *** Added
-    - Keyword ~split~ now exists as variant ~split:t;
+    - Keyword ~split~ now exists as variant ~split:t~;
       addresses issue #105.
 
 ** [3.29.1] - 2024-07-19

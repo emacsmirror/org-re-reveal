@@ -305,6 +305,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_EXTRA_CSS~                           | ~org-re-reveal-extra-css~                |
 | ~nil~                             | ~REVEAL_EXTRA_OPTIONS~                       | ~org-re-reveal-extra-options~            |
 | ~nil~                             | ~REVEAL_EXTRA_SCRIPTS~                       | ~org-re-reveal-extra-scripts~            |
+| ~nil~                             | ~REVEAL_FOOTNOTES_DIV~                       | ~org-re-reveal-footnotes-div~            |
 | ~nil~                             | ~REVEAL_HEAD_PREAMBLE~                       | ~org-re-reveal-head-preamble~            |
 | ~nil~                             | ~REVEAL_INIT_SCRIPT~                         | ~org-re-reveal-init-script~              |
 | ~nil~                             | ~REVEAL_HIGHLIGHT_CSS~                       | ~org-re-reveal-highlight-css~            |
@@ -1128,6 +1129,15 @@ Whether anyone wants to use those package in isolation, is up to them.
    to get started.
 
    At present code editing is supported in: {{{klipse-languages}}}
+
+** Footnotes
+  :PROPERTIES:
+  :CUSTOM_ID: footnotes
+  :END:
+  - Use footnotes as usual
+  - Two options
+    1. Add a slide “Footnotes”, where all footnotes are collected (see [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-footnotes.org][test-footnotes.org]])
+    2. Use startup option ~fnlocal~ to create footnote directly on slide (see [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-footnotes-local.org][test-footnotes-local.org]])
 
 ** MathJax
   :PROPERTIES:
