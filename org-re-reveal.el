@@ -157,6 +157,7 @@
       (:reveal-extra-css "REVEAL_EXTRA_CSS" nil org-re-reveal-extra-css newline)
       (:reveal-extra-options "REVEAL_EXTRA_OPTIONS" nil org-re-reveal-extra-options t)
       (:reveal-extra-scripts "REVEAL_EXTRA_SCRIPTS" nil org-re-reveal-extra-scripts t)
+      (:reveal-footnotes-div "REVEAL_FOOTNOTES_DIV" nil org-re-reveal-footnotes-div t)
       (:reveal-head-preamble "REVEAL_HEAD_PREAMBLE" nil org-re-reveal-head-preamble newline)
       (:reveal-highlight-css "REVEAL_HIGHLIGHT_CSS" nil org-re-reveal-highlight-css t)
       (:reveal-highlight-url "REVEAL_HIGHLIGHT_URL" nil org-re-reveal-highlight-url t)
@@ -851,6 +852,18 @@ Must constain exactly one %-sequence \"%s\"."
   :group 'org-export-re-reveal
   :type 'string
   :package-version '(org-re-reveal . "3.3.0"))
+
+(defcustom org-re-reveal-footnotes-div "<div class=\"footnotes\">
+<hr />
+<div class=\"text-footnotes\">
+%s
+</div>
+</div>"
+  "HTML DIV element to group footnotes of a slide.
+Must contain one instance of %s, to be replaced with the footnotes."
+  :group 'org-export-re-reveal
+  :type 'string
+  :package-version '(org-re-reveal . "3.31.0"))
 
 (defcustom org-re-reveal-title-slide-notes nil
   "Name of file to define speaker notes on title slide or nil.
@@ -1894,7 +1907,8 @@ holding contextual information."
                  slide-grid-div
                  ;; Slide header if any.
                  header-div
-                 ;; The HTML content of the headline
+                 ;; The HTML content of the headline.  Treat slide with
+                 ;; footnotes based on ox-html.
                  (if (org-element-property :footnote-section-p headline)
                      (org-html-footnote-section info)
                    (org-re-reveal--fix-html-headline headline contents info))
@@ -2979,6 +2993,44 @@ Use plist INFO and format specification SPEC."
         (when (org-string-nw-p section-contents)
           (org-element-normalize-string section-contents))))))
 
+;; Based on org-html-footnote-section, but add data as optional argument
+;; and keep Org's numbers.  Use own format string without heading.
+(defun org-re-reveal-footnote-div (info &optional data)
+  "Format the footnote section.
+Use INFO as communication channel.  Optional DATA may be a subtree, from
+which footnotes are extracted.
+Customize `org-re-reveal-footnotes-div' to change the footnotes' appearance."
+  (pcase (org-export-collect-footnote-definitions info data)
+    (`nil nil)
+    (definitions
+     (format
+      (plist-get info :reveal-footnotes-div)
+      (mapconcat
+       (lambda (definition)
+	 (pcase definition
+	   (`(,n ,label ,def)
+	    ;; `org-export-collect-footnote-definitions' can return
+	    ;; two kinds of footnote definitions: inline and blocks.
+	    ;; Since this should not make any difference in the HTML
+	    ;; output, we wrap the inline definitions within
+	    ;; a "footpara" class paragraph.
+	    (let ((inline? (not (org-element-map def org-element-all-elements
+				  #'identity nil t)))
+		  (anchor (org-html--anchor
+                           (format "fn.%s" (or label n))
+			   (or label n)
+			   (format " class=\"footnum\" href=\"#fnr.%s\" role=\"doc-backlink\"" (or label n))
+			   info))
+		  (contents (org-trim (org-export-data def info))))
+	      (format "<div class=\"footdef\">%s %s</div>\n"
+		      (format (plist-get info :html-footnote-format) anchor)
+		      (format "<div class=\"footpara\" role=\"doc-footnote\">%s</div>"
+			      (if (not inline?) contents
+				(format "<p class=\"footpara\">%s</p>"
+					contents))))))))
+       definitions
+       "\n")))))
+
 (defun org-re-reveal-section (section contents info)
   "Transcode a SECTION element from Org to Reveal.
 CONTENTS holds the contents of the section.  INFO is a plist
@@ -2989,6 +3041,8 @@ holding contextual information."
         (parent (org-export-get-parent-element section)))
     (if parent
       (concat (format slide-container (or contents ""))
+              (unless org-footnote-section
+                (org-re-reveal-footnote-div info section))
               footer
               (if (and parent (< 0 (length slide-grid-div)))
                   "</div>\n"
