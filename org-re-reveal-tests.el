@@ -135,6 +135,7 @@
         "footer"
         "footer-global"
         "footnotes"
+        "footnotes-local"
         "highlightjs"
         "internal-links"
         "klipsify"
