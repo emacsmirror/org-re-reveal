@@ -491,10 +491,11 @@ to be used with \"separate-page\"."
 Each list element can be the filename or URL of a JavaScript file or an
 entire HTML script element.
 If relative filenames are used, they must be relative to the presentation's
-HTML file."
+HTML file.  Alternatively, if a file name starts with %s, that placeholder is
+replaced with `org-re-reveal-root'."
   :group 'org-export-re-reveal
   :type '(repeat string)
-  :package-version '(org-re-reveal . "2.10.0"))
+  :package-version '(org-re-reveal . "3.32.0"))
 
 (defcustom org-re-reveal-extra-attr nil
   "Global Reveal Extra Attrs for all slides."
@@ -504,9 +505,12 @@ HTML file."
           (const nil)))
 
 (defcustom org-re-reveal-extra-css ""
-  "Newline separated names (or remote URLs) for extra CSS files."
+  "Newline separated names (or remote URLs) for extra CSS files.
+If a file name starts with %s, that placeholder is
+replaced with `org-re-reveal-root'."
   :group 'org-export-re-reveal
-  :type 'string)
+  :type 'string
+  :package-version '(org-re-reveal . "3.32.0"))
 
 (defcustom org-re-reveal-multiplex-id ""
   "The ID to use for multiplexing.
@@ -2077,7 +2081,10 @@ Concatenate the results by altering them (using `nconc')."
                               (cons theme-css "theme"))
                         (mapcar (lambda (path) (cons path nil))
                                 (cl-delete-duplicates
-                                 (split-string extra-css "\n" t)
+                                 (mapcar (lambda (path)
+                                           (replace-regexp-in-string
+                                            "^%s" root-path path))
+                                         (split-string extra-css "\n" t))
                                  :test #'equal))
                         (mapcar (lambda (path)
                                   (cons (org-re-reveal--reveal-path
@@ -2251,13 +2258,17 @@ This includes reveal.js libraries in `:reveal-script-files' under
                             extra-scripts)))
     (concat
      (let* ((local-root-path (org-re-reveal--file-url-to-path root-path))
+            (local-extras (mapcar (lambda (file)
+                                    (replace-regexp-in-string
+                                     "^%s" local-root-path file))
+                                  extra-script-files))
             (local-libs (append (mapcar (lambda (file)
                                           (concat local-root-path file))
                                         script-files)
                                 (mapcar (lambda (file)
 					  (org-re-reveal--file-url-to-path file))
 					plugin-libs)
-                                extra-script-files))
+                                local-extras))
             (local-libs-exist-p (cl-every #'file-readable-p local-libs)))
        (if (and in-single-file (not local-libs-exist-p))
            (org-re-reveal--abort-with-message-box
@@ -2277,7 +2288,7 @@ This includes reveal.js libraries in `:reveal-script-files' under
            ;; Embed script files with src.
            (mapconcat (lambda (file)
                         (concat "<script src=\"" file "\"></script>\n"))
-                      (append root-libs plugin-libs extra-script-files) ""))))
+                      (append root-libs plugin-libs local-extras) ""))))
      ;; Embed script tags.
      (mapconcat 'identity extra-script-elements "\n")
      (if extra-script-elements "\n" ""))))
