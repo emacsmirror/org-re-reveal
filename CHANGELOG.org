@@ -12,6 +12,12 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+** [3.32.0] - 2024-08-08
+*** Added
+    - Support %s escape sequences, to be replaced with the reveal.js
+      root path, in ~org-re-reveal-extra-scripts~ and
+      ~org-re-reveal-extra-css~.  Addresses oer-reveal issue [[https://gitlab.com/oer/oer-reveal/-/issues/6][#6]].
+
 ** [3.31.0] - 2024-08-07
 *** Added
     - Support footnotes, new customizable variable

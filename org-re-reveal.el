@@ -8,7 +8,7 @@
 ;; SPDX-FileCopyrightText: 2017-2024 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 3.31.0
+;; Version: 3.32.0
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
