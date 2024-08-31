@@ -255,9 +255,9 @@ Whether anyone wants to use those package in isolation, is up to them.
 
 ** Options and Plug-ins
 
-   All options and keywords with their customizable variables are
-   shown in the following table, with hints and more customizable
-   variables afterwards.
+   Options and keywords with their customizable variables are shown in
+   the following table, with hints and more customizable variables
+   afterwards.
 
 | Option                            | Keyword                                      | Variable                                 |
 |-----------------------------------+----------------------------------------------+------------------------------------------|
@@ -396,6 +396,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    ~org-re-reveal-client-multiplex-filter~,
    ~org-re-reveal-keys~,
    ~org-re-reveal-klipse-extra-css~,
+   ~org-re-reveal-log~,
    ~org-re-reveal-multiplex-client-ext~,
    ~org-re-reveal-no-htmlize-src~,
    ~org-re-reveal-note-key-char~,
