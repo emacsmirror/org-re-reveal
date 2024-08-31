@@ -1323,6 +1323,7 @@ presentations."
     ("\\bCPUs\\b" "see pea use")
     ("\\bGPU\\b" "djee pea you")
     ("\\bGPUs\\b" "djee pea use")
+    ("\\bCRI\\b" "see are eye")
     ("\\bCS\\b" "see ess")
     ("\\bCSs\\b" "critical sections")
     ("\\bDNF\\b" "dee n f")
@@ -1336,6 +1337,8 @@ presentations."
     ("\\bHDFS\\b" "age dee eff ess")
     ("\\bHTML\\b" "age tea em el")
     ("\\bHTTP\\b" "age tea tea pea")
+    ("\\bID\\b" "eye dee")
+    ("\\bIDs\\b" "eye dees")
     ("\\bIoT\\b" "eye oh tea")
     ("\\bIPv4\\b" "eye pea version four")
     ("\\bIPv6\\b" "eye pea version six")
@@ -1469,8 +1472,7 @@ presentations."
     (" - " " minus ")
     (" [*] " " times ")
     ;; Remove parentheses at start and end of lines
-    ("^(\\|)$" "")
-    )
+    ("^(\\|)$" ""))
     "Normalization table understood by `iso-translate-conventions'.
 Such a table contains a list of 2-element lists.  Both elements are regular
 expressions, where occurrences of the first one are replaced by the second
@@ -1489,7 +1491,7 @@ Selected replacements:
 - Selected pronounciation helpers for speaker CLB."
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
-  :package-version '(org-re-reveal . "3.29.1"))
+  :package-version '(org-re-reveal . "3.33.0"))
 
 (defcustom org-re-reveal-tts-warn-regexp "\\([-0-9]\\|[A-Z][A-Z]\\)"
   "Regular expression matching text that is unsuitable for TTS.
