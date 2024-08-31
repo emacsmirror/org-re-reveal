@@ -1162,6 +1162,19 @@ slideshow plugin or be names of your choice (to be used with
 (defvar org-re-reveal-pub-dir nil
   "Record publishing directory.")
 
+(defcustom org-re-reveal-log ".org-re-reveal.log"
+  "Name of log file with published HTML presentations or nil.
+If nil, do not keep log.  Otherwise, add names of presentations published with
+`org-re-reveal-publish-to-reveal' to log file under the publication directory.
+
+This is meant for subsequent generation of PDF versions by printing recently
+published presentations to PDF with emacs-reveal.  See URL
+`https://gitlab.com/oer/emacs-reveal/-/blob/main/docker/code/selenium-print-pdf.py'.
+Users need to delete (contents from) the log file themselves, if necessary."
+  :group 'org-export-re-reveal
+  :type '(choice (const nil) string)
+  :package-version '(org-re-reveal . "3.33.0"))
+
 (defcustom org-re-reveal-tts-dir
   (file-name-as-directory "tts")
   "Target directory for text files as basis for TTS.
@@ -3497,12 +3510,16 @@ is the property list for the given project.  PUB-DIR is the
 publishing directory.  Optional BACKEND may specify a derived export
 backend.
 Return output file name."
-  (let ((org-re-reveal-client-multiplex nil)
-        (org-re-reveal-pub-dir pub-dir)
-        (org-html-container-element "div"))
-    (org-publish-org-to
-     (or backend 're-reveal) filename
-     (concat "." org-html-extension) plist pub-dir)))
+  (let* ((org-re-reveal-client-multiplex nil)
+         (org-re-reveal-pub-dir pub-dir)
+         (org-html-container-element "div")
+         (outfile (org-publish-org-to
+                   (or backend 're-reveal) filename
+                   (concat "." org-html-extension) plist pub-dir)))
+    (when org-re-reveal-log
+      (append-to-file (concat (expand-file-name outfile) "\n") nil
+                      (concat pub-dir org-re-reveal-log)))
+    outfile))
 
 ;;;###autoload
 (defun org-re-reveal-publish-to-reveal-client
