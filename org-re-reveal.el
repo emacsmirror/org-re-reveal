@@ -3510,6 +3510,8 @@ is the property list for the given project.  PUB-DIR is the
 publishing directory.  Optional BACKEND may specify a derived export
 backend.
 Return output file name."
+  (message "Publishing file %s using `org-re-reveal-publish-to-reveal'"
+           filename)
   (let* ((org-re-reveal-client-multiplex nil)
          (org-re-reveal-pub-dir pub-dir)
          (org-html-container-element "div")
@@ -3532,6 +3534,8 @@ backend.
 If `org-re-reveal-client-multiplex-filter' is non-nil, use it as regular
 expression to only publish FILENAME if it matches this regular expression.
 Return output file name."
+  (message "Publishing file %s using `org-re-reveal-publish-to-reveal-client'"
+           filename)
   (if (or (not org-re-reveal-client-multiplex-filter)
           (string-match org-re-reveal-client-multiplex-filter filename))
       (let ((org-re-reveal-client-multiplex t)
