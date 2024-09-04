@@ -3509,7 +3509,7 @@ FILENAME is the filename of the Org file to be published.  PLIST
 is the property list for the given project.  PUB-DIR is the
 publishing directory.  Optional BACKEND may specify a derived export
 backend.
-Return output file name."
+Return output file name or nil."
   (message "Publishing file %s using `org-re-reveal-publish-to-reveal'"
            filename)
   (let* ((org-re-reveal-client-multiplex nil)
@@ -3533,7 +3533,7 @@ publishing directory.  Optional BACKEND may specify a derived export
 backend.
 If `org-re-reveal-client-multiplex-filter' is non-nil, use it as regular
 expression to only publish FILENAME if it matches this regular expression.
-Return output file name."
+Return output file name or nil."
   (message "Publishing file %s using `org-re-reveal-publish-to-reveal-client'"
            filename)
   (if (or (not org-re-reveal-client-multiplex-filter)
