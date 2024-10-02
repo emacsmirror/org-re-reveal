@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Adding Local Footnotes with CSL citations</title>
+<meta name="author" content="Jens Lechtenbörger"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="file:///home/aj/lib/reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="file:///home/aj/lib/reveal.js/dist/theme/black.css" id="theme"/>
+<style type="text/css">
+.footpara { display: inline; }
+.footdef { text-align: left; }
+.footnotes { padding-top: 2em; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide">
+<h1 class="title">Adding Local Footnotes with CSL citations</h1><h2 class="author">Jens Lechtenbörger</h2>
+</section>
+<section>
+<section id="slide-org21f2e9d">
+<h2 id="org21f2e9d">Just a slide</h2>
+<ul>
+<li>Nothing really special here<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup></li>
+
+</ul>
+<div class="footnotes">
+<hr />
+<div class="text-footnotes">
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">Except for a footnote</p></div></div>
+
+</div>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org32954e7">
+<h3 id="org32954e7">A deeper nesting</h3>
+<ul>
+<li>Again some footnote<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup></li>
+
+</ul>
+<div class="footnotes">
+<hr />
+<div class="text-footnotes">
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">Footnote on a deeper level of nesting</p></div></div>
+
+</div>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orgac082fe">
+<h2 id="orgac082fe">A slide with a citation</h2>
+<ul>
+<li>First point<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup></li>
+<li>Second point<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup></li>
+<li>Third point<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup></li>
+
+</ul>
+<div class="footnotes">
+<hr />
+<div class="text-footnotes">
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">A note on the first</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">Jens Lechtenbörger, “Emacs-reveal: A software bundle to create OER presentations,” <i>Journal of Open Source Education (Jose)</i> 2, no. 18 (2019), <a href="https://doi.org/10.21105/jose.00050">https://doi.org/10.21105/jose.00050</a>.</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">A note on the third</p></div></div>
+
+</div>
+</div>
+</section>
+</section>
+</div>
+</div>
+<script src="file:///home/aj/lib/reveal.js/dist/reveal.js"></script>
+<script src="file:///home/aj/lib/reveal.js/plugin/zoom/zoom.js"></script>
+<script src="file:///home/aj/lib/reveal.js/plugin/notes/notes.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: false,
+progress: false,
+history: false,
+center: false,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: true,
+pdfSeparateFragments: true,
+overview: false,
+width: 1400,
+height: 1000,
+
+transition: 'slide',
+transitionSpeed: 'fast',
+hash: true, navigationMode: 'linear',
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealZoom, RevealNotes ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+</body>
+</html>
