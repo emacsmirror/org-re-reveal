@@ -236,7 +236,8 @@
       (section . org-re-reveal-section)
       (src-block . org-re-reveal-src-block)
       (special-block . org-re-reveal-special-block)
-      (template . org-re-reveal-template))
+      (template . org-re-reveal-template)
+      (footnote-reference . org-re-reveal-footnote-reference))
 
     :filters-alist '((:filter-parse-tree . org-re-reveal-filter-parse-tree))))
 
@@ -3059,6 +3060,13 @@ Customize `org-re-reveal-footnotes-div' to change the footnotes' appearance."
        (lambda (definition)
 	 (pcase definition
 	   (`(,n ,label ,def)
+        ;; ;; Do not assign number labels as they appear in Org mode
+        ;; ;; - the footnotes are re-numbered by
+        ;; ;; `org-export-get-footnote-number'.  If the label is not
+        ;; ;; a number, keep it.
+        (when (and data (stringp label)
+                   (equal label (number-to-string (string-to-number label))))
+          (setq label nil))
 	    ;; `org-export-collect-footnote-definitions' can return
 	    ;; two kinds of footnote definitions: inline and blocks.
 	    ;; Since this should not make any difference in the HTML
@@ -3080,6 +3088,56 @@ Customize `org-re-reveal-footnotes-div' to change the footnotes' appearance."
 					contents))))))))
        definitions
        "\n")))))
+
+(defun org-re-reveal-footnote-reference (footnote-reference _contents info)
+  "Transcode a FOOTNOTE-REFERENCE element from Org to Reveal.
+CONTENTS is nil.  INFO is a plist holding contextual information."
+  (concat
+   ;; Insert separator between two footnotes in a row.
+   (let ((prev (org-export-get-previous-element footnote-reference info)))
+     (when (org-element-type-p prev 'footnote-reference)
+       (plist-get info :html-footnote-separator)))
+   (let* ((n (org-export-get-footnote-number
+              footnote-reference
+              info
+              (unless org-footnote-section ; numbering relative to slide:
+                (org-re-reveal--get-parent-slide footnote-reference info))))
+          (label (org-element-property :label footnote-reference))
+          ;; Do not assign number labels as they appear in Org mode -
+          ;; the footnotes are re-numbered by
+          ;; `org-export-get-footnote-number'.  If the label is not a
+          ;; number, keep it.
+          (label (if (and (stringp label)
+                          (equal label (number-to-string (string-to-number label))))
+                          nil
+                   label))
+	  (id (format "fnr.%s%s"
+		      (or label n)
+		      (if (org-export-footnote-first-reference-p
+			   footnote-reference info)
+			  ""
+                        (let ((label (org-element-property :label footnote-reference)))
+                          (format
+                           ".%d"
+                           (org-export-get-ordinal
+                            footnote-reference info '(footnote-reference)
+                            `(lambda (ref _)
+                               (if ,label
+                                   (equal (org-element-property :label ref) ,label)
+                                 (not (org-element-property :label ref)))))))))))
+     (format
+      (plist-get info :html-footnote-format)
+      (org-html--anchor
+       id n (format " class=\"footref\" href=\"#fn.%s\" role=\"doc-backlink\"" (or label n)) info)))))
+
+(defun org-re-reveal--get-parent-slide (data info)
+  "Return first ancestor headline to DATA that is a slide.
+INFO is a plist holding contextual information."
+  (cl-loop with hl = (org-export-get-parent-headline data)
+           while (or (org-export-low-level-p hl info)
+                     (org-element-property :NOSLIDE hl))
+           do (setq hl (org-export-get-parent-headline hl))
+           finally return hl))
 
 (defun org-re-reveal-section (section contents info)
   "Transcode a SECTION element from Org to Reveal.
