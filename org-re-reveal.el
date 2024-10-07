@@ -3060,26 +3060,29 @@ Customize `org-re-reveal-footnotes-div' to change the footnotes' appearance."
        (lambda (definition)
 	 (pcase definition
 	   (`(,n ,label ,def)
-        ;; ;; Do not assign number labels as they appear in Org mode
-        ;; ;; - the footnotes are re-numbered by
-        ;; ;; `org-export-get-footnote-number'.  If the label is not
-        ;; ;; a number, keep it.
-        (when (and data (stringp label)
-                   (equal label (number-to-string (string-to-number label))))
-          (setq label nil))
+	    ;; ;; Do not assign number labels as they appear in Org mode
+	    ;; ;; - the footnotes are re-numbered by
+	    ;; ;; `org-export-get-footnote-number'.  If the label is not
+	    ;; ;; a number, keep it.
+	    (when (and data (stringp label)
+		       (equal label (number-to-string (string-to-number label))))
+	      (setq label nil))
 	    ;; `org-export-collect-footnote-definitions' can return
 	    ;; two kinds of footnote definitions: inline and blocks.
 	    ;; Since this should not make any difference in the HTML
 	    ;; output, we wrap the inline definitions within
 	    ;; a "footpara" class paragraph.
-	    (let ((inline? (not (org-element-map def org-element-all-elements
-				  #'identity nil t)))
-		  (anchor (org-html--anchor
-                           (format "fn.%s" (or label n))
-			   (or label n)
-			   (format " class=\"footnum\" href=\"#fnr.%s\" role=\"doc-backlink\"" (or label n))
-			   info))
-		  (contents (org-trim (org-export-data def info))))
+	    (let* ((inline? (not (org-element-map def org-element-all-elements
+				   #'identity nil t)))
+		   (section-id (if data
+				   (concat "." (org-export-get-reference data info))
+				 ""))
+		   (anchor (org-html--anchor
+			    (format "fn%s.%s" section-id (or label n))
+			    (or label n)
+			    (format " class=\"footnum\" href=\"#fnr%s.%s\" role=\"doc-backlink\"" section-id (or label n))
+			    info))
+		   (contents (org-trim (org-export-data def info))))
 	      (format "<div class=\"footdef\">%s %s</div>\n"
 		      (format (plist-get info :html-footnote-format) anchor)
 		      (format "<div class=\"footpara\" role=\"doc-footnote\">%s</div>"
@@ -3097,11 +3100,14 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
    (let ((prev (org-export-get-previous-element footnote-reference info)))
      (when (eq (org-element-type prev) 'footnote-reference)
        (plist-get info :html-footnote-separator)))
-   (let* ((n (org-export-get-footnote-number
-              footnote-reference
-              info
-              (unless org-footnote-section ; numbering relative to slide:
-                (org-re-reveal--get-parent-slide footnote-reference info))))
+   (let* (;; parent slide for local numbering
+          (section (unless org-footnote-section
+                     (org-re-reveal--get-parent-section footnote-reference info)))
+          (section-id (if section
+			  (concat "." (org-export-get-reference section info))
+			""))
+          (n (org-export-get-footnote-number footnote-reference info section))
+
           (label (org-element-property :label footnote-reference))
           ;; Do not assign number labels as they appear in Org mode -
           ;; the footnotes are re-numbered by
@@ -3109,9 +3115,10 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
           ;; number, keep it.
           (label (if (and (stringp label)
                           (equal label (number-to-string (string-to-number label))))
-                          nil
+                     nil
                    label))
-	  (id (format "fnr.%s%s"
+	  (id (format "fnr%s.%s%s"
+		      section-id
 		      (or label n)
 		      (if (org-export-footnote-first-reference-p
 			   footnote-reference info)
@@ -3128,16 +3135,15 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
      (format
       (plist-get info :html-footnote-format)
       (org-html--anchor
-       id n (format " class=\"footref\" href=\"#fn.%s\" role=\"doc-backlink\"" (or label n)) info)))))
+       id n (format " class=\"footref\" href=\"#fn%s.%s\" role=\"doc-backlink\"" section-id (or label n)) info)))))
 
-(defun org-re-reveal--get-parent-slide (data info)
-  "Return first ancestor headline to DATA that is a slide.
+(defun org-re-reveal--get-parent-section (data info)
+  "Return first ancestor section of DATA.
 INFO is a plist holding contextual information."
-  (cl-loop with hl = (org-export-get-parent-headline data)
-           while (or (org-export-low-level-p hl info)
-                     (org-element-property :NOSLIDE hl))
-           do (setq hl (org-export-get-parent-headline hl))
-           finally return hl))
+  (cl-loop with parent = (org-element-parent-element data)
+	   until (eq (org-element-type parent) 'section)
+	   do (setq parent (org-element-parent-element parent))
+	   finally return parent))
 
 (defun org-re-reveal-section (section contents info)
   "Transcode a SECTION element from Org to Reveal.
