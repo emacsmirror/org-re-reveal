@@ -3141,6 +3141,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
   "Return first ancestor section of DATA.
 INFO is a plist holding contextual information."
   (cl-loop with parent = (org-element-parent-element data)
+	   if (eq parent nil) return nil ;; ensure no non-exiting loops
 	   until (eq (org-element-type parent) 'section)
 	   do (setq parent (org-element-parent-element parent))
 	   finally return parent))
