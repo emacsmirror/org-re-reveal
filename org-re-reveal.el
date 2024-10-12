@@ -3102,7 +3102,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
        (plist-get info :html-footnote-separator)))
    (let* (;; parent slide for local numbering
           (section (unless org-footnote-section
-                     (org-re-reveal--get-parent-section footnote-reference info)))
+                     (org-re-reveal--get-parent-section footnote-reference)))
           (section-id (if section
 			  (concat "." (org-export-get-reference section info))
 			""))
@@ -3137,13 +3137,12 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
       (org-html--anchor
        id n (format " class=\"footref\" href=\"#fn%s.%s\" role=\"doc-backlink\"" section-id (or label n)) info)))))
 
-(defun org-re-reveal--get-parent-section (data info)
-  "Return first ancestor section of DATA.
-INFO is a plist holding contextual information."
-  (cl-loop with parent = (org-element-parent-element data)
+(defun org-re-reveal--get-parent-section (data)
+  "Return first ancestor section of DATA."
+  (cl-loop with parent = (org-export-get-parent-element data)
 	   if (eq parent nil) return nil ;; ensure no non-exiting loops
 	   until (eq (org-element-type parent) 'section)
-	   do (setq parent (org-element-parent-element parent))
+	   do (setq parent (org-export-get-parent-element parent))
 	   finally return parent))
 
 (defun org-re-reveal-section (section contents info)
