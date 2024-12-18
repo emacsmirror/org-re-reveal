@@ -1487,9 +1487,13 @@ presentations."
     ;; Remove parentheses at start and end of lines
     ("^(\\|)$" ""))
     "Normalization table understood by `iso-translate-conventions'.
-Such a table contains a list of 2-element lists.  Both elements are regular
-expressions, where occurrences of the first one are replaced by the second
-one.
+Normalization supports correct pronounciation of words, numbers,
+symbols, or abbreviations by TTS models.
+For that purpose, this table contains a list of 2-element lists.
+Both elements are regular expressions, where occurrences of the first
+one are replaced by the second one when creating the input texts for
+TTS processing.  This does not affect notes shown on slides.
+
 Selected replacements:
 - Replace several whitespaces with one.
 - Avoid some UTF symbols.
