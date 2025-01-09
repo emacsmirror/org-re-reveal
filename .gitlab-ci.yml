@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2017-2021, 2023 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2017-2021, 2023, 2025 Jens Lechtenbörger
 # SPDX-License-Identifier: CC0-1.0
 
 image: registry.gitlab.com/oer/emacs-reveal/emacs-reveal:8.29.0
@@ -29,6 +29,7 @@ pages:
       - lechten
     changes:
       - Makefile
+      - test-cases/*
       - "**/*.org"
       - "**/*.el"
       - ".gitlab-ci.yml"
