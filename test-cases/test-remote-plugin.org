@@ -12,6 +12,7 @@
 #+REVEAL_VERSION: 4
 #+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard https://cdn.jsdelivr.net/gh/rajgoel/reveal.js-plugins/chalkboard/plugin.js https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/style.css
 #+REVEAL_HEAD_PREAMBLE: <style type="text/css">.reveal > .overlay { backdrop-filter: unset!important; }</style>
+#+REVEAL_PREAMBLE:
 
 * Comments
   - This presentation embeds reveal.js and the
