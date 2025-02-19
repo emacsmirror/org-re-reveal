@@ -1328,7 +1328,7 @@ presentations."
     ("\\bTTS\\b" "tea tea ess")
     ("\\bALU\\b" "ay al you")
     ("\\bB\\b" "bytes")
-    ("\\bNAPI\\b" "New API")
+    ("\\bNAPI\\b" "ann API")
     ("\\bAPI" "ay pea eye") ; no word boundary at end for plural
     ("\\bCFS\\b" "see eff ess")
     ("chmod" "change mod")
