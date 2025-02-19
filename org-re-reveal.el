@@ -165,6 +165,7 @@
       (:reveal-init-script "REVEAL_INIT_SCRIPT" nil org-re-reveal-init-script space)
       (:reveal-klipse-css-url "REVEAL_KLIPSE_CSS_URL" nil org-re-reveal-klipse-css t)
       (:reveal-klipse-extra-config "REVEAL_KLIPSE_EXTRA_CONFIG" nil org-re-reveal-klipse-extra-config newline)
+      (:reveal-klipse-js-init "REVEAL_KLIPSE_JS_INIT" nil org-re-reveal-klipse-js-init t)
       (:reveal-klipse-js-url "REVEAL_KLIPSE_JS_URL" nil org-re-reveal-klipse-js t)
       (:reveal-klipse-setup "REVEAL_KLIPSE_SETUP" nil org-re-reveal-klipse-setup t)
       (:reveal-margin "REVEAL_MARGIN" nil org-re-reveal-margin t)
@@ -1061,6 +1062,23 @@ The minified version may not work, see URL
   :group 'org-export-re-reveal
   :type 'string
   :package-version '(org-re-reveal . "1.1.11"))
+
+(defcustom org-re-reveal-klipse-js-init
+  "<script defer src=\"%s\"></script>
+<script>
+/* Recompute layout upon changes by klipse.  Code fragment from
+   asciidoctor-revealjs-klipse by Timothy Pratley under GPLv3:
+   https://github.com/timothypratley/asciidoctor-revealjs-klipse/blob/master/docs/docinfo-footer.html */
+Reveal.addEventListener( 'slidechanged', function( event ) {
+    window.dispatchEvent( new Event('resize') );
+} );
+</script>\n"
+  "Format string to load and configure \"script\" element(s) for klipse.
+This string must contain one placeholder \"%s\", for the \"src\" attribute
+of a \"script\", which is replaced with `org-re-reveal-klipse-js'."
+  :group 'org-export-re-reveal
+  :type 'string
+  :package-version '(org-re-reveal . "3.34.0"))
 
 (defcustom org-re-reveal-klipse-setup
   '(("clojure" "selector" "language-klipse")
@@ -2027,15 +2045,8 @@ otherwise, generate `<link>' label, with a non-nil STYLE-ID as
 (defun org-re-reveal--klipsify-script (info)
   "Return script element for klipse when indicated by INFO."
   (if (plist-get info :reveal-klipsify-src)
-      (format "<script src=\"%s\"></script>
-<script>
-/* Recompute layout upon changes by klipse.  Code fragment from
-   asciidoctor-revealjs-klipse by Timothy Pratley under GPLv3:
-   https://github.com/timothypratley/asciidoctor-revealjs-klipse/blob/master/docs/docinfo-footer.html */
-Reveal.addEventListener( 'slidechanged', function( event ) {
-    window.dispatchEvent( new Event('resize') );
-} );
-</script>\n" (plist-get info :reveal-klipse-js-url))
+      (format (plist-get info :reveal-klipse-js-init)
+              (plist-get info :reveal-klipse-js-url))
     ""))
 
 
