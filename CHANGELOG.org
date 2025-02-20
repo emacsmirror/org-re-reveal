@@ -12,6 +12,10 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+** [3.34.1] - 2025-02-20
+*** Fixed
+    - Avoid byte compiler warning
+
 ** [3.34.0] - 2025-02-19
 *** Added
     - Customizable variable ~org-re-reveal-klipse-js-init~ (with
