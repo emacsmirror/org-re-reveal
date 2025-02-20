@@ -3575,9 +3575,9 @@ Return output file name or nil."
                  (cons org-re-reveal-note-key-char "notes"))))
 
 ;; Make sure that TTS directory exists.
-(if (boundp org-export-before-parsing-functions)
+(if (boundp 'org-export-before-parsing-functions)
     (add-hook 'org-export-before-parsing-functions #'org-re-reveal-prepare-tts)
-  (with-suppressed-warnings ((obsolete org-export-before-parsing-hook))
+  (with-no-warnings
     (add-hook 'org-export-before-parsing-hook #'org-re-reveal-prepare-tts)))
 
 ;; Remove break elements for LaTeX export.
