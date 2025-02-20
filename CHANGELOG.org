@@ -12,6 +12,10 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+** [3.34.2] - 2025-02-20
+*** Fixed
+    - Fix compat check of 3.34.1
+
 ** [3.34.1] - 2025-02-20
 *** Fixed
     - Avoid byte compiler warning
