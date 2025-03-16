@@ -103,7 +103,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    Note that /org-re-reveal/ 3.0.0 supports backwards-incompatible
    changes introduced with /reveal.js/ 4.0.  By default,
    /org-re-reveal/ targets /reveal.js/ 3.x.  If you want support for
-   /reveal.js/ 4.x, see [[#revealjs-version][below how to configure the version]].
+   /reveal.js/ 4.x or later versions, see [[#revealjs-version][below how to configure the version]].
 
 ** Side note: Customization of variables
    - GNU Emacs can be customized in various ways, and /org-re-reveal/
@@ -487,10 +487,14 @@ Whether anyone wants to use those package in isolation, is up to them.
    :PROPERTIES:
    :CUSTOM_ID: revealjs-version
    :END:
-   Org-re-reveal supports reveal.js 3.x and 4.x, which are
-   incompatible with each other.  You can customize
+   Org-re-reveal supports reveal.js 3.x as well as later versions
+   (where version 4.0 introduced breaking changes).  You can customize
    ~org-re-reveal-revealjs-version~ (or use keyword
-   =#+REVEAL_VERSION=) to indicate your version.
+   =#+REVEAL_VERSION=) to indicate your version.  See that variable's
+   doc string for possible values.  In particular, note that the value
+   4 is also correct for later versions such as 5.x (as no further
+   breaking changes were introduced).
+
    With the default value of ~nil~, org-re-reveal tries to guess your
    version, which works when ~org-re-reveal-root~ (or keyword
    =#+REVEAL_ROOT=) points to a local directory: Based on the contents
