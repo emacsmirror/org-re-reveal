@@ -352,7 +352,7 @@ If nil, `org-re-reveal' tries to guess the version, which works if
 `org-re-reveal-root' is a local directory.
 You can specify the version per file with keyword REVEAL_VERSION."
   :group 'org-export-re-reveal
-  :type '(choice (const :tag "reveal.js 4.0 and later" "4")
+  :type '(choice (const :tag "reveal.js 4.x and 5.x" "4")
                  (const :tag "reveal.js 3.8 and 3.9" "3.8")
                  (const :tag "reveal.js before 3.8" "3")
                  (const :tag "Guess" nil))
