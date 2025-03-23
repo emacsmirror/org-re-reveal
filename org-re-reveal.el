@@ -1142,6 +1142,15 @@ The default uses a slash between hash sign and slide ID,
 which leads to broken links that are not understood outside reveal.js.
 See there: https://github.com/hakimel/reveal.js/issues/2276")
 
+(defcustom org-re-reveal-browse-to-id t
+  "If non-nil, browse to CUSTOM_ID.
+More precisely, use CUSTOM_ID of current section (if it exists) as fragment
+identifier in `org-re-reveal-export-to-html-and-browse'.   This should open
+the browser on the current slide after export."
+  :group 'org-export-re-reveal
+  :type 'boolean
+  :package-version '(org-re-reveal . "3.35.0"))
+
 (defcustom org-re-reveal-with-tts nil
   "If non-nil, specify voice and create text files for TTS generation.
 Please see the test case test-notes-for-tts.org for an example.
@@ -3492,16 +3501,26 @@ Optional BACKEND must be `re-reveal' or a backend derived from it."
           async subtreep visible-only body-only ext-plist))
     file))
 
+(defun org-re-reveal-browse (filename)
+  "Browse FILENAME.
+If current position has a CUSTOM_ID, browse to that location."
+  (let* ((custom-id (org-entry-get nil "CUSTOM_ID"))
+         (fragment
+          (when (and custom-id org-re-reveal-browse-to-id)
+            (concat "#" org-re-reveal--href-fragment-prefix custom-id)))
+         (url (browse-url-file-url (expand-file-name filename))))
+    (browse-url (concat url fragment))))
+
 (defun org-re-reveal-export-to-html-and-browse
     (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer to a reveal.js and browse HTML file.
 Optional ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY, EXT-PLIST are passed
-to `org-re-reveal-export-to-html'."
+to `org-re-reveal-export-to-html'.
+See also `org-re-reveal-browse-to-id'."
   (interactive)
-  (browse-url-of-file
-   (expand-file-name
-    (org-re-reveal-export-to-html
-     async subtreep visible-only body-only ext-plist))))
+  (org-re-reveal-browse
+   (org-re-reveal-export-to-html
+    async subtreep visible-only body-only ext-plist)))
 
 (defun org-re-reveal-export-current-subtree
     (&optional async subtreep visible-only body-only ext-plist)
