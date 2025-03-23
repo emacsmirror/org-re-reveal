@@ -3479,7 +3479,7 @@ If the file exists already, do nothing."
 (defun org-re-reveal-export-to-html
     (&optional async subtreep visible-only body-only ext-plist backend)
   "Export current buffer to a reveal.js HTML file.
-Optional ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY, EXT-PLIST are passed
+Passes optional ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY, EXT-PLIST
 to `org-export-to-file'.
 Optional BACKEND must be `re-reveal' or a backend derived from it."
   (interactive)
@@ -3514,7 +3514,7 @@ If current position has a CUSTOM_ID, browse to that location."
 (defun org-re-reveal-export-to-html-and-browse
     (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer to a reveal.js and browse HTML file.
-Optional ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY, EXT-PLIST are passed
+Passes optional ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY, EXT-PLIST
 to `org-re-reveal-export-to-html'.
 See also `org-re-reveal-browse-to-id'."
   (interactive)
@@ -3525,7 +3525,7 @@ See also `org-re-reveal-browse-to-id'."
 (defun org-re-reveal-export-current-subtree
     (&optional async subtreep visible-only body-only ext-plist)
   "Export current subtree to a Reveal.js HTML file.
-Optional ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY, EXT-PLIST are passed
+Passes optional ASYNC, SUBTREEP, VISIBLE-ONLY, BODY-ONLY, EXT-PLIST
 to `org-re-reveal-export-to-html'."
   (interactive)
   (org-narrow-to-subtree)
