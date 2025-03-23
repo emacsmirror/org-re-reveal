@@ -394,6 +394,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    (without options/keywords):
 
    ~org-re-reveal-body-attrs~,
+   ~org-re-reveal-browse-to-id~,
    ~org-re-reveal-client-multiplex-filter~,
    ~org-re-reveal-keys~,
    ~org-re-reveal-klipse-extra-css~,

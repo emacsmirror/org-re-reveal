@@ -12,6 +12,14 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+** [3.35.0] - 2025-03-22
+*** Added
+    - Customizable variable ~org-re-reveal-browse-to-id~
+      - With the default value ~t~, if section at point has a
+        ~CUSTOM_ID~, browse to its slide after export with
+        ~org-re-reveal-export-to-html-and-browse~.
+      - Set to ~nil~ if you do not like this.
+
 ** [3.34.2] - 2025-02-20
 *** Fixed
     - Fix compat check of 3.34.1
