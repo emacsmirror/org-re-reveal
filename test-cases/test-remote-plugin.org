@@ -8,9 +8,9 @@
 #+Title: Remote plugin example
 #+Author: Jens Lechtenbörger
 
-#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
+#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@4.6.0
 #+REVEAL_VERSION: 4
-#+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard https://cdn.jsdelivr.net/gh/rajgoel/reveal.js-plugins/chalkboard/plugin.js https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/style.css
+#+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/plugin.js https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/style.css
 #+REVEAL_HEAD_PREAMBLE: <style type="text/css">.reveal > .overlay { backdrop-filter: unset!important; }</style>
 #+REVEAL_PREAMBLE:
 
@@ -19,6 +19,7 @@
     [[https://github.com/rajgoel/reveal.js-plugins/tree/master/chalkboard][chalkboard plugin]]
     from remote locations.
 
-  - See [[https://gitlab.com/oer/org-re-reveal/-/issues/60][issue #60]].
+  - See [[https://gitlab.com/oer/org-re-reveal/-/issues/60][issue #60]]
+    and [[https://gitlab.com/oer/org-re-reveal/-/issues/116][issue #116]].
 
   - Press ~b~ or ~c~ as usual to work with the chalkboard.
