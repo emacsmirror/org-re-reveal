@@ -2,7 +2,7 @@
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
-;; SPDX-FileCopyrightText: 2020-2024 Jens Lechtenbörger
+;; SPDX-FileCopyrightText: 2020-2025 Jens Lechtenbörger
 
 ;; This file is not part of GNU Emacs.
 
@@ -93,7 +93,8 @@
               (,(rx "id=\"slide-org" (= 7 not-newline)) . "id=\"slide-org*******")
               (,(rx "id=\"outline-container-org" (= 7 not-newline)) . "id=\"outline-container-org*******")
               (,(rx "#/slide-org"    (= 7 not-newline)) . "#/slide-org*******")
-              ("<p class=\"date\">Created:.*</p>"       . "<p class=\"date\">Created:{{date}}</p>")))
+              ("<p class=\"date\">Created:.*</p>"       . "<p class=\"date\">Created:{{date}}</p>")
+              ("<!-- Generated on .*-->\n"       . "")))
       (write-region nil nil exportpath nil 0))
     (org-re-reveal-tests-get-file-contents
      (format "test-%s.html" name) folder)))
