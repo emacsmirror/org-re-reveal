@@ -12,6 +12,11 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+** [3.36.0] - 2025-06-08
+*** Added
+   - Honor ~org-export-timestamp-file~: If t, create comment in header
+     with timestamp that documents creation time
+
 ** [3.35.0] - 2025-03-22
 *** Added
     - Customizable variable ~org-re-reveal-browse-to-id~
