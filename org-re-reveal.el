@@ -3251,6 +3251,11 @@ INFO is a plist holding export options."
     (concat
      (format "<!DOCTYPE html>\n<html%s>\n<head>\n"
              (org-re-reveal--if-format " lang=\"%s\"" (plist-get info :language)))
+     (when (plist-get info :time-stamp-file)
+       (format-time-string
+	(concat "<!-- Generated on "
+		(plist-get info :html-metadata-timestamp-format)
+		" -->\n")))
      "<meta charset=\"utf-8\"/>\n"
      (org-re-reveal--if-format "<title>%s</title>\n"
                                (org-export-data (plist-get info :title) info))
