@@ -35,3 +35,10 @@
 
 [fn:3] Another footnote, final slide
 [fn:4] Final footnote, second on slide
+
+
+* Local Variables :ARCHIVE:
+
+# Local Variables:
+# org-footnote-section: nil
+# End:

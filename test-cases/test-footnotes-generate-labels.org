@@ -12,14 +12,16 @@
 #+REVEAL_HEAD_PREAMBLE: .footdef { text-align: left; }
 #+REVEAL_HEAD_PREAMBLE: .footnotes { padding-top: 2em; }
 #+REVEAL_HEAD_PREAMBLE: </style>
+#+options: reveal_footnotes_use_user_labels:nil
 
-#+Title: Adding Local Footnotes with CSL citations
+#+Title: Adding Local Footnotes with generated labels
 #+Author: Jens Lechtenbörger
 # Declare bibliography with style:
 #+bibliography: references.bib
 #+cite_export: csl "chicago-fullnote-bibliography.csl" "chicago-fullnote-bibliography.csl"
 
 * Just a slide
+In this test, we expect footnote labels to be generated slide-locally during export.
 - Nothing really special here[fn:1:Except for a footnote]
 
 ** A deeper nesting
@@ -29,4 +31,3 @@
 - First point[fn:3:A note on the first]
 - Second point[cite:@Lec19c]
 - Third point[fn:4:A note on the third]
-
