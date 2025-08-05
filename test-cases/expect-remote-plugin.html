@@ -12,7 +12,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.0/dist/theme/black.css" id="theme"/>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/style.css"/>
-<style type="text/css">.reveal > .overlay { backdrop-filter: unset!important; }</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/customcontrols/style.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins/menu/font-awesome/css/fontawesome.css">
 </head>
 <body>
 <div class="reveal">
@@ -27,10 +31,20 @@
 <ul>
 <li>This presentation embeds reveal.js and the
 <a href="https://github.com/rajgoel/reveal.js-plugins/tree/master/chalkboard">chalkboard plugin</a>
-from remote locations.</li>
+(with custom controls and font awesome buttons) from remote locations.</li>
 
-<li>See <a href="https://gitlab.com/oer/org-re-reveal/-/issues/60">issue #60</a>
-and <a href="https://gitlab.com/oer/org-re-reveal/-/issues/116">issue #116</a>.</li>
+<li>See these related issues:
+<ul>
+<li><a href="https://gitlab.com/oer/org-re-reveal/-/issues/60">issue #60</a>
+(non-relative paths with <code>REVEAL_ADD_PLUGIN</code>)</li>
+<li><a href="https://gitlab.com/oer/org-re-reveal/-/issues/100">issue #100</a>
+(slides blurry)</li>
+<li><a href="https://gitlab.com/oer/org-re-reveal/-/issues/116">issue #116</a>
+(all files from CDN)</li>
+<li><a href="https://gitlab.com/oer/org-re-reveal/-/issues/120">issue #120</a>
+(icons with custom controls)</li>
+
+</ul></li>
 
 <li>Press <code>b</code> or <code>c</code> as usual to work with the chalkboard.</li>
 
@@ -45,6 +59,7 @@ and <a href="https://gitlab.com/oer/org-re-reveal/-/issues/116">issue #116</a>.<
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.0/plugin/search/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.0/plugin/zoom/zoom.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/plugin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/customcontrols/plugin.js"></script>
 <script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
@@ -69,13 +84,13 @@ transition: 'convex',
 transitionSpeed: 'default',
 
 // Plugins with reveal.js 4.x
-plugins: [ RevealMarkdown, RevealNotes, RevealSearch, RevealZoom, RevealChalkboard ],
+plugins: [ RevealMarkdown, RevealNotes, RevealSearch, RevealZoom, RevealChalkboard, RevealCustomControls ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [
 ]
 
-});
+,customcontrols: { controls: [{ icon: '<i class="fa fa-pen-square"></i>', title: 'Toggle chalkboard (B)', action: 'RevealChalkboard.toggleChalkboard();'}, { icon: '<i class="fa fa-pen"></i>', title: 'Toggle notes canvas (C)', action: 'RevealChalkboard.toggleNotesCanvas();'}]}});
 </script>
 </body>
 </html>
