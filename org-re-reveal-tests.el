@@ -29,7 +29,7 @@
 
 ;;; Code:
 
-;;(load "cort-test")
+(load "cort-test")
 (require 'org-re-reveal)
 
 (defun org-re-reveal-tests-f-parent (path)
@@ -142,6 +142,7 @@
         "footer-global"
         "footnotes"
         "footnotes-local"
+        "footnotes-cite"
         "highlightjs"
         "internal-links"
         "klipsify"

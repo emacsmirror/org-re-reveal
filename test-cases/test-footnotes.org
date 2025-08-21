@@ -10,7 +10,6 @@
 #+REVEAL_HEAD_PREAMBLE: .footdef { text-align: left; }
 #+REVEAL_HEAD_PREAMBLE: </style>
 
-
 #+Title: Adding Footnotes
 #+Author: Jens Lechtenbörger
 
@@ -21,6 +20,14 @@
 - Again some footnote[fn:2]
 
 * Footnotes
+# The slide for this footnote section is created with
+# function org-html-footnote-section, which in turn relies on
+# customizable variable org-html-footnotes-section.
+#
+# The heading must be titled "Footnotes" as above, but the exported
+# text is defined by org-html-footnotes-section, which embeds
+# a translation of "Footnotes" by default.
+
 [fn:1] Except for a footnote
 [fn:2] Footnote on a deeper level of nesting
 [fn:3] Footnote on a subsequent slide
@@ -30,10 +37,3 @@
 
 ** Subheading
 - Also with text[fn:3]
-
-
-* Local Variables :noexport:
-
-# Local Variables:
-# org-footnote-section: "Footnotes"
-# End:
