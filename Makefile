@@ -2,7 +2,7 @@
 
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
-# SPDX-FileCopyrightText: 2019-2024 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2019-2025 Jens Lechtenbörger
 
 # This file is not part of GNU Emacs.
 
@@ -52,7 +52,7 @@ ELS          := org-re-reveal.el ox-re-reveal.el
 
 CORTELS      := $(TESTFILE) cort-test.el
 
-REVEALTEST   := backgrounds backgrounds-revealjs4 blockquote embed-resources extra-scripts footer footer-global footnotes footnotes-local highlightjs internal-links klipsify klipsify-python math merge-classes mobile-app multiplex noslide notes-for-tts options pdf-notes pdf-notes-show plugins plugin-css postscript remote-plugin reveal-toc revealjs4 show-notes src-blocks-hl src-blocks-no-hl slide-container slide-grid-wrapper slide-numbers slide-numbers-toc slide-numbers-reveal-toc split tdm tdm-policy timing title-slide title-slide-notes title-slide-notes-2 toc-de toc-default toc-user tts-split-fragment viewport
+REVEALTEST   := backgrounds backgrounds-revealjs4 blockquote embed-resources extra-scripts footer footer-global footnotes footnotes-local highlightjs internal-links klipsify klipsify-python math merge-classes mobile-app multiplex noslide notes-for-tts options pdf-notes pdf-notes-show plugins plugin-css postscript remote-plugin reveal-toc revealjs4 show-notes src-blocks-hl src-blocks-no-hl slide-container slide-grid-wrapper slide-numbers slide-numbers-toc slide-numbers-reveal-toc split tdm tdm-policy timing title-slide title-slide-macro title-slide-notes title-slide-notes-2 toc-de toc-default toc-user tts-split-fragment viewport
 
 ##################################################
 

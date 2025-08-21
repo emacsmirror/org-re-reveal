@@ -169,6 +169,7 @@
         "tdm-policy"
         "timing"
         "title-slide"
+        "title-slide-macro"
         "title-slide-notes"
         "title-slide-notes-2"
         "toc-de"

@@ -12,6 +12,11 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+*** Changed
+    - If the title slide (specified with ~org-re-reveal-title-slide~
+      or ~REVEAL_TITLE_SLIDE~) is a string, perform macro replacement.
+      Addresses issue #119.
+
 ** [3.36.0] - 2025-06-08
 *** Added
    - Honor ~org-export-timestamp-file~: If t, create comment in header

@@ -3240,6 +3240,15 @@ org-export options)."
   "Return notes for title slide from INFO."
   (plist-get info :title-notes))
 
+(defun org-re-reveal--maybe-replace-macros (templates string)
+  "Return STRING after macro replacement of TEMPLATES."
+  (with-temp-buffer
+    (insert string)
+    (let ((org-inhibit-startup t))
+      (org-mode)
+      (org-macro-replace-all templates)
+      (buffer-string))))
+
 (defun org-re-reveal-template (contents info)
   "Return complete document string after HTML conversion.
 CONTENTS is the transcoded contents string.
@@ -3308,7 +3317,10 @@ INFO is a plist holding export options."
                            ((stringp title-slide)
                             (let* ((file-contents
                                     (org-re-reveal--read-file-as-string title-slide))
-                                   (title-string (or file-contents title-slide)))
+                                   (title-string
+                                    (or file-contents
+                                        (org-re-reveal--maybe-replace-macros
+                                         org-macro-templates title-slide))))
                               (format-spec title-string spec)))
                            ((eq title-slide 'auto)
                             (org-re-reveal--auto-title-slide-template info spec)))
