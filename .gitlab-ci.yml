@@ -1,9 +1,8 @@
 # SPDX-FileCopyrightText: 2017-2021, 2023, 2025 Jens Lechtenbörger
 # SPDX-License-Identifier: CC0-1.0
 
-image: registry.gitlab.com/oer/emacs-reveal/emacs-reveal:8.29.0
-
 test:
+  image: registry.gitlab.com/oer/emacs-reveal/emacs-reveal:8.29.0
   script:
     - make dcheck
   only:
@@ -17,6 +16,7 @@ test:
       - ".gitlab-ci.yml"
 
 pages:
+  image: registry.gitlab.com/oer/emacs-reveal/emacs-reveal:9.52.0
   stage: deploy
   script:
     - emacs --batch -L /root/.emacs.d/elpa/emacs-reveal/org-mode/lisp --load org-re-reveal.el --load test-cases/publish.el
