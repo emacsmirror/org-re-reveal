@@ -1,6 +1,7 @@
 # Local IspellDict: en
 # SPDX-License-Identifier: GPL-3.0-or-later
-# SPDX-FileCopyrightText: 2024 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2024,2025 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2025 Anders Johansson
 
 #+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
 #+REVEAL_THEME: black
@@ -13,8 +14,9 @@
 #+REVEAL_HEAD_PREAMBLE: .footnotes { padding-top: 2em; }
 #+REVEAL_HEAD_PREAMBLE: </style>
 
-#+Title: Adding Local Footnotes with CSL citations
+#+Title: Adding Local Footnotes with Generated Labels
 #+Author: Jens Lechtenbörger
+
 # Declare bibliography with style:
 #+bibliography: references.bib
 #+cite_export: csl "chicago-fullnote-bibliography.csl" "chicago-fullnote-bibliography.csl"
@@ -29,4 +31,3 @@
 - First point[fn:3:A note on the first]
 - Second point[cite:@Lec19c]
 - Third point[fn:4:A note on the third]
-

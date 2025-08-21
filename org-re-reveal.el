@@ -5,6 +5,7 @@
 ;;                         https://github.com/yjwen/org-reveal/commits/master
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
+;; SPDX-FileCopyrightText: 2025 Anders Johansson
 ;; SPDX-FileCopyrightText: 2017-2025 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
