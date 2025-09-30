@@ -882,7 +882,7 @@ styles using oc-csl. In that case, set this variable to nil. In this
 case, footnote numbering will always restart on each slide when
 displaying footnotes on each slide."
   :group 'org-export-re-reveal
-  :type 'string
+  :type 'boolean
   :package-version '(org-re-reveal . "3.37.0"))
 
 (defcustom org-re-reveal-title-slide-notes nil
