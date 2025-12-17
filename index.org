@@ -1,7 +1,7 @@
 # Local IspellDict: en
 #+STARTUP: showeverything
 #+SPDX-License-Identifier: GPL-3.0-or-later
-#+SPDX-FileCopyrightText: 2019-2021 Jens Lechtenbörger
+#+SPDX-FileCopyrightText: 2019-2021,2025 Jens Lechtenbörger
 
 #+TITLE: Sample presentations generated with org-re-reveal
 #+AUTHOR: Jens Lechtenbörger
@@ -26,7 +26,8 @@ notably, “n” and “p” move to next and previous slides.
 
 * [[file:Readme.org][Readme of org-re-reveal]]
 
-* Test cases
+* Selected test cases
+  - [[file:test-cases/test-backgrounds.org][Use different backgrounds]]
   - [[file:test-cases/test-embed-resources.org][Embedding of local resources]]
   - [[file:test-cases/test-footer.org][Different footers (CSS not included)]]
   - [[file:test-cases/test-footer-global.org][Global footers with exceptions (CSS not included)]]
@@ -40,6 +41,7 @@ notably, “n” and “p” move to next and previous slides.
   - [[file:test-cases/test-options.org][Use of extra options]]
   - [[file:test-cases/test-remote-plugin.org][Embed chalkboard plugin remotely]]
   - [[file:test-cases/test-reveal-toc.org][Table of contents at chosen location]]
+  - [[file:test-cases/test-show-notes.org][Use option to show notes]]
   - [[file:test-cases/test-src-blocks-hl.org][Source blocks with highlight.js]]
   - [[file:test-cases/test-src-blocks-no-hl.org][Source blocks without highlight.js]]
   - [[file:test-cases/test-slide-numbers.org][Headline slide numbers for stable slide IDs]]
