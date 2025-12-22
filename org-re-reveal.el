@@ -1180,13 +1180,14 @@ slideshow plugin or be names of your choice (to be used with
 \":reveal_extra_attr: data-audio-src=...\")."
   :group 'org-export-re-reveal
   :type '(choice (const :tag "No TTS" nil)
+                 (const :tag "Kokoro" Kokoro)
                  (const :tag "Speechbrain (US female)" speechbrain)
                  (const :tag "CLB (SpeechT5, US female)" CLB)
                  (const :tag "SLT (SpeechT5, US female)" SLT)
                  (const :tag "BDL (SpeechT5, US male)" BDL)
                  (const :tag "RMS (SpeechT5, US male)" RMS)
                  (const :tag "KSP (SpeechT5, Indian female)" KSP))
-  :package-version '(org-re-reveal . "3.19.0"))
+  :package-version '(org-re-reveal . "3.37.0"))
 
 (defvar org-re-reveal-pub-dir nil
   "Record publishing directory.")
@@ -1248,6 +1249,139 @@ presentations."
   :type 'number
   :package-version '(org-re-reveal . "3.21.0"))
 
+(defcustom org-re-reveal-tts-acronym-patterns
+  '(("\\bSSML\\b" "ess ess em el")
+    ("\\bTTS\\b" "tea tea ess")
+    ("\\bALU\\b" "ay al you")
+    ("\\bNAPI\\b" "ann API")
+    ("\\bAPI" "ay pea eye") ; no word boundary at end for plural
+    ("\\bCFS\\b" "see eff ess")
+    ("\\bCPU\\b" "see pea you")
+    ("\\bCPUs\\b" "see pea use")
+    ("\\bGPU\\b" "djee pea you")
+    ("\\bGPUs\\b" "djee pea use")
+    ("\\bCRI\\b" "see are eye")
+    ("\\bCS\\b" "see ess")
+    ("\\bDNF\\b" "dee n f")
+    ("\\bDNS\\b" "dee an ess")
+    ("\\bDSL\\b" "dee ess el")
+    ("\\bHDL\\b" "age dee el")
+    ("\\bHDD" "age dee dee")
+    ("\\bHDFS\\b" "age dee eff ess")
+    ("\\bHTML\\b" "age tea em el")
+    ("\\bHTTP\\b" "age tea tea pea")
+    ("\\bID\\b" "eye dee")
+    ("\\bIDs\\b" "eye dees")
+    ("\\bIoT\\b" "eye oh tea")
+    ("I/O" "eye oh")
+    ("\\bIP\\b" "eye pea")
+    ("\\bIT\\b" "eye tea")
+    ("\\bIDTR\\b" "eye dee tea are")
+    ("\\bIDT\\b" "eye dee tea")
+    ("\\bLRU\\b" "el are you")
+    ("\\bMMU\\b" "em em you")
+    ("\\bPC" "pea sea")
+    ("\\bps\\b" "pea ess")
+    ("\\bSSD" "ess ess dee")
+    ("\\bssh" "ess ess age")
+    ("\\bTCB" "tea sea bee")
+    ("\\bTCP" "tea sea pea")
+    ("\\bUDP" "you dee pea")
+    ("\\bTLB" "tea el bee")
+    ("\\bURL" "you are al")
+    ("\\bUS\\b" "you ess")
+    ("\\bVM\\b" "vee emm")
+    ("\\bVMs\\b" "vee emms")
+    ("\\bVMM" "vee emm emm")
+    ("\\bWi-?Fi" "why fy")
+    ("YAML" "jamell")
+    ("(a)" "ay")
+    ("(b)" "bee")
+    ("(c)" "see")
+    ("~r~" "are")
+    ("~w~" "doubleyou")
+    ("~x~" "ex")
+    ;; Domain names
+    ("[.]de\\b" " dot dee ee")
+    )
+  "List acronyms that should be expanded.  Not needed for Kokoro."
+  :group 'org-export-re-reveal
+  :type '(repeat (list string string))
+  :package-version '(org-re-reveal . "3.37.0"))
+
+(defcustom org-re-reveal-tts-hyphen-patterns
+  '(
+    ("A-register" "ay register")
+    ("A-instruction" "ay instruction")
+    ("C-instruction" "sea instruction")
+    ("D-register" "dee register")
+    ("built-in" "builtin")
+    ("break-through" "breakthrough")
+    ("co-founder" "cofounder")
+    ("counter-" "counter")
+    ("\\b[dD]e-" "de")
+    ("fan-in" "fan in")
+    ("full-fledged" "fullfledged")
+    ("large-scale" "largescale")
+    ("re-insert" "reinsert")
+    ("up-front" "upfront")
+    ("eta-[cC]ognitive" "etacognitive")
+    ("\\([fF]\\)ixed-" "\\1ixed")
+    ("non-" "non")
+    ("self-" "self")
+    ("inter-" "inter")
+    ("real-" "real")
+    ("[rR]ead-[oO]nly" "reed only")
+    ("[rR]ipple-[cC]arry" "ripplecarry")
+    ("trade-off" "tradeoff")
+    ("\\ba-bit\\b" "ay bit")
+    ("-mapped" "mapped")
+    ("warm-up" "warmup")
+    ("-wise" "wise")
+    ("\\([a-zA-Z]\\)-\\([a-zA-Z]\\)" "\\1 \\2")
+    )
+  "List hyphens for special treatment.  Not needed for Kokoro.
+The final pattern replaces a hyphen between characters with a space.
+When this does not sound well, a special rule is necessary."
+  :group 'org-export-re-reveal
+  :type '(repeat (list string string))
+  :package-version '(org-re-reveal . "3.37.0"))
+
+(defcustom org-re-reveal-tts-special-patterns
+  '(
+    ("gigabit" "giguhbit")
+    ("gigabyte" "giguhbyte")
+    ("gigahertz" "giguhhurts")
+    ("Mac OS" "Mackowess")
+    ("Python" "piethon")
+    ("put\\(s?\\) a\\b" "put\\1 ay") ; input/output(s)
+    )
+  "List special replacements.  Not needed for Kokoro."
+  :group 'org-export-re-reveal
+  :type '(repeat (list string string))
+  :package-version '(org-re-reveal . "3.37.0"))
+
+(defcustom org-re-reveal-tts-kokoro-patterns
+  '(("GET" "get")
+    ("POST" "post")
+    ("I/O" "IO")
+    ("context switch" "context-switch")
+    ("page fault" "pagefault")
+    ("prepaging" "pre-paging")
+    ("put\\(s?\\) a\\b" "put\\1 A")
+    ("\\ba-bit\\b" "A-bit")
+    ("~r~" "R")
+    ("~w~" "W")
+    ("~x~" "X")
+    ("put\\(s?\\) a\\b" "put\\1 A") ; input/output(s)
+    ;; Domain names
+    ("[.]de\\b" " dot DE")
+    )
+  "List special replacements.  Meant for Kokoro."
+  :group 'org-export-re-reveal
+  :type '(repeat (list string string))
+  :package-version '(org-re-reveal . "3.37.0"))
+
 (defcustom org-re-reveal-tts-normalize-table
   '(("[ \t][ \t]+" " ") ; Replace horizontal whitespace.
     ("[ \t]+\n" "\n")   ; Remove trailing whitespace.
@@ -1259,11 +1393,12 @@ presentations."
     ;; Similarly for (non-) space following break elements:
     ("\\(<break time=[^>]+>\\)[ ]+" "\\1\n")
     ("\\(<break time=[^>]+>\\)\\([^\n]\\)" "\\1\n\\2")
-    ;; Specific colons
-    ("\\babout:\\([a-z]+\\)\\b" "about \\1")
-    ;; Replace colon with dot
-    (":" ".")
+    ;; Specific colons:
+    ("\\babout:\\([a-z]+\\)\\b" "about \\1") ; browsers' about URL
+    ;; Replace ordinary colon with dot
+    (":" ". ") ; (Space for Emacs sentence convention)
     ;; Replace some functions and math symbols.
+    ;; In particular, replace LaTeX math delimiters (dollar, parentheses).
     ("\\b$n$\\b" "ann")
     ("\\\\(n\\\\)" "ann")
     ("\\b$k$\\b" "kay")
@@ -1276,7 +1411,7 @@ presentations."
     ("\\b$2^{n-1}$\\b" "two to the ann minus one")
     ("\\b$?2^{\\([0-9]+\\)}$?" "two to the \\1")
     (" = " " equals ")
-    ("[ \n]-\\([1-9a-z]\\)\\b" " minus \\1")
+    ("[ \n]-\\([1-9a-z]\\)\\b" " minus \\1") ; negative number/variable
     ("\\b\\([0-9]+\\)%" "\\1 percent")
     ;; Replace plural, but not as break time.
     ("\\([^\"]\\)1s\\b" "\\1ones")
@@ -1353,128 +1488,46 @@ presentations."
     ;; Replace selected abbreviations.
     ("Nand2Tetris" "Nand to Tetris")
     ("reveal.js" "reveal jay ess")
-    ("\\bSSML\\b" "ess ess em el")
-    ("\\bTTS\\b" "tea tea ess")
-    ("\\bALU\\b" "ay al you")
-    ("\\bB\\b" "bytes")
-    ("\\bNAPI\\b" "ann API")
-    ("\\bAPI" "ay pea eye") ; no word boundary at end for plural
-    ("\\bCFS\\b" "see eff ess")
     ("chmod" "change mod")
-    ("\\bCPU\\b" "see pea you")
-    ("\\bCPUs\\b" "see pea use")
-    ("\\bGPU\\b" "djee pea you")
-    ("\\bGPUs\\b" "djee pea use")
-    ("\\bCRI\\b" "see are eye")
-    ("\\bCS\\b" "see ess")
+    ("\\bB\\b" "bytes")
     ("\\bCSs\\b" "critical sections")
-    ("\\bDNF\\b" "dee n f")
-    ("\\bDNS\\b" "dee an ess")
-    ("\\bDMux\\b" "deemux")
-    ("\\bDSL\\b" "dee ess el")
     ("\\bDS" "distributed system")
+    ("\\bDMux\\b" "deemux")
     ("\\bFIFO\\b" "first in, first out,")
-    ("\\bHDL\\b" "age dee el")
-    ("\\bHDD" "age dee dee")
-    ("\\bHDFS\\b" "age dee eff ess")
-    ("\\bHTML\\b" "age tea em el")
-    ("\\bHTTP\\b" "age tea tea pea")
-    ("\\bID\\b" "eye dee")
-    ("\\bIDs\\b" "eye dees")
-    ("\\bIoT\\b" "eye oh tea")
-    ("\\bIPv4\\b" "eye pea version four")
-    ("\\bIPv6\\b" "eye pea version six")
+    ("\\bIPv4\\b" "IP version four")
+    ("\\bIPv6\\b" "IP version six")
     ("\\b\\([A-Z]\\)aaS\\b" "\\1——as a service")
     ("\\bI——" "infrastructure ")
     ("\\bP——" "platform ")
     ("\\bS——" "software ")
     ("\\bX——" "anything ")
-    ("\\bIP\\b" "eye pea")
-    ("\\bIT\\b" "eye tea")
-    ("\\bIDTR\\b" "eye dee tea are")
-    ("\\bIDT\\b" "eye dee tea")
     ("\\bKB\\b" "kilobytes")
     ("\\bKiB\\b" "keebeebytes")
-    ("\\bLRU\\b" "el are you")
     ("\\bMB\\b" "megabytes")
     ("\\bMiB\\b" "mebeebytes")
     ("\\bGB\\b" "gigabytes")
     ("\\bGiB\\b" "gibeebytes")
-    ("K8s" "kates")
+    ("[kK]8s" "kates")
     ("\\bL4\\b" "el four")
     ("\\bls\\b" "el ess")
-    ("\\bMMU\\b" "em em you")
     ("\\bMX\\b" "mutual exclusion")
-    ("Mac OS" "Mackowess")
     ("\\bOS" "operating system")
     ("passwd" "password")
-    ("\\bPC" "pea sea")
-    ("\\bps\\b" "pea ess")
     ("\\bQUIC\\b" "quick")
     ("\\bSQL" "sequel")
-    ("\\bSSD" "ess ess dee")
-    ("\\bssh" "ess ess age")
-    ("\\bTCB" "tea sea bee")
-    ("\\bTCP" "tea sea pea")
-    ("\\bUDP" "you dee pea")
     ("stderr" "standard error")
     ("stdin" "standard input")
     ("stdout" "standard output")
     ("SELinux" "security enhanced linux")
-    ("\\bTLB" "tea el bee")
-    ("\\bURL" "you are al")
-    ("\\bUS\\b" "you ess")
-    ("\\bVM\\b" "vee emm")
-    ("\\bVMs\\b" "vee emms")
-    ("\\bVMM" "vee emm emm")
-    ("\\bWi-?Fi" "why fy")
     ("RAM16K" "RAM sixteen kay")
     ("e[.]g[.]" "for example")
     ("E[.]g[.]" "For example")
     ("etc[.]" "etcetera.")
     ("i[.]e[.]" "that is")
     ("I[.]e[.]" "That is")
-    ("I/O" "eye oh")
     ("input/output" "input output")
     ("producer/consumer" "producer consumer")
-    ;; Hyphenated words do not work well.
-    ;; Further below, a rule replaces a hyphen between characters with a space.
-    ;; Thus, list hypenated words here that require special replacements or that
-    ;; sound well without space.
-    ("A-register" "ay register")
-    ("A-instruction" "ay instruction")
-    ("C-instruction" "sea instruction")
-    ("D-register" "dee register")
-    ("built-in" "builtin")
-    ("break-through" "breakthrough")
-    ("co-founder" "cofounder")
-    ("counter-" "counter")
-    ("\\b[dD]e-" "de")
-    ("fan-in" "fan in")
-    ("full-fledged" "fullfledged")
-    ("large-scale" "largescale")
-    ("re-insert" "reinsert")
-    ("up-front" "upfront")
-    ("eta-[cC]ognitive" "etacognitive")
-    ("\\([fF]\\)ixed-" "\\1ixed")
-    ("non-" "non")
-    ("self-" "self")
-    ("inter-" "inter")
-    ("real-" "real")
-    ("[rR]ead-[oO]nly" "reed only")
-    ("[rR]ipple-[cC]arry" "ripplecarry")
-    ("trade-off" "tradeoff")
-    ("\\ba-bit\\b" "ay bit")
-    ("-mapped" "mapped")
-    ("warm-up" "warmup")
-    ("-wise" "wise")
-    ;; Pronounciation helpers
-    ("(a)" "ay")
-    ("(b)" "bee")
-    ("(c)" "see")
-    ("~r~" "are")
-    ("~w~" "doubleyou")
-    ("~x~" "ex")
+    ;; Pronunciation helpers
     ("\\bx-" "ex ")
     ("\\by-" "why ")
     ("\\bM\\b" "em")
@@ -1488,35 +1541,27 @@ presentations."
     ("\\bmaybe read" "maybe reed")
     ("\\bbe read" "be rad")
     ("\\bindices" "indicees")
-    ("put\\(s?\\) a\\b" "put\\1 ay") ; input/output(s)
     ("GitLab" "git lab")
-    ("gigabit" "giguhbit")
-    ("gigabyte" "giguhbyte")
-    ("gigahertz" "giguhhurts")
     ("\\bknote" "kaynote")
     ("kubectl" "cube cuttel")
     ("kubelet" "cube lett")
     ("nanosecond" "nahno second")
     ("nginx" "engine ex")
     ("[Pp]lugin" "pluggin")
-    ("Python" "piethon")
-    ("YAML" "jamell")
     ;; Code
     ("System[.]\\([a-z]+\\)" "system dot \\1")
-    ;; Domain names
-    ("[.]de\\b" " dot dee ee")
     ;; Replace some symbols
+    ("@" " At ")
     ("GNU/" "Gnu ")
     ("/\\([a-zA-Z]\\)" " slash \\1") ;
     ("“\\|”\\|„" "\"")
     (" [+] " " plus ")
-    ("\\([a-zA-Z]\\)-\\([a-zA-Z]\\)" "\\1 \\2") ;; replace hyphen with space
     (" - " " minus ")
     (" [*] " " times ")
     ;; Remove parentheses at start and end of lines
     ("^(\\|)$" ""))
     "Normalization table understood by `iso-translate-conventions'.
-Normalization supports correct pronounciation of words, numbers,
+Normalization supports correct pronunciation of words, numbers,
 symbols, or abbreviations by TTS models.
 For that purpose, this table contains a list of 2-element lists.
 Both elements are regular expressions, where occurrences of the first
@@ -1531,24 +1576,38 @@ Selected replacements:
 - Replace some math symbols.
 - Replace digits, some numbers, some years.
 - Replace some abbreviations.
-- Replace some hyphenations.  By default, a rule replaces a hyphen between
-  characters with a space.  When this does not sound well, a special rule
-  is necessary.
-- Selected pronounciation helpers for speaker CLB."
+- Selected pronunciation helpers that are usable for CLB and Kokoro.
+
+Note that this table contains patterns that should be usable across
+different TTS models.  For Kokoro, patterns of
+`org-re-reveal-tts-kokoro-patterns' are added.  For other models,
+patterns of `org-re-reveal-tts-acronym-patterns',
+`org-re-reveal-tts-hyphen-patterns', and
+`org-re-reveal-tts-special-patterns' are added."
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
-  :package-version '(org-re-reveal . "3.33.0"))
+  :package-version '(org-re-reveal . "3.37.0"))
+
+(defun org-re-reveal--tts-normalize-table (voice)
+  "Construct normalization table for current VOICE."
+  (if (and voice (string= voice "Kokoro"))
+      (append org-re-reveal-tts-normalize-table
+              org-re-reveal-tts-kokoro-patterns)
+    (append org-re-reveal-tts-normalize-table
+            org-re-reveal-tts-acronym-patterns
+            org-re-reveal-tts-hyphen-patterns
+            org-re-reveal-tts-special-patterns)))
 
 (defcustom org-re-reveal-tts-warn-regexp "\\([-0-9]\\|[A-Z][A-Z]\\)"
   "Regular expression matching text that is unsuitable for TTS.
+This variable is ignored when using Kokoro.
 Such text leads to a warning and will likely result in audio where parts
 are missing or pronounced incorrectly.  E.g., the currently used models
 are unable to pronounce numbers and have problems with most abbreviations.
-The check is performed after normalization with
-`org-re-reveal-tts-normalize-table'."
+The check is performed after TTS normalization."
   :group 'org-export-re-reveal
   :type 'regexp
-  :package-version '(org-re-reveal . "3.27.0"))
+  :package-version '(org-re-reveal . "3.37.0"))
 
 (defcustom org-re-reveal-tts-no-warn-regexp "\\(<break time\\|bottom-up\\|[Ss]o-called\\|GET\\|MAC\\|OPT\\|POSIX\\|RAM\\|ROM\\|SIEVE\\|TODO\\|ZIP\\)"
   "Regular expression as exception for `org-re-reveal-tts-warn-regexp'.
@@ -1558,7 +1617,6 @@ there should be a warning according to `org-re-reveal-tts-warn-regexp'."
   :type 'regexp
   :package-version '(org-re-reveal . "3.29.0"))
 
-
 (defun org-re-reveal--if-format (fmt val)
   "Apply `format' to FMT and VAL if VAL is a number or non-empty string.
 Otherwise, return empty string."
@@ -1567,12 +1625,12 @@ Otherwise, return empty string."
       (format fmt val)
     ""))
 
-(defun org-re-reveal--sentences-in-lines (text)
+(defun org-re-reveal--sentences-in-lines (text &optional voice)
   "Return string for TEXT, where each sentence starts on a new line.
 Replace each newline (which, assuming wrapped texts, may or may not end
 sentences or paragraphs) with two space characters (which should not hurt).
 Then, insert a newline after each sentence (determined by `forward-sentence').
-Also perform replacements based on `org-re-reveal-tts-normalize-table'."
+Also perform TTS normalization for VOICE, CLB by default."
   (with-temp-buffer
     (insert text)
     (goto-char (point-min))
@@ -1589,15 +1647,16 @@ Also perform replacements based on `org-re-reveal-tts-normalize-table'."
           (replace-match ""))
         (setq prev (point)
               next (ignore-errors (forward-sentence)))))
-    (iso-translate-conventions (point-min) (point-max)
-                               org-re-reveal-tts-normalize-table)
+    (iso-translate-conventions
+     (point-min) (point-max)
+     (org-re-reveal--tts-normalize-table voice))
     (buffer-string)))
 
-(defun org-re-reveal--notes-to-tts-text (block)
-  "Return notes BLOCK as (mostly) ASCII text:
+(defun org-re-reveal--notes-to-tts-text (block &optional voice)
+  "Return notes BLOCK as (mostly) ASCII text, normalized for VOICE:
 - Remove bold, code, italics, underline, verbatim.
 - Replace hyperlinks with their texts.
-- Create one sentence per line."
+- Create one sentence per line, normalized for TTS."
   (cl-letf (((symbol-function 'org-ascii-bold)
              (lambda (_ contents _) (format "%s" contents)))
             ((symbol-function 'org-ascii-italic)
@@ -1628,7 +1687,7 @@ Also perform replacements based on `org-re-reveal-tts-normalize-table'."
                  text)
          :warning))
       (if (< 0 (length (string-trim text)))
-          (org-re-reveal--sentences-in-lines text)
+          (org-re-reveal--sentences-in-lines text voice)
         (display-warning
          'org-export-re-reveal
          "Found empty notes.  Please check.")
@@ -1736,12 +1795,13 @@ Add a line to the index file, and create a text file for the notes.
 Function `org-re-reveal--tts-audio-name' determines the name of the text
 file unless optional AUDIO-NAME is present."
   (let* ((gap (plist-get info :reveal-tts-sentence-gap))
-         (text (org-re-reveal--notes-to-tts-text block))
+         (text (org-re-reveal--notes-to-tts-text block voice))
          (hash (md5 text))
          (tts-dir (org-re-reveal--tts-dir info))
          (audio-name
           (or audio-name (org-re-reveal--tts-audio-name block info))))
-    (org-re-reveal--warn-if-tts-issue text)
+    (unless (string= "Kokoro" voice)
+      (org-re-reveal--warn-if-tts-issue text))
     (org-re-reveal--add-to-tts-index voice gap audio-name hash info)
     (org-re-reveal--create-tts-text hash text tts-dir)))
 
