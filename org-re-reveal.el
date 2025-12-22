@@ -1376,21 +1376,21 @@ When this does not sound well, a special rule is necessary."
   '(("GET" "get")
     ("POST" "post")
     ("I/O" "IO")
-    ("context switch" "context-switch")
-    ("page fault" "pagefault")
+    ("context[ \n\t]+switch" "context-switch")
+    ("page[ \n\t]+fault" "pagefault")
     ("prepaging" "pre-paging")
     ("put\\(s?\\) a\\b" "put\\1 A")
     ("\\ba-bit\\b" "A-bit")
     ("~r~" "R")
     ("~w~" "W")
     ("~x~" "X")
-    ("put\\(s?\\) a\\b" "put\\1 A") ; input/output(s)
+    ("put\\(s?\\)[ \n\t]+a\\b" "put\\1 A") ; input/output(s)
     ("[.]de\\b" " dot DE") ; Domain names
     )
   "List special replacements.  Meant for Kokoro."
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
-  :package-version '(org-re-reveal . "3.37.0"))
+  :package-version '(org-re-reveal . "3.37.3"))
 
 (defcustom org-re-reveal-tts-normalize-table
   '(("[ \t][ \t]+" " ") ; Replace horizontal whitespace.
