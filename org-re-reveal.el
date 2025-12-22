@@ -1265,6 +1265,7 @@ presentations."
     ("\\bDNF\\b" "dee n f")
     ("\\bDNS\\b" "dee an ess")
     ("\\bDSL\\b" "dee ess el")
+    ("\\bFIFO\\b" "first in, first out,")
     ("\\bHDL\\b" "age dee el")
     ("\\bHDD" "age dee dee")
     ("\\bHDFS\\b" "age dee eff ess")
@@ -1307,7 +1308,7 @@ presentations."
   "List acronyms that should be expanded.  Not needed for Kokoro."
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
-  :package-version '(org-re-reveal . "3.37.0"))
+  :package-version '(org-re-reveal . "3.37.2"))
 
 (defcustom org-re-reveal-tts-hyphen-patterns
   '(
@@ -1349,9 +1350,17 @@ When this does not sound well, a special rule is necessary."
 
 (defcustom org-re-reveal-tts-special-patterns
   '(
+    ("buses" "busses")
+    ("lease read" "lease reed")
+    ("readable" "reedable")
+    ("\\bmaybe read" "maybe reed")
+    ("\\bbe read" "be rad")
+    ("\\bindices" "indicees")
     ("gigabit" "giguhbit")
     ("gigabyte" "giguhbyte")
     ("gigahertz" "giguhhurts")
+    ("\\bL4\\b" "el four")
+    ("\\bls\\b" "el ess")
     ("Mac OS" "Mackowess")
     ("Python" "piethon")
     ("put\\(s?\\) a\\b" "put\\1 ay") ; input/output(s)
@@ -1359,7 +1368,7 @@ When this does not sound well, a special rule is necessary."
   "List special replacements.  Not needed for Kokoro."
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
-  :package-version '(org-re-reveal . "3.37.0"))
+  :package-version '(org-re-reveal . "3.37.2"))
 
 (defcustom org-re-reveal-tts-kokoro-patterns
   '(("GET" "get")
@@ -1374,8 +1383,7 @@ When this does not sound well, a special rule is necessary."
     ("~w~" "W")
     ("~x~" "X")
     ("put\\(s?\\) a\\b" "put\\1 A") ; input/output(s)
-    ;; Domain names
-    ("[.]de\\b" " dot DE")
+    ("[.]de\\b" " dot DE") ; Domain names
     )
   "List special replacements.  Meant for Kokoro."
   :group 'org-export-re-reveal
@@ -1493,7 +1501,6 @@ When this does not sound well, a special rule is necessary."
     ("\\bCSs\\b" "critical sections")
     ("\\bDS" "distributed system")
     ("\\bDMux\\b" "deemux")
-    ("\\bFIFO\\b" "first in, first out,")
     ("\\bIPv4\\b" "IP version four")
     ("\\bIPv6\\b" "IP version six")
     ("\\b\\([A-Z]\\)aaS\\b" "\\1——as a service")
@@ -1508,8 +1515,6 @@ When this does not sound well, a special rule is necessary."
     ("\\bGB\\b" "gigabytes")
     ("\\bGiB\\b" "gibeebytes")
     ("[kK]8s" "kates")
-    ("\\bL4\\b" "el four")
-    ("\\bls\\b" "el ess")
     ("\\bMX\\b" "mutual exclusion")
     ("\\bOS" "operating system")
     ("passwd" "password")
@@ -1533,14 +1538,8 @@ When this does not sound well, a special rule is necessary."
     ("\\bM\\b" "em")
     ("\\b[xX]\\b" "ex")
     ("\\b[yY]\\b" "why")
-    ("buses" "busses")
     ("cAdvisor" "sea advisor")
     ("\\betcd\\b" "etseedee")
-    ("lease read" "lease reed")
-    ("readable" "reedable")
-    ("\\bmaybe read" "maybe reed")
-    ("\\bbe read" "be rad")
-    ("\\bindices" "indicees")
     ("GitLab" "git lab")
     ("\\bknote" "kaynote")
     ("kubectl" "cube cuttel")
@@ -1579,20 +1578,20 @@ Selected replacements:
 - Selected pronunciation helpers that are usable for CLB and Kokoro.
 
 Note that this table contains patterns that should be usable across
-different TTS models.  For Kokoro, patterns of
-`org-re-reveal-tts-kokoro-patterns' are added.  For other models,
+different TTS models.  For Kokoro, prepend patterns of
+`org-re-reveal-tts-kokoro-patterns'.  For other models,
 patterns of `org-re-reveal-tts-acronym-patterns',
 `org-re-reveal-tts-hyphen-patterns', and
-`org-re-reveal-tts-special-patterns' are added."
+`org-re-reveal-tts-special-patterns' are appended."
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
-  :package-version '(org-re-reveal . "3.37.1"))
+  :package-version '(org-re-reveal . "3.37.2"))
 
 (defun org-re-reveal--tts-normalize-table (voice)
   "Construct normalization table for current VOICE."
   (if (and voice (string= voice "Kokoro"))
-      (append org-re-reveal-tts-normalize-table
-              org-re-reveal-tts-kokoro-patterns)
+      (append org-re-reveal-tts-kokoro-patterns
+              org-re-reveal-tts-normalize-table)
     (append org-re-reveal-tts-normalize-table
             org-re-reveal-tts-acronym-patterns
             org-re-reveal-tts-hyphen-patterns
