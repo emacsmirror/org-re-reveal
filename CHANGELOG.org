@@ -12,7 +12,19 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+
+** [3.37.0] - 2025-12-22
+*** Added
+    - Option for Kokoro in ~org-re-reveal-with-tts~
+    - New TTS normalization rules
+      ~org-re-reveal-tts-acronym-patterns~,
+      ~org-re-reveal-tts-hyphen-patterns~,
+      ~org-re-reveal-tts-special-patterns~,
+      ~org-re-reveal-tts-kokoro-patterns~
 *** Changed
+    - Split ~org-re-reveal-tts-normalize-table~, keep core rules, move
+      others, potentially TTS model-specific ones, to above new rule
+      variables mentioned above.  See their doc strings.
     - If the title slide (specified with ~org-re-reveal-title-slide~
       or ~REVEAL_TITLE_SLIDE~) is a string, perform macro replacement.
       Addresses issue #119.
