@@ -1396,7 +1396,7 @@ When this does not sound well, a special rule is necessary."
     ;; Specific colons:
     ("\\babout:\\([a-z]+\\)\\b" "about \\1") ; browsers' about URL
     ;; Replace ordinary colon with dot
-    (":" ". ") ; (Space for Emacs sentence convention)
+    (":" ".")
     ;; Replace some functions and math symbols.
     ;; In particular, replace LaTeX math delimiters (dollar, parentheses).
     ("\\b$n$\\b" "ann")
@@ -1586,7 +1586,7 @@ patterns of `org-re-reveal-tts-acronym-patterns',
 `org-re-reveal-tts-special-patterns' are added."
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
-  :package-version '(org-re-reveal . "3.37.0"))
+  :package-version '(org-re-reveal . "3.37.1"))
 
 (defun org-re-reveal--tts-normalize-table (voice)
   "Construct normalization table for current VOICE."
