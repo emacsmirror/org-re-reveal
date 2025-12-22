@@ -1631,7 +1631,7 @@ Otherwise, return empty string."
 Replace each newline (which, assuming wrapped texts, may or may not end
 sentences or paragraphs) with two space characters (which should not hurt).
 Then, insert a newline after each sentence (determined by `forward-sentence').
-Also perform TTS normalization for VOICE, CLB by default."
+Also perform TTS normalization for VOICE."
   (with-temp-buffer
     (insert text)
     (goto-char (point-min))
