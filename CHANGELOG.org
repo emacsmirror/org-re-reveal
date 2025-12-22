@@ -13,6 +13,12 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.37.3] - 2025-12-22
+*** Fixed
+    - Improve pronunciation of CS, DS, OS, MX; add guards so that DS
+      does not match DSL.
+    - For Kokoro, allow multiple whitespace characters between words.
+
 ** [3.37.2] - 2025-12-22
 *** Fixed
     - Move more rules from ~org-re-reveal-tts-normalize-table~ to
