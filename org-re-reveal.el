@@ -1258,14 +1258,15 @@ presentations."
     ("\\bCFS\\b" "see eff ess")
     ("\\bCPU\\b" "see pea you")
     ("\\bCPUs\\b" "see pea use")
-    ("\\bGPU\\b" "djee pea you")
-    ("\\bGPUs\\b" "djee pea use")
     ("\\bCRI\\b" "see are eye")
     ("\\bCS\\b" "see ess")
+    ("\\bCSs\\b" "critical sections")
     ("\\bDNF\\b" "dee n f")
     ("\\bDNS\\b" "dee an ess")
     ("\\bDSL\\b" "dee ess el")
     ("\\bFIFO\\b" "first in, first out,")
+    ("\\bGPU\\b" "djee pea you")
+    ("\\bGPUs\\b" "djee pea use")
     ("\\bHDL\\b" "age dee el")
     ("\\bHDD" "age dee dee")
     ("\\bHDFS\\b" "age dee eff ess")
@@ -1281,6 +1282,7 @@ presentations."
     ("\\bIDT\\b" "eye dee tea")
     ("\\bLRU\\b" "el are you")
     ("\\bMMU\\b" "em em you")
+    ("\\bMX\\b" "em ex")
     ("\\bPC" "pea sea")
     ("\\bps\\b" "pea ess")
     ("\\bSSD" "ess ess dee")
@@ -1308,7 +1310,7 @@ presentations."
   "List acronyms that should be expanded.  Not needed for Kokoro."
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
-  :package-version '(org-re-reveal . "3.37.2"))
+  :package-version '(org-re-reveal . "3.37.3"))
 
 (defcustom org-re-reveal-tts-hyphen-patterns
   '(
@@ -1498,8 +1500,10 @@ When this does not sound well, a special rule is necessary."
     ("reveal.js" "reveal jay ess")
     ("chmod" "change mod")
     ("\\bB\\b" "bytes")
-    ("\\bCSs\\b" "critical sections")
-    ("\\bDS" "distributed system")
+    ("\\bDS\\b" "distributed system")
+    ("\\bDSs\\b" "distributed systems")
+    ("\\bOS\\b" "operating system")
+    ("\\bOSs\\b" "operating systems")
     ("\\bDMux\\b" "deemux")
     ("\\bIPv4\\b" "IP version four")
     ("\\bIPv6\\b" "IP version six")
@@ -1515,8 +1519,6 @@ When this does not sound well, a special rule is necessary."
     ("\\bGB\\b" "gigabytes")
     ("\\bGiB\\b" "gibeebytes")
     ("[kK]8s" "kates")
-    ("\\bMX\\b" "mutual exclusion")
-    ("\\bOS" "operating system")
     ("passwd" "password")
     ("\\bQUIC\\b" "quick")
     ("\\bSQL" "sequel")
@@ -1585,7 +1587,7 @@ patterns of `org-re-reveal-tts-acronym-patterns',
 `org-re-reveal-tts-special-patterns' are appended."
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
-  :package-version '(org-re-reveal . "3.37.2"))
+  :package-version '(org-re-reveal . "3.37.3"))
 
 (defun org-re-reveal--tts-normalize-table (voice)
   "Construct normalization table for current VOICE."
