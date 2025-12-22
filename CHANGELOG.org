@@ -13,6 +13,12 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.37.2] - 2025-12-22
+*** Fixed
+    - Move more rules from ~org-re-reveal-tts-normalize-table~ to
+      other tables.
+    - Apply ~org-re-reveal-tts-kokoro-patterns~ first.
+
 ** [3.37.1] - 2025-12-22
 *** Fixed
     - In ~org-re-reveal-tts-normalize-table~, remove space for colon
