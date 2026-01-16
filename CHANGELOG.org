@@ -1,6 +1,6 @@
 # Local IspellDict: en
 # SPDX-License-Identifier: GPL-3.0-or-later
-# SPDX-FileCopyrightText: 2019-2025 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2019-2026 Jens Lechtenbörger
 
 * Changelog
 This changelog documents the evolution of org-re-reveal starting with
@@ -12,6 +12,12 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+
+** [3.38.0] - 2026-01-16
+*** Added
+    - Escape sequence %I for instructor information with
+      new keyword ~REVEAL_INSTRUCTOR~; enables separation of author
+      and instructor
 
 ** [3.37.3] - 2025-12-22
 *** Fixed
