@@ -5,7 +5,7 @@
 ;;                         https://github.com/yjwen/org-reveal/commits/master
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
-;; SPDX-FileCopyrightText: 2017-2025 Jens Lechtenbörger
+;; SPDX-FileCopyrightText: 2017-2026 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
 ;; Version: 3.37.3
@@ -143,6 +143,7 @@
       (:reveal-width nil "reveal_width" org-re-reveal-width t)
       (:reveal-with-tts nil "reveal_with_tts" org-re-reveal-with-tts t)
       (:reveal-academic-title "REVEAL_ACADEMIC_TITLE" nil nil t)
+      (:reveal-instructor "REVEAL_INSTRUCTOR" nil nil t)
       (:reveal-add-plugin "REVEAL_ADD_PLUGIN" nil nil newline)
       (:reveal-codemirror-config "REVEAL_CODEMIRROR_CONFIG" nil org-re-reveal-klipse-codemirror newline)
       (:reveal-default-frag-style "REVEAL_DEFAULT_FRAG_STYLE" nil org-re-reveal-default-frag-style t)
@@ -402,7 +403,8 @@ Otherwise (`auto' or non-empty string), insert title slide.
 When `auto', generate minimal automatic title slide with
 `org-re-reveal--auto-title-slide-template'.
 When set to a string, use this string as format string for the title
-slide, where the following %-sequences are allowed:
+slide, where %-sequences of `org-html-format-spec' and additional
+ones are allowed, e.g.:
 
   %t for the title.
   %s for the subtitle.
@@ -410,6 +412,7 @@ slide, where the following %-sequences are allowed:
   %e for the author's email.
   %d for the date.
   %A for the author's academic title (set with #+REVEAL_ACADEMIC_TITLE).
+  %I for the instructor (set with #+REVEAL_INSTRUCTOR).
   %q for the name of a file to a QR code (set with #+REVEAL_TALK_QR_CODE).
   %u for the URL of the presentation (set with #+REVEAL_TALK_URL).
   %m for misc information (set with #+REVEAL_MISCINFO).
@@ -3084,6 +3087,8 @@ Speaker notes on the title slide with \"%n\" make use of
     (append (org-html-format-spec info)
             `((?A . ,(org-export-data
                       (plist-get info :reveal-academic-title) info))
+              (?I . ,(org-export-data
+                      (plist-get info :reveal-instructor) info))
               (?m . ,(org-export-data
                       (plist-get info :reveal-miscinfo) info))
               (?n . ,(org-re-reveal--notes-to-html html-notes))
