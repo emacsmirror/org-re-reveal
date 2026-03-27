@@ -1144,7 +1144,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 
    At present code editing is supported in: {{{klipse-languages}}}
 
-** Footnotes
+** Using Footnotes
   :PROPERTIES:
   :CUSTOM_ID: footnotes
   :END:
