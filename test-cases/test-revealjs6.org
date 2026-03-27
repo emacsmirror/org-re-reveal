@@ -1,0 +1,14 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2020,2026 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+#+REVEAL_VERSION: 6
+
+#+Title: Test reveal.js version 6
+#+Author: Jens Lechtenbörger
+
+* Normal slide
+- Nothing special here
+- If this test case is displayed, reveal.js version 6 is used
