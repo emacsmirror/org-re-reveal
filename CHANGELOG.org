@@ -13,6 +13,12 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.39.0] - 2026-03-27
+*** Added
+    - Support reveal.js 6.0, which introduces breaking changes.  In
+      particular, see ~org-re-reveal-plugin-6-config~ and note that
+      ~org-re-reveal-revealjs-version~ allows the new value 6.
+
 ** [3.38.0] - 2026-01-16
 *** Added
     - Escape sequence %I for instructor information with
