@@ -280,6 +280,7 @@ browsing that file, subtree export to file."
                (character :tag "Key for subtree export to file"))
   :set #'org-re-reveal-define-menu)
 
+(defconst org-re-reveal-revealjs-6-file "dist/plugin/highlight.js")
 (defconst org-re-reveal-revealjs-4-file "dist/reveal.js")
 (defconst org-re-reveal-revealjs-3-file "js/reveal.js")
 (defconst org-re-reveal-revealjs-pre-3.8-file "lib/js/head.min.js")
@@ -303,7 +304,8 @@ separately."
 Cache guessed version of reveal.js as `:reveal-guessed-revealjs-version':
 Use `org-re-reveal-revealjs-version' if it is non-nil.
 Otherwise, check for existence of files under `org-re-reveal-root' and
-- assign \"4\" if `org-re-reveal-revealjs-4-file' exists;
+- assign \"6\" if `org-re-reveal-revealjs-6-file' exists;
+- otherwise, assign \"4\" if `org-re-reveal-revealjs-4-file' exists;
 - otherwise, if `org-re-reveal-revealjs-3-file' exists and
   `org-re-reveal-revealjs-pre-3.8-file' does not exist, assign \"3.8\";
 - otherwise, assign \"3\".
@@ -321,18 +323,21 @@ Return guessed version string."
            "Remote URL for reveal.js does not work with version guessing.  Customize `org-re-reveal-revealjs-version'."))
         (let ((guessed
                (if version
-		   version
-		 (if (file-exists-p
-                      (concat root-path org-re-reveal-revealjs-4-file))
-                     "4"
-		   (if (and
-			(file-exists-p
-			 (concat root-path org-re-reveal-revealjs-3-file))
-			(not (file-exists-p
-                              (concat root-path
-                                      org-re-reveal-revealjs-pre-3.8-file))))
-                       "3.8"
-                     "3")))))
+                   version
+                 (if (file-exists-p
+                      (concat root-path org-re-reveal-revealjs-6-file))
+                     "6"
+                   (if (file-exists-p
+                        (concat root-path org-re-reveal-revealjs-4-file))
+                       "4"
+		     (if (and
+			  (file-exists-p
+			   (concat root-path org-re-reveal-revealjs-3-file))
+			  (not (file-exists-p
+                                (concat root-path
+                                        org-re-reveal-revealjs-pre-3.8-file))))
+                         "3.8"
+                       "3"))))))
           (plist-put info :reveal-guessed-revealjs-version guessed)
           guessed)))))
 
@@ -340,7 +345,7 @@ Return guessed version string."
   "Setup paths for reveal.js based in INFO."
   (org-re-reveal--guess-revealjs-version info)
   (let ((revealjs-version (org-re-reveal--guess-revealjs-version info)))
-    (cond ((string= revealjs-version "4")
+    (cond ((or (string= revealjs-version "4") (string= revealjs-version "6"))
 	   (plist-put info :reveal-script-files '("dist/reveal.js"))
 	   (plist-put info :reveal-css-path "dist"))
           ((string= revealjs-version "3.8")
@@ -355,11 +360,12 @@ If nil, `org-re-reveal' tries to guess the version, which works if
 `org-re-reveal-root' is a local directory.
 You can specify the version per file with keyword REVEAL_VERSION."
   :group 'org-export-re-reveal
-  :type '(choice (const :tag "reveal.js 4.x and 5.x" "4")
+  :type '(choice (const :tag "reveal.js 6.x" "6")
+                 (const :tag "reveal.js 4.x and 5.x" "4")
                  (const :tag "reveal.js 3.8 and 3.9" "3.8")
                  (const :tag "reveal.js before 3.8" "3")
                  (const :tag "Guess" nil))
-  :package-version '(org-re-reveal . "3.0.0"))
+  :package-version '(org-re-reveal . "3.39.0"))
 
 (defcustom org-re-reveal-root "./reveal.js"
   "Specify root directory of reveal.js.
@@ -897,8 +903,8 @@ for `org-re-reveal-title-slide'."
   '(markdown notes search zoom)
   "Default builtin plugins.
 
-By default, multiplex is not enabled.  With reveal.js 4.x, multiplex
-needs to be downloaded separately.
+By default, multiplex is not enabled.  With reveal.js 4 and later,
+multiplex needs to be downloaded separately.
 Include `multiplex' in this variable to enable it.
 
 This variable, like lots of other variables, can be overridden
@@ -911,8 +917,8 @@ in the org buffer comments as follows:
           (const zoom)
           (const notes)
           (const search)
-          (const :tag "math (reveal.js 4.x)" math)
-          (const :tag "multiplex (not included in reveal.js 4.x)" multiplex)
+          (const :tag "math (reveal.js 4 and later)" math)
+          (const :tag "multiplex (not included in reveal.js 4 and later)" multiplex)
           (const :tag "classList (absent from modern reveal.js)" classList)
           (const :tag "remotes (absent from modern reveal.js)" remotes))
   :package-version '(org-re-reveal . "3.0.0"))
@@ -924,7 +930,36 @@ in the org buffer comments as follows:
     (notes "RevealNotes" "plugin/notes/notes.js")
     (search "RevealSearch" "plugin/search/search.js")
     (zoom "RevealZoom" "plugin/zoom/zoom.js"))
-  "Initialization for reveal.js 4.x plugins.
+  "Initialization for plugins with reveal.js versions 4 and 5.
+See `org-re-reveal-plugin-6-config', which addresses breaking changes of
+reveal.js 6.0.
+This is a list of lists.  Each list consists of
+- the plugin name, listed in `org-re-reveal-plugins',
+- the JavaScript name for the plugin,
+- the name of the JavaScript file,
+- zero or more names of CSS files.
+
+Starting with version 3.6.0 or org-re-reveal, the name of the
+JavaScript file can also be a URL."
+  :group 'org-export-oer-reveal
+  :type '(repeat
+          (list
+           (symbol :tag "Plugin name")
+           (string :tag "JavaScript plugin name")
+           (string :tag "JavaScript file name")
+           (repeat (string :tag "CSS file name"))))
+  :package-version '(org-re-reveal . "3.0.0"))
+
+(defcustom org-re-reveal-plugin-6-config
+  '((highlight "RevealHighlight" "dist/plugin/highlight.js")
+    (markdown "RevealMarkdown" "dist/plugin/markdown.js")
+    (math "RevealMath" "dist/plugin/math.js")
+    (notes "RevealNotes" "dist/plugin/notes.js")
+    (search "RevealSearch" "dist/plugin/search.js")
+    (zoom "RevealZoom" "dist/plugin/zoom.js"))
+  "Initialization for reveal.js plugins starting with version 6.
+This variable replaces `org-re-reveal-plugin-config', which worked
+for versions 4 and 5.
 This is a list of lists.  Each list consists of
 - the plugin name, listed in `org-re-reveal-plugins',
 - the JavaScript name for the plugin,
@@ -2133,7 +2168,9 @@ otherwise, generate `<link>' label, with a non-nil STYLE-ID as
         (concat "%r/" (format "%s/%s.css"
                               (if (version< version "4")
                                   "lib/css"
-                                "plugin/highlight")
+                                (if (version< version "6")
+                                    "plugin/highlight"
+                                  "dist/plugin/highlight"))
                               highlight-css))
       highlight-css)))
 
@@ -2295,8 +2332,14 @@ Parse keywords \"REVEAL_ADD_PLUGIN\" and return list of items."
 (defun org-re-reveal--plugin-config (plugin info)
   "Retrieve configuration for PLUGIN with reveal.js 4 and later with INFO.
 This retrieves the configuration for PLUGIN from `org-re-reveal-plugin-config'
-or after keyword \"REVEAL_ADD_PLUGIN\"."
-  (assoc plugin (append org-re-reveal-plugin-config (org-re-reveal--add-plugins info))))
+for version 4.x and 5.x or from `org-re-reveal-plugin-config' for version 6
+and later or after keyword \"REVEAL_ADD_PLUGIN\"."
+  (let ((version (org-re-reveal--guess-revealjs-version info)))
+    (assoc plugin (append
+                   (if (version< version "6")
+                       org-re-reveal-plugin-config
+                     org-re-reveal-plugin-6-config)
+                   (org-re-reveal--add-plugins info)))))
 
 (defun org-re-reveal--enabled-plugins (info)
   "Return enabled plugins based on INFO.
@@ -2528,7 +2571,7 @@ transitionSpeed: '%s',\n")
       (concat
        (if (version< reveal-version "4")
            ""
-         (format "\n// Plugins with reveal.js 4.x
+         (format "\n// Plugins with reveal.js 4.x and later
 plugins: [ %s ],\n"
                  (mapconcat
                   (lambda (plugin)
