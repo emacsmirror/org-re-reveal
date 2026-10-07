@@ -6,10 +6,10 @@
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
 ;; Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
 ;; SPDX-FileCopyrightText: 2025 Anders Johansson
-;; SPDX-FileCopyrightText: 2017-2025 Jens Lechtenbörger
+;; SPDX-FileCopyrightText: 2017-2026 Jens Lechtenbörger
 
 ;; URL: https://gitlab.com/oer/org-re-reveal
-;; Version: 3.36.0
+;; Version: 3.39.0
 ;; Package-Requires: ((emacs "24.4") (org "8.3") (htmlize "1.34"))
 ;; Keywords: tools, outlines, hypermedia, slideshow, presentation, OER
 
@@ -67,11 +67,13 @@
 ;; Its howto, generated from Org source file with emacs-reveal:
 ;; https://oer.gitlab.io/emacs-reveal-howto/howto.html
 ;; As a real-life example, maybe check out the OER presentations
-;; (HTML with audio, different PDF variants, references into
-;; bibliography, index terms, management of metadata including
-;; license information and attribution, Docker image for publication
-;; as GitLab Pages with CI/CD) for a course on Operating Systems:
-;; https://oer.gitlab.io/OS/
+;; (HTML with audio, audio explanations generated from Org sources via
+;; text-to-speech [TTS]; different PDF variants; references between
+;; presentations and citations into bibliography;
+;; index terms; management of metadata including
+;; license information and attribution; Docker image for publication
+;; as GitLab Pages with CI/CD) for a course on IT Systems:
+;; https://oer.gitlab.io/oer-courses/it-systems/
 ;;
 ;; The package org-re-reveal grew out of a forked version of org-reveal
 ;; when upstream development stopped:
@@ -142,6 +144,7 @@
       (:reveal-width nil "reveal_width" org-re-reveal-width t)
       (:reveal-with-tts nil "reveal_with_tts" org-re-reveal-with-tts t)
       (:reveal-academic-title "REVEAL_ACADEMIC_TITLE" nil nil t)
+      (:reveal-instructor "REVEAL_INSTRUCTOR" nil nil t)
       (:reveal-add-plugin "REVEAL_ADD_PLUGIN" nil nil newline)
       (:reveal-codemirror-config "REVEAL_CODEMIRROR_CONFIG" nil org-re-reveal-klipse-codemirror newline)
       (:reveal-default-frag-style "REVEAL_DEFAULT_FRAG_STYLE" nil org-re-reveal-default-frag-style t)
@@ -280,6 +283,7 @@ browsing that file, subtree export to file."
                (character :tag "Key for subtree export to file"))
   :set #'org-re-reveal-define-menu)
 
+(defconst org-re-reveal-revealjs-6-file "dist/plugin/highlight.js")
 (defconst org-re-reveal-revealjs-4-file "dist/reveal.js")
 (defconst org-re-reveal-revealjs-3-file "js/reveal.js")
 (defconst org-re-reveal-revealjs-pre-3.8-file "lib/js/head.min.js")
@@ -303,7 +307,8 @@ separately."
 Cache guessed version of reveal.js as `:reveal-guessed-revealjs-version':
 Use `org-re-reveal-revealjs-version' if it is non-nil.
 Otherwise, check for existence of files under `org-re-reveal-root' and
-- assign \"4\" if `org-re-reveal-revealjs-4-file' exists;
+- assign \"6\" if `org-re-reveal-revealjs-6-file' exists;
+- otherwise, assign \"4\" if `org-re-reveal-revealjs-4-file' exists;
 - otherwise, if `org-re-reveal-revealjs-3-file' exists and
   `org-re-reveal-revealjs-pre-3.8-file' does not exist, assign \"3.8\";
 - otherwise, assign \"3\".
@@ -321,18 +326,21 @@ Return guessed version string."
            "Remote URL for reveal.js does not work with version guessing.  Customize `org-re-reveal-revealjs-version'."))
         (let ((guessed
                (if version
-		   version
-		 (if (file-exists-p
-                      (concat root-path org-re-reveal-revealjs-4-file))
-                     "4"
-		   (if (and
-			(file-exists-p
-			 (concat root-path org-re-reveal-revealjs-3-file))
-			(not (file-exists-p
-                              (concat root-path
-                                      org-re-reveal-revealjs-pre-3.8-file))))
-                       "3.8"
-                     "3")))))
+                   version
+                 (if (file-exists-p
+                      (concat root-path org-re-reveal-revealjs-6-file))
+                     "6"
+                   (if (file-exists-p
+                        (concat root-path org-re-reveal-revealjs-4-file))
+                       "4"
+		     (if (and
+			  (file-exists-p
+			   (concat root-path org-re-reveal-revealjs-3-file))
+			  (not (file-exists-p
+                                (concat root-path
+                                        org-re-reveal-revealjs-pre-3.8-file))))
+                         "3.8"
+                       "3"))))))
           (plist-put info :reveal-guessed-revealjs-version guessed)
           guessed)))))
 
@@ -340,7 +348,7 @@ Return guessed version string."
   "Setup paths for reveal.js based in INFO."
   (org-re-reveal--guess-revealjs-version info)
   (let ((revealjs-version (org-re-reveal--guess-revealjs-version info)))
-    (cond ((string= revealjs-version "4")
+    (cond ((or (string= revealjs-version "4") (string= revealjs-version "6"))
 	   (plist-put info :reveal-script-files '("dist/reveal.js"))
 	   (plist-put info :reveal-css-path "dist"))
           ((string= revealjs-version "3.8")
@@ -355,11 +363,12 @@ If nil, `org-re-reveal' tries to guess the version, which works if
 `org-re-reveal-root' is a local directory.
 You can specify the version per file with keyword REVEAL_VERSION."
   :group 'org-export-re-reveal
-  :type '(choice (const :tag "reveal.js 4.x and 5.x" "4")
+  :type '(choice (const :tag "reveal.js 6.x" "6")
+                 (const :tag "reveal.js 4.x and 5.x" "4")
                  (const :tag "reveal.js 3.8 and 3.9" "3.8")
                  (const :tag "reveal.js before 3.8" "3")
                  (const :tag "Guess" nil))
-  :package-version '(org-re-reveal . "3.0.0"))
+  :package-version '(org-re-reveal . "3.39.0"))
 
 (defcustom org-re-reveal-root "./reveal.js"
   "Specify root directory of reveal.js.
@@ -403,7 +412,8 @@ Otherwise (`auto' or non-empty string), insert title slide.
 When `auto', generate minimal automatic title slide with
 `org-re-reveal--auto-title-slide-template'.
 When set to a string, use this string as format string for the title
-slide, where the following %-sequences are allowed:
+slide, where %-sequences of `org-html-format-spec' and additional
+ones are allowed, e.g.:
 
   %t for the title.
   %s for the subtitle.
@@ -411,6 +421,7 @@ slide, where the following %-sequences are allowed:
   %e for the author's email.
   %d for the date.
   %A for the author's academic title (set with #+REVEAL_ACADEMIC_TITLE).
+  %I for the instructor (set with #+REVEAL_INSTRUCTOR).
   %q for the name of a file to a QR code (set with #+REVEAL_TALK_QR_CODE).
   %u for the URL of the presentation (set with #+REVEAL_TALK_URL).
   %m for misc information (set with #+REVEAL_MISCINFO).
@@ -907,8 +918,8 @@ for `org-re-reveal-title-slide'."
   '(markdown notes search zoom)
   "Default builtin plugins.
 
-By default, multiplex is not enabled.  With reveal.js 4.x, multiplex
-needs to be downloaded separately.
+By default, multiplex is not enabled.  With reveal.js 4 and later,
+multiplex needs to be downloaded separately.
 Include `multiplex' in this variable to enable it.
 
 This variable, like lots of other variables, can be overridden
@@ -921,8 +932,8 @@ in the org buffer comments as follows:
           (const zoom)
           (const notes)
           (const search)
-          (const :tag "math (reveal.js 4.x)" math)
-          (const :tag "multiplex (not included in reveal.js 4.x)" multiplex)
+          (const :tag "math (reveal.js 4 and later)" math)
+          (const :tag "multiplex (not included in reveal.js 4 and later)" multiplex)
           (const :tag "classList (absent from modern reveal.js)" classList)
           (const :tag "remotes (absent from modern reveal.js)" remotes))
   :package-version '(org-re-reveal . "3.0.0"))
@@ -934,7 +945,36 @@ in the org buffer comments as follows:
     (notes "RevealNotes" "plugin/notes/notes.js")
     (search "RevealSearch" "plugin/search/search.js")
     (zoom "RevealZoom" "plugin/zoom/zoom.js"))
-  "Initialization for reveal.js 4.x plugins.
+  "Initialization for plugins with reveal.js versions 4 and 5.
+See `org-re-reveal-plugin-6-config', which addresses breaking changes of
+reveal.js 6.0.
+This is a list of lists.  Each list consists of
+- the plugin name, listed in `org-re-reveal-plugins',
+- the JavaScript name for the plugin,
+- the name of the JavaScript file,
+- zero or more names of CSS files.
+
+Starting with version 3.6.0 or org-re-reveal, the name of the
+JavaScript file can also be a URL."
+  :group 'org-export-oer-reveal
+  :type '(repeat
+          (list
+           (symbol :tag "Plugin name")
+           (string :tag "JavaScript plugin name")
+           (string :tag "JavaScript file name")
+           (repeat (string :tag "CSS file name"))))
+  :package-version '(org-re-reveal . "3.0.0"))
+
+(defcustom org-re-reveal-plugin-6-config
+  '((highlight "RevealHighlight" "dist/plugin/highlight.js")
+    (markdown "RevealMarkdown" "dist/plugin/markdown.js")
+    (math "RevealMath" "dist/plugin/math.js")
+    (notes "RevealNotes" "dist/plugin/notes.js")
+    (search "RevealSearch" "dist/plugin/search.js")
+    (zoom "RevealZoom" "dist/plugin/zoom.js"))
+  "Initialization for reveal.js plugins starting with version 6.
+This variable replaces `org-re-reveal-plugin-config', which worked
+for versions 4 and 5.
 This is a list of lists.  Each list consists of
 - the plugin name, listed in `org-re-reveal-plugins',
 - the JavaScript name for the plugin,
@@ -1193,13 +1233,14 @@ slideshow plugin or be names of your choice (to be used with
 \":reveal_extra_attr: data-audio-src=...\")."
   :group 'org-export-re-reveal
   :type '(choice (const :tag "No TTS" nil)
+                 (const :tag "Kokoro" Kokoro)
                  (const :tag "Speechbrain (US female)" speechbrain)
                  (const :tag "CLB (SpeechT5, US female)" CLB)
                  (const :tag "SLT (SpeechT5, US female)" SLT)
                  (const :tag "BDL (SpeechT5, US male)" BDL)
                  (const :tag "RMS (SpeechT5, US male)" RMS)
                  (const :tag "KSP (SpeechT5, Indian female)" KSP))
-  :package-version '(org-re-reveal . "3.19.0"))
+  :package-version '(org-re-reveal . "3.37.0"))
 
 (defvar org-re-reveal-pub-dir nil
   "Record publishing directory.")
@@ -1261,6 +1302,149 @@ presentations."
   :type 'number
   :package-version '(org-re-reveal . "3.21.0"))
 
+(defcustom org-re-reveal-tts-acronym-patterns
+  '(("\\bSSML\\b" "ess ess em el")
+    ("\\bTTS\\b" "tea tea ess")
+    ("\\bALU\\b" "ay al you")
+    ("\\bNAPI\\b" "ann API")
+    ("\\bAPI" "ay pea eye") ; no word boundary at end for plural
+    ("\\bCFS\\b" "see eff ess")
+    ("\\bCPU\\b" "see pea you")
+    ("\\bCPUs\\b" "see pea use")
+    ("\\bCRI\\b" "see are eye")
+    ("\\bCS\\b" "see ess")
+    ("\\bCSs\\b" "critical sections")
+    ("\\bDNF\\b" "dee n f")
+    ("\\bDNS\\b" "dee an ess")
+    ("\\bDSL\\b" "dee ess el")
+    ("\\bFIFO\\b" "first in, first out,")
+    ("\\bGPU\\b" "djee pea you")
+    ("\\bGPUs\\b" "djee pea use")
+    ("\\bHDL\\b" "age dee el")
+    ("\\bHDD" "age dee dee")
+    ("\\bHDFS\\b" "age dee eff ess")
+    ("\\bHTML\\b" "age tea em el")
+    ("\\bHTTP\\b" "age tea tea pea")
+    ("\\bID\\b" "eye dee")
+    ("\\bIDs\\b" "eye dees")
+    ("\\bIoT\\b" "eye oh tea")
+    ("I/O" "eye oh")
+    ("\\bIP\\b" "eye pea")
+    ("\\bIT\\b" "eye tea")
+    ("\\bIDTR\\b" "eye dee tea are")
+    ("\\bIDT\\b" "eye dee tea")
+    ("\\bLRU\\b" "el are you")
+    ("\\bMMU\\b" "em em you")
+    ("\\bMX\\b" "em ex")
+    ("\\bPC" "pea sea")
+    ("\\bps\\b" "pea ess")
+    ("\\bSSD" "ess ess dee")
+    ("\\bssh" "ess ess age")
+    ("\\bTCB" "tea sea bee")
+    ("\\bTCP" "tea sea pea")
+    ("\\bUDP" "you dee pea")
+    ("\\bTLB" "tea el bee")
+    ("\\bURL" "you are al")
+    ("\\bUS\\b" "you ess")
+    ("\\bVM\\b" "vee emm")
+    ("\\bVMs\\b" "vee emms")
+    ("\\bVMM" "vee emm emm")
+    ("\\bWi-?Fi" "why fy")
+    ("YAML" "jamell")
+    ("(a)" "ay")
+    ("(b)" "bee")
+    ("(c)" "see")
+    ("~r~" "are")
+    ("~w~" "doubleyou")
+    ("~x~" "ex")
+    ;; Domain names
+    ("[.]de\\b" " dot dee ee")
+    )
+  "List acronyms that should be expanded.  Not needed for Kokoro."
+  :group 'org-export-re-reveal
+  :type '(repeat (list string string))
+  :package-version '(org-re-reveal . "3.37.3"))
+
+(defcustom org-re-reveal-tts-hyphen-patterns
+  '(
+    ("A-register" "ay register")
+    ("A-instruction" "ay instruction")
+    ("C-instruction" "sea instruction")
+    ("D-register" "dee register")
+    ("built-in" "builtin")
+    ("break-through" "breakthrough")
+    ("co-founder" "cofounder")
+    ("counter-" "counter")
+    ("\\b[dD]e-" "de")
+    ("fan-in" "fan in")
+    ("full-fledged" "fullfledged")
+    ("large-scale" "largescale")
+    ("re-insert" "reinsert")
+    ("up-front" "upfront")
+    ("eta-[cC]ognitive" "etacognitive")
+    ("\\([fF]\\)ixed-" "\\1ixed")
+    ("non-" "non")
+    ("self-" "self")
+    ("inter-" "inter")
+    ("real-" "real")
+    ("[rR]ead-[oO]nly" "reed only")
+    ("[rR]ipple-[cC]arry" "ripplecarry")
+    ("trade-off" "tradeoff")
+    ("\\ba-bit\\b" "ay bit")
+    ("-mapped" "mapped")
+    ("warm-up" "warmup")
+    ("-wise" "wise")
+    ("\\([a-zA-Z]\\)-\\([a-zA-Z]\\)" "\\1 \\2")
+    )
+  "List hyphens for special treatment.  Not needed for Kokoro.
+The final pattern replaces a hyphen between characters with a space.
+When this does not sound well, a special rule is necessary."
+  :group 'org-export-re-reveal
+  :type '(repeat (list string string))
+  :package-version '(org-re-reveal . "3.37.0"))
+
+(defcustom org-re-reveal-tts-special-patterns
+  '(
+    ("buses" "busses")
+    ("lease read" "lease reed")
+    ("readable" "reedable")
+    ("\\bmaybe read" "maybe reed")
+    ("\\bbe read" "be rad")
+    ("\\bindices" "indicees")
+    ("gigabit" "giguhbit")
+    ("gigabyte" "giguhbyte")
+    ("gigahertz" "giguhhurts")
+    ("\\bL4\\b" "el four")
+    ("\\bls\\b" "el ess")
+    ("Mac OS" "Mackowess")
+    ("Python" "piethon")
+    ("put\\(s?\\) a\\b" "put\\1 ay") ; input/output(s)
+    )
+  "List special replacements.  Not needed for Kokoro."
+  :group 'org-export-re-reveal
+  :type '(repeat (list string string))
+  :package-version '(org-re-reveal . "3.37.2"))
+
+(defcustom org-re-reveal-tts-kokoro-patterns
+  '(("GET" "get")
+    ("POST" "post")
+    ("I/O" "IO")
+    ("context[ \n\t]+switch" "context-switch")
+    ("page[ \n\t]+fault" "pagefault")
+    ("prepaging" "pre-paging")
+    ("put\\(s?\\) a\\b" "put\\1 A")
+    ("\\ba-bit\\b" "A-bit")
+    ("~r~" "R")
+    ("~w~" "W")
+    ("~x~" "X")
+    ("put\\(s?\\)[ \n\t]+a\\b" "put\\1 A") ; input/output(s)
+    ("[.]de\\b" " dot DE") ; Domain names
+    )
+  "List special replacements.  Meant for Kokoro."
+  :group 'org-export-re-reveal
+  :type '(repeat (list string string))
+  :package-version '(org-re-reveal . "3.37.3"))
+
 (defcustom org-re-reveal-tts-normalize-table
   '(("[ \t][ \t]+" " ") ; Replace horizontal whitespace.
     ("[ \t]+\n" "\n")   ; Remove trailing whitespace.
@@ -1272,11 +1456,12 @@ presentations."
     ;; Similarly for (non-) space following break elements:
     ("\\(<break time=[^>]+>\\)[ ]+" "\\1\n")
     ("\\(<break time=[^>]+>\\)\\([^\n]\\)" "\\1\n\\2")
-    ;; Specific colons
-    ("\\babout:\\([a-z]+\\)\\b" "about \\1")
-    ;; Replace colon with dot
+    ;; Specific colons:
+    ("\\babout:\\([a-z]+\\)\\b" "about \\1") ; browsers' about URL
+    ;; Replace ordinary colon with dot
     (":" ".")
     ;; Replace some functions and math symbols.
+    ;; In particular, replace LaTeX math delimiters (dollar, parentheses).
     ("\\b$n$\\b" "ann")
     ("\\\\(n\\\\)" "ann")
     ("\\b$k$\\b" "kay")
@@ -1289,7 +1474,7 @@ presentations."
     ("\\b$2^{n-1}$\\b" "two to the ann minus one")
     ("\\b$?2^{\\([0-9]+\\)}$?" "two to the \\1")
     (" = " " equals ")
-    ("[ \n]-\\([1-9a-z]\\)\\b" " minus \\1")
+    ("[ \n]-\\([1-9a-z]\\)\\b" " minus \\1") ; negative number/variable
     ("\\b\\([0-9]+\\)%" "\\1 percent")
     ;; Replace plural, but not as break time.
     ("\\([^\"]\\)1s\\b" "\\1ones")
@@ -1366,170 +1551,71 @@ presentations."
     ;; Replace selected abbreviations.
     ("Nand2Tetris" "Nand to Tetris")
     ("reveal.js" "reveal jay ess")
-    ("\\bSSML\\b" "ess ess em el")
-    ("\\bTTS\\b" "tea tea ess")
-    ("\\bALU\\b" "ay al you")
-    ("\\bB\\b" "bytes")
-    ("\\bNAPI\\b" "ann API")
-    ("\\bAPI" "ay pea eye") ; no word boundary at end for plural
-    ("\\bCFS\\b" "see eff ess")
     ("chmod" "change mod")
-    ("\\bCPU\\b" "see pea you")
-    ("\\bCPUs\\b" "see pea use")
-    ("\\bGPU\\b" "djee pea you")
-    ("\\bGPUs\\b" "djee pea use")
-    ("\\bCRI\\b" "see are eye")
-    ("\\bCS\\b" "see ess")
-    ("\\bCSs\\b" "critical sections")
-    ("\\bDNF\\b" "dee n f")
-    ("\\bDNS\\b" "dee an ess")
+    ("\\bB\\b" "bytes")
+    ("\\bDS\\b" "distributed system")
+    ("\\bDSs\\b" "distributed systems")
+    ("\\bOS\\b" "operating system")
+    ("\\bOSs\\b" "operating systems")
     ("\\bDMux\\b" "deemux")
-    ("\\bDSL\\b" "dee ess el")
-    ("\\bDS" "distributed system")
-    ("\\bFIFO\\b" "first in, first out,")
-    ("\\bHDL\\b" "age dee el")
-    ("\\bHDD" "age dee dee")
-    ("\\bHDFS\\b" "age dee eff ess")
-    ("\\bHTML\\b" "age tea em el")
-    ("\\bHTTP\\b" "age tea tea pea")
-    ("\\bID\\b" "eye dee")
-    ("\\bIDs\\b" "eye dees")
-    ("\\bIoT\\b" "eye oh tea")
-    ("\\bIPv4\\b" "eye pea version four")
-    ("\\bIPv6\\b" "eye pea version six")
+    ("\\bIPv4\\b" "IP version four")
+    ("\\bIPv6\\b" "IP version six")
     ("\\b\\([A-Z]\\)aaS\\b" "\\1——as a service")
     ("\\bI——" "infrastructure ")
     ("\\bP——" "platform ")
     ("\\bS——" "software ")
     ("\\bX——" "anything ")
-    ("\\bIP\\b" "eye pea")
-    ("\\bIT\\b" "eye tea")
-    ("\\bIDTR\\b" "eye dee tea are")
-    ("\\bIDT\\b" "eye dee tea")
     ("\\bKB\\b" "kilobytes")
     ("\\bKiB\\b" "keebeebytes")
-    ("\\bLRU\\b" "el are you")
     ("\\bMB\\b" "megabytes")
     ("\\bMiB\\b" "mebeebytes")
     ("\\bGB\\b" "gigabytes")
     ("\\bGiB\\b" "gibeebytes")
-    ("K8s" "kates")
-    ("\\bL4\\b" "el four")
-    ("\\bls\\b" "el ess")
-    ("\\bMMU\\b" "em em you")
-    ("\\bMX\\b" "mutual exclusion")
-    ("Mac OS" "Mackowess")
-    ("\\bOS" "operating system")
+    ("[kK]8s" "kates")
     ("passwd" "password")
-    ("\\bPC" "pea sea")
-    ("\\bps\\b" "pea ess")
     ("\\bQUIC\\b" "quick")
     ("\\bSQL" "sequel")
-    ("\\bSSD" "ess ess dee")
-    ("\\bssh" "ess ess age")
-    ("\\bTCB" "tea sea bee")
-    ("\\bTCP" "tea sea pea")
-    ("\\bUDP" "you dee pea")
     ("stderr" "standard error")
     ("stdin" "standard input")
     ("stdout" "standard output")
     ("SELinux" "security enhanced linux")
-    ("\\bTLB" "tea el bee")
-    ("\\bURL" "you are al")
-    ("\\bUS\\b" "you ess")
-    ("\\bVM\\b" "vee emm")
-    ("\\bVMs\\b" "vee emms")
-    ("\\bVMM" "vee emm emm")
-    ("\\bWi-?Fi" "why fy")
     ("RAM16K" "RAM sixteen kay")
     ("e[.]g[.]" "for example")
     ("E[.]g[.]" "For example")
     ("etc[.]" "etcetera.")
     ("i[.]e[.]" "that is")
     ("I[.]e[.]" "That is")
-    ("I/O" "eye oh")
     ("input/output" "input output")
     ("producer/consumer" "producer consumer")
-    ;; Hyphenated words do not work well.
-    ;; Further below, a rule replaces a hyphen between characters with a space.
-    ;; Thus, list hypenated words here that require special replacements or that
-    ;; sound well without space.
-    ("A-register" "ay register")
-    ("A-instruction" "ay instruction")
-    ("C-instruction" "sea instruction")
-    ("D-register" "dee register")
-    ("built-in" "builtin")
-    ("break-through" "breakthrough")
-    ("co-founder" "cofounder")
-    ("counter-" "counter")
-    ("\\b[dD]e-" "de")
-    ("fan-in" "fan in")
-    ("full-fledged" "fullfledged")
-    ("large-scale" "largescale")
-    ("re-insert" "reinsert")
-    ("up-front" "upfront")
-    ("eta-[cC]ognitive" "etacognitive")
-    ("\\([fF]\\)ixed-" "\\1ixed")
-    ("non-" "non")
-    ("self-" "self")
-    ("inter-" "inter")
-    ("real-" "real")
-    ("[rR]ead-[oO]nly" "reed only")
-    ("[rR]ipple-[cC]arry" "ripplecarry")
-    ("trade-off" "tradeoff")
-    ("\\ba-bit\\b" "ay bit")
-    ("-mapped" "mapped")
-    ("warm-up" "warmup")
-    ("-wise" "wise")
-    ;; Pronounciation helpers
-    ("(a)" "ay")
-    ("(b)" "bee")
-    ("(c)" "see")
-    ("~r~" "are")
-    ("~w~" "doubleyou")
-    ("~x~" "ex")
+    ;; Pronunciation helpers
     ("\\bx-" "ex ")
     ("\\by-" "why ")
     ("\\bM\\b" "em")
     ("\\b[xX]\\b" "ex")
     ("\\b[yY]\\b" "why")
-    ("buses" "busses")
     ("cAdvisor" "sea advisor")
     ("\\betcd\\b" "etseedee")
-    ("lease read" "lease reed")
-    ("readable" "reedable")
-    ("\\bmaybe read" "maybe reed")
-    ("\\bbe read" "be rad")
-    ("\\bindices" "indicees")
-    ("put\\(s?\\) a\\b" "put\\1 ay") ; input/output(s)
     ("GitLab" "git lab")
-    ("gigabit" "giguhbit")
-    ("gigabyte" "giguhbyte")
-    ("gigahertz" "giguhhurts")
     ("\\bknote" "kaynote")
     ("kubectl" "cube cuttel")
     ("kubelet" "cube lett")
     ("nanosecond" "nahno second")
     ("nginx" "engine ex")
     ("[Pp]lugin" "pluggin")
-    ("Python" "piethon")
-    ("YAML" "jamell")
     ;; Code
     ("System[.]\\([a-z]+\\)" "system dot \\1")
-    ;; Domain names
-    ("[.]de\\b" " dot dee ee")
     ;; Replace some symbols
+    ("@" " At ")
     ("GNU/" "Gnu ")
     ("/\\([a-zA-Z]\\)" " slash \\1") ;
     ("“\\|”\\|„" "\"")
     (" [+] " " plus ")
-    ("\\([a-zA-Z]\\)-\\([a-zA-Z]\\)" "\\1 \\2") ;; replace hyphen with space
     (" - " " minus ")
     (" [*] " " times ")
     ;; Remove parentheses at start and end of lines
     ("^(\\|)$" ""))
     "Normalization table understood by `iso-translate-conventions'.
-Normalization supports correct pronounciation of words, numbers,
+Normalization supports correct pronunciation of words, numbers,
 symbols, or abbreviations by TTS models.
 For that purpose, this table contains a list of 2-element lists.
 Both elements are regular expressions, where occurrences of the first
@@ -1544,24 +1630,38 @@ Selected replacements:
 - Replace some math symbols.
 - Replace digits, some numbers, some years.
 - Replace some abbreviations.
-- Replace some hyphenations.  By default, a rule replaces a hyphen between
-  characters with a space.  When this does not sound well, a special rule
-  is necessary.
-- Selected pronounciation helpers for speaker CLB."
+- Selected pronunciation helpers that are usable for CLB and Kokoro.
+
+Note that this table contains patterns that should be usable across
+different TTS models.  For Kokoro, prepend patterns of
+`org-re-reveal-tts-kokoro-patterns'.  For other models,
+patterns of `org-re-reveal-tts-acronym-patterns',
+`org-re-reveal-tts-hyphen-patterns', and
+`org-re-reveal-tts-special-patterns' are appended."
   :group 'org-export-re-reveal
   :type '(repeat (list string string))
-  :package-version '(org-re-reveal . "3.33.0"))
+  :package-version '(org-re-reveal . "3.37.3"))
+
+(defun org-re-reveal--tts-normalize-table (voice)
+  "Construct normalization table for current VOICE."
+  (if (and voice (string= voice "Kokoro"))
+      (append org-re-reveal-tts-kokoro-patterns
+              org-re-reveal-tts-normalize-table)
+    (append org-re-reveal-tts-normalize-table
+            org-re-reveal-tts-acronym-patterns
+            org-re-reveal-tts-hyphen-patterns
+            org-re-reveal-tts-special-patterns)))
 
 (defcustom org-re-reveal-tts-warn-regexp "\\([-0-9]\\|[A-Z][A-Z]\\)"
   "Regular expression matching text that is unsuitable for TTS.
+This variable is ignored when using Kokoro.
 Such text leads to a warning and will likely result in audio where parts
 are missing or pronounced incorrectly.  E.g., the currently used models
 are unable to pronounce numbers and have problems with most abbreviations.
-The check is performed after normalization with
-`org-re-reveal-tts-normalize-table'."
+The check is performed after TTS normalization."
   :group 'org-export-re-reveal
   :type 'regexp
-  :package-version '(org-re-reveal . "3.27.0"))
+  :package-version '(org-re-reveal . "3.37.0"))
 
 (defcustom org-re-reveal-tts-no-warn-regexp "\\(<break time\\|bottom-up\\|[Ss]o-called\\|GET\\|MAC\\|OPT\\|POSIX\\|RAM\\|ROM\\|SIEVE\\|TODO\\|ZIP\\)"
   "Regular expression as exception for `org-re-reveal-tts-warn-regexp'.
@@ -1571,7 +1671,6 @@ there should be a warning according to `org-re-reveal-tts-warn-regexp'."
   :type 'regexp
   :package-version '(org-re-reveal . "3.29.0"))
 
-
 (defun org-re-reveal--if-format (fmt val)
   "Apply `format' to FMT and VAL if VAL is a number or non-empty string.
 Otherwise, return empty string."
@@ -1580,12 +1679,12 @@ Otherwise, return empty string."
       (format fmt val)
     ""))
 
-(defun org-re-reveal--sentences-in-lines (text)
+(defun org-re-reveal--sentences-in-lines (text &optional voice)
   "Return string for TEXT, where each sentence starts on a new line.
 Replace each newline (which, assuming wrapped texts, may or may not end
 sentences or paragraphs) with two space characters (which should not hurt).
 Then, insert a newline after each sentence (determined by `forward-sentence').
-Also perform replacements based on `org-re-reveal-tts-normalize-table'."
+Also perform TTS normalization for VOICE."
   (with-temp-buffer
     (insert text)
     (goto-char (point-min))
@@ -1602,15 +1701,16 @@ Also perform replacements based on `org-re-reveal-tts-normalize-table'."
           (replace-match ""))
         (setq prev (point)
               next (ignore-errors (forward-sentence)))))
-    (iso-translate-conventions (point-min) (point-max)
-                               org-re-reveal-tts-normalize-table)
+    (iso-translate-conventions
+     (point-min) (point-max)
+     (org-re-reveal--tts-normalize-table voice))
     (buffer-string)))
 
-(defun org-re-reveal--notes-to-tts-text (block)
-  "Return notes BLOCK as (mostly) ASCII text:
+(defun org-re-reveal--notes-to-tts-text (block &optional voice)
+  "Return notes BLOCK as (mostly) ASCII text, normalized for VOICE:
 - Remove bold, code, italics, underline, verbatim.
 - Replace hyperlinks with their texts.
-- Create one sentence per line."
+- Create one sentence per line, normalized for TTS."
   (cl-letf (((symbol-function 'org-ascii-bold)
              (lambda (_ contents _) (format "%s" contents)))
             ((symbol-function 'org-ascii-italic)
@@ -1641,7 +1741,7 @@ Also perform replacements based on `org-re-reveal-tts-normalize-table'."
                  text)
          :warning))
       (if (< 0 (length (string-trim text)))
-          (org-re-reveal--sentences-in-lines text)
+          (org-re-reveal--sentences-in-lines text voice)
         (display-warning
          'org-export-re-reveal
          "Found empty notes.  Please check.")
@@ -1749,12 +1849,13 @@ Add a line to the index file, and create a text file for the notes.
 Function `org-re-reveal--tts-audio-name' determines the name of the text
 file unless optional AUDIO-NAME is present."
   (let* ((gap (plist-get info :reveal-tts-sentence-gap))
-         (text (org-re-reveal--notes-to-tts-text block))
+         (text (org-re-reveal--notes-to-tts-text block voice))
          (hash (md5 text))
          (tts-dir (org-re-reveal--tts-dir info))
          (audio-name
           (or audio-name (org-re-reveal--tts-audio-name block info))))
-    (org-re-reveal--warn-if-tts-issue text)
+    (unless (string= "Kokoro" voice)
+      (org-re-reveal--warn-if-tts-issue text))
     (org-re-reveal--add-to-tts-index voice gap audio-name hash info)
     (org-re-reveal--create-tts-text hash text tts-dir)))
 
@@ -2082,7 +2183,9 @@ otherwise, generate `<link>' label, with a non-nil STYLE-ID as
         (concat "%r/" (format "%s/%s.css"
                               (if (version< version "4")
                                   "lib/css"
-                                "plugin/highlight")
+                                (if (version< version "6")
+                                    "plugin/highlight"
+                                  "dist/plugin/highlight"))
                               highlight-css))
       highlight-css)))
 
@@ -2244,8 +2347,14 @@ Parse keywords \"REVEAL_ADD_PLUGIN\" and return list of items."
 (defun org-re-reveal--plugin-config (plugin info)
   "Retrieve configuration for PLUGIN with reveal.js 4 and later with INFO.
 This retrieves the configuration for PLUGIN from `org-re-reveal-plugin-config'
-or after keyword \"REVEAL_ADD_PLUGIN\"."
-  (assoc plugin (append org-re-reveal-plugin-config (org-re-reveal--add-plugins info))))
+for version 4.x and 5.x or from `org-re-reveal-plugin-config' for version 6
+and later or after keyword \"REVEAL_ADD_PLUGIN\"."
+  (let ((version (org-re-reveal--guess-revealjs-version info)))
+    (assoc plugin (append
+                   (if (version< version "6")
+                       org-re-reveal-plugin-config
+                     org-re-reveal-plugin-6-config)
+                   (org-re-reveal--add-plugins info)))))
 
 (defun org-re-reveal--enabled-plugins (info)
   "Return enabled plugins based on INFO.
@@ -2477,7 +2586,7 @@ transitionSpeed: '%s',\n")
       (concat
        (if (version< reveal-version "4")
            ""
-         (format "\n// Plugins with reveal.js 4.x
+         (format "\n// Plugins with reveal.js 4.x and later
 plugins: [ %s ],\n"
                  (mapconcat
                   (lambda (plugin)
@@ -3036,6 +3145,8 @@ Speaker notes on the title slide with \"%n\" make use of
     (append (org-html-format-spec info)
             `((?A . ,(org-export-data
                       (plist-get info :reveal-academic-title) info))
+              (?I . ,(org-export-data
+                      (plist-get info :reveal-instructor) info))
               (?m . ,(org-export-data
                       (plist-get info :reveal-miscinfo) info))
               (?n . ,(org-re-reveal--notes-to-html html-notes))
@@ -3324,6 +3435,15 @@ org-export options)."
   "Return notes for title slide from INFO."
   (plist-get info :title-notes))
 
+(defun org-re-reveal--maybe-replace-macros (templates string)
+  "Return STRING after macro replacement of TEMPLATES."
+  (with-temp-buffer
+    (insert string)
+    (let ((org-inhibit-startup t))
+      (org-mode)
+      (org-macro-replace-all templates)
+      (buffer-string))))
+
 (defun org-re-reveal-template (contents info)
   "Return complete document string after HTML conversion.
 CONTENTS is the transcoded contents string.
@@ -3392,7 +3512,10 @@ INFO is a plist holding export options."
                            ((stringp title-slide)
                             (let* ((file-contents
                                     (org-re-reveal--read-file-as-string title-slide))
-                                   (title-string (or file-contents title-slide)))
+                                   (title-string
+                                    (or file-contents
+                                        (org-re-reveal--maybe-replace-macros
+                                         org-macro-templates title-slide))))
                               (format-spec title-string spec)))
                            ((eq title-slide 'auto)
                             (org-re-reveal--auto-title-slide-template info spec)))

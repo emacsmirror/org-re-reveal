@@ -1,0 +1,17 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2025 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+#+title: Macro in title slide, issue #119
+
+#+macro: affiliation ACME University
+#+REVEAL_TITLE_SLIDE:<h1>%t</h1><p>{{{affiliation}}}</p>
+
+
+* Just a slide
+  - Nothing really special here
+  - The title slide is constructed with macro replacement,
+    see [[https://gitlab.com/oer/org-re-reveal/-/issues/119][issue #119]]

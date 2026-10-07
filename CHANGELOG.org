@@ -1,6 +1,6 @@
 # Local IspellDict: en
 # SPDX-License-Identifier: GPL-3.0-or-later
-# SPDX-FileCopyrightText: 2019-2025 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2019-2026 Jens Lechtenbörger
 
 * Changelog
 This changelog documents the evolution of org-re-reveal starting with
@@ -12,6 +12,52 @@ Version numbers starting with version 2.0.0 adhere to
 Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
+
+** [3.39.0] - 2026-03-27
+*** Added
+    - Support reveal.js 6.0, which introduces breaking changes.  In
+      particular, see ~org-re-reveal-plugin-6-config~ and note that
+      ~org-re-reveal-revealjs-version~ allows the new value 6.
+
+** [3.38.0] - 2026-01-16
+*** Added
+    - Escape sequence %I for instructor information with
+      new keyword ~REVEAL_INSTRUCTOR~; enables separation of author
+      and instructor
+
+** [3.37.3] - 2025-12-22
+*** Fixed
+    - Improve pronunciation of CS, DS, OS, MX; add guards so that DS
+      does not match DSL.
+    - For Kokoro, allow multiple whitespace characters between words.
+
+** [3.37.2] - 2025-12-22
+*** Fixed
+    - Move more rules from ~org-re-reveal-tts-normalize-table~ to
+      other tables.
+    - Apply ~org-re-reveal-tts-kokoro-patterns~ first.
+
+** [3.37.1] - 2025-12-22
+*** Fixed
+    - In ~org-re-reveal-tts-normalize-table~, remove space for colon
+      replacement again.
+
+** [3.37.0] - 2025-12-22
+*** Added
+    - Option for Kokoro in ~org-re-reveal-with-tts~
+    - New TTS normalization rules
+      ~org-re-reveal-tts-acronym-patterns~,
+      ~org-re-reveal-tts-hyphen-patterns~,
+      ~org-re-reveal-tts-special-patterns~,
+      ~org-re-reveal-tts-kokoro-patterns~
+*** Changed
+    - Split ~org-re-reveal-tts-normalize-table~, keep core rules, move
+      others, potentially TTS model-specific ones, to above new rule
+      variables mentioned above.  See their doc strings.
+    - If the title slide (specified with ~org-re-reveal-title-slide~
+      or ~REVEAL_TITLE_SLIDE~) is a string, perform macro replacement.
+      Addresses issue #119.
+
 ** [3.36.0] - 2025-06-08
 *** Added
    - Honor ~org-export-timestamp-file~: If t, create comment in header

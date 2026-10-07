@@ -17,7 +17,7 @@
 # Copyright (C) 2013-2018 Yujie Wen and contributors to org-reveal, see:
 #                         https://github.com/yjwen/org-reveal/commits/master
 # Copyright (C) 2019      Ayush Goyal <perfectayush@gmail.com>
-# SPDX-FileCopyrightText: 2017-2025 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2017-2026 Jens Lechtenbörger
 
 #+OPTIONS: reveal_center:t reveal_progress:t reveal_history:nil reveal_control:t
 #+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t num:nil
@@ -308,6 +308,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 | ~nil~                             | ~REVEAL_FOOTNOTES_DIV~                       | ~org-re-reveal-footnotes-div~            |
 | ~nil~                             | ~REVEAL_HEAD_PREAMBLE~                       | ~org-re-reveal-head-preamble~            |
 | ~nil~                             | ~REVEAL_INIT_SCRIPT~                         | ~org-re-reveal-init-script~              |
+| ~nil~                             | ~REVEAL_INSTRUCTOR~                          | ~nil~                                    |
 | ~nil~                             | ~REVEAL_HIGHLIGHT_CSS~                       | ~org-re-reveal-highlight-css~            |
 | ~nil~                             | ~REVEAL_HIGHLIGHT_URL~                       | ~org-re-reveal-highlight-url~            |
 | ~nil~                             | ~REVEAL_HLEVEL~                              | ~nil~                                    |
@@ -404,6 +405,7 @@ Whether anyone wants to use those package in isolation, is up to them.
    ~org-re-reveal-note-key-char~,
    ~org-re-reveal-notes-format-string~,
    ~org-re-reveal-plugin-config~,
+   ~org-re-reveal-plugin-6-config~,
    ~org-re-reveal-tts-normalize-table~
 
 ** Set the location of reveal.js
@@ -489,12 +491,13 @@ Whether anyone wants to use those package in isolation, is up to them.
    :CUSTOM_ID: revealjs-version
    :END:
    Org-re-reveal supports reveal.js 3.x as well as later versions
-   (where version 4.0 introduced breaking changes).  You can customize
-   ~org-re-reveal-revealjs-version~ (or use keyword
+   (where versions 4.0 and 6.0 introduced breaking changes).  You can
+   customize ~org-re-reveal-revealjs-version~ (or use keyword
    =#+REVEAL_VERSION=) to indicate your version.  See that variable's
    doc string for possible values.  In particular, note that the value
-   4 is also correct for later versions such as 5.x (as no further
-   breaking changes were introduced).
+   4 is also correct for version 5.x (as no further
+   breaking changes were introduced), while 6 indicates version 6.x
+   and later (again to address breaking changes of 6.0).
 
    With the default value of ~nil~, org-re-reveal tries to guess your
    version, which works when ~org-re-reveal-root~ (or keyword
@@ -1025,10 +1028,14 @@ Whether anyone wants to use those package in isolation, is up to them.
     :END:
     Starting with version 3 of org-re-reveal, which supports reveal.js
     4, you can customize ~org-re-reveal-plugin-config~ to enable
-    additional plugins.  As an alternative to external plugin
+    additional plugins.  For reveal.js 6.0 and later, use
+    ~org-re-reveal-plugin-6-config~.
+
+    As an alternative to external plugin
     configuration shown on the previous slide, you can also add
     ~(chalkboard "RevealChalkboard" "plugin/chalkboard/plugin.js")~ to
-    ~org-re-reveal-plugin-config~, e.g., with that line in your ~.emacs~:
+    ~org-re-reveal-plugin-config~ (or to ~org-re-reveal-plugin-6-config~),
+    e.g., with that line in your ~.emacs~:
 #+BEGIN_SRC org
 (add-to-list 'org-re-reveal-plugin-config '(chalkboard "RevealChalkboard" "plugin/chalkboard/plugin.js"))
 #+END_SRC
@@ -1137,7 +1144,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 
    At present code editing is supported in: {{{klipse-languages}}}
 
-** Footnotes
+** Using Footnotes
   :PROPERTIES:
   :CUSTOM_ID: footnotes
   :END:
@@ -1413,8 +1420,9 @@ Whether anyone wants to use those package in isolation, is up to them.
    *Limitations* of single file export
    * Some functions provided by reveal.js libraries will be
      *disabled*, including PDF export.  With reveal.js 3.x, all
-     plugins are disabled, while with reveal.js 4.x, those in
-     ~org-re-reveal-plugin-config~ should still work.
+     plugins are disabled, while with reveal.js 4 and later, those in
+     ~org-re-reveal-plugin-config~ and ~org-re-reveal-plugin-6-config~
+     should still work.
      * Code highlighting by Emacs works in any case.
    * Plugins are *not* enabled.
    * CSS needs to be *self-contained*.  Neither ~@import~ rules nor

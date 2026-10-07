@@ -2,7 +2,7 @@
 
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; Copyright (C) 2019      Naoya Yamashita <conao3@gmail.com>
-;; SPDX-FileCopyrightText: 2020-2025 Jens Lechtenbörger
+;; SPDX-FileCopyrightText: 2020-2026 Jens Lechtenbörger
 
 ;; This file is not part of GNU Emacs.
 
@@ -161,6 +161,7 @@
         "remote-plugin"
         "reveal-toc"
         "revealjs4"
+        "revealjs6"
         "show-notes"
         "src-blocks-hl"
         "src-blocks-no-hl"
@@ -174,6 +175,7 @@
         "tdm-policy"
         "timing"
         "title-slide"
+        "title-slide-macro"
         "title-slide-notes"
         "title-slide-notes-2"
         "toc-de"

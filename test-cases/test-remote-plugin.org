@@ -11,15 +11,38 @@
 #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@4.6.0
 #+REVEAL_VERSION: 4
 #+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/plugin.js https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/style.css
-#+REVEAL_HEAD_PREAMBLE: <style type="text/css">.reveal > .overlay { backdrop-filter: unset!important; }</style>
+
+# Workaround for issue #100, fixed upstream:
+# #+REVEAL_HEAD_PREAMBLE: <style type="text/css">.reveal > .overlay { backdrop-filter: unset!important; }</style>
+
+# Per its README, font awesome is required for the chalkboard plugin.
+#+REVEAL_HEAD_PREAMBLE: <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+#+REVEAL_HEAD_PREAMBLE: <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+# Custom controls can be used to display buttons for opening and
+# closing annotation modes, see README of chalkboard plugin:
+# https://github.com/rajgoel/reveal.js-plugins/tree/master/chalkboard
+#+REVEAL_ADD_PLUGIN: customcontrol RevealCustomControls https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/customcontrols/plugin.js https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/customcontrols/style.css
+
+# Custom control require more configuration:
+#+REVEAL_HEAD_PREAMBLE: <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins/menu/font-awesome/css/fontawesome.css">
+#+REVEAL_INIT_SCRIPT: customcontrols: { controls: [{ icon: '<i class="fa fa-pen-square"></i>', title: 'Toggle chalkboard (B)', action: 'RevealChalkboard.toggleChalkboard();'}, { icon: '<i class="fa fa-pen"></i>', title: 'Toggle notes canvas (C)', action: 'RevealChalkboard.toggleNotesCanvas();'}]}
+
 #+REVEAL_PREAMBLE:
 
 * Comments
   - This presentation embeds reveal.js and the
     [[https://github.com/rajgoel/reveal.js-plugins/tree/master/chalkboard][chalkboard plugin]]
-    from remote locations.
+    (with custom controls and font awesome buttons) from remote locations.
 
-  - See [[https://gitlab.com/oer/org-re-reveal/-/issues/60][issue #60]]
-    and [[https://gitlab.com/oer/org-re-reveal/-/issues/116][issue #116]].
+  - See these related issues:
+    - [[https://gitlab.com/oer/org-re-reveal/-/issues/60][issue #60]]
+      (non-relative paths with ~REVEAL_ADD_PLUGIN~)
+    - [[https://gitlab.com/oer/org-re-reveal/-/issues/100][issue #100]]
+      (slides blurry)
+    - [[https://gitlab.com/oer/org-re-reveal/-/issues/116][issue #116]]
+      (all files from CDN)
+    - [[https://gitlab.com/oer/org-re-reveal/-/issues/120][issue #120]]
+      (icons with custom controls)
 
   - Press ~b~ or ~c~ as usual to work with the chalkboard.
