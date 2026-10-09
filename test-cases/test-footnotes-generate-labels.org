@@ -1,0 +1,33 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2024,2025 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2025 Anders Johansson
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: black
+
+#+STARTUP: fnlocal
+
+#+REVEAL_HEAD_PREAMBLE: <style type="text/css">
+#+REVEAL_HEAD_PREAMBLE: .footpara { display: inline; }
+#+REVEAL_HEAD_PREAMBLE: .footdef { text-align: left; }
+#+REVEAL_HEAD_PREAMBLE: .footnotes { padding-top: 2em; }
+#+REVEAL_HEAD_PREAMBLE: </style>
+
+#+Title: Adding Local Footnotes with Generated Labels
+#+Author: Jens Lechtenbörger
+
+# Declare bibliography with style:
+#+bibliography: references.bib
+#+cite_export: csl "chicago-fullnote-bibliography.csl" "chicago-fullnote-bibliography.csl"
+
+* Just a slide
+- Nothing really special here[fn:1:Except for a footnote]
+
+** A deeper nesting
+- Again some footnote[fn:2:Footnote on a deeper level of nesting]
+
+* A slide with a citation
+- First point[fn:3:A note on the first]
+- Second point[cite:@Lec19c]
+- Third point[fn:4:A note on the third]

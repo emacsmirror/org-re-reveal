@@ -89,8 +89,13 @@
     (with-temp-buffer
       (insert-file-contents exportpath)
       (mapc (lambda (x) (funcall replace-all-fn (car x) (cdr x)))
-            `((,(rx "id=\"org"       (= 7 not-newline)) . "id=\"org*******")
-              (,(rx "id=\"slide-org" (= 7 not-newline)) . "id=\"slide-org*******")
+            `((,(rx "id=\""
+                    (group (| "org" "slide-org" "fnr.org" "fn.org"))
+                    (= 7 not-newline))
+               . "id=\"\\1*******")
+              (,(rx "href=\""
+                    (group (| "#fnr.org" "#fn.org")) (= 7 not-newline))
+               . "href=\"\\1*******")
               (,(rx "id=\"outline-container-org" (= 7 not-newline)) . "id=\"outline-container-org*******")
               (,(rx "#/slide-org"    (= 7 not-newline)) . "#/slide-org*******")
               ("<p class=\"date\">Created:.*</p>"       . "<p class=\"date\">Created:{{date}}</p>")
