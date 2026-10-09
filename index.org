@@ -1,7 +1,7 @@
 # Local IspellDict: en
 #+STARTUP: showeverything
 #+SPDX-License-Identifier: GPL-3.0-or-later
-#+SPDX-FileCopyrightText: 2019-2021,2025 Jens Lechtenbörger
+#+SPDX-FileCopyrightText: 2019-2021,2025-2026 Jens Lechtenbörger
 
 #+TITLE: Sample presentations generated with org-re-reveal
 #+AUTHOR: Jens Lechtenbörger
@@ -31,6 +31,9 @@ notably, “n” and “p” move to next and previous slides.
   - [[file:test-cases/test-embed-resources.org][Embedding of local resources]]
   - [[file:test-cases/test-footer.org][Different footers (CSS not included)]]
   - [[file:test-cases/test-footer-global.org][Global footers with exceptions (CSS not included)]]
+  - [[file:test-cases/test-footnotes.org][Footnotes collected on one slide]]
+  - [[file:test-cases/test-footnotes-local.org][Footnotes per slide]]
+  - [[file:test-cases/test-footnotes-generate-labels.org][Footnotes per slide, also CSL generated]]
   - [[file:test-cases/test-highlightjs.org][Syntax highlighting]]
   - [[file:test-cases/test-internal-links.org][Links between slides (CSS not included)]]
   - [[file:test-cases/test-klipsify.org][Code execution with klipse]]
