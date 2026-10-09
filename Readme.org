@@ -1155,7 +1155,7 @@ Whether anyone wants to use those package in isolation, is up to them.
     2. Use startup option ~fnlocal~ to create footnote directly on slide (see [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-footnotes-local.org][test-footnotes-local.org]])
     3. Use startup option ~fnlocal~ and
        ~reveal_footnotes_use_user_labels:nil~ with CSL processor.
-       (See [[file:test-cases/test-footnotes-generate-labels.org]].)
+       (See [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-footnotes-generate-labels.org][test-footnotes-generate-labels.org]].)
 
 ** MathJax
   :PROPERTIES:
