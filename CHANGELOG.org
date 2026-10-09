@@ -13,6 +13,12 @@ Older changes are summarized in subsequent sections.
 
 ** [Unreleased]
 
+** [3.40.0] - 2026-10-09
+*** Added
+    - Customizable variable ~org-re-reveal-footnotes-use-user-labels~
+      with option ~reveal_footnotes_use_user_labels~.  See MR !35 and
+      test case [[file:test-cases/test-footnotes-generate-labels.org]].
+
 ** [3.39.0] - 2026-03-27
 *** Added
     - Support reveal.js 6.0, which introduces breaking changes.  In
