@@ -1,10 +1,11 @@
 # Local IspellDict: en
 # SPDX-License-Identifier: GPL-3.0-or-later
-# SPDX-FileCopyrightText: 2024,2025 Jens Lechtenbörger
+# SPDX-FileCopyrightText: 2024,2025,2026 Jens Lechtenbörger
 # SPDX-FileCopyrightText: 2025 Anders Johansson
 
-#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000 reveal_footnotes_use_user_labels:nil
 #+REVEAL_THEME: black
+#+REVEAL_VERSION: 4
 
 #+STARTUP: fnlocal
 
@@ -28,6 +29,7 @@
 - Again some footnote[fn:2:Footnote on a deeper level of nesting]
 
 * A slide with a citation
+Note the option ~reveal_footnotes_use_user_labels:nil~ above
 - First point[fn:3:A note on the first]
 - Second point[cite:@Lec19c]
 - Third point[fn:4:A note on the third]
