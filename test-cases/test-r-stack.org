@@ -1,0 +1,47 @@
+# Local IspellDict: en
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2022,2026 Jens Lechtenbörger
+
+#+OPTIONS: toc:nil reveal_width:1400 reveal_height:1000
+# #+HTML_DOCTYPE: html5
+# #+OPTIONS: html5-fancy:t
+#+REVEAL_THEME: black
+
+#+Title: Using r-stack layout
+#+Author: Jens Lechtenbörger
+
+* Slide with r-stack and HTML attributes
+#+begin_r-stack
+#+attr_html: :class fragment
+[[https://gitlab.com/oer/figures/-/raw/main/3d-man/board.png]]
+#+attr_html: :class fragment
+[[https://gitlab.com/oer/figures/-/raw/main/3d-man/brain_teacher.png]]
+#+attr_html: :class fragment
+[[https://gitlab.com/oer/figures/-/raw/main/3d-man/steps.png]]
+#+end_r-stack
+
+* Alternative based on MR !34
+#+begin_r-stack
+#+ATTR_REVEAL: :frag fade-in-then-out
+[[https://gitlab.com/oer/figures/-/raw/main/3d-man/board.png]]
+#+ATTR_REVEAL: :frag fade-in
+[[https://gitlab.com/oer/figures/-/raw/main/3d-man/brain_teacher.png]]
+#+end_r-stack
+
+* Alternative with text
+#+begin_r-stack
+#+ATTR_REVEAL: :frag fade-in-then-out
+[[https://gitlab.com/oer/figures/-/raw/main/3d-man/board.png]]
+
+#+ATTR_REVEAL: :frag appear
+Some text
+
+#+ATTR_REVEAL: :frag appear
+[[https://gitlab.com/oer/figures/-/raw/main/3d-man/brain_teacher.png]]
+#+end_r-stack
+
+* See also
+Above code based on
+[[https://gitlab.com/oer/org-re-reveal/-/work_items/79][work item #79]]
+and
+[[https://gitlab.com/oer/org-re-reveal/-/merge_requests/34][merge request !34]].
