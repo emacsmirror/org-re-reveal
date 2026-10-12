@@ -42,6 +42,7 @@ notably, “n” and “p” move to next and previous slides.
   - [[file:test-cases/test-multiplex_client.html][Multiplex client]]
   - [[file:test-cases/test-noslide.org][Add subheading to slide]]
   - [[file:test-cases/test-options.org][Use of extra options]]
+  - [[file:test-cases/test-r-stack.org][Presentation with stacked layout, ~r-stack~]]
   - [[file:test-cases/test-remote-plugin.org][Embed chalkboard plugin remotely]]
   - [[file:test-cases/test-reveal-toc.org][Table of contents at chosen location]]
   - [[file:test-cases/test-show-notes.org][Use option to show notes]]
