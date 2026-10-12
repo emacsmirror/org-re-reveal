@@ -958,6 +958,37 @@ Whether anyone wants to use those package in isolation, is up to them.
    * I appear with audio 2.ogg.
    * I appear without audio.
 
+** Stacking Child Elements
+In =reveal.js= 4.0 and greater, it is possible to
+[[https://revealjs.com/layout/#stack]["stack" the direct children of a
+container element]] so that they reuse the same location within a
+slide.  Usually this will be combined with fragments; a common usage
+is to replace one image with another.
+
+Users of org-re-reveal can access this feature with a "special block";
+in HTML export, these blocks will produce a "div" or "section" element
+with a class set equal to the special block type. So, for instance,
+the following code will show the image ~img1.jpg~ first, to be
+replaced with image ~img2.jpg~.
+
+#+begin_src org
+#+begin_r-stack
+#+ATTR_REVEAL: :frag fade-in-then-out
+[[img1.jpg]]
+#+ATTR_REVEAL: :frag appear
+[[img2.jpg]]
+#+end_r-stack
+#+end_src
+
+See also the discussions of
+[[https://gitlab.com/oer/org-re-reveal/-/work_items/79][issue #79]]
+and of
+[[https://gitlab.com/oer/org-re-reveal/-/merge_requests/34][merge request !34]]
+as well as
+[[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-r-stack.org][this
+sample file]]
+for different options.
+
 ** Data State and Classes for Headlines and Slides, including generated ones
    :PROPERTIES:
    :reveal_data_state: alert
