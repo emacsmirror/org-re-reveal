@@ -838,11 +838,12 @@ Whether anyone wants to use those package in isolation, is up to them.
    See [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-slide-container.org][this slide container test case]]
    and [[https://gitlab.com/oer/org-re-reveal/-/blob/main/test-cases/test-slide-grid-wrapper.org][that slide grid test case]].
 
-** Fragmented Contents
+** Fragmented Contents, Animations
 
-    Make contents fragmented (show up one-by-one) by setting option
-    =ATTR_REVEAL= with property ":frag frag-style", as illustrated
-    below.
+    Animated slides can be created with so-called “fragments” of
+    reveal.js.  To make contents “fragmented” (show up one-by-one),
+    set option =ATTR_REVEAL= with property ":frag frag-style", as
+    illustrated below.
 
 #+ATTR_REVEAL: :frag zoom-in
     Paragraphs can be fragmented.
@@ -852,7 +853,7 @@ Whether anyone wants to use those package in isolation, is up to them.
     - be fragmented.
 
 #+ATTR_REVEAL: :frag zoom-in
-    Pictures, tables and many other HTML elements can be fragmented.
+    Pictures, tables, and many other HTML elements can be fragmented.
 
 *** Fragment Styles
     Available fragment styles include (see
@@ -865,12 +866,12 @@ Whether anyone wants to use those package in isolation, is up to them.
     * highlight-green
     * highlight-blue
 
-    Setting ~:frag t~ will use reveal.js default fragment style, which
+    Setting ~:frag t~ will use the reveal.js default fragment style, which
     can be overridden by local option ~#+REVEAL_DEFAULT_FRAG_STYLE~ or
     global variable ~org-re-reveal-default-frag-style~.
 
 *** Fragment Index
-    Fragment sequence can be changed by assigning adding ~:frag_idx~
+    Fragment sequencing can be changed by adding a ~:frag_idx~
     property to each fragmented element.
 
 #+ATTR_REVEAL: :frag t :frag_idx 3
@@ -884,7 +885,7 @@ Whether anyone wants to use those package in isolation, is up to them.
 
 *** List Fragments
 
-    ~#+ATTR_REVEAL: :frag frag-style~ above a list defines fragment
+    ~#+ATTR_REVEAL: :frag frag-style~ above a list defines the fragment
     style for the list as a whole.
 #+ATTR_REVEAL: :frag grow
     1. All items grow.
@@ -893,10 +894,10 @@ Whether anyone wants to use those package in isolation, is up to them.
     To define fragment styles for every list item, please enumerate
     each item's style in a lisp list.
 
-    ~none~ in the style list will disable fragment for the
+    ~none~ in the style list disables fragment functionality for the
     corresponding list item.
 
-    Custom fragment sequence should also be enumerated for each list
+    A custom fragment sequence can also be enumerated for each list
     item.
 
 #+REVEAL: split
@@ -918,8 +919,8 @@ Whether anyone wants to use those package in isolation, is up to them.
    * I will fade out.
    * I don't fragment.
 #+REVEAL: split
-   When there is ~:frag_idx~ specified, insufficient fragment style
-   list will be extended by its last element. So a ~:frag (appear)~
+   When ~:frag_idx~ is specified, insufficient fragment style
+   items will be extended by the last element.  So, ~:frag (appear)~
    assigns each item of a list the ~appear~ fragment style (which is
    not necessary with reveal.js 4.x any more but does not hurt).
 #+BEGIN_SRC org
